@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">Learnzy</string>
+    <string name="aboutTitleText">About us.</string>
+    <string name="aboutText">
+        *About page descriptive text comes here*
+        \n*New line*
+        \n*Blah blah sth ......... buhvuvwevdj3hgwvedhj2vbjedh3jehvdjh3hevjh3vjhexv3jwhevxjwvejhxhvwjvsyxyv3euyd3uyedu3y2euxbw3uev3u4dv3uvexuwvxv3edv3ytetvd32vexytve3vy4dvy3tdy3vevdubxyu
+        \n*Break Line*
+        _________________________________________________________________________________________________________________________________________________________________________________
+        \n\n*double new line*
+        \n\n\n*three times new line*
+    </string>
 </resources>
