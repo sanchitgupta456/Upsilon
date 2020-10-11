@@ -23,4 +23,8 @@
     <string name="google_icon">Google Icon</string>
     <string name="facebook_icon">Facebook Icon</string>
     <string name="twitter_icon">Twitter Icon</string>
+    <string name="sign_up_text">SIGN UP</string>
+    <string name="username">Username</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="already_a_member">Already a member ?</string>
 </resources>
