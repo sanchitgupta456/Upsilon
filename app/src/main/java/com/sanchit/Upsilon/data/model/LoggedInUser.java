@@ -1,4 +1,4 @@
-package com.sanchit.learnzy.data.model;
+package com.sanchit.Upsilon.data.model;
 
 /**
  * Data class that captures user information for logged in users retrieved from LoginRepository

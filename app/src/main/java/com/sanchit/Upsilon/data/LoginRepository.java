@@ -1,6 +1,6 @@
-package com.sanchit.learnzy.data;
+package com.sanchit.Upsilon.data;
 
-import com.sanchit.learnzy.data.model.LoggedInUser;
+import com.sanchit.Upsilon.data.model.LoggedInUser;
 
 /**
  * Class that requests authentication and user information from the remote data source and

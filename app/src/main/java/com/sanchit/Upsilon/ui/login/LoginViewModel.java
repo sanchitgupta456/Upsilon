@@ -1,4 +1,4 @@
-package com.sanchit.learnzy.ui.login;
+package com.sanchit.Upsilon.ui.login;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -6,10 +6,10 @@ import androidx.lifecycle.ViewModel;
 
 import android.util.Patterns;
 
-import com.sanchit.learnzy.data.LoginRepository;
-import com.sanchit.learnzy.data.Result;
-import com.sanchit.learnzy.data.model.LoggedInUser;
-import com.sanchit.learnzy.R;
+import com.sanchit.Upsilon.data.LoginRepository;
+import com.sanchit.Upsilon.data.Result;
+import com.sanchit.Upsilon.data.model.LoggedInUser;
+import com.sanchit.Upsilon.R;
 
 public class LoginViewModel extends ViewModel {
 

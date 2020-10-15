@@ -1,11 +1,11 @@
-package com.sanchit.learnzy.ui.login;
+package com.sanchit.Upsilon.ui.login;
 
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.annotation.NonNull;
 
-import com.sanchit.learnzy.data.LoginDataSource;
-import com.sanchit.learnzy.data.LoginRepository;
+import com.sanchit.Upsilon.data.LoginDataSource;
+import com.sanchit.Upsilon.data.LoginRepository;
 
 /**
  * ViewModel provider factory to instantiate LoginViewModel.

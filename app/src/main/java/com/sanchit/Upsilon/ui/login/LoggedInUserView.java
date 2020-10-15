@@ -1,4 +1,4 @@
-package com.sanchit.learnzy.ui.login;
+package com.sanchit.Upsilon.ui.login;
 
 /**
  * Class exposing authenticated user details to the UI.

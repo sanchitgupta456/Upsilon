@@ -1,4 +1,4 @@
-package com.sanchit.learnzy.ui.login;
+package com.sanchit.Upsilon.ui.login;
 
 import androidx.annotation.Nullable;
 

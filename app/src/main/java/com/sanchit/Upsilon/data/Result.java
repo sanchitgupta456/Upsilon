@@ -1,4 +1,4 @@
-package com.sanchit.learnzy.data;
+package com.sanchit.Upsilon.data;
 
 /**
  * A generic class that holds a result success w/ data or an error exception.

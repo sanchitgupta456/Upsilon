@@ -1,4 +1,4 @@
-package com.sanchit.learnzy.ui.login;
+package com.sanchit.Upsilon.ui.login;
 
 import android.app.Activity;
 
@@ -22,9 +22,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.sanchit.learnzy.R;
-import com.sanchit.learnzy.ui.login.LoginViewModel;
-import com.sanchit.learnzy.ui.login.LoginViewModelFactory;
+import com.sanchit.Upsilon.R;
 
 public class LoginActivity extends AppCompatActivity {
 

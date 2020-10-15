@@ -1,4 +1,4 @@
-package com.sanchit.learnzy;
+package com.sanchit.Upsilon;
 
 import org.junit.Test;
 
