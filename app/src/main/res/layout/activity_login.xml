@@ -71,7 +71,7 @@
         android:layout_gravity="start"
         android:layout_marginTop="64dp"
         android:background="@drawable/btn_rounded_rect"
-        android:enabled="false"
+        android:enabled="true"
         android:text="@string/action_sign_in"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -205,7 +205,7 @@
         android:backgroundTint="@color/colorWhite"/>
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/signUp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
