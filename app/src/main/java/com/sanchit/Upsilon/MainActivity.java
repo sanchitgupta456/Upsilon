@@ -18,7 +18,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Realm.init(this); // `this` is a Context, typically an Application or Activity
+        /*Realm.init(this); // `this` is a Context, typically an Application or Activity
         String appID = "upsilon-ityvn"; // replace this with your App ID
         final App app = new App(new AppConfiguration.Builder(appID)
                 .build());
@@ -38,6 +38,6 @@ public class MainActivity extends AppCompatActivity {
                     Log.e("QUICKSTART", "Failed to log in. Error: " + it.getError().toString());
                 }
             }
-        });
+        });*/
     }
 }

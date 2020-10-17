@@ -20,6 +20,7 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -47,7 +48,9 @@ public class LoginActivity extends AppCompatActivity {
         final Button loginButton = (Button)findViewById(R.id.login);
         final Button signUpButton = (Button)findViewById(R.id.signUp);
         final ProgressBar loadingProgressBar = findViewById(R.id.loading);
-
+        final ImageView GoogleSignIn = findViewById(R.id.googleSignIn);
+        //Realm realm = Realm.getDefaultInstance();
+        //realm.close();
         Realm.init(this); // context, usually an Activity or Application
 
         String appID = "upsilon-ityvn";
@@ -62,6 +65,22 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+        GoogleSignIn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Credentials googleCredentials = Credentials.google("<token>");
+
+                app.loginAsync(googleCredentials, it -> {
+                    if (it.isSuccess()) {
+                        Log.v(TAG, "Successfully authenticated using Google OAuth.");
+                        User user = app.currentUser();
+                    } else {
+                        Log.e(TAG, it.getError().toString());
+                    }
+                });
+            }
+        });
+
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view)
@@ -71,13 +90,16 @@ public class LoginActivity extends AppCompatActivity {
 
                 Credentials emailPasswordCredentials = Credentials.emailPassword(email, password);
 
-                app.loginAsync(emailPasswordCredentials, it -> {
-                    if (it.isSuccess()) {
-                        Log.v(TAG, "Successfully authenticated using an email and password.");
-                        User user = app.currentUser();
-                    } else {
-                        Log.v(TAG, "LOGIN FAILED!");
-                        Log.e(TAG, it.getError().toString());
+                app.loginAsync(emailPasswordCredentials, new App.Callback<User>() {
+                    @Override
+                    public void onResult(App.Result<User> it) {
+                        if (it.isSuccess()) {
+                            Log.v(TAG, "Successfully authenticated using an email and password.");
+                            User user = app.currentUser();
+                        } else {
+                            Log.v(TAG, "LOGIN FAILED!");
+                            Log.e(TAG, it.getError().toString());
+                        }
                     }
                 });
             }
