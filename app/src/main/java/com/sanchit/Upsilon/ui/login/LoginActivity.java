@@ -31,7 +31,9 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.Scopes;
 import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.sanchit.Upsilon.R;
@@ -42,32 +44,14 @@ import io.realm.mongodb.AppConfiguration;
 import io.realm.mongodb.Credentials;
 import io.realm.mongodb.User;
 
-/*
- * The problem: I feel the main problem is that this link:
- * https://github.com/googlesamples/google-services/blob/master/android/signin/app/src/main/java/com/google/samples/quickstart/signin/IdTokenActivity.java
- * its  a starter implementation for this.
- * It doesn't actually implement login and auth.
- * It just obtains the token
- * Now we know auth process requires app.loginAsync, which means we need to somehow
- * use the app object which we created in OnCreate inside the handleSignInResult method
- * But since app is a local object, it can't be accessed in the handleSignInResult method
- * So three options,
- * 1. make the app a class attribute: which produces a null value error (try it if you want)
- * 2. declare a new app object in the handleSignInResult method.
- *    This produces a Google ApiError 10. Read about it here:
- *    https://stackoverflow.com/questions/47619229/google-sign-in-failed-com-google-android-gms-common-api-apiexception-10
- * 3. Pass the app object by reference to the handleSignInResult method (which is implemented)
- * option 3 is the only one that seems to produce a google account selection screen
- * But when we click on our google account, it gives ApiError 8
- * this stackoverflow article explains what that is:
- * https://stackoverflow.com/questions/35229264/android-google-sign-in-fails-with-error-code-8-no-message
- */
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener{
 
     private static final String TAG = "LoginActivity";
-    private static final int RC_GET_TOKEN = 9002;
-    private GoogleSignInClient mGoogleSignInClient;
+    private static final int RC_GET_AUTH_CODE = 9003;
+
     String appID = "upsilon-ityvn";
+
+    private GoogleSignInClient mGoogleSignInClient;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -81,12 +65,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         final ProgressBar loadingProgressBar = findViewById(R.id.loading);
         final ImageView GoogleSignInImage = findViewById(R.id.googleSignIn);
         findViewById(R.id.googleSignIn).setOnClickListener(this);
-
-        //Realm realm = Realm.getDefaultInstance();
-        //realm.close();
         Realm.init(this); // context, usually an Activity or Application
-
-        //This is the app object I was talking about
         App app = new App(new AppConfiguration.Builder(appID)
                 .build());
 
@@ -102,10 +81,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             @Override
             public void onClick(View view)
             {
-                //String email = usernameEditText.getText().toString();
-                //String password = passwordEditText.getText().toString();
-                Toast.makeText(LoginActivity.this,"Hello",Toast.LENGTH_LONG);
-                /*Credentials emailPasswordCredentials = Credentials.emailPassword(email, password);
+                String email = usernameEditText.getText().toString();
+                String password = passwordEditText.getText().toString();
+                Credentials emailPasswordCredentials = Credentials.emailPassword(email, password);
 
                 app.loginAsync(emailPasswordCredentials, new App.Callback<User>() {
                     @Override
@@ -119,118 +97,97 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             Log.e(TAG, it.getError().toString());
                         }
                     }
-                });*/
+                });
             }
         });
-// For sample only: make sure there is a valid server client ID.
+
+        // For sample only: make sure there is a valid server client ID.
         validateServerClientID();
+
         // [START configure_signin]
-        // Request only the user's ID token, which can be used to identify the
-        // user securely to your backend. This will contain the user's basic
-        // profile (name, profile picture URL, etc) so you should not need to
-        // make an additional call to personalize your application.
+        // Configure sign-in to request offline access to the user's ID, basic
+        // profile, and Google Drive. The first time you request a code you will
+        // be able to exchange it for an access token and refresh token, which
+        // you should store. In subsequent calls, the code will only result in
+        // an access token. By asking for profile access (through
+        // DEFAULT_SIGN_IN) you will also get an ID Token as a result of the
+        // code exchange.
+        String serverClientId = getString(R.string.server_client_id);
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.server_client_id))
+                .requestScopes(new Scope(Scopes.DRIVE_APPFOLDER))
+                .requestServerAuthCode(serverClientId)
                 .requestEmail()
                 .build();
         // [END configure_signin]
-        // Build GoogleAPIClient with the Google Sign-In API and the above options.
         mGoogleSignInClient = GoogleSignIn.getClient(LoginActivity.this, gso);
-       /*GoogleSignInImage.setOnClickListener(new View.OnClickListener() {
-           @Override
-           public void onClick(View v) {
-               Toast.makeText(LoginActivity.this,"Hello",Toast.LENGTH_LONG);
-
-
-           }
-       });*/
-
+        signOut();
     }
 
-    private void getIdToken() {
-        // Show an account picker to let the user choose a Google account from the device.
-        // If the GoogleSignInOptions only asks for IDToken and/or profile and/or email then no
-        // consent screen will be shown here.
+
+
+    private void getAuthCode() {
+        // Start the retrieval process for a server auth code.  If requested, ask for a refresh
+        // token.  Otherwise, only get an access token if a refresh token has been previously
+        // retrieved.  Getting a new access token for an existing grant does not require
+        // user consent.
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
-        startActivityForResult(signInIntent, RC_GET_TOKEN);
+        startActivityForResult(signInIntent, RC_GET_AUTH_CODE);
     }
 
-    private void refreshIdToken() {
-        // Attempt to silently refresh the GoogleSignInAccount. If the GoogleSignInAccount
-        // already has a valid token this method may complete immediately.
-        //
-        // If the user has not previously signed in on this device or the sign-in has expired,
-        // this asynchronous branch will attempt to sign in the user silently and get a valid
-        // ID token. Cross-device single sign on will occur in this branch.
-        mGoogleSignInClient.silentSignIn()
-                .addOnCompleteListener(this, new OnCompleteListener<GoogleSignInAccount>() {
-                    @Override
-                    public void onComplete(@NonNull Task<GoogleSignInAccount> task) {
-                        handleSignInResult(task);
-                    }
-                });
-    }
-
-    // [START handle_sign_in_result]
-    private void handleSignInResult(@NonNull Task<GoogleSignInAccount> completedTask) {
-        try {
-            GoogleSignInAccount account = completedTask.getResult(ApiException.class);
-            String idToken = account.getIdToken();
-
-            // TODO(developer): send ID Token to server and validate
-
-            Credentials googleCredentials = Credentials.google(idToken);
-
-            App app = new App(new AppConfiguration.Builder(appID)
-                    .build());
-
-            app.loginAsync(googleCredentials, it -> {
-                if (it.isSuccess()) {
-                    Log.v(TAG, "Successfully authenticated using Google OAuth.");
-                    User user = app.currentUser();
-                } else {
-                    Log.e(TAG, it.getError().toString());
-                }
-            });
-
-            //updateUI(account);
-        } catch (ApiException e) {
-            Log.w(TAG, "handleSignInResult:error", e);
-            //updateUI(null);
-        }
-    }
-    // [END handle_sign_in_result]
-
-    /*private void signOut() {
+    private void signOut() {
         mGoogleSignInClient.signOut().addOnCompleteListener(this, new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
-                updateUI(null);
             }
         });
-    }*/
+    }
 
-    /*private void revokeAccess() {
+    private void revokeAccess() {
         mGoogleSignInClient.revokeAccess().addOnCompleteListener(this,
                 new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-
                     }
                 });
-    }*/
+    }
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == RC_GET_TOKEN) {
-            // [START get_id_token]
-            // This task is always completed immediately, there is no need to attach an
-            // asynchronous listener.
+        if (requestCode == RC_GET_AUTH_CODE) {
+            // [START get_auth_code]
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-            handleSignInResult(task);
-            // [END get_id_token]
+            try {
+                GoogleSignInAccount account = task.getResult(ApiException.class);
+                String authCode = account.getServerAuthCode();
+
+                // Show signed-un UI
+
+                // TODO(developer): send code to server and exchange for access/refresh/ID tokens
+
+                Credentials googleCredentials = Credentials.google(authCode);
+
+                final App app = new App(new AppConfiguration.Builder(appID)
+                        .build());
+
+                app.loginAsync(googleCredentials, new App.Callback<User>() {
+                    @Override
+                    public void onResult(App.Result<User> it) {
+                        if (it.isSuccess()) {
+                            Log.v(TAG, "Successfully authenticated using Google OAuth.");
+                            User user = app.currentUser();
+                        } else {
+                            Log.e(TAG, it.getError().toString());
+                        }
+                    }
+                });
+
+            } catch (ApiException e) {
+                Log.w(TAG, "Sign-in failed", e);
+            }
+            // [END get_auth_code]
         }
     }
 
@@ -249,11 +206,16 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
+
+
+
+
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.googleSignIn:
-                getIdToken();
+                        getAuthCode();
                 break;
 
         }
