@@ -83,15 +83,15 @@
         android:id="@+id/signupBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="12dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginRight="12dp"
         android:background="@drawable/btn_rounded_rect"
+        android:enabled="true"
+        android:text="@string/sign_up_text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
-        android:text="@string/sign_up_text"
-        android:layout_marginTop="24dp"
-        android:layout_marginLeft="12dp"
-        android:layout_marginRight="12dp"
-        android:enabled="false" />
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
 
     <View
         android:id="@+id/divider"

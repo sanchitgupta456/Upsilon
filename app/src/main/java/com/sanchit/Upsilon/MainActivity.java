@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Realm.init(this); // `this` is a Context, typically an Application or Activity
+        /*Realm.init(this); // `this` is a Context, typically an Application or Activity
         String appID = "upsilon-ityvn"; // replace this with your App ID
         final App app = new App(new AppConfiguration.Builder(appID)
                 .build());
@@ -50,6 +50,8 @@ public class MainActivity extends AppCompatActivity {
         });
 
         //getImages(); :testing recycler views for home page. to use this on beta, uncomment getImages() and initRecyclerView()
+
+        });*/
     }
     //testing recycler view. when design of home page is finalized, this is to be removed.
     /*
