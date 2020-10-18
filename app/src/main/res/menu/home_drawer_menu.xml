@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:title="Title 1"
+        android:id="@+id/homeDrawerMenuItem1"
+        android:icon="@drawable/add_box_icon"/>
+    <item
+        android:title="Title 2"
+        android:id="@+id/homeDrawerMenuItem2"
+        android:icon="@drawable/add_box_icon"/>
+    <item
+        android:title="Title 3"
+        android:id="@+id/homeDrawerMenuItem3"
+        android:icon="@drawable/add_box_icon"/>
+
+    <item
+        android:title="Title 4"
+        android:id="@+id/homeDrawerMenuItem4"
+        android:icon="@drawable/add_box_icon"/>
+    <item
+        android:title="Title 5"
+        android:id="@+id/homeDrawerMenuItem5"
+        android:icon="@drawable/add_box_icon"/>
+    <item
+        android:title="Title 6"
+        android:id="@+id/homeDrawerMenuItem6"
+        android:icon="@drawable/add_box_icon"/>
+</menu>
