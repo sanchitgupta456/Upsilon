@@ -27,4 +27,7 @@
     <string name="username">Username</string>
     <string name="confirm_password">Confirm Password</string>
     <string name="already_a_member">Already a member ?</string>
+    <string name="resume_learning">Resume Learning</string>
+    <string name="recommended_for_you">Recommended for you</string>
+    <string name="explore">Explore</string>
 </resources>
