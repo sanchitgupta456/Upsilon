@@ -163,6 +163,7 @@
             android:src="@drawable/google"
             android:layout_margin="12dp"
             android:contentDescription="@string/google_icon"/>
+
         <ImageView
             android:id="@+id/facebookSignIn"
             android:layout_width="30dp"

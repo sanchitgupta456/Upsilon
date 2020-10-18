@@ -27,4 +27,6 @@
     <string name="username">Username</string>
     <string name="confirm_password">Confirm Password</string>
     <string name="already_a_member">Already a member ?</string>
+
+    <string name="server_client_id">374851941944-mte178498m02ggiej5lf18on6rabl4qs.apps.googleusercontent.com</string>
 </resources>

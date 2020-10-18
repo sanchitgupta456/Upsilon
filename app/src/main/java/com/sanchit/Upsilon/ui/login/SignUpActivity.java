@@ -5,6 +5,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -16,6 +18,8 @@ import io.realm.mongodb.AppConfiguration;
 public class SignUpActivity extends AppCompatActivity {
 
     private static final String TAG = "SignUpActivity";
+
+    ImageView googleSignUph;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,11 +35,13 @@ public class SignUpActivity extends AppCompatActivity {
         final EditText cnfPasswordEditText = findViewById(R.id.confirmPassword);
         final EditText emailEditText = findViewById(R.id.email);
         final Button signUpButton = findViewById(R.id.signupBtn);
+        googleSignUph = (ImageView) findViewById(R.id.googleSignUp);
 
         signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view)
             {
+                Toast.makeText(SignUpActivity.this,"Hello",Toast.LENGTH_LONG);
                 String email = emailEditText.getText().toString();
                 String password = passwordEditText.getText().toString();
 
@@ -46,6 +52,14 @@ public class SignUpActivity extends AppCompatActivity {
                         Log.e(TAG,"Failed to register user: ${it.error}");
                     }
                 });
+            }
+        });
+
+        googleSignUph.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(SignUpActivity.this,"Hello",Toast.LENGTH_LONG);
+                Log.e(TAG,"Failed to register user:");
             }
         });
     }
