@@ -62,6 +62,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                 app.getEmailPassword().registerUserAsync(email, password, it -> {
                     if (it.isSuccess()) {
                         Log.i(TAG,"Successfully registered user.");
+
                     } else {
                         Log.e(TAG,"Failed to register user: ${it.error}");
                     }
