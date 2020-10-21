@@ -69,6 +69,18 @@
         android:gravity="center"
         android:layout_marginTop="24dp" />
 
+    <ProgressBar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="108dp"
+        android:progress="33"
+        android:progressTint="@color/colorRed"
+        android:progressBackgroundTint="@color/colorYellow" />
+
     <Button
         android:id="@+id/skipSetup2"
         android:layout_width="wrap_content"

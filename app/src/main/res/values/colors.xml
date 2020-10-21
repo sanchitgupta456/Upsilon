@@ -9,4 +9,5 @@
     <color name="homepageLightBackground">#F6FF97</color>
     <color name="homepageDarkBackground">#1A1A18</color>
     <color name="colorRed">#FF0000</color>
+    <color name="colorYellow">#FFFF00</color>
 </resources>
