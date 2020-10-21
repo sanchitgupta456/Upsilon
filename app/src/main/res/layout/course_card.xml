@@ -8,14 +8,14 @@
     android:layout_margin="10dp">
 
 
-
     <androidx.cardview.widget.CardView
 
+        android:id="@+id/courseCard"
         android:layout_width="320dp"
         android:layout_height="160dp"
         app:cardCornerRadius="10dp"
-        app:cardElevation="12dp"
-        android:id="@+id/courseCard">
+        app:cardElevation="12dp">
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -25,20 +25,20 @@
                 android:id="@+id/courseImage"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:contentDescription="Course Representative Image"
                 android:scaleType="centerCrop"
-                android:src="@mipmap/ic_launcher"
-                android:contentDescription="Course Representative Image" />
+                android:src="@mipmap/ic_launcher" />
 
             <TextView
                 android:id="@+id/courseName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignBottom="@id/courseImage"
-                android:layout_marginBottom="@dimen/activity_vertical_margin"
                 android:layout_marginStart="@dimen/activity_horizontal_margin"
-                android:textSize="24sp"
+                android:layout_marginBottom="@dimen/activity_vertical_margin"
                 android:textColor="@color/colorWhite"
-                android:typeface="sans"/>
+                android:textSize="24sp"
+                android:typeface="sans" />
         </RelativeLayout>
 
     </androidx.cardview.widget.CardView>
