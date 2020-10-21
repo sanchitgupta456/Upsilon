@@ -13,13 +13,15 @@
         <activity
             android:name="com.sanchit.Upsilon.ui.login.LoginActivity"
             android:label="@string/title_activity_login">
+
+        </activity>
+        <activity android:name="com.sanchit.Upsilon.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.sanchit.Upsilon.MainActivity"></activity>
         <activity android:name="com.sanchit.Upsilon.ui.login.SignUpActivity"></activity>
         <activity android:name="com.sanchit.Upsilon.SearchActivity"></activity>
     </application>

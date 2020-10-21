@@ -8,6 +8,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.sanchit.Upsilon.courseData.CoursesAdapter;
+
 import java.util.ArrayList;
 
 public class SearchActivity extends AppCompatActivity {
@@ -39,9 +41,11 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     private void initRecyclerView () {
-        RecyclerView recyclerView = findViewById(R.id.courseList) ;
-        CourseListAdapter adapter = new CourseListAdapter(this, courseNames);
+        //TODO : Refactor for new coursesAdapter class
+        /*RecyclerView recyclerView = findViewById(R.id.courseList) ;
+        CoursesAdapter adapter = new CoursesAdapter(this, courseNames);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+  */
     }
 }

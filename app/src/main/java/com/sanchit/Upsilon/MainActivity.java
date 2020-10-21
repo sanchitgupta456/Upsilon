@@ -1,96 +1,109 @@
 package com.sanchit.Upsilon;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.ListView;
+
+import com.sanchit.Upsilon.courseData.Course;
+import com.sanchit.Upsilon.courseData.CoursesAdapter;
+
+import org.bson.Document;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import io.realm.Realm;
 import io.realm.mongodb.App;
 import io.realm.mongodb.AppConfiguration;
 import io.realm.mongodb.Credentials;
+import io.realm.mongodb.RealmResultTask;
 import io.realm.mongodb.User;
+import io.realm.mongodb.mongo.MongoClient;
+import io.realm.mongodb.mongo.MongoCollection;
+import io.realm.mongodb.mongo.MongoDatabase;
+import io.realm.mongodb.mongo.iterable.MongoCursor;
 
 public class MainActivity extends AppCompatActivity {
+    String appID = "upsilon-ityvn";
+    private static final String TAG = "MainActivity";
 
+    RecyclerView recyclerView;
+    CoursesAdapter coursesAdapter;
+    ArrayList<Course> courseArrayList = new ArrayList<Course>();
 
-    private ArrayList<String> CourseNames = new ArrayList<>(); //testing
-    private ArrayList<String> ImageUrls = new ArrayList<>(); //testing
+    public static final List<String> TvShows  = new ArrayList<String>();
+    public static final int[] TvShowImgs = {R.drawable.google, R.drawable.facebook};
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        /*Realm.init(this); // `this` is a Context, typically an Application or Activity
-        String appID = "upsilon-ityvn"; // replace this with your App ID
+        getCourseData();
+    }
+
+    public void getCourseData(){
+        Realm.init(this); // initialize Realm, required before interacting with SDK
         final App app = new App(new AppConfiguration.Builder(appID)
                 .build());
 
+// an authenticated user is required to access a MongoDB instance
         Credentials credentials = Credentials.anonymous();
+        app.loginAsync(credentials, it -> {
+            if (it.isSuccess()) {
+                final User user = app.currentUser();
+                assert user != null;
+                MongoClient mongoClient = user.getMongoClient("mongodb-atlas");
+                MongoDatabase mongoDatabase = mongoClient.getDatabase("Upsilon");
+                MongoCollection<Document> mongoCollection  = mongoDatabase.getCollection("CourseData");
 
-        app.loginAsync(credentials, new App.Callback<User>() {
-            @Override
-            public void onResult(App.Result<User> it) {
-                if (it.isSuccess()) {
-                    Log.v("QUICKSTART", "Successfully authenticated anonymously.");
-                    User user = app.currentUser();
+                //Blank query to find every single course in db
+                //TODO: Modify query to look for user preferred course IDs
+                Document queryFilter  = new Document();
 
-                    // interact with MongoDB Realm via user object here
+                RealmResultTask<MongoCursor<Document>> findTask = mongoCollection.find(queryFilter).iterator();
 
-                } else {
-                    Log.e("QUICKSTART", "Failed to log in. Error: " + it.getError().toString());
-                }
+                findTask.getAsync(task -> {
+                    if (task.isSuccess()) {
+                        MongoCursor<Document> results = task.get();
+                        Log.v("COURSEHandler", "successfully found all courses:");
+                        while (results.hasNext()) {
+                            //Log.v("EXAMPLE", results.next().toString());
+                            Document currentDoc = results.next();
+
+                            Course course = new Course();
+
+                            course.setCourseName(currentDoc.getString("courseName"));
+                            //TODO : implement card image fetching via database
+                            course.setCardImgID(TvShowImgs[0]);
+                            courseArrayList.add(course);
+                        }
+                        displayCoursesInRecycler();
+                    } else {
+                        Log.e("COURSEHandler", "failed to find courses with: ", task.getError());
+                    }
+                });
             }
-        });
+            else {
+                    Log.e(TAG, "Error logging into the Realm app. Make sure that anonymous authentication is enabled.");
+                }
+            });
 
-        //getImages(); :testing recycler views for home page. to use this on beta, uncomment getImages() and initRecyclerView()
+        User user = app.currentUser();
 
-        });*/
     }
-    //testing recycler view. when design of home page is finalized, this is to be removed.
-    /*
-    private void getImages(){
 
+    public void displayCoursesInRecycler(){
+        coursesAdapter = new CoursesAdapter(courseArrayList);
 
-        CourseNames.add("GOOGLE");
-        CourseNames.add("JAVA");
-        CourseNames.add("FACEBOOK");
-        CourseNames.add("JAVA");
-        CourseNames.add("JAVA");
-        CourseNames.add("JAVA");
-        ImageUrls.add("drawable://" + R.drawable.google);
-        ImageUrls.add("drawable://" + R.drawable.ic_launcher_foreground);
-        ImageUrls.add("drawable://" + R.drawable.facebook);
-        ImageUrls.add("drawable://" + R.drawable.btn_rounded_rect);
-        ImageUrls.add("drawable://" + R.drawable.btn_rounded_rect);
-        ImageUrls.add("drawable://" + R.drawable.btn_rounded_rect);
-
-        initRecyclerView();
-
-    }*/
-    //testing recycler view. when design of home page is finalized, this is to be removed.
-    /*
-    private void initRecyclerView(){
-
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-        LinearLayoutManager layoutManager2 = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-        LinearLayoutManager layoutManager3 = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-
-        RecyclerView recyclerView= (RecyclerView) findViewById(R.id.currentCourseListView);
-        RecyclerView recyclerView2= (RecyclerView) findViewById(R.id.recommendedCourseListView);
-        RecyclerView recyclerView3= (RecyclerView) findViewById(R.id.exploreCourseListView);
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView2.setLayoutManager(layoutManager2);
-        recyclerView3.setLayoutManager(layoutManager3);
-        CourseListAdaptorHome adapter = new CourseListAdaptorHome(this, CourseNames, ImageUrls);
-        recyclerView.setAdapter(adapter);
-        recyclerView2.setAdapter(adapter);
-        recyclerView3.setAdapter(adapter);
-    }*/
+        recyclerView = (RecyclerView)findViewById(R.id.currentCourseListView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setAdapter(coursesAdapter);
+    }
 }

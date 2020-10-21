@@ -36,6 +36,7 @@ import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.sanchit.Upsilon.MainActivity;
 import com.sanchit.Upsilon.R;
 
 import org.bson.Document;
@@ -217,6 +218,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                             Log.e("EXAMPLE", "Unable to insert custom user data. Error: " + result.getError());
                                         }
                                     });
+
+                            goToMainActivity();
+
                         } else {
                             Log.e(TAG, it.getError().toString());
                         }
@@ -264,6 +268,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     public void goToSignInActivity(){
         Intent intent = new Intent(this, SignUpActivity.class);
+        startActivity(intent);
+    }
+
+    public void goToMainActivity(){
+        Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
 }

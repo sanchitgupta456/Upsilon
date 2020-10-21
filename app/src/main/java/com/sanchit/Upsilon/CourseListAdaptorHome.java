@@ -11,7 +11,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
-
+/*
 import com.nostra13.universalimageloader.cache.memory.impl.WeakMemoryCache;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -19,6 +19,8 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 
+
+ */
 import java.util.ArrayList;
 
 
@@ -49,7 +51,7 @@ public class CourseListAdaptorHome extends RecyclerView.Adapter<CourseListAdapto
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
         
-
+        /*
         //handle images
         setupImageLoader();
 
@@ -74,6 +76,7 @@ public class CourseListAdaptorHome extends RecyclerView.Adapter<CourseListAdapto
                 Toast.makeText(mContext, mCourseNames.get(position), Toast.LENGTH_SHORT).show();
             }
         });
+        */
     }
 
     @Override
@@ -94,6 +97,7 @@ public class CourseListAdaptorHome extends RecyclerView.Adapter<CourseListAdapto
     }
 
     private void setupImageLoader(){
+        /*
         // UNIVERSAL IMAGE LOADER SETUP
         DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder()
                 .cacheOnDisc(true).cacheInMemory(true)
@@ -108,5 +112,7 @@ public class CourseListAdaptorHome extends RecyclerView.Adapter<CourseListAdapto
 
         ImageLoader.getInstance().init(config);
         // END - UNIVERSAL IMAGE LOADER SETUP
+
+         */
     }
 }
