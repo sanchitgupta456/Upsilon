@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/background">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/tell_us_about_yourselves"
+        android:textColor="@color/colorWhite"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_margin="@dimen/activity_vertical_margin"
+        android:id="@+id/textSetupTitle3" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textSetupTitle3"
+        android:id="@+id/userNameHolder"
+        android:inputType="text"
+        android:layout_marginTop="36dp"
+        android:layout_marginStart="72dp"
+        android:layout_marginEnd="72dp"
+        android:hint="@string/enter_your_name"
+        android:textColorHint="#CCCCCC"
+        android:textColor="@color/colorWhite"
+        android:gravity="center"
+        android:layout_centerInParent="true"
+        android:background="@drawable/text_view_login"
+        android:padding="10dp"
+        android:autofillHints="@string/username" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_below="@id/userNameHolder"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="48dp"
+        android:src="@mipmap/ic_launcher_round"
+        app:civ_border_width="3dp"
+        app:civ_border_color="@color/colorWhite"
+        android:id="@+id/profilePhoto"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/profilePhoto"
+        android:layout_marginTop="10dp"
+        android:text="@string/add_an_optional_profile_photo"
+        android:textColor="@color/colorRed"
+        android:layout_centerInParent="true"
+        android:textSize="@dimen/text_margin"
+        android:gravity="center"
+        android:clickable="true"
+        android:focusable="true"
+        android:id="@+id/promptOptionalPhoto"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textStyle="italic"
+        android:textSize="@dimen/text_margin"
+        android:layout_below="@id/promptOptionalPhoto"
+        android:text="@string/your_name_and_photo_will_be_visible_to_your_teachers"
+        android:textColor="@color/colorWhite"
+        android:gravity="center"
+        android:layout_marginTop="24dp" />
+
+    <Button
+        android:id="@+id/skipSetup2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/skip_setup"
+        android:layout_marginStart="24dp"
+        android:background="@drawable/btn_rounded_rect"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="48dp"
+        android:padding="10dp"
+        android:elevation="5dp"/>
+
+    <Button
+        android:id="@+id/selectLaterNext2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/select_later"
+        android:layout_marginEnd="24dp"
+        android:background="@drawable/btn_rounded_rect"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="48dp"
+        android:layout_alignParentEnd="true"
+        android:padding="10dp"
+        android:elevation="5dp"/>
+
+</RelativeLayout>

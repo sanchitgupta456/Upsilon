@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/personalize_your_learning"
+        android:textColor="@color/colorWhite"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_margin="@dimen/activity_vertical_margin"
+        android:id="@+id/textSetupTitle4" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textSetupTitle4"
+        android:id="@+id/cityNameHolder"
+        android:inputType="text"
+        android:layout_marginTop="36dp"
+        android:layout_marginStart="72dp"
+        android:layout_marginEnd="72dp"
+        android:hint="@string/enter_city"
+        android:textColorHint="#CCCCCC"
+        android:textColor="@color/colorWhite"
+        android:gravity="center"
+        android:layout_centerInParent="true"
+        android:background="@drawable/text_view_login"
+        android:padding="10dp"
+        android:autofillHints="cityName" />
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/cityNameHolder"
+        android:id="@+id/pincodeHolder"
+        android:inputType="number"
+        android:layout_marginTop="12dp"
+        android:layout_marginStart="72dp"
+        android:layout_marginEnd="72dp"
+        android:hint="@string/enter_pincode"
+        android:textColorHint="#CCCCCC"
+        android:textColor="@color/colorWhite"
+        android:gravity="center"
+        android:layout_centerInParent="true"
+        android:background="@drawable/text_view_login"
+        android:padding="10dp"
+        android:autofillHints="pincode" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/or"
+        android:textColor="@color/colorWhite"
+        android:textSize="@dimen/text_margin"
+        android:gravity="center"
+        android:layout_below="@id/pincodeHolder"
+        android:layout_margin="@dimen/activity_vertical_margin"
+        android:id="@+id/textSetupTitle5" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_below="@id/textSetupTitle5"
+        android:layout_centerInParent="true"
+        android:padding="5dp"
+        android:gravity="center"
+        android:id="@+id/linearLayoutSetupMaps">
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/googlemaps"
+            android:clickable="true"
+            android:focusable="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="@string/use_google_maps"
+            android:gravity="center"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/text_margin"
+            android:textStyle="bold"
+            android:layout_marginTop="10dp"/>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/textSetupTitle6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/linearLayoutSetupMaps"
+        android:textColor="@color/colorRed"
+        android:text="@string/why_should_i_share_my_location"
+        android:textStyle="italic"
+        android:gravity="center"
+        android:layout_marginTop="48dp"
+        android:textSize="@dimen/text_margin"
+        android:drawableStart="@drawable/info_icon"
+        android:drawablePadding="5dp"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"
+        android:layout_centerInParent="true"/>
+
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textSetupTitle6"
+        android:id="@+id/contactNumberHolder"
+        android:inputType="phone"
+        android:layout_marginTop="36dp"
+        android:layout_marginStart="72dp"
+        android:layout_marginEnd="72dp"
+        android:hint="@string/enter_contact_number"
+        android:textColorHint="#CCCCCC"
+        android:textColor="@color/colorWhite"
+        android:gravity="center"
+        android:layout_centerInParent="true"
+        android:background="@drawable/text_view_login"
+        android:padding="10dp"
+        android:autofillHints="phone_number" />
+
+    <TextView
+        android:id="@+id/textSetupTitle7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/contactNumberHolder"
+        android:textColor="@color/colorRed"
+        android:text="@string/we_never_share_these_details_without_your_permission"
+        android:textStyle="italic"
+        android:gravity="center"
+        android:layout_marginTop="48dp"
+        android:textSize="@dimen/text_margin"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"
+        android:layout_centerInParent="true"/>
+
+    <Button
+        android:id="@+id/skipSetup3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/skip_setup"
+        android:layout_marginStart="24dp"
+        android:background="@drawable/btn_rounded_rect"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="48dp"
+        android:padding="10dp"
+        android:elevation="5dp"/>
+
+    <Button
+        android:id="@+id/selectLaterNext3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/select_later"
+        android:layout_marginEnd="24dp"
+        android:background="@drawable/btn_rounded_rect"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="48dp"
+        android:layout_alignParentEnd="true"
+        android:padding="10dp"
+        android:elevation="5dp"/>
+</RelativeLayout>

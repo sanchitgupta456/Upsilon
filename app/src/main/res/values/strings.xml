@@ -32,4 +32,25 @@
     <string name="explore">Explore</string>
 
     <string name="server_client_id">374851941944-mte178498m02ggiej5lf18on6rabl4qs.apps.googleusercontent.com</string>
+
+    <!--setup related string resources -->
+    <string name="skip_setup">Skip Setup</string>
+    <string name="select_later">Select Later</string>
+    <string name="sports">Sports</string>
+    <string name="co_curricular">Co-Curricular</string>
+    <string name="academics">Academics</string>
+    <string name="welcome_to_upsilon">Welcome to Upsilon</string>
+    <string name="tell_us_about_your_interests">Tell us about your interests.</string>
+    <string name="tell_us_about_yourselves">Tell us about yourselves.</string>
+    <string name="enter_your_name">Enter your name</string>
+    <string name="add_an_optional_profile_photo">Add an optional profile photo</string>
+    <string name="your_name_and_photo_will_be_visible_to_your_teachers">Your name and photo will be visible to your teachers</string>
+    <string name="personalize_your_learning">Personalize your learning.</string>
+    <string name="enter_pincode">Enter Pincode</string>
+    <string name="use_google_maps">Use Google Maps</string>
+    <string name="enter_city">Enter City</string>
+    <string name="why_should_i_share_my_location">Why should I share my location?</string>
+    <string name="enter_contact_number">Enter Contact Number</string>
+    <string name="we_never_share_these_details_without_your_permission">We never share these details without your permission.</string>
+    <string name="next">Next</string>
 </resources>
