@@ -8,4 +8,5 @@
     <color name="colorBlue">#03A9F4</color>
     <color name="homepageLightBackground">#F6FF97</color>
     <color name="homepageDarkBackground">#1A1A18</color>
+    <color name="colorRed">#FF0000</color>
 </resources>

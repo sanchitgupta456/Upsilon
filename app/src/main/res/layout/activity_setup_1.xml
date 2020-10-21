@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/welcome_to_upsilon"
+        android:textColor="@color/colorWhite"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_margin="@dimen/activity_vertical_margin"
+        android:id="@+id/textSetupTitle1" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/tell_us_about_your_interests"
+        android:gravity="start"
+        android:textSize="@dimen/text_margin"
+        android:layout_marginStart="@dimen/activity_vertical_margin"
+        android:id="@+id/textSetupTitle2"
+        android:textColor="@color/colorWhite"
+        android:layout_below="@id/textSetupTitle1"
+        />
+
+    <Button
+        android:id="@+id/btnAcademicsSelector"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/academics"
+        android:drawableStart="@drawable/add_box_icon"
+        android:paddingStart="20dp"
+        android:background="@drawable/btn_rounded_rect"
+        android:layout_marginTop="108dp"
+        android:layout_below="@id/textSetupTitle2"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"/>
+
+    <Button
+        android:id="@+id/btnCoCurricularSelector"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/co_curricular"
+        android:drawableStart="@drawable/add_box_icon"
+        android:paddingStart="20dp"
+        android:background="@drawable/btn_rounded_rect"
+        android:layout_marginTop="36dp"
+        android:layout_below="@id/btnAcademicsSelector"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"/>
+
+    <Button
+        android:id="@+id/btnSportsSelector"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/sports"
+        android:drawableStart="@drawable/add_box_icon"
+        android:paddingStart="20dp"
+        android:background="@drawable/btn_rounded_rect"
+        android:layout_marginTop="36dp"
+        android:layout_below="@id/btnCoCurricularSelector"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"/>
+
+
+
+        <Button
+            android:id="@+id/skipSetup1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/skip_setup"
+            android:layout_marginStart="24dp"
+            android:background="@drawable/btn_rounded_rect"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="48dp"
+            android:padding="10dp"
+            android:elevation="5dp"/>
+
+        <Button
+            android:id="@+id/selectLaterNext1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/select_later"
+            android:layout_marginEnd="24dp"
+            android:background="@drawable/btn_rounded_rect"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="48dp"
+            android:layout_alignParentEnd="true"
+            android:padding="10dp"
+            android:elevation="5dp"/>
+
+
+
+</RelativeLayout>
