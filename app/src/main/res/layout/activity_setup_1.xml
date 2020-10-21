@@ -30,9 +30,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/academics"
-        android:drawableStart="@drawable/add_box_icon"
+        android:drawableStart="@drawable/add_icon"
         android:paddingStart="20dp"
-        android:background="@drawable/btn_rounded_rect"
+        android:background="@drawable/btn_multi_select"
         android:layout_marginTop="108dp"
         android:layout_below="@id/textSetupTitle2"
         android:layout_marginStart="24dp"
@@ -43,9 +43,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/co_curricular"
-        android:drawableStart="@drawable/add_box_icon"
+        android:drawableStart="@drawable/add_icon"
         android:paddingStart="20dp"
-        android:background="@drawable/btn_rounded_rect"
+        android:background="@drawable/btn_multi_select"
         android:layout_marginTop="36dp"
         android:layout_below="@id/btnAcademicsSelector"
         android:layout_marginStart="24dp"
@@ -56,15 +56,25 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/sports"
-        android:drawableStart="@drawable/add_box_icon"
+        android:drawableStart="@drawable/add_icon"
         android:paddingStart="20dp"
-        android:background="@drawable/btn_rounded_rect"
+        android:background="@drawable/btn_multi_select"
         android:layout_marginTop="36dp"
         android:layout_below="@id/btnCoCurricularSelector"
         android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp"/>
 
-
+    <ProgressBar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="108dp"
+        android:progress="0"
+        android:progressTint="@color/colorRed"
+        android:progressBackgroundTint="@color/colorYellow"/>
 
         <Button
             android:id="@+id/skipSetup1"
