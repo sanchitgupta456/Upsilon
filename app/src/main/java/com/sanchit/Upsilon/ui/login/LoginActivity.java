@@ -177,7 +177,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
             String idToken = account.getIdToken();
 
-            // TODO(developer): send ID Token to server and validate
+            // send ID Token to server and validate
 
             Credentials googleCredentials = Credentials.google(idToken);
 
