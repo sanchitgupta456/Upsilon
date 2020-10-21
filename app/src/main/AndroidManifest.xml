@@ -12,7 +12,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name="com.sanchit.Upsilon.ui.login.LoginActivity"
-            android:label="@string/title_activity_login">
+            android:label="Upsilon">
 
         </activity>
         <activity android:name="com.sanchit.Upsilon.MainActivity">
@@ -24,6 +24,9 @@
         </activity>
         <activity android:name="com.sanchit.Upsilon.ui.login.SignUpActivity"></activity>
         <activity android:name="com.sanchit.Upsilon.SearchActivity"></activity>
+        <activity android:name=".UserDataSetupActivity1"></activity>
+        <activity android:name=".UserDataSetupActivity2"></activity>
+        <activity android:name=".UserDataSetupActivity3"></activity>
     </application>
 
 </manifest>

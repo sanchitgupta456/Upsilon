@@ -71,7 +71,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         final ProgressBar loadingProgressBar = findViewById(R.id.loading);
         final ImageView GoogleSignInImage = findViewById(R.id.googleSignIn);
         findViewById(R.id.googleSignIn).setOnClickListener(this);
-        Realm.init(this); // context, usually an Activity or Application
+        //Realm.init(this); // context, usually an Activity or Application
         App app = new App(new AppConfiguration.Builder(appID)
                 .build());
 
@@ -98,23 +98,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             Log.v(TAG, "Successfully authenticated using an email and password.");
 
                             User user = app.currentUser();
-                            MongoClient mongoClient =
-                                    user.getMongoClient("mongodb-atlas");
-                            MongoDatabase mongoDatabase =
-                                    mongoClient.getDatabase("Upsilon");
-                            MongoCollection<Document> mongoCollection =
-                                    mongoDatabase.getCollection("UserData");
-
-                            mongoCollection.insertOne(
-                                    new Document("userid", user.getId()).append("favoriteColor", "pink"))
-                                    .getAsync(result -> {
-                                        if (result.isSuccess()) {
-                                            Log.v("EXAMPLE", "Inserted custom user data document. _id of inserted document: "
-                                                    + result.get().getInsertedId());
-                                        } else {
-                                            Log.e("EXAMPLE", "Unable to insert custom user data. Error: " + result.getError());
-                                        }
-                                    });
+                            goToMainActivity();
                         } else {
                             Log.v(TAG, "LOGIN FAILED!");
                             Log.e(TAG, it.getError().toString());
@@ -201,7 +185,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         if (it.isSuccess()) {
                             Log.v(TAG, "Successfully authenticated using Google OAuth.");
                             User user = app.currentUser();
-                            MongoClient mongoClient =
+                            /*MongoClient mongoClient =
                                     user.getMongoClient("mongodb-atlas");
                             MongoDatabase mongoDatabase =
                                     mongoClient.getDatabase("Upsilon");
@@ -214,10 +198,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                         if (result.isSuccess()) {
                                             Log.v("EXAMPLE", "Inserted custom user data document. _id of inserted document: "
                                                     + result.get().getInsertedId());
+                                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                            startActivity(intent);
                                         } else {
                                             Log.e("EXAMPLE", "Unable to insert custom user data. Error: " + result.getError());
                                         }
-                                    });
+                                    });*/
 
                             goToMainActivity();
 
