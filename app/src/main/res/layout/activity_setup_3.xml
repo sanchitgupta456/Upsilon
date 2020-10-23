@@ -147,8 +147,8 @@
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="108dp"
         android:progress="67"
-        android:progressTint="@color/colorRed"
-        android:progressBackgroundTint="@color/colorYellow" />
+        android:progressTint="@color/colorYellow"
+        android:progressBackgroundTint="@color/colorWhite" />
 
     <Button
         android:id="@+id/skipSetup3"

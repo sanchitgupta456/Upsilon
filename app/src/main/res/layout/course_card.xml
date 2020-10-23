@@ -27,7 +27,7 @@
                 android:layout_height="match_parent"
                 android:contentDescription="Course Representative Image"
                 android:scaleType="centerCrop"
-                android:src="@mipmap/ic_launcher" />
+                android:src="@color/cardview_dark_background" />
 
             <TextView
                 android:id="@+id/courseName"
