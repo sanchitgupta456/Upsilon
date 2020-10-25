@@ -21,6 +21,7 @@ import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 
 
  */
+
 import java.util.ArrayList;
 
 
@@ -28,10 +29,10 @@ public class CourseListAdaptorHome extends RecyclerView.Adapter<CourseListAdapto
 
     //vars
     private ArrayList<String> mCourseNames = new ArrayList<>();
-    private ArrayList<String> mImageUrls = new ArrayList<>();
+    private ArrayList<Integer> mImageUrls = new ArrayList<>();
     private Context mContext;
 
-    public CourseListAdaptorHome(Context context, ArrayList<String> CourseNames, ArrayList<String> imageUrls) {
+    public CourseListAdaptorHome(Context context, ArrayList<String> CourseNames, ArrayList<Integer> imageUrls) {
         mCourseNames = CourseNames;
         mImageUrls = imageUrls;
         mContext = context;
@@ -56,6 +57,7 @@ public class CourseListAdaptorHome extends RecyclerView.Adapter<CourseListAdapto
         setupImageLoader();
 
         ImageLoader imageLoader = ImageLoader.getInstance();
+
         int defaultImage = mContext.getResources().getIdentifier("@drawable/background",null,mContext.getPackageName());
 
 
@@ -65,9 +67,10 @@ public class CourseListAdaptorHome extends RecyclerView.Adapter<CourseListAdapto
                 .showImageOnFail(defaultImage)
                 .showImageOnLoading(defaultImage).build();
 
-        imageLoader.displayImage(mImageUrls.get(position), holder.courseImage, options); //param missing: options
+        imageLoader.displayImage(mImageUrls.get(position), holder.courseImage);  //missing param : options
+        */
 
-
+        holder.courseImage.setImageResource(mImageUrls.get(position));
         holder.courseName.setText(mCourseNames.get(position));
 
         holder.courseImage.setOnClickListener(new View.OnClickListener() {
@@ -76,7 +79,7 @@ public class CourseListAdaptorHome extends RecyclerView.Adapter<CourseListAdapto
                 Toast.makeText(mContext, mCourseNames.get(position), Toast.LENGTH_SHORT).show();
             }
         });
-        */
+
     }
 
     @Override
@@ -113,6 +116,6 @@ public class CourseListAdaptorHome extends RecyclerView.Adapter<CourseListAdapto
         ImageLoader.getInstance().init(config);
         // END - UNIVERSAL IMAGE LOADER SETUP
 
-         */
+        */
     }
 }
