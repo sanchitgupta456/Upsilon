@@ -63,4 +63,7 @@ dependencies {
     //circular image view
     implementation 'de.hdodenhof:circleimageview:3.1.0'
 
+    //Cloudinary api
+    implementation group: 'com.cloudinary', name: 'cloudinary-android', version: '1.30.0'
+
 }

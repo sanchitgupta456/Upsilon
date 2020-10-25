@@ -65,4 +65,8 @@
     <string name="number_of_batches">Number of batches</string>
     <string name="teach_for_free">Teach for free</string>
     <string name="charge_a_fee">Charge a fee</string>
+
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
 </resources>
