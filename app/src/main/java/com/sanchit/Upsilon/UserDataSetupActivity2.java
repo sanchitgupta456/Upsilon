@@ -22,11 +22,16 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
+import com.cloudinary.Cloudinary;
+import com.cloudinary.Transformation;
 import com.cloudinary.android.MediaManager;
+import com.cloudinary.utils.ObjectUtils;
 import com.google.android.gms.common.internal.Constants;
 
 import org.bson.Document;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -94,9 +99,13 @@ public class UserDataSetupActivity2 extends AppCompatActivity {
                     String requestId = MediaManager.get().upload(picturePath)
                             .unsigned("preset1")
                             .option("resource_type", "image")
-                            .option("folder", "Upsilon/UsersProfilePictures/"+user.getId())
+                            .option("folder", "Upsilon/".concat(user.getId()).concat("/"))
+                            .option("public_id", "profPic")
                             .dispatch();
-                    String url = MediaManager.get().url().generate(user.getId());
+                    String fileExtension = picturePath.substring(picturePath.lastIndexOf('.'));
+                    String serverPath = "Upsilon/".concat(user.getId()).concat("/profPic").concat(fileExtension);
+                    String url = MediaManager.get().url().generate(serverPath);
+                    Log.v("CLOUDINARY", url);
                     name = Name.getText().toString();
                     mongoClient = user.getMongoClient("mongodb-atlas");
                     mongoDatabase = mongoClient.getDatabase("Upsilon");
@@ -151,8 +160,8 @@ public class UserDataSetupActivity2 extends AppCompatActivity {
                         }
                     });
                 }
-                Intent intent = new Intent(UserDataSetupActivity2.this,UserDataSetupActivity3.class);
-                startActivity(intent);
+                //Intent intent = new Intent(UserDataSetupActivity2.this,UserDataSetupActivity3.class);
+                //startActivity(intent);
             }
         });
 

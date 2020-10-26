@@ -16,7 +16,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
-import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
 import com.sanchit.Upsilon.courseData.Course;
@@ -25,14 +24,12 @@ import com.sanchit.Upsilon.ui.login.LoginActivity;
 
 import org.bson.Document;
 
-import java.io.Console;
 import java.util.ArrayList;
 import java.util.List;
 
 import io.realm.Realm;
 import io.realm.mongodb.App;
 import io.realm.mongodb.AppConfiguration;
-import io.realm.mongodb.Credentials;
 import io.realm.mongodb.RealmResultTask;
 import io.realm.mongodb.User;
 import io.realm.mongodb.mongo.MongoClient;
@@ -70,17 +67,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 .build());
         User user = app.currentUser();
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         //setSupportActionBar(toolbar);
 
         drawer = findViewById(R.id.drawer_layout);
-        NavigationView navigationView = findViewById(R.id.nav_view);
+        NavigationView navigationView = findViewById(R.id.navbar);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(MainActivity.this);
         drawer.closeDrawer(GravityCompat.START);
+
         if(user==null)
         {
             Intent intent = new Intent(MainActivity.this, LoginActivity.class);
@@ -122,7 +120,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     while (results.hasNext()) {
                         //Log.v("EXAMPLE", results.next().toString());
                         Document currentDoc = results.next();
-                        Log.v("User",currentDoc.getString("userid"));
+                        Log.v("User",currentDoc.getString("favoriteColor"));
                     }
                 } else {
                    Log.v("User","Failed to complete search");
@@ -201,7 +199,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
-
+        //TODO: remove this later, this is just to test the image uploading
+        Intent intent = new Intent(MainActivity.this, UserDataSetupActivity1.class);
+        startActivity(intent);
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;

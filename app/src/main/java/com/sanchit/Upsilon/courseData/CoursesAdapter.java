@@ -1,6 +1,7 @@
 package com.sanchit.Upsilon.courseData;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +12,10 @@ import android.widget.Toast;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.sanchit.Upsilon.MainActivity;
 import com.sanchit.Upsilon.R;
+import com.sanchit.Upsilon.UserDataSetupActivity1;
+import com.sanchit.Upsilon.ui.login.LoginActivity;
 
 import java.util.List;
 
