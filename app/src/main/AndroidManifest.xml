@@ -20,7 +20,7 @@
             android:label="Upsilon">
 
         </activity>
-        <activity android:name="com.sanchit.Upsilon.MainActivity">
+        <activity android:name="com.sanchit.Upsilon.TeachActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

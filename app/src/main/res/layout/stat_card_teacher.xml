@@ -11,35 +11,39 @@
     <androidx.cardview.widget.CardView
 
         android:id="@+id/courseCard"
-        android:layout_width="320dp"
+        android:layout_width="200dp"
         android:layout_height="160dp"
         app:cardCornerRadius="10dp"
-        app:cardElevation="12dp">
+        app:cardElevation="12dp"
+        android:background="@color/cardview_dark_background">
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <ImageView
-                android:id="@+id/courseImage"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:contentDescription="Course Representative Image"
-                android:scaleType="centerCrop"
-                android:src="@color/cardview_dark_background" />
+            android:orientation="vertical"
+            android:gravity="center"
+            android:background="@color/cardview_dark_background"
+            android:weightSum="100">
 
             <TextView
-                android:id="@+id/courseName"
+                android:id="@+id/statData"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignBottom="@id/courseImage"
-                android:layout_marginStart="@dimen/activity_horizontal_margin"
-                android:layout_marginBottom="@dimen/activity_vertical_margin"
+                android:layout_height="match_parent"
+                android:gravity="center"
                 android:textColor="@color/colorWhite"
-                android:textSize="24sp"
-                android:typeface="sans" />
-        </RelativeLayout>
+                android:textSize="64sp"
+                android:typeface="sans"
+                android:layout_weight="30"/>
+
+            <TextView
+                android:id="@+id/statField"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:textColor="@color/colorWhite"
+                android:typeface="sans"
+                android:layout_weight="70"/>
+        </LinearLayout>
 
     </androidx.cardview.widget.CardView>
 

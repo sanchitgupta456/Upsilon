@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/homepageDarkBackground">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:text="@string/teach_at_upsilon"
+        android:textColor="@color/colorWhite"
+        android:layout_marginTop="48dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        android:id="@+id/textCoursesTaught1" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/text_margin"
+        android:textColor="@color/colorAccent"
+        android:layout_below="@id/textCoursesTaught1"
+        android:text="@string/your_active_courses"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        android:id="@+id/textCoursesTaught2"/>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/frame_recycler_view"
+        android:layout_below="@id/textCoursesTaught2"
+        android:layout_margin="10dp"
+        android:padding="1dp"
+        android:id="@+id/frameCurrentCoursesTaught">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/listCurrentCoursesTaught" />
+
+    </FrameLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/text_margin"
+        android:textColor="@color/colorAccent"
+        android:layout_below="@id/frameCurrentCoursesTaught"
+        android:text="@string/your_time_with_us"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        android:id="@+id/textCoursesTaught3"/>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/homepageDarkBackground"
+        android:layout_below="@id/textCoursesTaught3"
+        android:layout_margin="10dp"
+        android:padding="1dp">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/listTeachingStats" />
+
+    </FrameLayout>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="24dp"
+        android:background="@drawable/btn_rounded_rect"
+        android:textColor="@color/colorBlack"
+        android:text="@string/add_new_course"
+        android:drawableStart="@drawable/add_icon"
+        android:padding="10dp"
+        android:layout_alignParentBottom="true" />
+
+
+
+</RelativeLayout>

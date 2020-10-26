@@ -53,6 +53,8 @@
     <string name="enter_contact_number">Enter Contact Number</string>
     <string name="we_never_share_these_details_without_your_permission">We never share these details without your permission.</string>
     <string name="next">Next</string>
+
+    
     <string name="add_course_details">Add Course Details.</string>
     <string name="course_name">Course Name</string>
     <string name="course_description">Course Description</string>
@@ -69,4 +71,8 @@
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="teach_at_upsilon">Teach At Upsilon.</string>
+    <string name="your_active_courses">Your Active Courses.</string>
+    <string name="your_time_with_us">Your Time With Us</string>
+    <string name="add_new_course">Add a new course</string>
 </resources>

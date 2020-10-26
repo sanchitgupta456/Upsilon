@@ -1,32 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:background="@color/homepageDarkBackground"
     tools:context=".AddCourseActivity">
-
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:scrollbars="horizontal"
-            android:id="@+id/coursesTaught"/>
-
-
-
 
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="@dimen/text_margin"
+        android:textSize="20sp"
         android:textColor="@color/colorWhite"
-        android:layout_below="@id/coursesTaught"
-        android:layout_margin="@dimen/activity_vertical_margin"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        android:layout_marginTop="72dp"
         android:text="@string/add_course_details"
-        android:gravity="center"
-        android:id="@+id/textAddCourseDetails"/>
+        android:gravity="start"
+        android:id="@+id/textAddCourseDetails"
+        android:padding="10dp"/>
 
     <ScrollView
         android:layout_width="match_parent"
@@ -90,7 +83,7 @@
                     android:layout_weight="50"
                     android:textAlignment="textEnd"
                     android:paddingEnd="@dimen/activity_horizontal_margin"
-                    tools:ignore="RtlCompat" />
+                    tools:ignore="RtlCompat,RtlSymmetry" />
 
             </LinearLayout>
 
@@ -159,7 +152,7 @@
                 android:textOff="Offline"
                 android:textOn="Online"
                 android:layout_margin="@dimen/text_margin"
-                android:background="@drawable/btn_toggle"
+                android:background="@drawable/frame_recycler_view"
                 android:elevation="20dp"
                 android:shadowColor="@color/colorBlack"
                 android:textColor="@color/colorBlack"
@@ -180,7 +173,7 @@
                     android:layout_height="match_parent"
                     android:textOff="Free"
                     android:textOn="Charged"
-                    android:background="@drawable/btn_toggle"
+                    android:background="@drawable/frame_recycler_view"
                     android:elevation="20dp"
                     android:shadowColor="@color/colorBlack"
                     android:textColor="@color/colorBlack"
@@ -246,6 +239,8 @@
 
 
             </RadioGroup>
+
+
 
 
 
