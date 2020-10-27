@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/homepageDarkBackground"
+    android:background="@color/colorLiteGrey"
     tools:context=".AddCourseActivity">
 
 
@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="20sp"
-        android:textColor="@color/colorWhite"
+        android:textColor="@color/colorBlack"
         android:layout_marginStart="24dp"
         android:layout_marginEnd="@dimen/activity_horizontal_margin"
         android:layout_marginBottom="@dimen/activity_vertical_margin"
@@ -25,6 +25,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/textAddCourseDetails"
+        android:layout_above="@id/btnAddCourse"
         android:layout_margin="@dimen/activity_vertical_margin">
         <LinearLayout
             android:layout_width="match_parent"
@@ -38,8 +39,8 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/course_name"
                 android:inputType="text"
-                android:textColorHint="#50FFFFFF"
-                android:textColor="@color/colorWhite"
+                android:textColorHint="#50000000"
+                android:textColor="@color/colorBlack"
                 android:background="@drawable/text_view_login"
                 android:padding="10dp"
                 android:layout_margin="@dimen/text_margin"
@@ -49,12 +50,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/course_description"
-                android:textColorHint="#50FFFFFF"
+                android:textColorHint="#50000000"
                 android:inputType="textMultiLine"
                 android:background="@drawable/text_view_login"
                 android:padding="10dp"
                 android:layout_margin="@dimen/text_margin"
-                android:textColor="@color/colorWhite"
+                android:textColor="@color/colorBlack"
                 android:id="@+id/add_course_description"/>
 
             <LinearLayout
@@ -69,27 +70,52 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/course_duration"
                     android:inputType="number"
-                    android:textColorHint="#50FFFFFF"
-                    android:textColor="@color/colorWhite"
+                    android:textColorHint="#50000000"
+                    android:textColor="@color/colorBlack"
                     android:background="@drawable/text_view_login"
                     android:padding="10dp"
                     android:layout_weight="50"
                     android:id="@+id/add_course_duration"/>
 
+                <!-- NOTE: Menu to be created for this spinner -->
+                <Spinner
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="5dp"
+                    android:background="@color/colorGrey"
+                    android:layout_weight="50"
+                    android:dropDownSelector="@color/colorBlack"
+                    android:dropDownWidth="wrap_content"/>
+                <!--
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:text="@string/class_hours"
-                    android:textColor="@color/colorWhite"
+                    android:textColor="@color/colorBlack"
                     android:textSize="@dimen/text_margin"
                     android:gravity="center_vertical"
                     android:layout_weight="50"
                     android:textAlignment="textEnd"
                     android:paddingEnd="@dimen/activity_horizontal_margin"
-                    tools:ignore="RtlCompat,RtlSymmetry" />
+                    tools:ignore="RtlCompat,RtlSymmetry" /> -->
 
             </LinearLayout>
 
+            <ToggleButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textOff="@string/offline"
+                android:textOn="@string/online"
+                android:layout_margin="@dimen/text_margin"
+                android:background="@drawable/frame_recycler_view"
+                android:elevation="100dp"
+                android:shadowColor="@color/colorBlack"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/text_margin"
+                android:textStyle="bold"
+                android:checked="true"/>
+
+            <!--
             <RadioGroup
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -121,7 +147,7 @@
 
 
             </RadioGroup>
-
+            -->
             <RadioGroup
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -135,8 +161,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="50"
-                    android:buttonTint="@color/colorWhite"
-                    android:textColor="@color/colorWhite"
+                    android:buttonTint="@color/colorBlack"
+                    android:textColor="@color/colorBlack"
                     android:textSize="@dimen/text_margin"
                     android:text="@string/grouped_classes"/>
 
@@ -145,27 +171,15 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="50"
-                    android:buttonTint="@color/colorWhite"
-                    android:textColor="@color/colorWhite"
+                    android:buttonTint="@color/colorBlack"
+                    android:textColor="@color/colorBlack"
                     android:textSize="@dimen/text_margin"
                     android:text="@string/individual"/>
 
             </RadioGroup>
 
-            <!--
-            <ToggleButton
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textOff="Offline"
-                android:textOn="Online"
-                android:layout_margin="@dimen/text_margin"
-                android:background="@drawable/frame_recycler_view"
-                android:elevation="20dp"
-                android:shadowColor="@color/colorBlack"
-                android:textColor="@color/colorBlack"
-                android:textSize="@dimen/text_margin"
-                android:textStyle="bold"
-                android:checked="true"/> -->
+
+
             <!--
             <LinearLayout
                 android:layout_width="match_parent"
@@ -208,12 +222,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/number_of_batches"
-                android:textColorHint="#50FFFFFF"
-                android:inputType="textMultiLine"
+                android:textColorHint="#50000000"
+                android:inputType="number"
                 android:background="@drawable/text_view_login"
                 android:padding="10dp"
                 android:layout_margin="@dimen/text_margin"
-                android:textColor="@color/colorWhite"
+                android:textColor="@color/colorBlack"
                 android:id="@+id/add_course_num_batches"/>
 
             <!-- Available Days And Time Slotting here -->
@@ -230,8 +244,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="50"
-                    android:buttonTint="@color/colorWhite"
-                    android:textColor="@color/colorWhite"
+                    android:buttonTint="@color/colorBlack"
+                    android:textColor="@color/colorBlack"
                     android:textSize="@dimen/text_margin"
                     android:text="@string/teach_for_free"/>
 
@@ -239,8 +253,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="50"
-                    android:buttonTint="@color/colorWhite"
-                    android:textColor="@color/colorWhite"
+                    android:buttonTint="@color/colorBlack"
+                    android:textColor="@color/colorBlack"
                     android:textSize="@dimen/text_margin"
                     android:text="@string/charge_a_fee"/>
 
@@ -255,8 +269,27 @@
 
 
 
+
         </LinearLayout>
     </ScrollView>
+
+    <Button
+        android:id="@+id/btnAddCourse"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="24dp"
+        android:background="@drawable/btn_rounded_rect"
+        android:textColor="@color/colorBlack"
+        android:textSize="@dimen/text_margin"
+        android:text="Add Course"
+        android:drawableStart="@drawable/add_icon"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp"
+        android:layout_centerHorizontal="true"
+        android:drawablePadding="10dp" />
 
 
 

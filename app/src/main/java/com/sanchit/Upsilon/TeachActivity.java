@@ -10,12 +10,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
 public class TeachActivity extends AppCompatActivity {
+    /*
     private RecyclerView recyclerView ;
     private RecyclerView recyclerView2 ;
     private ArrayList<String> mCourseNames = new ArrayList<>();
     private ArrayList<Integer> mImageUrls = new ArrayList<>();
     private ArrayList<String> mStatDatas = new ArrayList<>();
     private ArrayList<String> mStatFields = new ArrayList<>();
+    */
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

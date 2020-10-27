@@ -13,4 +13,6 @@
     <color name="homepageDarkBackground">#1A1A18</color>
     <color name="colorRed">#FF0000</color>
     <color name="colorYellow">#FFFF00</color>
+    <color name="colorLiteGrey">#CCCCCC</color>
+    <color name="colorGrey">#AAAAAA</color>
 </resources>
