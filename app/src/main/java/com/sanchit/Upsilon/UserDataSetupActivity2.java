@@ -66,6 +66,8 @@ public class UserDataSetupActivity2 extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setup_2);
 
+        requestWritePermission();
+
         nextButton = (Button) findViewById(R.id.selectLaterNext2);
         Name = (EditText) findViewById(R.id.userNameHolder);
         profilepic = (CircleImageView) findViewById(R.id.profilePhoto);
@@ -81,7 +83,6 @@ public class UserDataSetupActivity2 extends AppCompatActivity {
                 intent.setType("image/*");
                 intent.setAction(Intent.ACTION_GET_CONTENT);
                 startActivityForResult(Intent.createChooser(intent, "Select Picture"),1);*/
-                requestWritePermission();
                 Intent i = new Intent(
                         Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 startActivityForResult(i, RESULT_LOAD_IMAGE);
@@ -227,7 +228,7 @@ public class UserDataSetupActivity2 extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
         if(requestCode == WRITE_PERMISSION){
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            if (grantResults[0] == PackageManager.PERMISSION_DENIED) {
                 Log.d("Hello", "Write Permission Failed");
                 Toast.makeText(this, "You must allow permission write external storage to your mobile device.", Toast.LENGTH_SHORT).show();
                 finish();
