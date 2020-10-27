@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private float x1,x2;
     boolean swapped = false;
-    static final int MIN_DISTANCE = 150;
+    static final int MIN_DISTANCE = 500;
     DrawerLayout drawer;
 
     String appID = "upsilon-ityvn";
@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 .build());
         User user = app.currentUser();
 
-        imageView = (ImageView) findViewById(R.id.profilePhotoTest);
+        //imageView = (ImageView) findViewById(R.id.profilePhotoTest);
         Toolbar toolbar = findViewById(R.id.toolbar);
         //setSupportActionBar(toolbar);
 
@@ -196,7 +196,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         String url = document.getString("profilePicUrl");
                         Toast.makeText(MainActivity.this,url,Toast.LENGTH_LONG).show();
                         //Log.v("User","Hi"+ url);
-                        Picasso.with(getApplicationContext()).load(url).into(imageView);
+                        //Picasso.with(getApplicationContext()).load(url).into(imageView);
 
                     } else {
                         Log.e("COURSEHandler", "failed to find courses with: ", task.getError());
@@ -215,7 +215,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         coursesAdapter = new CoursesAdapter(courseArrayList);
 
         recyclerView = (RecyclerView)findViewById(R.id.currentCourseListView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(coursesAdapter);
     }

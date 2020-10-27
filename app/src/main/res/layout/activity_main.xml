@@ -33,6 +33,7 @@
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/currentCourseListView"
+                    android:scrollbars="horizontal"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
@@ -84,11 +85,11 @@
                     android:orientation="horizontal"
                     android:layout_below="@id/textExploreCoursesList"
                     android:layout_margin="5dp"/>
-            <ImageView
+            <!--<ImageView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
-                android:id="@+id/profilePhotoTest"/>
+                android:id="@+id/profilePhotoTest"/>-->
 
         </RelativeLayout>
     </ScrollView>
