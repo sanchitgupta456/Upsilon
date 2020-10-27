@@ -57,6 +57,9 @@ dependencies {
     //card view
     implementation 'com.android.support:cardview-v7:29.0.3'
 
+    //picasso
+    implementation 'com.squareup.picasso:picasso:2.5.2'
+
     //image loader
     implementation 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
 

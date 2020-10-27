@@ -16,20 +16,25 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
+import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
 import com.sanchit.Upsilon.courseData.Course;
 import com.sanchit.Upsilon.courseData.CoursesAdapter;
 import com.sanchit.Upsilon.ui.login.LoginActivity;
+import com.squareup.picasso.Picasso;
 
 import org.bson.Document;
 
+import java.io.Console;
 import java.util.ArrayList;
 import java.util.List;
 
 import io.realm.Realm;
 import io.realm.mongodb.App;
 import io.realm.mongodb.AppConfiguration;
+import io.realm.mongodb.Credentials;
 import io.realm.mongodb.RealmResultTask;
 import io.realm.mongodb.User;
 import io.realm.mongodb.mongo.MongoClient;
@@ -53,6 +58,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     App app;
     MongoClient mongoClient;
     MongoDatabase mongoDatabase;
+    ImageView imageView;
 
     public static final List<String> TvShows  = new ArrayList<String>();
     public static final int[] TvShowImgs = {R.drawable.google, R.drawable.facebook};
@@ -67,18 +73,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 .build());
         User user = app.currentUser();
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        imageView = (ImageView) findViewById(R.id.profilePhotoTest);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         //setSupportActionBar(toolbar);
 
         drawer = findViewById(R.id.drawer_layout);
-        NavigationView navigationView = findViewById(R.id.navbar);
+        NavigationView navigationView = findViewById(R.id.nav_view);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(MainActivity.this);
         drawer.closeDrawer(GravityCompat.START);
-
         if(user==null)
         {
             Intent intent = new Intent(MainActivity.this, LoginActivity.class);
@@ -116,18 +122,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     else
                     {
                         Log.v("User", "successfully found the user");
+                        getCourseData();
                     }
                     while (results.hasNext()) {
                         //Log.v("EXAMPLE", results.next().toString());
                         Document currentDoc = results.next();
-                        Log.v("User",currentDoc.getString("favoriteColor"));
+                        Log.v("User",currentDoc.getString("userid"));
                     }
                 } else {
                    Log.v("User","Failed to complete search");
                 }
             });
         }
-        getCourseData();
     }
 
     private void goToSetupActivity() {
@@ -171,6 +177,31 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         Log.e("COURSEHandler", "failed to find courses with: ", task.getError());
                     }
                 });
+
+
+                MongoCollection<Document> mongoCollection1  = mongoDatabase.getCollection("UserData");
+
+                //Blank query to find every single course in db
+                //TODO: Modify query to look for user preferred course IDs
+                Document queryFilter1  = new Document();
+                queryFilter1.append("userid",user.getId());
+
+                RealmResultTask<MongoCursor<Document>> findTask1 = mongoCollection1.find(queryFilter1).iterator();
+
+                findTask1.getAsync(task -> {
+                    if (task.isSuccess()) {
+                        MongoCursor<Document> results = task.get();
+                        Log.v("COURSEHandler", "successfully found all courses:");
+                        Document document = results.next();
+                        String url = document.getString("profilePicUrl");
+                        Toast.makeText(MainActivity.this,url,Toast.LENGTH_LONG).show();
+                        //Log.v("User","Hi"+ url);
+                        Picasso.with(getApplicationContext()).load(url).into(imageView);
+
+                    } else {
+                        Log.e("COURSEHandler", "failed to find courses with: ", task.getError());
+                    }
+                });
             }
             else {
                     Log.e(TAG, "Error logging into the Realm app. Make sure that anonymous authentication is enabled.");
@@ -192,16 +223,44 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.home_drawer_menu, menu);
+        getMenuInflater().inflate(R.menu.three_dot_menu, menu);
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if(item.getItemId()==R.id.signOut)
+        {
+            signOut();
+        }
+        return true;
+    }
+
+    private void signOut() {
+        User user = app.currentUser();
+        user.logOutAsync(new App.Callback<User>() {
+            @Override
+            public void onResult(App.Result<User> result) {
+                if(result.isSuccess())
+                {
+                    startActivity(new Intent(MainActivity.this,LoginActivity.class));
+                }
+                else
+                {
+
+                }
+            }
+        });
     }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
-        //TODO: remove this later, this is just to test the image uploading
-        Intent intent = new Intent(MainActivity.this, UserDataSetupActivity1.class);
-        startActivity(intent);
+        if(id==R.id.homeDrawerMenuItem1)
+        {
+            Intent intent = new Intent(MainActivity.this,AddCourseActivity.class);
+            startActivity(intent);
+        }
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
@@ -249,4 +308,5 @@ since the dispatchTouchEvent might dispatch your touch event to this function ag
         this.onTouchEvent(event);
         return super.dispatchTouchEvent(event);
     }
+
 }

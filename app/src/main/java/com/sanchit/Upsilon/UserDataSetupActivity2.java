@@ -128,6 +128,8 @@ public class UserDataSetupActivity2 extends AppCompatActivity {
                                             if (result.isSuccess()) {
                                                 Log.v("EXAMPLE", "Inserted custom user data document. _id of inserted document: "
                                                         + result.get().getInsertedId());
+                                                Intent intent = new Intent(UserDataSetupActivity2.this,UserDataSetupActivity3.class);
+                                                startActivity(intent);
                                             } else {
                                                 Log.e("EXAMPLE", "Unable to insert custom user data. Error: " + result.getError());
                                             }
@@ -145,6 +147,8 @@ public class UserDataSetupActivity2 extends AppCompatActivity {
                                             if (result.isSuccess()) {
                                                 Log.v("EXAMPLE", "Inserted custom user data document. _id of inserted document: "
                                                         + result.get().getModifiedCount());
+                                                Intent intent = new Intent(UserDataSetupActivity2.this,UserDataSetupActivity3.class);
+                                                startActivity(intent);
                                             } else {
                                                 Log.e("EXAMPLE", "Unable to insert custom user data. Error: " + result.getError());
                                             }

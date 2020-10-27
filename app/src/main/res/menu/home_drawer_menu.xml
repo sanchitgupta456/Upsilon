@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
     <item
-        android:title="Title 1"
+        android:title="Add Course"
         android:id="@+id/homeDrawerMenuItem1"
         android:icon="@drawable/add_box_icon"/>
     <item

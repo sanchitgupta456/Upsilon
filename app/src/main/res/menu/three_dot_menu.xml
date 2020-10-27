@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+    <item
+        android:title="Title 1"
+        android:id="@+id/title1"
+        android:icon="@drawable/add_box_icon"/>
+    <item
+        android:title="SignOut"
+        android:id="@+id/signOut"
+        android:icon="@drawable/add_box_icon"/>
+</menu>

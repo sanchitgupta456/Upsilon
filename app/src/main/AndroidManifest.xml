@@ -18,20 +18,21 @@
         <activity
             android:name="com.sanchit.Upsilon.ui.login.LoginActivity"
             android:label="Upsilon">
-
         </activity>
-        <activity android:name="com.sanchit.Upsilon.TeachActivity">
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name="com.sanchit.Upsilon.TeachActivity"></activity>
         <activity android:name="com.sanchit.Upsilon.ui.login.SignUpActivity"></activity>
         <activity android:name="com.sanchit.Upsilon.SearchActivity"></activity>
         <activity android:name=".UserDataSetupActivity1"></activity>
         <activity android:name=".UserDataSetupActivity2"></activity>
         <activity android:name=".UserDataSetupActivity3"></activity>
+        <activity android:name=".AddCourseActivity"></activity>
     </application>
 
 </manifest>
