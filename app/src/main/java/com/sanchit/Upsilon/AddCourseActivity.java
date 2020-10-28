@@ -39,7 +39,7 @@ public class AddCourseActivity extends AppCompatActivity {
 
         app = new App(new AppConfiguration.Builder(appID)
                 .build());
-
+        user = app.currentUser();
         mongoClient = user.getMongoClient("mongodb-atlas");
         mongoDatabase = mongoClient.getDatabase("Upsilon");
         MongoCollection<Document> mongoCollection  = mongoDatabase.getCollection("CourseData");

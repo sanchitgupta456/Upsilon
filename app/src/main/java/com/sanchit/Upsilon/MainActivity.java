@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
+import android.view.Window;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -76,6 +77,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         //imageView = (ImageView) findViewById(R.id.profilePhotoTest);
         Toolbar toolbar = findViewById(R.id.toolbar);
         //setSupportActionBar(toolbar);
+        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
