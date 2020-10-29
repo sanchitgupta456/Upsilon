@@ -1,0 +1,487 @@
+Index: app/src/main/AndroidManifest.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    package=\"com.sanchit.Upsilon\">\r\n    <uses-permission android:name=\"android.permission.INTERNET\" />\r\n    <uses-permission android:name=\"android.permission.WRITE_EXTERNAL_STORAGE\" />\r\n    <uses-permission android:name=\"android.permission.READ_EXTERNAL_STORAGE\" />\r\n\r\n    <application\r\n        android:allowBackup=\"true\"\r\n        android:requestLegacyExternalStorage=\"true\"\r\n        android:icon=\"@mipmap/ic_launcher\"\r\n        android:label=\"@string/app_name\"\r\n        android:roundIcon=\"@mipmap/ic_launcher_round\"\r\n        android:supportsRtl=\"true\"\r\n        android:theme=\"@style/AppTheme\"\r\n        >\r\n        <meta-data android:name=\"cloudinary://937567483347128:wQLZU0pYv4hJt1sqF9fHB1uuEs8@upsilon175\" android:value=\"cloudinary://@upsilon175\"/>\r\n        <activity\r\n            android:name=\"com.sanchit.Upsilon.ui.login.LoginActivity\"\r\n            android:label=\"Upsilon\">\r\n\r\n        </activity>\r\n        <activity android:name=\"com.sanchit.Upsilon.MainActivity\">\r\n            <intent-filter>\r\n                <action android:name=\"android.intent.action.MAIN\" />\r\n\r\n                <category android:name=\"android.intent.category.LAUNCHER\" />\r\n            </intent-filter>\r\n        </activity>\r\n        <activity android:name=\"com.sanchit.Upsilon.ui.login.SignUpActivity\"></activity>\r\n        <activity android:name=\"com.sanchit.Upsilon.SearchActivity\"></activity>\r\n        <activity android:name=\".UserDataSetupActivity1\"></activity>\r\n        <activity android:name=\".UserDataSetupActivity2\"></activity>\r\n        <activity android:name=\".UserDataSetupActivity3\"></activity>\r\n    </application>\r\n\r\n</manifest>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/AndroidManifest.xml	(revision c0805f3dc81a42fcde4dc05265433d47ca7eb483)
++++ app/src/main/AndroidManifest.xml	(date 1603626274095)
+@@ -32,6 +32,7 @@
+         <activity android:name=".UserDataSetupActivity1"></activity>
+         <activity android:name=".UserDataSetupActivity2"></activity>
+         <activity android:name=".UserDataSetupActivity3"></activity>
++        <activity android:name=".AddCourseActivity"></activity>
+     </application>
+ 
+ </manifest>
+\ No newline at end of file
+Index: app/src/main/res/layout/activity_main.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<androidx.drawerlayout.widget.DrawerLayout xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    xmlns:app=\"http://schemas.android.com/apk/res-auto\"\r\n    xmlns:tools=\"http://schemas.android.com/tools\"\r\n    android:layout_width=\"match_parent\"\r\n    android:layout_height=\"match_parent\"\r\n    tools:context=\".MainActivity\"\r\n    android:id=\"@+id/drawer_layout\"\r\n    tools:openDrawer=\"start\"\r\n    android:background=\"@color/homepageDarkBackground\">\r\n\r\n\r\n    <ScrollView\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"match_parent\">\r\n        <RelativeLayout\r\n            android:layout_width=\"match_parent\"\r\n            android:layout_height=\"wrap_content\"\r\n            android:background=\"@color/homepageDarkBackground\"\r\n            android:scrollbars=\"vertical\">\r\n\r\n                <TextView\r\n                    android:id=\"@+id/textYourCurrentCourses\"\r\n                    android:layout_width=\"match_parent\"\r\n                    android:layout_height=\"wrap_content\"\r\n                    android:text=\"@string/resume_learning\"\r\n                    android:textColor=\"@color/colorWhite\"\r\n                    android:gravity=\"start\"\r\n                    android:textSize=\"14sp\"\r\n                    android:typeface=\"sans\"\r\n                    android:layout_marginStart=\"15dp\"\r\n                    android:layout_marginTop=\"24dp\"/>\r\n\r\n                <androidx.recyclerview.widget.RecyclerView\r\n                    android:id=\"@+id/currentCourseListView\"\r\n                    android:layout_width=\"wrap_content\"\r\n                    android:layout_height=\"wrap_content\"\r\n                    android:layout_marginLeft=\"5dp\"\r\n                    android:layout_marginRight=\"5dp\"\r\n                    android:orientation=\"horizontal\"\r\n                    android:layout_below=\"@id/textYourCurrentCourses\"\r\n                    android:layout_margin=\"5dp\"/>\r\n\r\n                <TextView\r\n                    android:id=\"@+id/textRecommendedCoursesList\"\r\n                    android:layout_width=\"match_parent\"\r\n                    android:layout_height=\"wrap_content\"\r\n                    android:gravity=\"start\"\r\n                    android:layout_marginStart=\"15dp\"\r\n                    android:text=\"@string/recommended_for_you\"\r\n                    android:textColor=\"@color/colorWhite\"\r\n                    android:textSize=\"14sp\"\r\n                    android:typeface=\"sans\"\r\n                    android:layout_below=\"@id/currentCourseListView\"\r\n                    android:layout_marginTop=\"48dp\"/>\r\n                <androidx.recyclerview.widget.RecyclerView\r\n                    android:id=\"@+id/recommendedCourseListView\"\r\n                    android:layout_width=\"wrap_content\"\r\n                    android:layout_height=\"wrap_content\"\r\n                    android:layout_marginLeft=\"5dp\"\r\n                    android:layout_marginRight=\"5dp\"\r\n                    android:orientation=\"horizontal\"\r\n                    android:layout_below=\"@id/textRecommendedCoursesList\"/>\r\n\r\n                <TextView\r\n                    android:id=\"@+id/textExploreCoursesList\"\r\n                    android:layout_width=\"match_parent\"\r\n                    android:layout_height=\"wrap_content\"\r\n                    android:gravity=\"start\"\r\n                    android:layout_marginStart=\"15dp\"\r\n                    android:text=\"@string/explore\"\r\n                    android:textColor=\"@color/colorWhite\"\r\n                    android:textSize=\"14sp\"\r\n                    android:typeface=\"sans\"\r\n                    android:layout_marginTop=\"24dp\"\r\n                    android:layout_below=\"@id/recommendedCourseListView\"/>\r\n\r\n                <androidx.recyclerview.widget.RecyclerView\r\n                    android:id=\"@+id/exploreCourseListView\"\r\n                    android:layout_width=\"wrap_content\"\r\n                    android:layout_height=\"wrap_content\"\r\n                    android:layout_marginLeft=\"5dp\"\r\n                    android:layout_marginRight=\"5dp\"\r\n                    android:orientation=\"horizontal\"\r\n                    android:layout_below=\"@id/textExploreCoursesList\"\r\n                    android:layout_margin=\"5dp\"/>\r\n\r\n        </RelativeLayout>\r\n    </ScrollView>\r\n\r\n    <com.google.android.material.navigation.NavigationView\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"match_parent\"\r\n        android:layout_gravity=\"start\"\r\n        android:fitsSystemWindows=\"true\"\r\n        app:headerLayout=\"@layout/header_layout\"\r\n        app:menu=\"@menu/home_drawer_menu\"\r\n        android:id=\"@+id/nav_view\"\r\n        android:background=\"@color/homepageDarkBackground\"\r\n        app:itemTextColor=\"@color/colorWhite\"\r\n        app:itemIconTint=\"@color/colorWhite\"/>\r\n\r\n</androidx.drawerlayout.widget.DrawerLayout>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/activity_main.xml	(revision c0805f3dc81a42fcde4dc05265433d47ca7eb483)
++++ app/src/main/res/layout/activity_main.xml	(date 1603627591398)
+@@ -84,6 +84,11 @@
+                     android:orientation="horizontal"
+                     android:layout_below="@id/textExploreCoursesList"
+                     android:layout_margin="5dp"/>
++            <ImageView
++                android:layout_width="match_parent"
++                android:layout_height="wrap_content"
++                android:layout_alignParentTop="true"
++                android:id="@+id/profilePhotoTest"/>
+ 
+         </RelativeLayout>
+     </ScrollView>
+Index: app/src/main/res/layout/activity_add_course.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<RelativeLayout xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    xmlns:tools=\"http://schemas.android.com/tools\"\r\n    android:layout_width=\"match_parent\" android:layout_height=\"match_parent\"\r\n    android:background=\"@color/homepageDarkBackground\"\r\n    tools:context=\".AddCourseActivity\">\r\n\r\n\r\n        <androidx.recyclerview.widget.RecyclerView\r\n            android:layout_width=\"wrap_content\"\r\n            android:layout_height=\"wrap_content\"\r\n            android:orientation=\"horizontal\"\r\n            android:scrollbars=\"horizontal\"\r\n            android:id=\"@+id/coursesTaught\"/>\r\n\r\n\r\n\r\n\r\n\r\n    <TextView\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:textSize=\"@dimen/text_margin\"\r\n        android:textColor=\"@color/colorWhite\"\r\n        android:layout_below=\"@id/coursesTaught\"\r\n        android:layout_margin=\"@dimen/activity_vertical_margin\"\r\n        android:text=\"@string/add_course_details\"\r\n        android:gravity=\"center\"\r\n        android:id=\"@+id/textAddCourseDetails\"/>\r\n\r\n    <ScrollView\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:layout_below=\"@id/textAddCourseDetails\"\r\n        android:layout_margin=\"@dimen/activity_vertical_margin\">\r\n        <LinearLayout\r\n            android:layout_width=\"match_parent\"\r\n            android:layout_height=\"wrap_content\"\r\n            android:orientation=\"vertical\"\r\n            android:gravity=\"start\"\r\n            >\r\n\r\n            <EditText\r\n                android:layout_width=\"match_parent\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:hint=\"@string/course_name\"\r\n                android:inputType=\"text\"\r\n                android:textColorHint=\"#50FFFFFF\"\r\n                android:textColor=\"@color/colorWhite\"\r\n                android:background=\"@drawable/text_view_login\"\r\n                android:padding=\"10dp\"\r\n                android:layout_margin=\"@dimen/text_margin\"/>\r\n\r\n            <EditText\r\n                android:layout_width=\"match_parent\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:hint=\"@string/course_description\"\r\n                android:textColorHint=\"#50FFFFFF\"\r\n                android:inputType=\"textMultiLine\"\r\n                android:background=\"@drawable/text_view_login\"\r\n                android:padding=\"10dp\"\r\n                android:layout_margin=\"@dimen/text_margin\"\r\n                android:textColor=\"@color/colorWhite\"/>\r\n\r\n            <LinearLayout\r\n                android:layout_width=\"match_parent\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:orientation=\"horizontal\"\r\n                android:layout_margin=\"@dimen/text_margin\"\r\n                android:weightSum=\"100\">\r\n\r\n                <EditText\r\n                    android:layout_width=\"match_parent\"\r\n                    android:layout_height=\"wrap_content\"\r\n                    android:hint=\"@string/course_duration\"\r\n                    android:inputType=\"number\"\r\n                    android:textColorHint=\"#50FFFFFF\"\r\n                    android:textColor=\"@color/colorWhite\"\r\n                    android:background=\"@drawable/text_view_login\"\r\n                    android:padding=\"10dp\"\r\n                    android:layout_weight=\"50\" />\r\n\r\n                <TextView\r\n                    android:layout_width=\"match_parent\"\r\n                    android:layout_height=\"match_parent\"\r\n                    android:text=\"@string/class_hours\"\r\n                    android:textColor=\"@color/colorWhite\"\r\n                    android:textSize=\"@dimen/text_margin\"\r\n                    android:gravity=\"center_vertical\"\r\n                    android:layout_weight=\"50\"\r\n                    android:textAlignment=\"textEnd\"\r\n                    android:paddingEnd=\"@dimen/activity_horizontal_margin\"\r\n                    tools:ignore=\"RtlCompat\" />\r\n\r\n            </LinearLayout>\r\n\r\n            <RadioGroup\r\n                android:layout_width=\"match_parent\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:orientation=\"horizontal\"\r\n                android:layout_margin=\"@dimen/text_margin\"\r\n                android:weightSum=\"100\"\r\n                android:padding=\"5dp\">\r\n\r\n                <RadioButton\r\n                    android:layout_width=\"match_parent\"\r\n                    android:layout_height=\"match_parent\"\r\n                    android:layout_weight=\"50\"\r\n                    android:buttonTint=\"@color/colorWhite\"\r\n                    android:textColor=\"@color/colorWhite\"\r\n                    android:textSize=\"@dimen/text_margin\"\r\n                    android:text=\"@string/online\"/>\r\n\r\n                <RadioButton\r\n                    android:layout_width=\"match_parent\"\r\n                    android:layout_height=\"match_parent\"\r\n                    android:layout_weight=\"50\"\r\n                    android:buttonTint=\"@color/colorWhite\"\r\n                    android:textColor=\"@color/colorWhite\"\r\n                    android:textSize=\"@dimen/text_margin\"\r\n                    android:text=\"@string/offline\"/>\r\n\r\n\r\n\r\n            </RadioGroup>\r\n\r\n            <RadioGroup\r\n                android:layout_width=\"match_parent\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:orientation=\"horizontal\"\r\n                android:layout_margin=\"@dimen/text_margin\"\r\n                android:weightSum=\"100\"\r\n                android:padding=\"5dp\">\r\n\r\n                <RadioButton\r\n                    android:layout_width=\"match_parent\"\r\n                    android:layout_height=\"match_parent\"\r\n                    android:layout_weight=\"50\"\r\n                    android:buttonTint=\"@color/colorWhite\"\r\n                    android:textColor=\"@color/colorWhite\"\r\n                    android:textSize=\"@dimen/text_margin\"\r\n                    android:text=\"@string/grouped_classes\"/>\r\n\r\n                <RadioButton\r\n                    android:layout_width=\"match_parent\"\r\n                    android:layout_height=\"match_parent\"\r\n                    android:layout_weight=\"50\"\r\n                    android:buttonTint=\"@color/colorWhite\"\r\n                    android:textColor=\"@color/colorWhite\"\r\n                    android:textSize=\"@dimen/text_margin\"\r\n                    android:text=\"@string/individual\"/>\r\n\r\n            </RadioGroup>\r\n\r\n            <!--\r\n            <ToggleButton\r\n                android:layout_width=\"match_parent\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:textOff=\"Offline\"\r\n                android:textOn=\"Online\"\r\n                android:layout_margin=\"@dimen/text_margin\"\r\n                android:background=\"@drawable/btn_toggle\"\r\n                android:elevation=\"20dp\"\r\n                android:shadowColor=\"@color/colorBlack\"\r\n                android:textColor=\"@color/colorBlack\"\r\n                android:textSize=\"@dimen/text_margin\"\r\n                android:textStyle=\"bold\"\r\n                android:checked=\"true\"/> -->\r\n            <!--\r\n            <LinearLayout\r\n                android:layout_width=\"match_parent\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:orientation=\"horizontal\"\r\n                android:layout_margin=\"@dimen/text_margin\"\r\n                android:weightSum=\"100\">\r\n\r\n                <ToggleButton\r\n                    android:id=\"@+id/isChargeable\"\r\n                    android:layout_width=\"match_parent\"\r\n                    android:layout_height=\"match_parent\"\r\n                    android:textOff=\"Free\"\r\n                    android:textOn=\"Charged\"\r\n                    android:background=\"@drawable/btn_toggle\"\r\n                    android:elevation=\"20dp\"\r\n                    android:shadowColor=\"@color/colorBlack\"\r\n                    android:textColor=\"@color/colorBlack\"\r\n                    android:textSize=\"@dimen/text_margin\"\r\n                    android:textStyle=\"bold\"\r\n                    android:checked=\"false\"\r\n                    android:layout_weight=\"50\"/>\r\n\r\n                <EditText\r\n                    android:layout_width=\"match_parent\"\r\n                    android:layout_height=\"match_parent\"\r\n                    android:layout_weight=\"50\"\r\n                    android:hint=\"Fees\"\r\n                    android:visibility=\"invisible\"\r\n                    android:inputType=\"number\"\r\n                    android:textColorHint=\"#50FFFFFF\"\r\n                    android:textColor=\"@color/colorWhite\"\r\n                    android:background=\"@drawable/text_view_login\"\r\n                    android:padding=\"10dp\"\r\n                    />\r\n\r\n            </LinearLayout> -->\r\n\r\n            <EditText\r\n                android:layout_width=\"match_parent\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:hint=\"@string/number_of_batches\"\r\n                android:textColorHint=\"#50FFFFFF\"\r\n                android:inputType=\"textMultiLine\"\r\n                android:background=\"@drawable/text_view_login\"\r\n                android:padding=\"10dp\"\r\n                android:layout_margin=\"@dimen/text_margin\"\r\n                android:textColor=\"@color/colorWhite\"/>\r\n\r\n            <!-- Available Days And Time Slotting here -->\r\n\r\n            <RadioGroup\r\n                android:layout_width=\"match_parent\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:orientation=\"horizontal\"\r\n                android:layout_margin=\"@dimen/text_margin\"\r\n                android:weightSum=\"100\"\r\n                android:padding=\"5dp\">\r\n\r\n                <RadioButton\r\n                    android:layout_width=\"match_parent\"\r\n                    android:layout_height=\"match_parent\"\r\n                    android:layout_weight=\"50\"\r\n                    android:buttonTint=\"@color/colorWhite\"\r\n                    android:textColor=\"@color/colorWhite\"\r\n                    android:textSize=\"@dimen/text_margin\"\r\n                    android:text=\"@string/teach_for_free\"/>\r\n\r\n                <RadioButton\r\n                    android:layout_width=\"match_parent\"\r\n                    android:layout_height=\"match_parent\"\r\n                    android:layout_weight=\"50\"\r\n                    android:buttonTint=\"@color/colorWhite\"\r\n                    android:textColor=\"@color/colorWhite\"\r\n                    android:textSize=\"@dimen/text_margin\"\r\n                    android:text=\"@string/charge_a_fee\"/>\r\n\r\n\r\n\r\n            </RadioGroup>\r\n\r\n\r\n\r\n\r\n\r\n\r\n        </LinearLayout>\r\n    </ScrollView>\r\n\r\n\r\n\r\n\r\n\r\n</RelativeLayout>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/activity_add_course.xml	(revision c0805f3dc81a42fcde4dc05265433d47ca7eb483)
++++ app/src/main/res/layout/activity_add_course.xml	(date 1603626610872)
+@@ -13,10 +13,6 @@
+             android:scrollbars="horizontal"
+             android:id="@+id/coursesTaught"/>
+ 
+-
+-
+-
+-
+     <TextView
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+@@ -49,7 +45,8 @@
+                 android:textColor="@color/colorWhite"
+                 android:background="@drawable/text_view_login"
+                 android:padding="10dp"
+-                android:layout_margin="@dimen/text_margin"/>
++                android:layout_margin="@dimen/text_margin"
++                android:id="@+id/add_course_name"/>
+ 
+             <EditText
+                 android:layout_width="match_parent"
+@@ -60,7 +57,8 @@
+                 android:background="@drawable/text_view_login"
+                 android:padding="10dp"
+                 android:layout_margin="@dimen/text_margin"
+-                android:textColor="@color/colorWhite"/>
++                android:textColor="@color/colorWhite"
++                android:id="@+id/add_course_description"/>
+ 
+             <LinearLayout
+                 android:layout_width="match_parent"
+Index: app/build.gradle
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>apply plugin: 'com.android.application'\r\napply plugin: 'realm-android'\r\n\r\nandroid {\r\n    compileSdkVersion 29\r\n    buildToolsVersion \"29.0.3\"\r\n\r\n    defaultConfig {\r\n        applicationId \"com.sanchit.Upsilon\"\r\n        minSdkVersion 23\r\n        targetSdkVersion 29\r\n        versionCode 1\r\n        versionName \"1.0\"\r\n\r\n        testInstrumentationRunner \"androidx.test.runner.AndroidJUnitRunner\"\r\n    }\r\n\r\n    buildTypes {\r\n        release {\r\n            minifyEnabled false\r\n            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'\r\n        }\r\n    }\r\n\r\n    compileOptions{\r\n        sourceCompatibility JavaVersion.VERSION_1_8\r\n        targetCompatibility JavaVersion.VERSION_1_8\r\n    }\r\n}\r\n\r\nrealm {\r\n    syncEnabled = true\r\n}\r\n\r\ndependencies {\r\n    implementation fileTree(dir: \"libs\", include: [\"*.jar\"])\r\n    implementation 'androidx.appcompat:appcompat:1.1.0'\r\n    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'\r\n    implementation 'com.google.android.material:material:1.2.1'\r\n    implementation 'androidx.annotation:annotation:1.1.0'\r\n    implementation 'androidx.lifecycle:lifecycle-extensions:2.1.0'\r\n    implementation 'androidx.legacy:legacy-support-v4:1.0.0'\r\n    implementation 'com.google.android.gms:play-services-auth:18.0.0'\r\n    testImplementation 'junit:junit:4.12'\r\n    androidTestImplementation 'androidx.test.ext:junit:1.1.1'\r\n    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'\r\n\r\n    //recycler view\r\n    implementation 'com.android.support:recyclerview-v7:29.0.3'\r\n\r\n    //...\r\n    implementation 'com.android.support:design:29.0.3'\r\n\r\n    //...\r\n    implementation 'com.google.android.material:material:1.2.0-alpha04'\r\n\r\n    //card view\r\n    implementation 'com.android.support:cardview-v7:29.0.3'\r\n\r\n    //image loader\r\n    implementation 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'\r\n\r\n    //circular image view\r\n    implementation 'de.hdodenhof:circleimageview:3.1.0'\r\n\r\n    //Cloudinary api\r\n    implementation group: 'com.cloudinary', name: 'cloudinary-android', version: '1.30.0'\r\n\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/build.gradle	(revision c0805f3dc81a42fcde4dc05265433d47ca7eb483)
++++ app/build.gradle	(date 1603627026764)
+@@ -57,6 +57,9 @@
+     //card view
+     implementation 'com.android.support:cardview-v7:29.0.3'
+ 
++    //picasso
++    implementation 'com.squareup.picasso:picasso:2.5.2'
++
+     //image loader
+     implementation 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
+ 
+Index: app/src/main/java/com/sanchit/Upsilon/UserDataSetupActivity2.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.sanchit.Upsilon;\r\n\r\nimport android.Manifest;\r\nimport android.content.Intent;\r\nimport android.content.pm.PackageManager;\r\nimport android.database.Cursor;\r\nimport android.graphics.BitmapFactory;\r\nimport android.net.Uri;\r\nimport android.os.Build;\r\nimport android.os.Bundle;\r\nimport android.provider.MediaStore;\r\nimport android.text.Editable;\r\nimport android.text.TextWatcher;\r\nimport android.util.Log;\r\nimport android.view.View;\r\nimport android.widget.Button;\r\nimport android.widget.EditText;\r\nimport android.widget.ImageView;\r\nimport android.widget.Toast;\r\n\r\nimport androidx.annotation.Nullable;\r\nimport androidx.appcompat.app.AppCompatActivity;\r\nimport androidx.core.app.ActivityCompat;\r\n\r\nimport com.cloudinary.android.MediaManager;\r\nimport com.google.android.gms.common.internal.Constants;\r\n\r\nimport org.bson.Document;\r\n\r\nimport java.util.HashMap;\r\nimport java.util.Map;\r\n\r\nimport de.hdodenhof.circleimageview.CircleImageView;\r\nimport io.realm.mongodb.App;\r\nimport io.realm.mongodb.AppConfiguration;\r\nimport io.realm.mongodb.RealmResultTask;\r\nimport io.realm.mongodb.User;\r\nimport io.realm.mongodb.mongo.MongoClient;\r\nimport io.realm.mongodb.mongo.MongoCollection;\r\nimport io.realm.mongodb.mongo.MongoDatabase;\r\nimport io.realm.mongodb.mongo.iterable.MongoCursor;\r\n\r\npublic class UserDataSetupActivity2 extends AppCompatActivity {\r\n\r\n    String appID = \"upsilon-ityvn\";\r\n    Button nextButton;\r\n    EditText Name;\r\n    String name;\r\n    int flag=0;\r\n    App app;\r\n    User user;\r\n    MongoClient mongoClient;\r\n    MongoDatabase mongoDatabase;\r\n    CircleImageView profilepic;\r\n    String picturePath;\r\n    private static int RESULT_LOAD_IMAGE = 1;\r\n    private static final int WRITE_PERMISSION = 0x01;\r\n\r\n    @Override\r\n    protected void onCreate(@Nullable Bundle savedInstanceState) {\r\n        super.onCreate(savedInstanceState);\r\n        setContentView(R.layout.activity_setup_2);\r\n\r\n        nextButton = (Button) findViewById(R.id.selectLaterNext2);\r\n        Name = (EditText) findViewById(R.id.userNameHolder);\r\n        profilepic = (CircleImageView) findViewById(R.id.profilePhoto);\r\n\r\n        app = new App(new AppConfiguration.Builder(appID)\r\n                .build());\r\n        User user = app.currentUser();\r\n\r\n        profilepic.setOnClickListener(new View.OnClickListener() {\r\n            @Override\r\n            public void onClick(View v) {\r\n               /* Intent intent = new Intent();\r\n                intent.setType(\"image/*\");\r\n                intent.setAction(Intent.ACTION_GET_CONTENT);\r\n                startActivityForResult(Intent.createChooser(intent, \"Select Picture\"),1);*/\r\n                requestWritePermission();\r\n                Intent i = new Intent(\r\n                        Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);\r\n                startActivityForResult(i, RESULT_LOAD_IMAGE);\r\n            }\r\n        });\r\n\r\n        nextButton.setOnClickListener(new View.OnClickListener() {\r\n            @Override\r\n            public void onClick(View v) {\r\n                if(flag==1)\r\n                {\r\n                    Map config = new HashMap();\r\n                    config.put(\"cloud_name\", \"upsilon175\");\r\n                    MediaManager.init(UserDataSetupActivity2.this, config);\r\n                    String requestId = MediaManager.get().upload(picturePath)\r\n                            .unsigned(\"preset1\")\r\n                            .option(\"resource_type\", \"image\")\r\n                            .option(\"folder\", \"Upsilon/UsersProfilePictures/\"+user.getId())\r\n                            .dispatch();\r\n                    String url = MediaManager.get().url().generate(user.getId());\r\n                    name = Name.getText().toString();\r\n                    mongoClient = user.getMongoClient(\"mongodb-atlas\");\r\n                    mongoDatabase = mongoClient.getDatabase(\"Upsilon\");\r\n                    MongoCollection<Document> mongoCollection  = mongoDatabase.getCollection(\"UserData\");\r\n\r\n                    //Blank query to find every single course in db\r\n                    //TODO: Modify query to look for user preferred course IDs\r\n                    Document queryFilter  = new Document(\"userid\",user.getId());\r\n\r\n                    RealmResultTask<MongoCursor<Document>> findTask = mongoCollection.find(queryFilter).iterator();\r\n\r\n                    findTask.getAsync(task -> {\r\n                        if (task.isSuccess()) {\r\n                            MongoCursor<Document> results = task.get();\r\n                            if(!results.hasNext())\r\n                            {\r\n                                mongoCollection.insertOne(\r\n                                        new Document(\"userid\", user.getId()).append(\"favoriteColor\", \"pink\").append(\"profilePicUrl\",url))\r\n                                        .getAsync(result -> {\r\n                                            if (result.isSuccess()) {\r\n                                                Log.v(\"EXAMPLE\", \"Inserted custom user data document. _id of inserted document: \"\r\n                                                        + result.get().getInsertedId());\r\n                                            } else {\r\n                                                Log.e(\"EXAMPLE\", \"Unable to insert custom user data. Error: \" + result.getError());\r\n                                            }\r\n                                        });\r\n                            }\r\n                            else\r\n                            {\r\n                                Document userdata = results.next();\r\n                                userdata.append(\"name\",name);\r\n                                userdata.append(\"profilePicUrl\",url);\r\n\r\n                                mongoCollection.updateOne(\r\n                                        new Document(\"userid\", user.getId()),(userdata))\r\n                                        .getAsync(result -> {\r\n                                            if (result.isSuccess()) {\r\n                                                Log.v(\"EXAMPLE\", \"Inserted custom user data document. _id of inserted document: \"\r\n                                                        + result.get().getModifiedCount());\r\n                                            } else {\r\n                                                Log.e(\"EXAMPLE\", \"Unable to insert custom user data. Error: \" + result.getError());\r\n                                            }\r\n                                        });\r\n                            }\r\n                            while (results.hasNext()) {\r\n                                //Log.v(\"EXAMPLE\", results.next().toString());\r\n                                Document currentDoc = results.next();\r\n                                Log.v(\"User\",currentDoc.getString(\"userid\"));\r\n                            }\r\n                        } else {\r\n                            Log.v(\"User\",\"Failed to complete search\");\r\n                        }\r\n                    });\r\n                }\r\n                Intent intent = new Intent(UserDataSetupActivity2.this,UserDataSetupActivity3.class);\r\n                startActivity(intent);\r\n            }\r\n        });\r\n\r\n        TextWatcher textWatcher = new TextWatcher() {\r\n\r\n            public void afterTextChanged(Editable s) {\r\n                nextButton.setText(\"Next\");\r\n                flag=1;\r\n            }\r\n\r\n            public void beforeTextChanged(CharSequence s, int start, int count, int after) {\r\n                nextButton.setText(\"Select Later\");\r\n            }\r\n\r\n            public void onTextChanged(CharSequence s, int start, int before,\r\n                                      int count) {\r\n            nextButton.setText(\"Next\");\r\n            flag=1;\r\n            }\r\n        };\r\n\r\n        Name.addTextChangedListener(textWatcher);\r\n\r\n\r\n    }\r\n\r\n    // To handle when an image is selected from the browser, add the following to your Activity\r\n    @Override\r\n    public void onActivityResult(int requestCode, int resultCode, Intent data) {\r\n\r\n        super.onActivityResult(requestCode, resultCode, data);\r\n        if (resultCode == RESULT_OK) {\r\n\r\n            /*if (requestCode == 1) {\r\n\r\n                // currImageURI is the global variable I'm using to hold the content:// URI of the image\r\n                Uri currImageURI = data.getData();\r\n                Bundle bundle = data.getExtras();\r\n                profilepic.setImageURI(currImageURI);\r\n                Profilepicpath = getRealPathFromURI(currImageURI);\r\n\r\n            }*/\r\n        if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && null != data) {\r\n            Uri selectedImage = data.getData();\r\n            String[] filePathColumn = { MediaStore.Images.Media.DATA };\r\n            Cursor cursor = getContentResolver().query(selectedImage,\r\n                    filePathColumn, null, null, null);\r\n            cursor.moveToFirst();\r\n            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);\r\n            picturePath = cursor.getString(columnIndex);\r\n            cursor.close();\r\n            // String picturePath contains the path of selected Image\r\n            ImageView imageView = (ImageView) findViewById(R.id.profilePhoto);\r\n            imageView.setImageBitmap(BitmapFactory.decodeFile(picturePath));\r\n        }\r\n        }\r\n    }\r\n\r\n    @Override\r\n    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {\r\n        if(requestCode == WRITE_PERMISSION){\r\n            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {\r\n                Log.d(\"Hello\", \"Write Permission Failed\");\r\n                Toast.makeText(this, \"You must allow permission write external storage to your mobile device.\", Toast.LENGTH_SHORT).show();\r\n                finish();\r\n            }\r\n        }\r\n    }\r\n\r\n    private void requestWritePermission(){\r\n        if(checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)!=PackageManager.PERMISSION_GRANTED){\r\n            ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},WRITE_PERMISSION);\r\n        }\r\n    }\r\n    // And to convert the image URI to the direct file system path of the image file\r\n    public String getRealPathFromURI(Uri contentUri) {\r\n\r\n        // can post image\r\n        String [] proj={MediaStore.Images.Media.DATA};\r\n        Cursor cursor = managedQuery( contentUri,\r\n                proj, // Which columns to return\r\n                null,       // WHERE clause; which rows to return (all rows)\r\n                null,       // WHERE clause selection arguments (none)\r\n                null); // Order-by clause (ascending by name)\r\n        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);\r\n        cursor.moveToFirst();\r\n\r\n        return cursor.getString(column_index);\r\n    }\r\n\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/sanchit/Upsilon/UserDataSetupActivity2.java	(revision c0805f3dc81a42fcde4dc05265433d47ca7eb483)
++++ app/src/main/java/com/sanchit/Upsilon/UserDataSetupActivity2.java	(date 1603629348864)
+@@ -22,11 +22,14 @@
+ import androidx.appcompat.app.AppCompatActivity;
+ import androidx.core.app.ActivityCompat;
+ 
++import com.cloudinary.Cloudinary;
+ import com.cloudinary.android.MediaManager;
++import com.cloudinary.utils.ObjectUtils;
+ import com.google.android.gms.common.internal.Constants;
+ 
+ import org.bson.Document;
+ 
++import java.io.IOException;
+ import java.util.HashMap;
+ import java.util.Map;
+ 
+@@ -46,7 +49,7 @@
+     Button nextButton;
+     EditText Name;
+     String name;
+-    int flag=0;
++    int flag = 0;
+     App app;
+     User user;
+     MongoClient mongoClient;
+@@ -86,35 +89,40 @@
+         nextButton.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View v) {
+-                if(flag==1)
+-                {
++                if (flag == 1) {
++                    Cloudinary cloudinary = new Cloudinary("cloudinary://937567483347128:wQLZU0pYv4hJt1sqF9fHB1uuEs8@upsilon175");
+                     Map config = new HashMap();
+                     config.put("cloud_name", "upsilon175");
+-                    MediaManager.init(UserDataSetupActivity2.this, config);
++                    PictureUploader x = new PictureUploader();
++                    x.run(picturePath);
++                    x.startUpload();
++
++                    /*MediaManager.init(UserDataSetupActivity2.this, config);
+                     String requestId = MediaManager.get().upload(picturePath)
+                             .unsigned("preset1")
+                             .option("resource_type", "image")
+                             .option("folder", "Upsilon/UsersProfilePictures/"+user.getId())
++                            .option("public_id",user.getId())
+                             .dispatch();
+-                    String url = MediaManager.get().url().generate(user.getId());
++                    String url = MediaManager.get().url().generate(user.getId());*/
++                    String url = "Hi";
+                     name = Name.getText().toString();
+                     mongoClient = user.getMongoClient("mongodb-atlas");
+                     mongoDatabase = mongoClient.getDatabase("Upsilon");
+-                    MongoCollection<Document> mongoCollection  = mongoDatabase.getCollection("UserData");
++                    MongoCollection<Document> mongoCollection = mongoDatabase.getCollection("UserData");
+ 
+                     //Blank query to find every single course in db
+                     //TODO: Modify query to look for user preferred course IDs
+-                    Document queryFilter  = new Document("userid",user.getId());
++                    Document queryFilter = new Document("userid", user.getId());
+ 
+                     RealmResultTask<MongoCursor<Document>> findTask = mongoCollection.find(queryFilter).iterator();
+ 
+                     findTask.getAsync(task -> {
+                         if (task.isSuccess()) {
+                             MongoCursor<Document> results = task.get();
+-                            if(!results.hasNext())
+-                            {
++                            if (!results.hasNext()) {
+                                 mongoCollection.insertOne(
+-                                        new Document("userid", user.getId()).append("favoriteColor", "pink").append("profilePicUrl",url))
++                                        new Document("userid", user.getId()).append("favoriteColor", "pink").append("profilePicUrl", url))
+                                         .getAsync(result -> {
+                                             if (result.isSuccess()) {
+                                                 Log.v("EXAMPLE", "Inserted custom user data document. _id of inserted document: "
+@@ -123,15 +131,13 @@
+                                                 Log.e("EXAMPLE", "Unable to insert custom user data. Error: " + result.getError());
+                                             }
+                                         });
+-                            }
+-                            else
+-                            {
++                            } else {
+                                 Document userdata = results.next();
+-                                userdata.append("name",name);
+-                                userdata.append("profilePicUrl",url);
++                                userdata.append("name", name);
++                                userdata.append("profilePicUrl", url);
+ 
+                                 mongoCollection.updateOne(
+-                                        new Document("userid", user.getId()),(userdata))
++                                        new Document("userid", user.getId()), (userdata))
+                                         .getAsync(result -> {
+                                             if (result.isSuccess()) {
+                                                 Log.v("EXAMPLE", "Inserted custom user data document. _id of inserted document: "
+@@ -144,14 +150,14 @@
+                             while (results.hasNext()) {
+                                 //Log.v("EXAMPLE", results.next().toString());
+                                 Document currentDoc = results.next();
+-                                Log.v("User",currentDoc.getString("userid"));
++                                Log.v("User", currentDoc.getString("userid"));
+                             }
+                         } else {
+-                            Log.v("User","Failed to complete search");
++                            Log.v("User", "Failed to complete search");
+                         }
+                     });
+                 }
+-                Intent intent = new Intent(UserDataSetupActivity2.this,UserDataSetupActivity3.class);
++                Intent intent = new Intent(UserDataSetupActivity2.this, UserDataSetupActivity3.class);
+                 startActivity(intent);
+             }
+         });
+@@ -160,7 +166,7 @@
+ 
+             public void afterTextChanged(Editable s) {
+                 nextButton.setText("Next");
+-                flag=1;
++                flag = 1;
+             }
+ 
+             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+@@ -169,8 +175,8 @@
+ 
+             public void onTextChanged(CharSequence s, int start, int before,
+                                       int count) {
+-            nextButton.setText("Next");
+-            flag=1;
++                nextButton.setText("Next");
++                flag = 1;
+             }
+         };
+ 
+@@ -195,25 +201,25 @@
+                 Profilepicpath = getRealPathFromURI(currImageURI);
+ 
+             }*/
+-        if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && null != data) {
+-            Uri selectedImage = data.getData();
+-            String[] filePathColumn = { MediaStore.Images.Media.DATA };
+-            Cursor cursor = getContentResolver().query(selectedImage,
+-                    filePathColumn, null, null, null);
+-            cursor.moveToFirst();
+-            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+-            picturePath = cursor.getString(columnIndex);
+-            cursor.close();
+-            // String picturePath contains the path of selected Image
+-            ImageView imageView = (ImageView) findViewById(R.id.profilePhoto);
+-            imageView.setImageBitmap(BitmapFactory.decodeFile(picturePath));
+-        }
++            if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && null != data) {
++                Uri selectedImage = data.getData();
++                String[] filePathColumn = {MediaStore.Images.Media.DATA};
++                Cursor cursor = getContentResolver().query(selectedImage,
++                        filePathColumn, null, null, null);
++                cursor.moveToFirst();
++                int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
++                picturePath = cursor.getString(columnIndex);
++                cursor.close();
++                // String picturePath contains the path of selected Image
++                ImageView imageView = (ImageView) findViewById(R.id.profilePhoto);
++                imageView.setImageBitmap(BitmapFactory.decodeFile(picturePath));
++            }
+         }
+     }
+ 
+     @Override
+     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+-        if(requestCode == WRITE_PERMISSION){
++        if (requestCode == WRITE_PERMISSION) {
+             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                 Log.d("Hello", "Write Permission Failed");
+                 Toast.makeText(this, "You must allow permission write external storage to your mobile device.", Toast.LENGTH_SHORT).show();
+@@ -222,17 +228,18 @@
+         }
+     }
+ 
+-    private void requestWritePermission(){
+-        if(checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)!=PackageManager.PERMISSION_GRANTED){
+-            ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},WRITE_PERMISSION);
++    private void requestWritePermission() {
++        if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
++            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, WRITE_PERMISSION);
+         }
+     }
++
+     // And to convert the image URI to the direct file system path of the image file
+     public String getRealPathFromURI(Uri contentUri) {
+ 
+         // can post image
+-        String [] proj={MediaStore.Images.Media.DATA};
+-        Cursor cursor = managedQuery( contentUri,
++        String[] proj = {MediaStore.Images.Media.DATA};
++        Cursor cursor = managedQuery(contentUri,
+                 proj, // Which columns to return
+                 null,       // WHERE clause; which rows to return (all rows)
+                 null,       // WHERE clause selection arguments (none)
+@@ -243,4 +250,24 @@
+         return cursor.getString(column_index);
+     }
+ 
++    public class PictureUploader extends Thread {
++
++        private static final String TAG = "PictureUploader";
++
++        public void run(String s) {
++
++            Cloudinary cloudinary = new Cloudinary("cloudinary://937567483347128:wQLZU0pYv4hJt1sqF9fHB1uuEs8@upsilon175");
++            try {
++                Map x = cloudinary.uploader().upload(s, ObjectUtils.emptyMap());
++                Log.i(TAG, "taille du retour  = " + String.valueOf(x.size()));
++            } catch (IOException e) {
++                e.printStackTrace();
++            }
++        }
++
++        public void startUpload() {
++            this.start(); // -> thread is alive !    }
++        }
++
++    }
+ }
+\ No newline at end of file
+Index: app/src/main/java/com/sanchit/Upsilon/MainActivity.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.sanchit.Upsilon;\r\n\r\nimport androidx.annotation.NonNull;\r\nimport androidx.appcompat.app.ActionBarDrawerToggle;\r\nimport androidx.appcompat.app.AppCompatActivity;\r\nimport androidx.appcompat.widget.Toolbar;\r\nimport androidx.core.view.GravityCompat;\r\nimport androidx.drawerlayout.widget.DrawerLayout;\r\nimport androidx.recyclerview.widget.DefaultItemAnimator;\r\nimport androidx.recyclerview.widget.LinearLayoutManager;\r\nimport androidx.recyclerview.widget.RecyclerView;\r\n\r\nimport android.content.Intent;\r\nimport android.os.Bundle;\r\nimport android.util.Log;\r\nimport android.view.Menu;\r\nimport android.view.MenuItem;\r\nimport android.view.MotionEvent;\r\nimport android.widget.Toast;\r\n\r\nimport com.google.android.material.navigation.NavigationView;\r\nimport com.sanchit.Upsilon.courseData.Course;\r\nimport com.sanchit.Upsilon.courseData.CoursesAdapter;\r\nimport com.sanchit.Upsilon.ui.login.LoginActivity;\r\n\r\nimport org.bson.Document;\r\n\r\nimport java.io.Console;\r\nimport java.util.ArrayList;\r\nimport java.util.List;\r\n\r\nimport io.realm.Realm;\r\nimport io.realm.mongodb.App;\r\nimport io.realm.mongodb.AppConfiguration;\r\nimport io.realm.mongodb.Credentials;\r\nimport io.realm.mongodb.RealmResultTask;\r\nimport io.realm.mongodb.User;\r\nimport io.realm.mongodb.mongo.MongoClient;\r\nimport io.realm.mongodb.mongo.MongoCollection;\r\nimport io.realm.mongodb.mongo.MongoDatabase;\r\nimport io.realm.mongodb.mongo.iterable.MongoCursor;\r\n\r\npublic class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {\r\n\r\n    private float x1,x2;\r\n    boolean swapped = false;\r\n    static final int MIN_DISTANCE = 150;\r\n    DrawerLayout drawer;\r\n\r\n    String appID = \"upsilon-ityvn\";\r\n    private static final String TAG = \"MainActivity\";\r\n\r\n    RecyclerView recyclerView;\r\n    CoursesAdapter coursesAdapter;\r\n    ArrayList<Course> courseArrayList = new ArrayList<Course>();\r\n    App app;\r\n    MongoClient mongoClient;\r\n    MongoDatabase mongoDatabase;\r\n\r\n    public static final List<String> TvShows  = new ArrayList<String>();\r\n    public static final int[] TvShowImgs = {R.drawable.google, R.drawable.facebook};\r\n\r\n\r\n    @Override\r\n    protected void onCreate(Bundle savedInstanceState) {\r\n        super.onCreate(savedInstanceState);\r\n        setContentView(R.layout.activity_main);\r\n        Realm.init(this); // initialize Realm, required before interacting with SDK\r\n        app = new App(new AppConfiguration.Builder(appID)\r\n                .build());\r\n        User user = app.currentUser();\r\n\r\n        Toolbar toolbar = findViewById(R.id.toolbar);\r\n        //setSupportActionBar(toolbar);\r\n\r\n        drawer = findViewById(R.id.drawer_layout);\r\n        NavigationView navigationView = findViewById(R.id.nav_view);\r\n        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(\r\n                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);\r\n        drawer.addDrawerListener(toggle);\r\n        toggle.syncState();\r\n        navigationView.setNavigationItemSelectedListener(MainActivity.this);\r\n        drawer.closeDrawer(GravityCompat.START);\r\n        if(user==null)\r\n        {\r\n            Intent intent = new Intent(MainActivity.this, LoginActivity.class);\r\n            startActivity(intent);\r\n        }\r\n        else\r\n        {\r\n            mongoClient = user.getMongoClient(\"mongodb-atlas\");\r\n            mongoDatabase = mongoClient.getDatabase(\"Upsilon\");\r\n            MongoCollection<Document> mongoCollection  = mongoDatabase.getCollection(\"UserData\");\r\n\r\n            //Blank query to find every single course in db\r\n            //TODO: Modify query to look for user preferred course IDs\r\n            Document queryFilter  = new Document(\"userid\",user.getId());\r\n\r\n            RealmResultTask<MongoCursor<Document>> findTask = mongoCollection.find(queryFilter).iterator();\r\n\r\n            findTask.getAsync(task -> {\r\n                if (task.isSuccess()) {\r\n                    MongoCursor<Document> results = task.get();\r\n                    if(!results.hasNext())\r\n                    {\r\n                        mongoCollection.insertOne(\r\n                                new Document(\"userid\", user.getId()).append(\"favoriteColor\", \"pink\"))\r\n                                .getAsync(result -> {\r\n                                    if (result.isSuccess()) {\r\n                                        Log.v(\"EXAMPLE\", \"Inserted custom user data document. _id of inserted document: \"\r\n                                                + result.get().getInsertedId());\r\n                                        goToSetupActivity();\r\n                                    } else {\r\n                                        Log.e(\"EXAMPLE\", \"Unable to insert custom user data. Error: \" + result.getError());\r\n                                    }\r\n                                });\r\n                    }\r\n                    else\r\n                    {\r\n                        Log.v(\"User\", \"successfully found the user\");\r\n                    }\r\n                    while (results.hasNext()) {\r\n                        //Log.v(\"EXAMPLE\", results.next().toString());\r\n                        Document currentDoc = results.next();\r\n                        Log.v(\"User\",currentDoc.getString(\"userid\"));\r\n                    }\r\n                } else {\r\n                   Log.v(\"User\",\"Failed to complete search\");\r\n                }\r\n            });\r\n        }\r\n        getCourseData();\r\n    }\r\n\r\n    private void goToSetupActivity() {\r\n        Intent intent = new Intent(MainActivity.this,UserDataSetupActivity1.class);\r\n        startActivity(intent);\r\n    }\r\n\r\n    public void getCourseData(){\r\n\r\n\r\n// an authenticated user is required to access a MongoDB instance\r\n\r\n            if (app.currentUser()!=null) {\r\n                final User user = app.currentUser();\r\n                assert user != null;\r\n                MongoCollection<Document> mongoCollection  = mongoDatabase.getCollection(\"CourseData\");\r\n\r\n                //Blank query to find every single course in db\r\n                //TODO: Modify query to look for user preferred course IDs\r\n                Document queryFilter  = new Document();\r\n\r\n                RealmResultTask<MongoCursor<Document>> findTask = mongoCollection.find(queryFilter).iterator();\r\n\r\n                findTask.getAsync(task -> {\r\n                    if (task.isSuccess()) {\r\n                        MongoCursor<Document> results = task.get();\r\n                        Log.v(\"COURSEHandler\", \"successfully found all courses:\");\r\n                        while (results.hasNext()) {\r\n                            //Log.v(\"EXAMPLE\", results.next().toString());\r\n                            Document currentDoc = results.next();\r\n\r\n                            Course course = new Course();\r\n\r\n                            course.setCourseName(currentDoc.getString(\"courseName\"));\r\n                            //TODO : implement card image fetching via database\r\n                            course.setCardImgID(TvShowImgs[0]);\r\n                            courseArrayList.add(course);\r\n                        }\r\n                        displayCoursesInRecycler();\r\n                    } else {\r\n                        Log.e(\"COURSEHandler\", \"failed to find courses with: \", task.getError());\r\n                    }\r\n                });\r\n            }\r\n            else {\r\n                    Log.e(TAG, \"Error logging into the Realm app. Make sure that anonymous authentication is enabled.\");\r\n                }\r\n\r\n        User user = app.currentUser();\r\n\r\n    }\r\n\r\n    public void displayCoursesInRecycler(){\r\n        coursesAdapter = new CoursesAdapter(courseArrayList);\r\n\r\n        recyclerView = (RecyclerView)findViewById(R.id.currentCourseListView);\r\n        recyclerView.setLayoutManager(new LinearLayoutManager(this));\r\n        recyclerView.setItemAnimator(new DefaultItemAnimator());\r\n        recyclerView.setAdapter(coursesAdapter);\r\n    }\r\n\r\n    @Override\r\n    public boolean onCreateOptionsMenu(Menu menu) {\r\n        // Inflate the menu; this adds items to the action bar if it is present.\r\n        getMenuInflater().inflate(R.menu.home_drawer_menu, menu);\r\n        return true;\r\n    }\r\n\r\n    @Override\r\n    public boolean onNavigationItemSelected(@NonNull MenuItem item) {\r\n        int id = item.getItemId();\r\n\r\n        DrawerLayout drawer = findViewById(R.id.drawer_layout);\r\n        drawer.closeDrawer(GravityCompat.START);\r\n        return true;\r\n    }\r\n\r\n    @Override\r\n    public void onPointerCaptureChanged(boolean hasCapture) {\r\n\r\n    }\r\n\r\n    @Override\r\n    public boolean onTouchEvent(MotionEvent event)\r\n    {\r\n        if(swapped){\r\n     /*Make sure you don't swap twice,\r\nsince the dispatchTouchEvent might dispatch your touch event to this function again!*/\r\n            swapped = false;\r\n            return super.onTouchEvent(event);\r\n        }\r\n        switch(event.getAction())\r\n        {\r\n            case MotionEvent.ACTION_DOWN:\r\n                x1 = event.getX();\r\n                break;\r\n            case MotionEvent.ACTION_UP:\r\n                x2 = event.getX();\r\n                float deltaX = x2 - x1;\r\n                if (deltaX > MIN_DISTANCE)\r\n                {\r\n                    drawer.openDrawer(GravityCompat.START);\r\n                    //you already swapped, set flag swapped = true\r\n                    swapped = true;\r\n                }\r\n                else\r\n                {\r\n                    // not swapping\r\n                }\r\n                break;\r\n        }\r\n        return super.onTouchEvent(event);\r\n    }\r\n\r\n    @Override\r\n    public boolean dispatchTouchEvent(MotionEvent event){\r\n        this.onTouchEvent(event);\r\n        return super.dispatchTouchEvent(event);\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/sanchit/Upsilon/MainActivity.java	(revision c0805f3dc81a42fcde4dc05265433d47ca7eb483)
++++ app/src/main/java/com/sanchit/Upsilon/MainActivity.java	(date 1603627504163)
+@@ -16,12 +16,14 @@
+ import android.view.Menu;
+ import android.view.MenuItem;
+ import android.view.MotionEvent;
++import android.widget.ImageView;
+ import android.widget.Toast;
+ 
+ import com.google.android.material.navigation.NavigationView;
+ import com.sanchit.Upsilon.courseData.Course;
+ import com.sanchit.Upsilon.courseData.CoursesAdapter;
+ import com.sanchit.Upsilon.ui.login.LoginActivity;
++import com.squareup.picasso.Picasso;
+ 
+ import org.bson.Document;
+ 
+@@ -56,6 +58,7 @@
+     App app;
+     MongoClient mongoClient;
+     MongoDatabase mongoDatabase;
++    ImageView imageView;
+ 
+     public static final List<String> TvShows  = new ArrayList<String>();
+     public static final int[] TvShowImgs = {R.drawable.google, R.drawable.facebook};
+@@ -70,6 +73,7 @@
+                 .build());
+         User user = app.currentUser();
+ 
++        imageView = (ImageView) findViewById(R.id.profilePhotoTest);
+         Toolbar toolbar = findViewById(R.id.toolbar);
+         //setSupportActionBar(toolbar);
+ 
+@@ -118,6 +122,7 @@
+                     else
+                     {
+                         Log.v("User", "successfully found the user");
++                        getCourseData();
+                     }
+                     while (results.hasNext()) {
+                         //Log.v("EXAMPLE", results.next().toString());
+@@ -129,7 +134,6 @@
+                 }
+             });
+         }
+-        getCourseData();
+     }
+ 
+     private void goToSetupActivity() {
+@@ -169,6 +173,31 @@
+                             courseArrayList.add(course);
+                         }
+                         displayCoursesInRecycler();
++                    } else {
++                        Log.e("COURSEHandler", "failed to find courses with: ", task.getError());
++                    }
++                });
++
++
++                MongoCollection<Document> mongoCollection1  = mongoDatabase.getCollection("UserData");
++
++                //Blank query to find every single course in db
++                //TODO: Modify query to look for user preferred course IDs
++                Document queryFilter1  = new Document();
++                queryFilter1.append("userid",user.getId());
++
++                RealmResultTask<MongoCursor<Document>> findTask1 = mongoCollection1.find(queryFilter1).iterator();
++
++                findTask1.getAsync(task -> {
++                    if (task.isSuccess()) {
++                        MongoCursor<Document> results = task.get();
++                        Log.v("COURSEHandler", "successfully found all courses:");
++                        Document document = results.next();
++                        String url = document.getString("profilePicUrl");
++                        Toast.makeText(MainActivity.this,url,Toast.LENGTH_LONG).show();
++                        //Log.v("User","Hi"+ url);
++                        Picasso.with(getApplicationContext()).load(url).into(imageView);
++
+                     } else {
+                         Log.e("COURSEHandler", "failed to find courses with: ", task.getError());
+                     }
+@@ -194,14 +223,18 @@
+     @Override
+     public boolean onCreateOptionsMenu(Menu menu) {
+         // Inflate the menu; this adds items to the action bar if it is present.
+-        getMenuInflater().inflate(R.menu.home_drawer_menu, menu);
++        getMenuInflater().inflate(R.menu.three_dot_menu, menu);
+         return true;
+     }
+ 
+     @Override
+     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+         int id = item.getItemId();
+-
++        if(id==R.id.homeDrawerMenuItem1)
++        {
++            Intent intent = new Intent(MainActivity.this,AddCourseActivity.class);
++            startActivity(intent);
++        }
+         DrawerLayout drawer = findViewById(R.id.drawer_layout);
+         drawer.closeDrawer(GravityCompat.START);
+         return true;
+@@ -249,4 +282,5 @@
+         this.onTouchEvent(event);
+         return super.dispatchTouchEvent(event);
+     }
++
+ }
+\ No newline at end of file
+Index: app/src/main/res/menu/home_drawer_menu.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<menu xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    xmlns:tools=\"http://schemas.android.com/tools\"\r\n    tools:showIn=\"navigation_view\">\r\n    <item\r\n        android:title=\"Title 1\"\r\n        android:id=\"@+id/homeDrawerMenuItem1\"\r\n        android:icon=\"@drawable/add_box_icon\"/>\r\n    <item\r\n        android:title=\"Title 2\"\r\n        android:id=\"@+id/homeDrawerMenuItem2\"\r\n        android:icon=\"@drawable/add_box_icon\"/>\r\n    <item\r\n        android:title=\"Title 3\"\r\n        android:id=\"@+id/homeDrawerMenuItem3\"\r\n        android:icon=\"@drawable/add_box_icon\"/>\r\n\r\n    <item\r\n        android:title=\"Title 4\"\r\n        android:id=\"@+id/homeDrawerMenuItem4\"\r\n        android:icon=\"@drawable/add_box_icon\"/>\r\n    <item\r\n        android:title=\"Title 5\"\r\n        android:id=\"@+id/homeDrawerMenuItem5\"\r\n        android:icon=\"@drawable/add_box_icon\"/>\r\n    <item\r\n        android:title=\"Title 6\"\r\n        android:id=\"@+id/homeDrawerMenuItem6\"\r\n        android:icon=\"@drawable/add_box_icon\"/>\r\n</menu>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/menu/home_drawer_menu.xml	(revision c0805f3dc81a42fcde4dc05265433d47ca7eb483)
++++ app/src/main/res/menu/home_drawer_menu.xml	(date 1603625913322)
+@@ -3,7 +3,7 @@
+     xmlns:tools="http://schemas.android.com/tools"
+     tools:showIn="navigation_view">
+     <item
+-        android:title="Title 1"
++        android:title="Add Course"
+         android:id="@+id/homeDrawerMenuItem1"
+         android:icon="@drawable/add_box_icon"/>
+     <item
+Index: app/src/main/res/menu/three_dot_menu.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/menu/three_dot_menu.xml	(date 1603625270546)
++++ app/src/main/res/menu/three_dot_menu.xml	(date 1603625270546)
+@@ -0,0 +1,13 @@
++<?xml version="1.0" encoding="utf-8"?>
++<menu xmlns:android="http://schemas.android.com/apk/res/android"
++    xmlns:tools="http://schemas.android.com/tools"
++    tools:showIn="navigation_view">
++    <item
++        android:title="Title 1"
++        android:id="@+id/homeDrawerMenuItem1"
++        android:icon="@drawable/add_box_icon"/>
++    <item
++        android:title="SignOut"
++        android:id="@+id/homeDrawerMenuItem2"
++        android:icon="@drawable/add_box_icon"/>
++</menu>
+\ No newline at end of file
+diff --git .idea/shelf/homePageXML.xml .idea/shelf/homePageXML.xml
+diff --git .idea/shelf/Uncommitted_changes_before_Update_at_10_19_2020_1_24_PM__Default_Changelist_.xml .idea/shelf/Uncommitted_changes_before_Update_at_10_19_2020_1_24_PM__Default_Changelist_.xml

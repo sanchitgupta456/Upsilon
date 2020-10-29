@@ -109,6 +109,7 @@
                 android:layout_margin="@dimen/text_margin"
                 android:background="@drawable/frame_recycler_view"
                 android:elevation="100dp"
+                android:id="@+id/add_course_mode"
                 android:shadowColor="@color/colorBlack"
                 android:textColor="@color/colorWhite"
                 android:textSize="@dimen/text_margin"
