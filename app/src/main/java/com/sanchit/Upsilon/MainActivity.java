@@ -24,7 +24,7 @@ import com.google.android.material.navigation.NavigationView;
 import com.sanchit.Upsilon.courseData.Course;
 import com.sanchit.Upsilon.courseData.CoursesAdapter;
 import com.sanchit.Upsilon.ui.login.LoginActivity;
-import com.squareup.picasso.Picasso;
+//import com.squareup.picasso.Picasso;
 
 import org.bson.Document;
 

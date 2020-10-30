@@ -27,6 +27,8 @@ import com.cloudinary.Transformation;
 import com.cloudinary.android.MediaManager;
 import com.cloudinary.utils.ObjectUtils;
 import com.google.android.gms.common.internal.Constants;
+import com.sanchit.Upsilon.cloudinaryUpload.Signature;
+import com.sanchit.Upsilon.cloudinaryUpload.SignatureProvider;
 
 import org.bson.Document;
 
@@ -94,6 +96,20 @@ public class UserDataSetupActivity2 extends AppCompatActivity {
             public void onClick(View v) {
                 if(flag==1)
                 {
+                    Map config = new HashMap();
+                    config.put("cloud_name", "myCloudName");
+                    MediaManager.init(this, new SignatureProvider(){
+                        @Override
+                        public Signature provideSignature(Map options) {
+                            // replace the following with a function that calls your backend signature generation endpoint
+                            SignResult res = signUpload(options);  // example name of a function that implements a synchronous HTTPS call
+                            return new Signature(res.getSignature(), res.getApiKey(), res.getTimestamp());
+                        }
+                        @Override
+                        public String getName() {
+                            return "SampleSignatureProvider"; // for logging purposes
+                        }
+                    }, config);
                     Map config = new HashMap();
                     config.put("cloud_name", "upsilon175");
                     MediaManager.init(UserDataSetupActivity2.this, config);
