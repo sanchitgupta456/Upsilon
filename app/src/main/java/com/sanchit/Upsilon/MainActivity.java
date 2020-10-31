@@ -171,7 +171,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                             course.setCourseName(currentDoc.getString("courseName"));
                             //TODO : implement card image fetching via database
-                            course.setCardImgID(TvShowImgs[0]);
+                            //course.setCardImgID(TvShowImgs[0]);
                             courseArrayList.add(course);
                         }
                         displayCoursesInRecycler();

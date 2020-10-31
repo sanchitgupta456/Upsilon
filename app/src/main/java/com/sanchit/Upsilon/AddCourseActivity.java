@@ -12,8 +12,16 @@ import android.widget.ToggleButton;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.sanchit.Upsilon.courseData.Course;
+import com.sanchit.Upsilon.courseData.CourseReview;
+
 import org.bson.Document;
 
+import java.util.ArrayList;
+
+import io.realm.Realm;
+import io.realm.RealmList;
+import io.realm.RealmObject;
 import io.realm.mongodb.App;
 import io.realm.mongodb.AppConfiguration;
 import io.realm.mongodb.User;
@@ -34,6 +42,8 @@ public class AddCourseActivity extends AppCompatActivity {
     User user;
     MongoClient mongoClient;
     MongoDatabase mongoDatabase;
+    RealmList<CourseReview> courseReviews;
+    CourseReview course;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -61,6 +71,7 @@ public class AddCourseActivity extends AppCompatActivity {
                 courseDescription = CourseDescription.getText().toString();
                 courseDuration = CourseDuration.getText().toString();
                 numOfBatches = NumberOfBatches.getText().toString();
+                //courseReviews = new ArrayList<CourseReview>();
                 if(offline_online.isChecked())
                 {
                     mode="Online";
@@ -69,15 +80,32 @@ public class AddCourseActivity extends AppCompatActivity {
                 {
                     mode="Offline";
                 }
-
+                course = new CourseReview("Hi",5,"Hello");
+                courseReviews = new RealmList<>();
+                courseReviews.add(course);
+                course.setRatingAuthorId("h");
+                course.setReview("fd");
+                course.setReviewRating(1.23);
+                courseReviews.add(course);
                 Document courseDetails = new Document();
-                courseDetails.append("courseName",courseName);
-                /*courseDetails.append("courseDescription",courseDescription);
-                courseDetails.append("courseDuration",courseDuration);
-                courseDetails.append("mode",mode);
-                courseDetails.append("numberOfBatches",numOfBatches);*/
 
-                mongoCollection.insertOne(courseDetails.append("courseId","heha")).getAsync(result -> {
+                courseDetails.append("_partitionkey","_partitionKey");
+                courseDetails.append("courseName",courseName);
+                courseDetails.append("tutorId",user.getId().toString());
+                courseDetails.append("courseDescription",courseDescription);
+                courseDetails.append("coursePreReq","");
+                courseDetails.append("courseRating",4.98);
+                courseDetails.append("courseMode",mode);
+                courseDetails.append("courseFees",0);
+                courseDetails.append("instructorLocation","Here");
+                courseDetails.append("courseDurationMeasure","hours");
+                courseDetails.append("numberOfStudentsEnrolled",10);
+                courseDetails.append("courseImage","this is image");
+                courseDetails.append("courseDuration",courseDuration);
+                courseDetails.append("numberOfBatches",numOfBatches);
+                courseDetails.append("courseReviews",courseReviews);
+
+                mongoCollection.insertOne(courseDetails).getAsync(result -> {
                     if(result.isSuccess())
                     {
                         Toast.makeText(getApplicationContext(),"Successfully Added The Course",Toast.LENGTH_LONG).show();
@@ -87,7 +115,6 @@ public class AddCourseActivity extends AppCompatActivity {
                         Log.v("User",result.getError().toString());
                     }
                 });
-
 
 
             }
