@@ -20,6 +20,7 @@ import android.view.Window;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.cloudinary.android.MediaManager;
 import com.google.android.material.navigation.NavigationView;
 import com.sanchit.Upsilon.courseData.Course;
 import com.sanchit.Upsilon.courseData.CoursesAdapter;
@@ -30,7 +31,9 @@ import org.bson.Document;
 
 import java.io.Console;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import io.realm.Realm;
 import io.realm.mongodb.App;
@@ -69,7 +72,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Realm.init(this); // initialize Realm, required before interacting with SDK
         app = new App(new AppConfiguration.Builder(appID)
                 .build());
         User user = app.currentUser();
@@ -261,6 +263,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if(id==R.id.homeDrawerMenuItem1)
         {
             Intent intent = new Intent(MainActivity.this,AddCourseActivity.class);
+            startActivity(intent);
+        }
+        else if(id==R.id.homeDrawerMenuItem2)
+        {
+            Intent intent = new Intent(MainActivity.this,UserDataSetupActivity2.class);
             startActivity(intent);
         }
         DrawerLayout drawer = findViewById(R.id.drawer_layout);

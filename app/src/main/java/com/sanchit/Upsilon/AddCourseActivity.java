@@ -15,9 +15,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.sanchit.Upsilon.courseData.Course;
 import com.sanchit.Upsilon.courseData.CourseReview;
 
+import org.bson.BsonArray;
 import org.bson.Document;
+import org.bson.types.BasicBSONList;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import io.realm.Realm;
 import io.realm.RealmList;
@@ -42,8 +45,7 @@ public class AddCourseActivity extends AppCompatActivity {
     User user;
     MongoClient mongoClient;
     MongoDatabase mongoDatabase;
-    RealmList<CourseReview> courseReviews;
-    CourseReview course;
+    BasicBSONList courseReviews;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -76,17 +78,19 @@ public class AddCourseActivity extends AppCompatActivity {
                 {
                     mode="Online";
                 }
-                else
-                {
-                    mode="Offline";
+                else {
+                    mode = "Offline";
                 }
-                course = new CourseReview("Hi",5,"Hello");
-                courseReviews = new RealmList<>();
-                courseReviews.add(course);
-                course.setRatingAuthorId("h");
+                Object object = new CourseReview("Hi",5,"Hello");
+                //course = new CourseReview("Hi",5,"Hello");
+                courseReviews = new BasicBSONList();
+                courseReviews.put(1,object);
+                courseReviews.put(2,object);
+                //courseReviews.put("hello",object);
+                /*course.setRatingAuthorId("h");
                 course.setReview("fd");
                 course.setReviewRating(1.23);
-                courseReviews.add(course);
+                courseReviews.add(course);*/
                 Document courseDetails = new Document();
 
                 courseDetails.append("_partitionkey","_partitionKey");

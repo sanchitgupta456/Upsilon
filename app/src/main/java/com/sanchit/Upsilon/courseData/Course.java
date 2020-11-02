@@ -1,11 +1,14 @@
 package com.sanchit.Upsilon.courseData;
 
+import org.bson.codecs.BsonArrayCodec;
+import org.bson.types.BasicBSONList;
+
 import java.util.ArrayList;
 
 import io.realm.RealmList;
 import io.realm.RealmObject;
 
-public class Course extends RealmObject{
+public class Course extends Object{
     private String courseName;
     private String tutorId;
     private String courseDescription;
@@ -18,7 +21,7 @@ public class Course extends RealmObject{
     private int courseDuration;
     private int numberOfStudentsEnrolled;
     private int numberOfBatches;
-    private RealmList<CourseReview> courseReviews;
+    private BasicBSONList courseReviews;
     private String cardImgID;
 
     public Course() {
@@ -120,11 +123,11 @@ public class Course extends RealmObject{
         this.numberOfBatches = numberOfBatches;
     }
 
-    public RealmList<CourseReview> getCourseReviews() {
+    public BasicBSONList getCourseReviews() {
         return courseReviews;
     }
 
-    public void setCourseReviews(RealmList<CourseReview> courseReviews) {
+    public void setCourseReviews(BasicBSONList courseReviews) {
         this.courseReviews = courseReviews;
     }
 

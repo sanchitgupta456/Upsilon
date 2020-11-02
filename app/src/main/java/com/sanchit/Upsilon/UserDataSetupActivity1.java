@@ -78,7 +78,7 @@ public class UserDataSetupActivity1 extends AppCompatActivity {
                         if(!results.hasNext())
                         {
                             mongoCollection.insertOne(
-                                    new Document("userid", user.getId()).append("favoriteColor", "pink").append("interests",interests))
+                                    new Document("userid", user.getId()).append("profilePicCounter",0).append("favoriteColor", "pink").append("interests",interests))
                                     .getAsync(result -> {
                                         if (result.isSuccess()) {
                                             Log.v("EXAMPLE", "Inserted custom user data document. _id of inserted document: "
@@ -92,6 +92,7 @@ public class UserDataSetupActivity1 extends AppCompatActivity {
                         {
                             Document userdata = results.next();
                             userdata.append("interests",interests);
+                            userdata.append("profilePicCounter",0);
 
                             mongoCollection.updateOne(
                                     new Document("userid", user.getId()),(userdata))

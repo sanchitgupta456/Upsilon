@@ -2,7 +2,7 @@ package com.sanchit.Upsilon.courseData;
 
 import io.realm.RealmObject;
 
-public class CourseReview extends RealmObject {
+public class CourseReview extends Object {
 
     private String review;
     private double reviewRating;
