@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@drawable/background">
+    android:background="@drawable/alterbackground">
 
     <TextView
         android:layout_width="match_parent"
@@ -25,8 +25,8 @@
         android:layout_marginStart="72dp"
         android:layout_marginEnd="72dp"
         android:hint="@string/enter_your_name"
-        android:textColorHint="#CCCCCC"
-        android:textColor="@color/colorWhite"
+        android:textColorHint="@color/colorWhite"
+        android:textColor="@color/colorPrimaryDark"
         android:gravity="center"
         android:layout_centerInParent="true"
         android:background="@drawable/text_view_login"

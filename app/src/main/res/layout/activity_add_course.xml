@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorLiteGrey"
+    android:background="@color/colorAccent"
     tools:context=".AddCourseActivity">
 
 
@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="20sp"
-        android:textColor="@color/colorBlack"
+        android:textColor="@color/colorPrimaryDark"
         android:layout_marginStart="24dp"
         android:layout_marginEnd="@dimen/activity_horizontal_margin"
         android:layout_marginBottom="@dimen/activity_vertical_margin"
@@ -39,9 +39,9 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/course_name"
                 android:inputType="text"
-                android:textColorHint="#50000000"
-                android:textColor="@color/colorBlack"
-                android:background="@drawable/text_view_login"
+                android:textColorHint="@color/colorPrimaryDark"
+                android:textColor="@color/colorPrimaryDark"
+                android:background="@drawable/text_view_add_course"
                 android:padding="10dp"
                 android:layout_margin="@dimen/text_margin"
                 android:id="@+id/add_course_name"/>
@@ -50,12 +50,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/course_description"
-                android:textColorHint="#50000000"
+                android:textColorHint="@color/colorPrimaryDark"
                 android:inputType="textMultiLine"
-                android:background="@drawable/text_view_login"
+                android:background="@drawable/text_view_add_course"
                 android:padding="10dp"
                 android:layout_margin="@dimen/text_margin"
-                android:textColor="@color/colorBlack"
+                android:textColor="@color/colorPrimaryDark"
                 android:id="@+id/add_course_description"/>
 
             <LinearLayout
@@ -70,9 +70,9 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/course_duration"
                     android:inputType="number"
-                    android:textColorHint="#50000000"
-                    android:textColor="@color/colorBlack"
-                    android:background="@drawable/text_view_login"
+                    android:textColorHint="@color/colorPrimaryDark"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:background="@drawable/text_view_add_course"
                     android:padding="10dp"
                     android:layout_weight="50"
                     android:id="@+id/add_course_duration"/>
@@ -82,9 +82,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:padding="5dp"
-                    android:background="@color/colorGrey"
+                    android:background="@drawable/text_view_add_course"
                     android:layout_weight="50"
-                    android:dropDownSelector="@color/colorBlack"
+                    android:dropDownSelector="@color/colorPrimaryDark"
                     android:dropDownWidth="wrap_content"/>
                 <!--
                 <TextView
@@ -107,10 +107,10 @@
                 android:textOff="@string/offline"
                 android:textOn="@string/online"
                 android:layout_margin="@dimen/text_margin"
-                android:background="@drawable/frame_recycler_view"
+                android:background="@drawable/btn_multi_select"
                 android:elevation="100dp"
-                android:shadowColor="@color/colorBlack"
-                android:textColor="@color/colorWhite"
+                android:shadowColor="@color/colorPrimaryDark"
+                android:textColor="@color/colorBlack"
                 android:textSize="@dimen/text_margin"
                 android:textStyle="bold"
                 android:checked="true"/>
@@ -161,8 +161,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="50"
-                    android:buttonTint="@color/colorBlack"
-                    android:textColor="@color/colorBlack"
+                    android:buttonTint="@color/colorPrimaryDark"
+                    android:textColor="@color/colorPrimaryDark"
                     android:textSize="@dimen/text_margin"
                     android:text="@string/grouped_classes"/>
 
@@ -171,8 +171,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="50"
-                    android:buttonTint="@color/colorBlack"
-                    android:textColor="@color/colorBlack"
+                    android:buttonTint="@color/colorPrimaryDark"
+                    android:textColor="@color/colorPrimaryDark"
                     android:textSize="@dimen/text_margin"
                     android:text="@string/individual"/>
 
@@ -222,12 +222,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/number_of_batches"
-                android:textColorHint="#50000000"
+                android:textColorHint="@color/colorPrimaryDark"
                 android:inputType="number"
-                android:background="@drawable/text_view_login"
+                android:background="@drawable/text_view_add_course"
                 android:padding="10dp"
                 android:layout_margin="@dimen/text_margin"
-                android:textColor="@color/colorBlack"
+                android:textColor="@color/colorPrimaryDark"
                 android:id="@+id/add_course_num_batches"/>
 
             <!-- Available Days And Time Slotting here -->
@@ -244,8 +244,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="50"
-                    android:buttonTint="@color/colorBlack"
-                    android:textColor="@color/colorBlack"
+                    android:buttonTint="@color/colorPrimaryDark"
+                    android:textColor="@color/colorPrimaryDark"
                     android:textSize="@dimen/text_margin"
                     android:text="@string/teach_for_free"/>
 
@@ -253,8 +253,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="50"
-                    android:buttonTint="@color/colorBlack"
-                    android:textColor="@color/colorBlack"
+                    android:buttonTint="@color/colorPrimaryDark"
+                    android:textColor="@color/colorPrimaryDark"
                     android:textSize="@dimen/text_margin"
                     android:text="@string/charge_a_fee"/>
 

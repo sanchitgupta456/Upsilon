@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity"
     android:id="@+id/drawer_layout"
-    android:background="@color/colorLiteGrey">
+    android:background="@color/colorAccent">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -26,7 +26,7 @@
                 android:layout_marginTop="24dp"
                 android:gravity="start"
                 android:text="@string/resume_learning"
-                android:textColor="@color/colorBlack"
+                android:textColor="@color/colorPrimaryDark"
                 android:textSize="14sp"
                 android:typeface="sans" />
 
@@ -40,7 +40,7 @@
                     android:orientation="horizontal"
                     android:layout_below="@id/textYourCurrentCourses"
                     android:layout_margin="5dp"
-                    android:background="@color/colorGrey"/>
+                    android:background="@color/colorBlue"/>
 
                 <TextView
                     android:id="@+id/textRecommendedCoursesList"
@@ -49,7 +49,7 @@
                     android:gravity="start"
                     android:layout_marginStart="15dp"
                     android:text="@string/recommended_for_you"
-                    android:textColor="@color/colorBlack"
+                    android:textColor="@color/colorPrimaryDark"
                     android:textSize="14sp"
                     android:typeface="sans"
                     android:layout_below="@id/currentCourseListView"
@@ -63,7 +63,7 @@
                     android:orientation="horizontal"
                     android:scrollbars="horizontal"
                     android:layout_below="@id/textRecommendedCoursesList"
-                    android:background="@color/colorGrey"/>
+                    android:background="@color/colorBlue"/>
 
                 <TextView
                     android:id="@+id/textExploreCoursesList"
@@ -72,7 +72,7 @@
                     android:gravity="start"
                     android:layout_marginStart="15dp"
                     android:text="@string/explore"
-                    android:textColor="@color/colorBlack"
+                    android:textColor="@color/colorPrimaryDark"
                     android:textSize="14sp"
                     android:typeface="sans"
                     android:layout_marginTop="24dp"
@@ -88,7 +88,7 @@
                     android:scrollbars="horizontal"
                     android:layout_below="@id/textExploreCoursesList"
                     android:layout_margin="5dp"
-                    android:background="@color/colorGrey"/>
+                    android:background="@color/colorBlue"/>
             <!--<ImageView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -101,12 +101,12 @@
         android:id="@+id/nav_view"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:background="@color/colorLiteGrey"
+        android:background="@color/colorAccent"
         android:fitsSystemWindows="true"
         android:gravity="start"
         app:headerLayout="@layout/header_layout"
-        app:itemIconTint="@color/colorBlack"
-        app:itemTextColor="@color/colorBlack"
+        app:itemIconTint="@color/colorPrimaryDark"
+        app:itemTextColor="@color/colorPrimaryDark"
         app:menu="@menu/home_drawer_menu"
         android:visibility="invisible"/>
 

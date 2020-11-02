@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@drawable/background">
+    android:background="@drawable/alterbackground">
 
     <TextView
         android:id="@+id/signupText"
@@ -39,7 +39,8 @@
             android:hint="@string/username"
             android:inputType="textPersonName"
             android:padding="10dp"
-            android:textColorHint="@color/colorWhite" />
+            android:textColorHint="@color/colorWhite"
+            android:textColor="@color/colorPrimaryDark"/>
 
         <EditText
             android:id="@+id/email"
@@ -51,7 +52,8 @@
             android:hint="@string/prompt_email"
             android:inputType="textEmailAddress"
             android:padding="10dp"
-            android:textColorHint="@color/colorWhite" />
+            android:textColorHint="@color/colorWhite"
+            android:textColor="@color/colorPrimaryDark"/>
 
         <EditText
             android:id="@+id/password"
@@ -63,7 +65,8 @@
             android:hint="@string/prompt_password"
             android:inputType="textPassword"
             android:padding="10dp"
-            android:textColorHint="@color/colorWhite" />
+            android:textColorHint="@color/colorWhite"
+            android:textColor="@color/colorPrimaryDark"/>
 
         <EditText
             android:id="@+id/confirmPassword"
@@ -75,7 +78,8 @@
             android:hint="@string/confirm_password"
             android:inputType="textPassword"
             android:padding="10dp"
-            android:textColorHint="@color/colorWhite" />
+            android:textColorHint="@color/colorWhite"
+            android:textColor="@color/colorPrimaryDark"/>
 
     </LinearLayout>
 

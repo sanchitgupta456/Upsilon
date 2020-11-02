@@ -3,14 +3,14 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/homepageDarkBackground">
+    android:background="@color/colorAccent">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="20sp"
         android:text="@string/teach_at_upsilon"
-        android:textColor="@color/colorWhite"
+        android:textColor="@color/colorPrimaryDark"
         android:layout_marginTop="48dp"
         android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp"
@@ -21,7 +21,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="@dimen/text_margin"
-        android:textColor="@color/colorAccent"
+        android:textColor="@color/colorPrimaryDark"
         android:layout_below="@id/textCoursesTaught1"
         android:text="@string/your_active_courses"
         android:layout_marginTop="@dimen/activity_vertical_margin"
@@ -50,7 +50,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="@dimen/text_margin"
-        android:textColor="@color/colorAccent"
+        android:textColor="@color/colorPrimaryDark"
         android:layout_below="@id/frameCurrentCoursesTaught"
         android:text="@string/your_time_with_us"
         android:layout_marginTop="@dimen/activity_vertical_margin"
@@ -62,7 +62,7 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/homepageDarkBackground"
+        android:background="@drawable/frame_recycler_view"
         android:layout_below="@id/textCoursesTaught3"
         android:layout_margin="10dp"
         android:padding="1dp">

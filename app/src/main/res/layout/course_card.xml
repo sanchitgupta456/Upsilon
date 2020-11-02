@@ -27,7 +27,7 @@
                 android:layout_height="match_parent"
                 android:contentDescription="Course Representative Image"
                 android:scaleType="centerCrop"
-                android:src="@color/cardview_dark_background" />
+                android:src="@color/colorPrimary" />
 
             <TextView
                 android:id="@+id/courseName"
@@ -35,9 +35,11 @@
                 android:layout_height="wrap_content"
                 android:layout_alignBottom="@id/courseImage"
                 android:layout_marginStart="@dimen/activity_horizontal_margin"
+                android:layout_margin="@dimen/text_margin"
                 android:layout_marginBottom="@dimen/activity_vertical_margin"
                 android:textColor="@color/colorWhite"
                 android:textSize="24sp"
+                android:textStyle="bold"
                 android:typeface="sans" />
         </RelativeLayout>
 
