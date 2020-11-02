@@ -1,47 +1,141 @@
 package com.sanchit.Upsilon.courseData;
 
+import org.bson.codecs.BsonArrayCodec;
+import org.bson.types.BasicBSONList;
+
+import java.util.ArrayList;
+
+import io.realm.RealmList;
 import io.realm.RealmObject;
 
-public class Course extends RealmObject {
+public class Course extends Object{
     private String courseName;
-    private String tutorName;
+    private String tutorId;
+    private String courseDescription;
+    private String coursePreReq;
+    private double courseRating;
+    private String courseMode;
+    private String courseFees;
+    private String instructorLocation;
+    private String courseDurationMeasure;
+    private int courseDuration;
     private int numberOfStudentsEnrolled;
-    private int cardImgID;
+    private int numberOfBatches;
+    private BasicBSONList courseReviews;
+    private String cardImgID;
 
+    public Course() {
+    }
+
+    public String getCourseName() {
+        return courseName;
+    }
 
     public void setCourseName(String courseName) {
         this.courseName = courseName;
     }
 
-    public void setCardImgID(int cardImgID) {
-        this.cardImgID = cardImgID;
+    public String getTutorId() {
+        return tutorId;
     }
 
-    public void setTutorName(String tutorName) {
-        this.tutorName = tutorName;
+    public void setTutorId(String tutorId) {
+        this.tutorId = tutorId;
+    }
+
+    public String getCourseDescription() {
+        return courseDescription;
+    }
+
+    public void setCourseDescription(String courseDescription) {
+        this.courseDescription = courseDescription;
+    }
+
+    public String getCoursePreReq() {
+        return coursePreReq;
+    }
+
+    public void setCoursePreReq(String coursePreReq) {
+        this.coursePreReq = coursePreReq;
+    }
+
+    public double getCourseRating() {
+        return courseRating;
+    }
+
+    public void setCourseRating(float courseRating) {
+        this.courseRating = courseRating;
+    }
+
+    public String getCourseMode() {
+        return courseMode;
+    }
+
+    public void setCourseMode(String courseMode) {
+        this.courseMode = courseMode;
+    }
+
+    public String getCourseFees() {
+        return courseFees;
+    }
+
+    public void setCourseFees(String courseFees) {
+        this.courseFees = courseFees;
+    }
+
+    public String getInstructorLocation() {
+        return instructorLocation;
+    }
+
+    public void setInstructorLocation(String instructorLocation) {
+        this.instructorLocation = instructorLocation;
+    }
+
+    public String getCourseDurationMeasure() {
+        return courseDurationMeasure;
+    }
+
+    public void setCourseDurationMeasure(String courseDurationMeasure) {
+        this.courseDurationMeasure = courseDurationMeasure;
+    }
+
+    public int getCourseDuration() {
+        return courseDuration;
+    }
+
+    public void setCourseDuration(int courseDuration) {
+        this.courseDuration = courseDuration;
+    }
+
+    public int getNumberOfStudentsEnrolled() {
+        return numberOfStudentsEnrolled;
     }
 
     public void setNumberOfStudentsEnrolled(int numberOfStudentsEnrolled) {
         this.numberOfStudentsEnrolled = numberOfStudentsEnrolled;
     }
 
-    public void incrEnrolled(){
-        this.numberOfStudentsEnrolled += 1;
+    public int getNumberOfBatches() {
+        return numberOfBatches;
     }
 
-    public String getCourseName(){
-        return courseName;
+    public void setNumberOfBatches(int numberOfBatches) {
+        this.numberOfBatches = numberOfBatches;
     }
 
-    public String getTutorName(){
-        return tutorName;
+    public BasicBSONList getCourseReviews() {
+        return courseReviews;
     }
 
-    public int getNumberOfStudentsEnrolled(){
-        return numberOfStudentsEnrolled;
+    public void setCourseReviews(BasicBSONList courseReviews) {
+        this.courseReviews = courseReviews;
     }
 
-    public int getCardImgID() {
+    public String getCardImgID() {
         return cardImgID;
+    }
+
+    public void setCardImgID(String cardImgID) {
+        this.cardImgID = cardImgID;
     }
 }

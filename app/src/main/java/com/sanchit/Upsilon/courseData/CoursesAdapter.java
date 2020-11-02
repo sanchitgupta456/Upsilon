@@ -42,7 +42,7 @@ public class CoursesAdapter extends RecyclerView.Adapter<CoursesAdapter.ViewHold
         Course course = courseList.get(position);
 
         holder.textTvShow.setText(course.getCourseName());
-        holder.imgTvShow.setImageResource(course.getCardImgID());
+        //holder.imgTvShow.setImageResource(course.getCardImgID());
         holder.cv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
