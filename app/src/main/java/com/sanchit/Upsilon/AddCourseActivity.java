@@ -3,9 +3,12 @@ package com.sanchit.Upsilon;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
+import android.widget.Spinner;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
@@ -16,6 +19,8 @@ import com.sanchit.Upsilon.courseData.Course;
 import com.sanchit.Upsilon.courseData.CourseReview;
 
 import org.bson.BsonArray;
+import org.bson.BsonType;
+import org.bson.BsonValue;
 import org.bson.Document;
 import org.bson.types.BasicBSONList;
 
@@ -32,20 +37,21 @@ import io.realm.mongodb.mongo.MongoClient;
 import io.realm.mongodb.mongo.MongoCollection;
 import io.realm.mongodb.mongo.MongoDatabase;
 
-public class AddCourseActivity extends AppCompatActivity {
+public class AddCourseActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
 
     String appID = "upsilon-ityvn";
     EditText CourseName,CourseDescription,CourseDuration,NumberOfBatches;
-    String courseName,courseDescription,courseDuration,numOfBatches,mode;
+    String courseName,courseDescription,courseDuration,numOfBatches,mode,courseDurationMeasure;
     Button addCourseButton;
     RadioButton Group,Individual,Free,Paid;
     ToggleButton offline_online;
+    Spinner spinner;
     App app;
     User user;
     MongoClient mongoClient;
     MongoDatabase mongoDatabase;
-    BasicBSONList courseReviews;
+    ArrayList courseReviews;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -58,6 +64,8 @@ public class AddCourseActivity extends AppCompatActivity {
         NumberOfBatches = (EditText) findViewById(R.id.add_course_num_batches);
         addCourseButton = (Button) findViewById(R.id.btnAddCourse);
         offline_online = (ToggleButton) findViewById(R.id.add_course_mode);
+        spinner = (Spinner) findViewById(R.id.courseDurationMeasureSpinner);
+
 
         app = new App(new AppConfiguration.Builder(appID)
                 .build());
@@ -65,6 +73,13 @@ public class AddCourseActivity extends AppCompatActivity {
         mongoClient = user.getMongoClient("mongodb-atlas");
         mongoDatabase = mongoClient.getDatabase("Upsilon");
         MongoCollection<Document> mongoCollection  = mongoDatabase.getCollection("CourseData");
+
+
+        String[] measureOfTime = {"minutes","hours","days","weeks","months","years"};
+
+        ArrayAdapter adapter = new ArrayAdapter(getApplicationContext(), android.R.layout.simple_expandable_list_item_1,measureOfTime);
+        spinner.setAdapter(adapter);
+        spinner.setOnItemSelectedListener(this);
 
         addCourseButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,11 +96,11 @@ public class AddCourseActivity extends AppCompatActivity {
                 else {
                     mode = "Offline";
                 }
-                Object object = new CourseReview("Hi",5,"Hello");
-                //course = new CourseReview("Hi",5,"Hello");
-                courseReviews = new BasicBSONList();
-                courseReviews.put(1,object);
-                courseReviews.put(2,object);
+                //Object object = new CourseReview("Hi",5,"Hello");
+                courseReviews = new ArrayList();
+                Document test = new Document().append("review","This is a test review").append("reviewRating",2.75).append("reviewAuthorId",user.getId());
+                courseReviews.add(test);
+                //courseReviews.add(2,object);
                 //courseReviews.put("hello",object);
                 /*course.setRatingAuthorId("h");
                 course.setReview("fd");
@@ -123,9 +138,25 @@ public class AddCourseActivity extends AppCompatActivity {
 
             }
         });
+    }
+    // Defining the Callback methods here
+    public void onItemSelected(AdapterView parent, View view, int pos,
+                               long id) {
 
+        courseDurationMeasure = spinner.getItemAtPosition(pos).toString();
 
+        Toast.makeText(getApplicationContext(),
+                spinner.getItemAtPosition(pos).toString(), Toast.LENGTH_LONG)
+                .show();
+    }
 
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
+    }
+
+    @Override
+    public void onPointerCaptureChanged(boolean hasCapture) {
 
     }
 }

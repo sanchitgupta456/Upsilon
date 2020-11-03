@@ -81,11 +81,12 @@
                 <Spinner
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:padding="5dp"
-                    android:background="@drawable/text_view_add_course"
                     android:layout_weight="50"
+                    android:id="@+id/courseDurationMeasureSpinner"
+                    android:background="@drawable/text_view_add_course"
+                    android:dropDownWidth="wrap_content"
                     android:dropDownSelector="@color/colorPrimaryDark"
-                    android:dropDownWidth="wrap_content"/>
+                    android:padding="5dp" />
                 <!--
                 <TextView
                     android:layout_width="match_parent"
