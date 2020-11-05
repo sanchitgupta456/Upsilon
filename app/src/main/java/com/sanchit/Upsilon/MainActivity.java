@@ -22,6 +22,8 @@ import android.widget.Toast;
 
 import com.cloudinary.android.MediaManager;
 import com.google.android.material.navigation.NavigationView;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.sanchit.Upsilon.courseData.Course;
 import com.sanchit.Upsilon.courseData.CoursesAdapter;
 import com.sanchit.Upsilon.ui.login.LoginActivity;
@@ -55,6 +57,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     String appID = "upsilon-ityvn";
     private static final String TAG = "MainActivity";
+
+    private Gson gson;
+    private GsonBuilder gsonBuilder;
 
     RecyclerView recyclerView;
     CoursesAdapter coursesAdapter;
@@ -169,9 +174,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                             //Log.v("EXAMPLE", results.next().toString());
                             Document currentDoc = results.next();
 
-                            Course course = new Course();
+                            currentDoc.toJson();
+                            gsonBuilder = new GsonBuilder();
+                            gson = gsonBuilder.create();
 
-                            course.setCourseName(currentDoc.getString("courseName"));
+                            Course course = gson.fromJson(currentDoc.toJson(),Course.class);
+
+                            //course = currentDoc;
+                            //course.setCourseName(currentDoc.getString("courseName"));
                             //TODO : implement card image fetching via database
                             //course.setCardImgID(TvShowImgs[0]);
                             courseArrayList.add(course);
@@ -268,6 +278,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         else if(id==R.id.homeDrawerMenuItem2)
         {
             Intent intent = new Intent(MainActivity.this,UserDataSetupActivity2.class);
+            startActivity(intent);
+        }
+        else if(id==R.id.homeDrawerMenuItem3)
+        {
+            Intent intent = new Intent(MainActivity.this,CoursesTaughtActivity.class);
             startActivity(intent);
         }
         DrawerLayout drawer = findViewById(R.id.drawer_layout);

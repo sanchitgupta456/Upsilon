@@ -15,8 +15,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.sanchit.Upsilon.MainActivity;
 import com.sanchit.Upsilon.R;
 import com.sanchit.Upsilon.UserDataSetupActivity1;
+import com.sanchit.Upsilon.ViewCourseActivity;
 import com.sanchit.Upsilon.ui.login.LoginActivity;
 
+import java.io.Serializable;
 import java.util.List;
 
 public class CoursesAdapter extends RecyclerView.Adapter<CoursesAdapter.ViewHolder> {
@@ -47,6 +49,10 @@ public class CoursesAdapter extends RecyclerView.Adapter<CoursesAdapter.ViewHold
             @Override
             public void onClick(View view) {
                 Toast.makeText(context,"The position is:"+position,Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(holder.itemView.getContext(), ViewCourseActivity.class);
+                intent.putExtra("Course", course);
+                holder.itemView.getContext().startActivity(intent);
+
             }
         });
 

@@ -3,12 +3,13 @@ package com.sanchit.Upsilon.courseData;
 import org.bson.codecs.BsonArrayCodec;
 import org.bson.types.BasicBSONList;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import io.realm.RealmList;
 import io.realm.RealmObject;
 
-public class Course extends Object{
+public class Course extends Object implements Serializable {
     private String courseName;
     private String tutorId;
     private String courseDescription;

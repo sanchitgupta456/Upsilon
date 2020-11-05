@@ -75,15 +75,19 @@
     </FrameLayout>
 
     <Button
+        android:id="@+id/addCourseButton_coursesTaught"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="24dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="24dp"
         android:background="@drawable/btn_rounded_rect"
-        android:textColor="@color/colorBlack"
-        android:text="@string/add_new_course"
         android:drawableStart="@drawable/add_icon"
         android:padding="10dp"
-        android:layout_alignParentBottom="true" />
+        android:text="@string/add_new_course"
+        android:textColor="@color/colorBlack" />
 
 
 

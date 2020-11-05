@@ -34,6 +34,8 @@
         <activity android:name=".UserDataSetupActivity2"></activity>
         <activity android:name=".UserDataSetupActivity3"></activity>
         <activity android:name=".AddCourseActivity"></activity>
+        <activity android:name=".ViewCourseActivity"></activity>
+        <activity android:name=".CoursesTaughtActivity"></activity>
     </application>
 
 </manifest>
