@@ -11,7 +11,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.Signature;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,6 +25,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.cloudinary.android.MediaManager;
+import com.facebook.login.LoginManager;
 import com.google.android.material.navigation.NavigationView;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -32,6 +37,8 @@ import com.squareup.picasso.Picasso;
 import org.bson.Document;
 
 import java.io.Console;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -252,6 +259,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void signOut() {
         User user = app.currentUser();
+        LoginManager.getInstance().logOut();
         user.logOutAsync(new App.Callback<User>() {
             @Override
             public void onResult(App.Result<User> result) {

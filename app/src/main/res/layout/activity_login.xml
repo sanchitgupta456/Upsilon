@@ -165,13 +165,26 @@
             android:layout_margin="12dp"
             android:contentDescription="@string/google_icon"/>
 
-        <ImageView
-            android:id="@+id/facebookSignIn"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:src="@drawable/facebook"
-            android:layout_margin="12dp"
-            android:contentDescription="@string/facebook_icon"/>
+        <FrameLayout
+            android:id="@+id/fbLoginFrame"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <com.facebook.login.widget.LoginButton
+                android:id="@+id/login_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone" />
+
+            <ImageView
+                android:id="@+id/facebookSignIn"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/facebook"
+                android:layout_margin="12dp"
+                android:contentDescription="@string/facebook_icon"/>
+        </FrameLayout>
+
         <ImageView
             android:id="@+id/twitterSignIn"
             android:layout_width="30dp"

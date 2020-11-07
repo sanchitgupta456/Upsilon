@@ -3,6 +3,8 @@ package com.sanchit.Upsilon;
 import android.app.Application;
 
 import com.cloudinary.android.MediaManager;
+import com.facebook.FacebookSdk;
+import com.facebook.appevents.AppEventsLogger;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -26,6 +28,8 @@ public class Upsilon extends Application {
         Map config = new HashMap();
         config.put("cloud_name", "upsilon175");
         MediaManager.init(getApplicationContext(), config);
+        FacebookSdk.sdkInitialize(getApplicationContext());
+        AppEventsLogger.activateApp(this);
 
     }
 }

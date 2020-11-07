@@ -33,6 +33,9 @@
 
     <string name="server_client_id">374851941944-mte178498m02ggiej5lf18on6rabl4qs.apps.googleusercontent.com</string>
 
+    <string name="facebook_app_id">2494834144152310</string>
+    <string name="fb_login_protocol_scheme">fb2494834144152310</string>
+
     <!--setup related string resources -->
     <string name="skip_setup">Skip Setup</string>
     <string name="select_later">Select Later</string>

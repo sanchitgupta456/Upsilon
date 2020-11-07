@@ -99,7 +99,7 @@
                 android:progressBackgroundTint="@color/colorPrimaryDark"/>
 
 
-            <TextView
+            <!--<TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textMultiLine"
@@ -112,8 +112,14 @@
                 android:layout_marginStart="@dimen/activity_horizontal_margin"
                 android:layout_marginEnd="@dimen/activity_horizontal_margin"
                 android:id="@+id/textCourseDetails"
-                android:background="@drawable/text_view_login"/>
+                android:background="@drawable/text_view_login"/>-->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/courseRatings"
+                android:id="@+id/textCourseDetails"
 
+                />
             <androidx.recyclerview.widget.RecyclerView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
