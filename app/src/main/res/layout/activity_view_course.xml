@@ -56,7 +56,7 @@
 
             </androidx.cardview.widget.CardView>
 
-            <TextView
+            <!--<TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/colorPrimaryDark"
@@ -68,7 +68,7 @@
                 android:layout_below="@id/courseCoverCard"
                 android:layout_marginStart="@dimen/activity_horizontal_margin"
                 android:layout_marginEnd="@dimen/activity_horizontal_margin"
-                android:id="@+id/textCourseName" />
+                android:id="@+id/textCourseName" />-->
 
             <TextView
                 android:layout_width="match_parent"
@@ -82,7 +82,7 @@
                 android:textStyle="italic"
                 android:text="COURSE DESCRIPTION"
                 android:layout_marginTop="@dimen/activity_vertical_margin"
-                android:layout_below="@id/textCourseName"
+                android:layout_below="@id/courseCoverCard"
                 android:layout_marginStart="@dimen/activity_horizontal_margin"
                 android:layout_marginEnd="@dimen/activity_horizontal_margin"
                 android:id="@+id/textCourseDescription" />
@@ -128,11 +128,13 @@
                             android:textColor="@color/colorPrimaryDark"
                             android:textSize="18sp"
                             android:typeface="sans"
+                            android:id="@+id/view_course_tutor_name"
                             android:layout_weight="15"
                             android:gravity="center_vertical"/>
                         <ImageButton
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:id="@+id/view_course_tutor_info"
                             android:src="@drawable/info_icon_dark"
                             android:layout_weight="85"
                             android:backgroundTint="#00000000"
@@ -144,6 +146,7 @@
                         android:layout_height="wrap_content"
                         android:text="Duration - 60 hours"
                         android:textColor="@color/colorPrimaryDark"
+                        android:id="@+id/view_course_duration"
                         android:textSize="18sp"
                         android:typeface="sans"
                         android:paddingTop="5dp"
@@ -154,6 +157,7 @@
                         android:text="Online Mode"
                         android:textColor="@color/colorPrimaryDark"
                         android:textSize="18sp"
+                        android:id="@+id/view_course_mode"
                         android:typeface="sans"
                         android:paddingTop="5dp"
                         android:paddingBottom="5dp"/>
@@ -161,6 +165,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Free of cost."
+                        android:id="@+id/view_course_fees"
                         android:textColor="@color/colorPrimaryDark"
                         android:textSize="18sp"
                         android:typeface="sans"
@@ -191,7 +196,7 @@
                 android:id="@+id/listIntroductoryMaterial"
                 android:layout_below="@id/frameCourseDetails"
                 android:orientation="horizontal"
-                android:visibility="invisible"
+                android:visibility="visible"
                 android:layout_margin="@dimen/activity_vertical_margin"/>
 
             <TextView
@@ -211,7 +216,7 @@
                 android:id="@+id/listCourseReviews"
                 android:layout_below="@id/textReviews"
                 android:orientation="vertical"
-                android:visibility="invisible"
+                android:visibility="visible"
                 android:layout_margin="@dimen/activity_vertical_margin"/>
 
 
