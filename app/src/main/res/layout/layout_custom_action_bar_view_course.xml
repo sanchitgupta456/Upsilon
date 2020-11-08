@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:weightSum="100">
+
+    <ImageButton
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/back_arrow"
+        android:layout_weight="45"
+        android:backgroundTint="#00000000"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="COURSE NAME"
+        android:gravity="center"
+        android:textSize="@dimen/text_margin"
+        android:textColor="@color/colorPrimaryDark"
+        android:typeface="sans"
+        android:textStyle="bold"
+        android:layout_weight="10" />
+
+    <ImageButton
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="45"
+        android:src="@drawable/menu_button"
+        android:backgroundTint="#00000000"/>
+
+
+</LinearLayout>

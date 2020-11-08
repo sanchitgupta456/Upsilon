@@ -8,7 +8,7 @@
     tools:context=".MainActivity"
     android:id="@+id/drawer_layout"
     tools:openDrawer="left"
-    android:background="@color/colorAccent">
+    android:background="@drawable/gradient">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -103,7 +103,7 @@
         android:id="@+id/nav_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorAccent"
+        android:background="@drawable/gradient"
         android:fitsSystemWindows="true"
         android:layout_gravity="start"
         app:headerLayout="@layout/header_layout"
