@@ -43,6 +43,7 @@ public class UserDataSetupActivity1 extends AppCompatActivity {
     MongoDatabase mongoDatabase;
     RecyclerView.LayoutManager layoutManager;
     InterestsAdapter adapter;
+    ArrayList<String> mycourses;
     int i=0;
 
     @Override
@@ -65,6 +66,8 @@ public class UserDataSetupActivity1 extends AppCompatActivity {
         mongoDatabase = mongoClient.getDatabase("Upsilon");
         MongoCollection<Document> mongoCollection  = mongoDatabase.getCollection("UserData");
 
+        mycourses = new ArrayList<>();
+
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -78,7 +81,7 @@ public class UserDataSetupActivity1 extends AppCompatActivity {
                         if(!results.hasNext())
                         {
                             mongoCollection.insertOne(
-                                    new Document("userid", user.getId()).append("profilePicCounter",0).append("favoriteColor", "pink").append("interests",interests))
+                                    new Document("userid", user.getId()).append("myCourses",mycourses).append("profilePicCounter",0).append("favoriteColor", "pink").append("interests",interests))
                                     .getAsync(result -> {
                                         if (result.isSuccess()) {
                                             Log.v("EXAMPLE", "Inserted custom user data document. _id of inserted document: "
@@ -93,6 +96,7 @@ public class UserDataSetupActivity1 extends AppCompatActivity {
                             Document userdata = results.next();
                             userdata.append("interests",interests);
                             userdata.append("profilePicCounter",0);
+                            userdata.append("myCourses",mycourses);
 
                             mongoCollection.updateOne(
                                     new Document("userid", user.getId()),(userdata))

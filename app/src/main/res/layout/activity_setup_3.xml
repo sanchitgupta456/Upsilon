@@ -73,6 +73,7 @@
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:src="@drawable/googlemaps"
+            android:id="@+id/user_data_setup_google_location"
             android:clickable="true"
             android:focusable="true" />
 
