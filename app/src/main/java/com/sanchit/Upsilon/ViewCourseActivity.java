@@ -131,7 +131,7 @@ public class ViewCourseActivity extends AppCompatActivity {
         CourseDescription.setText(course.getCourseDescription());
         CourseMode.setText(course.getCourseMode());
         CourseCost.setText(course.getCourseFees());
-        CourseDuration.setText(course.getCourseDuration() + course.getCourseDurationMeasure());
+        CourseDuration.setText(course.getCourseDuration() + "Class Hours");
 
         //Toast.makeText(getApplicationContext(), "Course Rating"+(double) course.getCourseRating(),Toast.LENGTH_LONG).show();
 

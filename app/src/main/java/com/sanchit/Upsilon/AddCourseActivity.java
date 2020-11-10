@@ -1,5 +1,6 @@
 package com.sanchit.Upsilon;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -7,6 +8,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -43,15 +45,16 @@ public class AddCourseActivity extends AppCompatActivity implements AdapterView.
     String appID = "upsilon-ityvn";
     EditText CourseName,CourseDescription,CourseDuration,NumberOfBatches;
     String courseName,courseDescription,courseDuration,numOfBatches,mode,courseDurationMeasure;
-    Button addCourseButton;
+    Button nextButton;
     RadioButton Group,Individual,Free,Paid;
     ToggleButton offline_online;
-    Spinner spinner;
+    //Spinner spinner;
     App app;
     User user;
     MongoClient mongoClient;
     MongoDatabase mongoDatabase;
     ArrayList courseReviews;
+    ImageView CourseImage;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -62,10 +65,10 @@ public class AddCourseActivity extends AppCompatActivity implements AdapterView.
         CourseDescription = (EditText) findViewById(R.id.add_course_description);
         CourseDuration = (EditText) findViewById(R.id.add_course_duration);
         NumberOfBatches = (EditText) findViewById(R.id.add_course_num_batches);
-        addCourseButton = (Button) findViewById(R.id.btnAddCourse);
+        nextButton = (Button) findViewById(R.id.btnNext);
         offline_online = (ToggleButton) findViewById(R.id.add_course_mode);
-        spinner = (Spinner) findViewById(R.id.courseDurationMeasureSpinner);
-
+        CourseImage = (ImageView) findViewById(R.id.imgAddCourseImage);
+        //spinner = (Spinner) findViewById(R.id.courseDurationMeasureSpinner);
 
         app = new App(new AppConfiguration.Builder(appID)
                 .build());
@@ -75,13 +78,13 @@ public class AddCourseActivity extends AppCompatActivity implements AdapterView.
         MongoCollection<Document> mongoCollection  = mongoDatabase.getCollection("CourseData");
 
 
-        String[] measureOfTime = {"minutes","hours","days","weeks","months","years"};
+        //String[] measureOfTime = {"minutes","hours","days","weeks","months","years"};
 
-        ArrayAdapter adapter = new ArrayAdapter(getApplicationContext(), android.R.layout.simple_expandable_list_item_1,measureOfTime);
-        spinner.setAdapter(adapter);
-        spinner.setOnItemSelectedListener(this);
+        //ArrayAdapter adapter = new ArrayAdapter(getApplicationContext(), android.R.layout.simple_expandable_list_item_1,measureOfTime);
+        //spinner.setAdapter(adapter);
+        //spinner.setOnItemSelectedListener(this);
 
-        addCourseButton.setOnClickListener(new View.OnClickListener() {
+        nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 courseName = CourseName.getText().toString();
@@ -117,25 +120,28 @@ public class AddCourseActivity extends AppCompatActivity implements AdapterView.
                 courseDetails.append("courseMode",mode);
                 courseDetails.append("courseFees",0);
                 courseDetails.append("instructorLocation","Here");
-                courseDetails.append("courseDurationMeasure","hours");
+                //courseDetails.append("courseDurationMeasure","hours");
                 courseDetails.append("numberOfStudentsEnrolled",10);
                 courseDetails.append("courseImage","this is image");
                 courseDetails.append("courseDuration",courseDuration);
                 courseDetails.append("numberOfBatches",numOfBatches);
                 courseDetails.append("courseReviews",courseReviews);
 
-                mongoCollection.insertOne(courseDetails).getAsync(result -> {
+                Intent intent = new Intent(AddCourseActivity.this,AddCourseActivityContinued.class);
+                intent.putExtra("courseDetails",courseDetails.toJson().toString());
+                startActivity(intent);
+                /*mongoCollection.insertOne(courseDetails).getAsync(result -> {
                     if(result.isSuccess())
                     {
+                        Intent intent = new Intent(AddCourseActivity.this,AddCourseActivityContinued.class);
+                        startActivity(intent);
                         Toast.makeText(getApplicationContext(),"Successfully Added The Course",Toast.LENGTH_LONG).show();
                     }
                     else
                     {
                         Log.v("User",result.getError().toString());
                     }
-                });
-
-
+                });*/
             }
         });
     }
@@ -143,11 +149,11 @@ public class AddCourseActivity extends AppCompatActivity implements AdapterView.
     public void onItemSelected(AdapterView parent, View view, int pos,
                                long id) {
 
-        courseDurationMeasure = spinner.getItemAtPosition(pos).toString();
+        //courseDurationMeasure = spinner.getItemAtPosition(pos).toString();
 
-        Toast.makeText(getApplicationContext(),
-                spinner.getItemAtPosition(pos).toString(), Toast.LENGTH_LONG)
-                .show();
+        //Toast.makeText(getApplicationContext(),
+          //      spinner.getItemAtPosition(pos).toString(), Toast.LENGTH_LONG)
+            //    .show();
     }
 
     @Override

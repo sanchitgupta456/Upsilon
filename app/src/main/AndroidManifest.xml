@@ -16,7 +16,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.AppCompat.Light"
+        android:theme="@style/AppTheme"
         android:name=".Upsilon"
         >
         <meta-data android:name="cloudinary://937567483347128:wQLZU0pYv4hJt1sqF9fHB1uuEs8@upsilon175" android:value="cloudinary://@upsilon175"/>
@@ -38,6 +38,7 @@
         <activity android:name=".UserDataSetupActivity2"></activity>
         <activity android:name=".UserDataSetupActivity3"></activity>
         <activity android:name=".AddCourseActivity"></activity>
+        <activity android:name=".AddCourseActivityContinued"></activity>
         <activity android:name=".ViewCourseActivity"></activity>
         <activity android:name=".CoursesTaughtActivity"></activity>
         <meta-data android:name="com.facebook.sdk.ApplicationId"

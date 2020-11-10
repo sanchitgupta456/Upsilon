@@ -18,7 +18,6 @@ public class Course extends Object implements Serializable {
     private String courseMode;
     private String courseFees;
     private String instructorLocation;
-    private String courseDurationMeasure;
     private int courseDuration;
     private int numberOfStudentsEnrolled;
     private int numberOfBatches;
@@ -90,14 +89,6 @@ public class Course extends Object implements Serializable {
 
     public void setInstructorLocation(String instructorLocation) {
         this.instructorLocation = instructorLocation;
-    }
-
-    public String getCourseDurationMeasure() {
-        return courseDurationMeasure;
-    }
-
-    public void setCourseDurationMeasure(String courseDurationMeasure) {
-        this.courseDurationMeasure = courseDurationMeasure;
     }
 
     public int getCourseDuration() {

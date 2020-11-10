@@ -63,7 +63,8 @@
                 android:layout_height="108dp"
                 android:background="@drawable/icon_doc"
                 android:layout_margin="15dp"
-                android:textColor="@color/colorWhite"/>
+                android:textColor="@color/colorWhite"
+                />
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
