@@ -11,7 +11,7 @@ public class CourseReview extends Object {
     public CourseReview() {
     }
 
-    public CourseReview(String review, int reviewRating, String ratingAuthorId) {
+    public CourseReview(String review, Double reviewRating, String ratingAuthorId) {
         this.review = review;
         this.reviewRating = reviewRating;
         this.ratingAuthorId = ratingAuthorId;
