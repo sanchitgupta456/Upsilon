@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorAccent"
+    android:background="@drawable/gradient"
     tools:context=".AddCourseActivity">
 
 
@@ -12,20 +12,54 @@
         android:layout_height="wrap_content"
         android:textSize="20sp"
         android:textColor="@color/colorPrimaryDark"
-        android:layout_marginStart="24dp"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
         android:layout_marginEnd="@dimen/activity_horizontal_margin"
-        android:layout_marginBottom="@dimen/activity_vertical_margin"
-        android:layout_marginTop="72dp"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
         android:text="@string/add_course_details"
-        android:gravity="start"
+        android:textStyle="bold"
+        android:typeface="serif"
+        android:gravity="center"
         android:id="@+id/textAddCourseDetails"
         android:padding="10dp"/>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:maxHeight="160dp"
+        android:src="@drawable/alterbackground"
+        android:id="@+id/frameAddCourseCourseImage"
+        android:layout_below="@id/textAddCourseDetails"
+        android:scaleType="centerCrop"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:contentDescription="Course Image">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxHeight="160dp"
+            android:src="@drawable/alterbackground"
+            android:id="@+id/imgAddCourseCourseImage"
+            android:scaleType="centerCrop"
+            android:contentDescription="Course Image" />
+
+        <ImageView
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:id="@+id/btnAddCourseImage"
+            android:src="@drawable/icon_add_photo"
+            android:layout_gravity="end"
+            android:layout_margin="12dp"
+            android:contentDescription="Add a Course Image"/>
+
+    </FrameLayout>
+
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/textAddCourseDetails"
-        android:layout_above="@id/btnAddCourse"
+        android:layout_below="@id/frameAddCourseCourseImage"
+        android:layout_above="@id/btnNext"
         android:layout_margin="@dimen/activity_vertical_margin">
         <LinearLayout
             android:layout_width="match_parent"
@@ -77,17 +111,6 @@
                     android:layout_weight="50"
                     android:id="@+id/add_course_duration"/>
 
-                <!-- NOTE: Menu to be created for this spinner -->
-                <Spinner
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="50"
-                    android:id="@+id/courseDurationMeasureSpinner"
-                    android:background="@drawable/text_view_add_course"
-                    android:dropDownWidth="wrap_content"
-                    android:dropDownSelector="@color/colorPrimaryDark"
-                    android:padding="5dp" />
-                <!--
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -98,7 +121,7 @@
                     android:layout_weight="50"
                     android:textAlignment="textEnd"
                     android:paddingEnd="@dimen/activity_horizontal_margin"
-                    tools:ignore="RtlCompat,RtlSymmetry" /> -->
+                    tools:ignore="RtlCompat,RtlSymmetry" />
 
             </LinearLayout>
 
@@ -232,7 +255,6 @@
                 android:textColor="@color/colorPrimaryDark"
                 android:id="@+id/add_course_num_batches"/>
 
-            <!-- Available Days And Time Slotting here -->
 
             <RadioGroup
                 android:layout_width="match_parent"
@@ -265,18 +287,23 @@
             </RadioGroup>
 
 
-
-
-
-
-
-
-
         </LinearLayout>
     </ScrollView>
 
+    <ProgressBar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:layout_marginBottom="8dp"
+        android:layout_alignParentBottom="true"
+        android:progress="50"
+        android:progressTint="@color/colorYellow"
+        android:progressBackgroundTint="@color/colorWhite"/>
+
     <Button
-        android:id="@+id/btnAddCourse"
+        android:id="@+id/btnNext"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -284,14 +311,13 @@
         android:background="@drawable/btn_rounded_rect"
         android:textColor="@color/colorBlack"
         android:textSize="@dimen/text_margin"
-        android:text="Add Course"
-        android:drawableStart="@drawable/add_icon"
-        android:paddingStart="20dp"
-        android:paddingEnd="20dp"
+        android:text="@string/next"
+        android:paddingStart="40dp"
+        android:paddingEnd="40dp"
         android:paddingBottom="10dp"
         android:paddingTop="10dp"
-        android:layout_centerHorizontal="true"
-        android:drawablePadding="10dp" />
+        android:layout_alignParentEnd="true"
+        tools:ignore="RelativeOverlap" />
 
 
 

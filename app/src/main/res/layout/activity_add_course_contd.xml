@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/gradient">
+
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="100"
+            android:padding="10dp"
+        android:id="@+id/linearLayout">
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/back_arrow"
+                android:backgroundTint="#00000000"
+                android:layout_weight="85"
+                android:gravity="center"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textSize="18sp"
+                android:textColor="@color/colorPrimaryDark"
+                android:text="Add Optional Introductory Content"
+                android:layout_weight="15"
+                android:gravity="center"/>
+    </LinearLayout>
+
+    <!--
+    <TextView
+        android:id="@+id/textAddIntroductoryContent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"
+        android:textSize="20sp"
+        android:textColor="@color/colorPrimaryDark"
+        android:textStyle="bold"
+        android:text="Add Optional Introductory Content"
+        android:gravity="center"/> -->
+
+    <LinearLayout
+        android:id="@+id/linearLayoutInsertButtons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@id/linearLayout"
+        android:layout_marginTop="48dp"
+        android:weightSum="90">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_weight="30">
+            <com.google.android.material.button.MaterialButton
+                android:layout_width="108dp"
+                android:layout_height="108dp"
+                android:background="@drawable/icon_doc"
+                android:layout_margin="15dp"
+                android:textColor="@color/colorWhite"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Add Document"
+                android:gravity="center"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="@dimen/text_margin"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_weight="30">
+            <com.google.android.material.button.MaterialButton
+                android:layout_width="108dp"
+                android:layout_height="108dp"
+                android:background="@drawable/icon_image"
+                android:layout_margin="15dp"
+                android:textColor="@color/colorWhite"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Add Image"
+                android:gravity="center"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="@dimen/text_margin"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_weight="30">
+            <com.google.android.material.button.MaterialButton
+                android:layout_width="108dp"
+                android:layout_height="108dp"
+                android:background="@drawable/icon_video"
+                android:layout_margin="15dp"
+                android:textColor="@color/colorWhite"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Add Video"
+                android:gravity="center"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="@dimen/text_margin"/>
+        </LinearLayout>
+
+
+
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_marginTop="72dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/linearLayoutInsertButtons"
+        android:layout_above="@id/btnAddCourse"
+        android:layout_margin="@dimen/activity_horizontal_margin"
+        android:orientation="vertical"/>
+
+
+
+    <Button
+        android:id="@+id/btnAddCourse"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="24dp"
+        android:background="@drawable/btn_rounded_rect"
+        android:textColor="@color/colorBlack"
+        android:textSize="@dimen/text_margin"
+        android:text="Upload and Proceed"
+        android:drawableStart="@drawable/icon_upload"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp"
+        android:layout_centerHorizontal="true"
+        android:drawablePadding="10dp" />
+    <ProgressBar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:layout_marginBottom="8dp"
+        android:layout_alignParentBottom="true"
+        android:progress="100"
+        android:progressTint="@color/colorYellow"
+        android:progressBackgroundTint="@color/colorWhite"/>
+</RelativeLayout>
