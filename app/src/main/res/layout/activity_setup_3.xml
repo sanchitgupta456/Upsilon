@@ -72,7 +72,7 @@
         <de.hdodenhof.circleimageview.CircleImageView
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:src="@drawable/googlemaps"
+            android:src="@drawable/icon_location_light"
             android:id="@+id/user_data_setup_google_location"
             android:clickable="true"
             android:focusable="true" />
@@ -80,9 +80,9 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="@string/use_google_maps"
+            android:text="@string/use_phone_location"
             android:gravity="center"
-            android:textColor="@color/colorWhite"
+            android:textColor="@color/colorYellow"
             android:textSize="@dimen/text_margin"
             android:textStyle="bold"
             android:layout_marginTop="10dp"/>
