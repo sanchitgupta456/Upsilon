@@ -36,6 +36,7 @@ import org.bson.BsonValue;
 import org.bson.Document;
 import org.bson.types.BasicBSONList;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -190,7 +191,7 @@ public class AddCourseActivity extends AppCompatActivity implements AdapterView.
                                                 + result1.get().getModifiedCount());
                                         Log.v("AddCourse","Updated Image Successfully");
                                         Intent intent = new Intent(AddCourseActivity.this,AddCourseActivityContinued.class);
-                                        intent.putExtra("InsertedDocument",id);
+                                        intent.putExtra("InsertedDocument", result.get().getInsertedId().asObjectId().getValue().toString());
                                         startActivity(intent);
                                     }
                                     else
