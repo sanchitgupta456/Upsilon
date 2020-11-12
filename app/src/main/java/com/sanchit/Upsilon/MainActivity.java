@@ -90,7 +90,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         //imageView = (ImageView) findViewById(R.id.profilePhotoTest);
         Toolbar toolbar = findViewById(R.id.toolbar);
-        //setSupportActionBar(toolbar);
+        setSupportActionBar(toolbar);
         //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         drawer = findViewById(R.id.drawer_layout);

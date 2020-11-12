@@ -31,15 +31,14 @@ public class AddCourseActivityContinued extends AppCompatActivity {
     MongoDatabase mongoDatabase;
     Button nextButton;
     JSONObject json;
-    String string;
+    String insertedId;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_course_contd);
 
         Intent intent = getIntent();
-        string = (String) intent.getExtras().get("courseDetails");
-        courseDetails = org.bson.Document.parse(string);
+        insertedId = (String) intent.getExtras().get("InsertedDocument");
         Log.v("Continued", String.valueOf(courseDetails));
 
         nextButton = (Button) findViewById(R.id.btnAddCourse);
@@ -57,6 +56,8 @@ public class AddCourseActivityContinued extends AppCompatActivity {
                 mongoCollection.insertOne((org.bson.Document) courseDetails).getAsync(result -> {
                     if(result.isSuccess())
                     {
+                        App.Result result1 = result;
+                        Log.v("AddCourse", String.valueOf(result)+ result.get().getInsertedId());
                         Intent intent = new Intent(AddCourseActivityContinued.this,MainActivity.class);
                         startActivity(intent);
                         Toast.makeText(getApplicationContext(),"Successfully Added The Course", Toast.LENGTH_LONG).show();
