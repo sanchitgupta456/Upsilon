@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
@@ -51,12 +52,16 @@ public class AddCourseActivityContinued extends AppCompatActivity {
     Button nextButton;
     JSONObject json;
     String insertedId;
-    LinearLayout addImages;
-    String picturePath;
+    LinearLayout addImages,addVideos,addDocuments;
+    String picturePath,videoPath,documentPath;
     ArrayList<String> picturePaths;
     ArrayList<String> introductoryImageUrls;
-    String id="5fad2ca3600686e14bc0950b";
-    private static int RESULT_LOAD_IMAGE = 1;
+    ArrayList<String> videoPaths;
+    ArrayList<String> introductoryVideoUrls;
+    ArrayList<String> documentPaths;
+    ArrayList<String> introductoryDocumentUrls;
+    String id="5fad2a5a9f30789191ea7d15";
+    private static int RESULT_LOAD_IMAGE = 1,RESULT_LOAD_VIDEO = 2,RESULT_LOAD_DOCUMENT=3;
     private static final int WRITE_PERMISSION = 0x01;
 
     @Override
@@ -65,13 +70,19 @@ public class AddCourseActivityContinued extends AppCompatActivity {
         setContentView(R.layout.activity_add_course_contd);
 
         addImages = (LinearLayout) findViewById(R.id.add_images_introductory);
+        addVideos = (LinearLayout) findViewById(R.id.add_video_introductory);
+        addDocuments = (LinearLayout) findViewById(R.id.add_documents_introductory);
 
-        //Intent intent = getIntent();
-        //id = intent.getStringExtra("InsertedDocument");
+        Intent intent = getIntent();
+        id = intent.getStringExtra("InsertedDocument");
         ObjectId _id = new ObjectId(id);
-        //Log.v("Continued", String.valueOf(_id));
+        Log.v("Continued", String.valueOf(_id));
         picturePaths = new ArrayList<>();
         introductoryImageUrls = new ArrayList<>();
+        videoPaths = new ArrayList<>();
+        introductoryVideoUrls = new ArrayList<>();
+        documentPaths = new ArrayList<>();
+        introductoryVideoUrls = new ArrayList<>();
         nextButton = (Button) findViewById(R.id.btnAddCourse);
 
         app = new App(new AppConfiguration.Builder(appID)
@@ -86,10 +97,33 @@ public class AddCourseActivityContinued extends AppCompatActivity {
             public void onClick(View v) {
                 Intent i = new Intent(
                         Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                i.setType("image/*");
                 i.putExtra(Intent.EXTRA_ALLOW_MULTIPLE,true);
                 startActivityForResult(i, RESULT_LOAD_IMAGE);
             }
         });
+
+        addVideos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(
+                        Intent.ACTION_PICK, MediaStore.Video.Media.EXTERNAL_CONTENT_URI);
+                i.setType("video/*");
+                i.putExtra(Intent.EXTRA_ALLOW_MULTIPLE,true);
+                startActivityForResult(i, RESULT_LOAD_VIDEO);
+            }
+        });
+
+        /*addDocuments.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(
+                        Intent.ACTION_PICK, );
+                i.setType("document/*");
+                i.putExtra(Intent.EXTRA_ALLOW_MULTIPLE,true);
+                startActivityForResult(i, RESULT_LOAD_VIDEO);
+            }
+        });*/
 
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -98,10 +132,10 @@ public class AddCourseActivityContinued extends AppCompatActivity {
                 for (counter=0;counter<picturePaths.size();counter++)
                 {
                     int finalCounter = counter;
-                    String requestId = MediaManager.get().upload(picturePath)
+                    String requestId = MediaManager.get().upload(picturePaths.get(counter))
                             .unsigned("preset1")
                             .option("resource_type", "image")
-                            .option("folder", "Upsilon/Courses/IntroductoryContent/Images"+id)
+                            .option("folder", "Upsilon/Courses/"+id+"/IntroductoryContent/Images")
                             .option("public_id", "IntroductoryImage"+counter)
                             .callback(new UploadCallback() {
                                 @Override
@@ -146,7 +180,7 @@ public class AddCourseActivityContinued extends AppCompatActivity {
                                                 {
                                                     Document userdata = results.next();
                                                     userdata.append("IntroductoryContentImages",introductoryImageUrls);
-                                                    userdata.append("IntroductoryImageCounter", finalCounter+1);
+                                                    userdata.append("IntroductoryImageCounter", finalCounter +1);
 
                                                     mongoCollection.updateOne(
                                                             new Document("_id",_id),(userdata))
@@ -183,6 +217,99 @@ public class AddCourseActivityContinued extends AppCompatActivity {
 
                                 }
                             }).dispatch();
+
+                }
+
+                counter=0;
+                for (counter=0;counter<videoPaths.size();counter++)
+                {
+                    int finalCounter = counter;
+                    String requestId = MediaManager.get().upload(videoPaths.get(counter))
+                            .unsigned("preset1")
+                            .option("resource_type", "video")
+                            .option("folder", "Upsilon/Courses/"+id+"/IntroductoryContent/Videos")
+                            .option("public_id", "IntroductoryVideo"+counter)
+                            .callback(new UploadCallback() {
+                                @Override
+                                public void onStart(String requestId) {
+
+                                }
+
+                                @Override
+                                public void onProgress(String requestId, long bytes, long totalBytes) {
+
+                                }
+
+                                @Override
+                                public void onSuccess(String requestId, Map resultData) {
+                                    introductoryVideoUrls.add(resultData.get("url").toString());
+                                    Log.v("Urls",introductoryVideoUrls.toString());
+                                    if(finalCounter ==videoPaths.size()-1)
+                                    {
+                                        Document queryFilter  = new Document("_id",_id);
+
+                                        RealmResultTask<MongoCursor<Document>> findTask = mongoCollection.find(queryFilter).iterator();
+
+                                        findTask.getAsync(task -> {
+                                            if (task.isSuccess()) {
+                                                MongoCursor<Document> results = task.get();
+                                                if(!results.hasNext())
+                                                {
+                                                    /*mongoCollection.insertOne(
+                                                            new Document("userid", user.getId()).append("profilePicCounter",0).append("favoriteColor", "pink").append("profilePicUrl",resultData.get("url").toString()))
+                                                            .getAsync(result -> {
+                                                                if (result.isSuccess()) {
+                                                                    Log.v("EXAMPLE", "Inserted custom user data document. _id of inserted document: "
+                                                                            + result.get().getInsertedId());
+                                                                    //Intent intent = new Intent(UserDataSetupActivity2.this,UserDataSetupActivity3.class);
+                                                                    //startActivity(intent);
+                                                                } else {
+                                                                    Log.e("EXAMPLE", "Unable to insert custom user data. Error: " + result.getError());
+                                                                }
+                                                            });*/
+                                                }
+                                                else
+                                                {
+                                                    Document userdata = results.next();
+                                                    userdata.append("IntroductoryContentVideos",introductoryVideoUrls);
+                                                    userdata.append("IntroductoryVideoCounter", finalCounter+1);
+
+                                                    mongoCollection.updateOne(
+                                                            new Document("_id",_id),(userdata))
+                                                            .getAsync(result -> {
+                                                                if (result.isSuccess()) {
+                                                                    Log.v("EXAMPLE", "Inserted custom user data document. _id of inserted document: "
+                                                                            + result.get().getModifiedCount());
+                                                                    //Intent intent = new Intent(UserDataSetupActivity2.this,UserDataSetupActivity3.class);
+                                                                    //startActivity(intent);
+                                                                } else {
+                                                                    Log.e("EXAMPLE", "Unable to insert custom user data. Error: " + result.getError());
+                                                                }
+                                                            });
+                                                }
+                                                while (results.hasNext()) {
+                                                    //Log.v("EXAMPLE", results.next().toString());
+                                                    Document currentDoc = results.next();
+                                                    Log.v("User",currentDoc.getString("userid"));
+                                                }
+                                            } else {
+                                                Log.v("User","Failed to complete search");
+                                            }
+                                        });
+                                    }
+                                }
+
+                                @Override
+                                public void onError(String requestId, ErrorInfo error) {
+
+                                }
+
+                                @Override
+                                public void onReschedule(String requestId, ErrorInfo error) {
+
+                                }
+                            }).dispatch();
+
                 }
 
                 /*mongoCollection.updateOne(new Document("_id",insertedId),()).getAsync(result -> {
@@ -243,6 +370,37 @@ public class AddCourseActivityContinued extends AppCompatActivity {
                     cursor.moveToFirst();
                     int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
                     picturePath = cursor.getString(columnIndex);
+                    cursor.close();
+                    // String picturePath contains the path of selected Image
+                    //ImageView imageView = (ImageView) findViewById(R.id.profilePhoto);
+                    //imageView.setImageBitmap(BitmapFactory.decodeFile(picturePath));
+                }
+            }
+            else if (requestCode == RESULT_LOAD_VIDEO && resultCode == RESULT_OK && null != data) {
+                if(data.getClipData()!=null)
+                {
+                    int count = data.getClipData().getItemCount(); //evaluate the count before the for loop --- otherwise, the count is evaluated every loop.
+                    for(int i = 0; i < count; i++) {
+                        Uri selectedImage = data.getClipData().getItemAt(i).getUri();
+                        String[] filePathColumn = {MediaStore.Images.Media.DATA};
+                        Cursor cursor = getContentResolver().query(selectedImage,
+                                filePathColumn, null, null, null);
+                        cursor.moveToFirst();
+                        int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                        videoPath = cursor.getString(columnIndex);
+                        videoPaths.add(videoPath);
+                        cursor.close();
+                    }
+                    Log.v("Videos", String.valueOf(videoPaths));
+                }
+                else if(data.getData()!=null) {
+                    Uri selectedImage = data.getData();
+                    String[] filePathColumn = { MediaStore.Images.Media.DATA };
+                    Cursor cursor = getContentResolver().query(selectedImage,
+                            filePathColumn, null, null, null);
+                    cursor.moveToFirst();
+                    int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                    videoPath = cursor.getString(columnIndex);
                     cursor.close();
                     // String picturePath contains the path of selected Image
                     //ImageView imageView = (ImageView) findViewById(R.id.profilePhoto);
