@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -21,6 +22,7 @@ import com.sanchit.Upsilon.courseData.Course;
 import com.sanchit.Upsilon.courseData.CourseReview;
 import com.sanchit.Upsilon.courseData.CourseReviewAdapter;
 import com.sanchit.Upsilon.courseData.CoursesAdapter;
+import com.squareup.picasso.Picasso;
 
 import org.bson.Document;
 import org.bson.types.BasicBSONList;
@@ -43,8 +45,9 @@ public class ViewCourseActivity extends AppCompatActivity {
     private RatingBar CourseRating;
     private String courseName;
     private View ActionBarView;
-    private ImageView BackButton;
+    private ImageView BackButton,CourseImage;
     private TextView ActionBarCourseName,CourseDescription,CourseDuration,CourseMode,CourseCost,CourseTutorName;
+    private ImageButton CourseLocation;
     String appID = "upsilon-ityvn";
     App app;
     Course course;
@@ -65,6 +68,7 @@ public class ViewCourseActivity extends AppCompatActivity {
         BackButton = findViewById(R.id.action_bar_back_button);
         ActionBarCourseName = findViewById(R.id.action_bar_course_name);
         CourseName = (TextView) findViewById(R.id.textCourseCoverCard);
+        CourseImage = (ImageView) findViewById(R.id.imageCourseCoverCard);
         CourseRating = (RatingBar) findViewById(R.id.courseRatings);
         CourseDescription = (TextView) findViewById(R.id.textCourseDescription);
         CourseDuration = (TextView) findViewById(R.id.view_course_duration);
@@ -72,6 +76,7 @@ public class ViewCourseActivity extends AppCompatActivity {
         CourseMode = (TextView) findViewById(R.id.view_course_mode);
         CourseTutorName = (TextView) findViewById(R.id.view_course_tutor_name);
         reviewsRecyclerView = (RecyclerView) findViewById(R.id.listCourseReviews);
+        CourseLocation = (ImageButton) findViewById(R.id.location_view_course);
         initialise();
 
         app = new App(new AppConfiguration.Builder(appID)
@@ -130,8 +135,13 @@ public class ViewCourseActivity extends AppCompatActivity {
         CourseRating.setRating((float) course.getCourseRating());
         CourseDescription.setText(course.getCourseDescription());
         CourseMode.setText(course.getCourseMode());
+        if(course.getCourseMode().equals("Online"))
+        {
+            CourseLocation.setVisibility(View.INVISIBLE);
+        }
         CourseCost.setText(course.getCourseFees());
-        CourseDuration.setText(course.getCourseDuration() + "Class Hours");
+        CourseDuration.setText(course.getCourseDuration() + " Class Hours");
+        Picasso.with(getApplicationContext()).load(course.getCourseImage()).fit().centerInside().into(CourseImage);
 
         //Toast.makeText(getApplicationContext(), "Course Rating"+(double) course.getCourseRating(),Toast.LENGTH_LONG).show();
 

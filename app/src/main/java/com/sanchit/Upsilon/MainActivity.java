@@ -90,7 +90,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         //imageView = (ImageView) findViewById(R.id.profilePhotoTest);
         Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+//        setSupportActionBar(toolbar);
         //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         drawer = findViewById(R.id.drawer_layout);
@@ -285,7 +285,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
         else if(id==R.id.homeDrawerMenuItem2)
         {
-            Intent intent = new Intent(MainActivity.this,UserDataSetupActivity3.class);
+            Intent intent = new Intent(MainActivity.this,UserDataSetupActivity2.class);
             startActivity(intent);
         }
         else if(id==R.id.homeDrawerMenuItem3)

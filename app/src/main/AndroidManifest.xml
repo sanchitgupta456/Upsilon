@@ -17,6 +17,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true"
         android:name=".Upsilon"
         >
         <meta-data android:name="cloudinary://937567483347128:wQLZU0pYv4hJt1sqF9fHB1uuEs8@upsilon175" android:value="cloudinary://@upsilon175"/>

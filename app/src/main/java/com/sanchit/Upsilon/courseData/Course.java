@@ -11,6 +11,7 @@ import io.realm.RealmObject;
 
 public class Course extends Object implements Serializable {
     private String courseName;
+    private String courseImage;
     private String tutorId;
     private String courseDescription;
     private String coursePreReq;
@@ -26,6 +27,19 @@ public class Course extends Object implements Serializable {
 
     public Course() {
     }
+
+    public String getCourseImage() {
+        return courseImage;
+    }
+
+    public void setCourseImage(String courseImage) {
+        this.courseImage = courseImage;
+    }
+
+    public void setCourseRating(double courseRating) {
+        this.courseRating = courseRating;
+    }
+
 
     public String getCourseName() {
         return courseName;

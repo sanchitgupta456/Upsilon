@@ -173,6 +173,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:src="@drawable/icon_location"
+                            android:id="@+id/location_view_course"
                             android:layout_weight="85"
                             android:backgroundTint="#00000000"
                             android:gravity="end"/>
