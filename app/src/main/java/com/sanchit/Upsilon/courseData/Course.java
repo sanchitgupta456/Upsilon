@@ -24,8 +24,66 @@ public class Course extends Object implements Serializable {
     private int numberOfBatches;
     private BasicBSONList courseReviews;
     private String cardImgID;
+    private ArrayList<String> IntroductoryContentImages;
+    private int IntroductoryImageCounter;
+    private ArrayList<String> IntroductoryContentVideos;
+    private int IntroductoryVideoCounter;
+
 
     public Course() {
+    }
+
+    public Course(String courseName, String courseImage, String tutorId, String courseDescription, String coursePreReq, double courseRating, String courseMode, String courseFees, String instructorLocation, int courseDuration, int numberOfStudentsEnrolled, int numberOfBatches, BasicBSONList courseReviews, String cardImgID, ArrayList<String> introductoryContentImages, int introductoryImageCounter, ArrayList<String> introductoryContentVideos, int introductoryVideoCounter) {
+        this.courseName = courseName;
+        this.courseImage = courseImage;
+        this.tutorId = tutorId;
+        this.courseDescription = courseDescription;
+        this.coursePreReq = coursePreReq;
+        this.courseRating = courseRating;
+        this.courseMode = courseMode;
+        this.courseFees = courseFees;
+        this.instructorLocation = instructorLocation;
+        this.courseDuration = courseDuration;
+        this.numberOfStudentsEnrolled = numberOfStudentsEnrolled;
+        this.numberOfBatches = numberOfBatches;
+        this.courseReviews = courseReviews;
+        this.cardImgID = cardImgID;
+        IntroductoryContentImages = introductoryContentImages;
+        IntroductoryImageCounter = introductoryImageCounter;
+        IntroductoryContentVideos = introductoryContentVideos;
+        IntroductoryVideoCounter = introductoryVideoCounter;
+    }
+
+    public ArrayList<String> getIntroductoryContentImages() {
+        return IntroductoryContentImages;
+    }
+
+    public void setIntroductoryContentImages(ArrayList<String> introductoryContentImages) {
+        IntroductoryContentImages = introductoryContentImages;
+    }
+
+    public int getIntroductoryImageCounter() {
+        return IntroductoryImageCounter;
+    }
+
+    public void setIntroductoryImageCounter(int introductoryImageCounter) {
+        IntroductoryImageCounter = introductoryImageCounter;
+    }
+
+    public ArrayList<String> getIntroductoryContentVideos() {
+        return IntroductoryContentVideos;
+    }
+
+    public void setIntroductoryContentVideos(ArrayList<String> introductoryContentVideos) {
+        IntroductoryContentVideos = introductoryContentVideos;
+    }
+
+    public int getIntroductoryVideoCounter() {
+        return IntroductoryVideoCounter;
+    }
+
+    public void setIntroductoryVideoCounter(int introductoryVideoCounter) {
+        IntroductoryVideoCounter = introductoryVideoCounter;
     }
 
     public String getCourseImage() {

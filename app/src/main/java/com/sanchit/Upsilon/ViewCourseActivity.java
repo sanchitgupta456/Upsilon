@@ -22,6 +22,7 @@ import com.sanchit.Upsilon.courseData.Course;
 import com.sanchit.Upsilon.courseData.CourseReview;
 import com.sanchit.Upsilon.courseData.CourseReviewAdapter;
 import com.sanchit.Upsilon.courseData.CoursesAdapter;
+import com.sanchit.Upsilon.courseData.IntroductoryContentAdapter;
 import com.squareup.picasso.Picasso;
 
 import org.bson.Document;
@@ -53,9 +54,12 @@ public class ViewCourseActivity extends AppCompatActivity {
     Course course;
     MongoClient mongoClient;
     MongoDatabase mongoDatabase;
-    RecyclerView reviewsRecyclerView;
+    RecyclerView reviewsRecyclerView,introductoryRecyclerView;
     CourseReviewAdapter courseReviewAdapter;
+    IntroductoryContentAdapter courseIntroductoryMaterialAdapter;
     ArrayList<CourseReview> courseReviewsArrayList = new ArrayList<CourseReview>();
+    ArrayList<String> introductoryImages = new ArrayList<String>();
+    ArrayList<String> introductoryVideos = new ArrayList<String>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -76,8 +80,8 @@ public class ViewCourseActivity extends AppCompatActivity {
         CourseMode = (TextView) findViewById(R.id.view_course_mode);
         CourseTutorName = (TextView) findViewById(R.id.view_course_tutor_name);
         reviewsRecyclerView = (RecyclerView) findViewById(R.id.listCourseReviews);
+        introductoryRecyclerView = (RecyclerView) findViewById(R.id.listIntroductoryMaterial);
         CourseLocation = (ImageButton) findViewById(R.id.location_view_course);
-        initialise();
 
         app = new App(new AppConfiguration.Builder(appID)
                 .build());
@@ -90,10 +94,13 @@ public class ViewCourseActivity extends AppCompatActivity {
         Intent intent = getIntent();
         course = (Course)intent.getSerializableExtra("Course");
 
+        initialise();
+
         Log.v("Course","Hello");
         Log.v("courseReview", String.valueOf(course.getCourseReviews().getClass()));
 
         getCourseReviews();
+        getCourseIntroductoryContent();
 
         Document queryFilter  = new Document("userid",course.getTutorId());
 
@@ -144,10 +151,6 @@ public class ViewCourseActivity extends AppCompatActivity {
         Picasso.with(getApplicationContext()).load(course.getCourseImage()).fit().centerInside().into(CourseImage);
 
         //Toast.makeText(getApplicationContext(), "Course Rating"+(double) course.getCourseRating(),Toast.LENGTH_LONG).show();
-
-
-
-
     }
 
     public void getCourseReviews()
@@ -166,6 +169,22 @@ public class ViewCourseActivity extends AppCompatActivity {
         Log.v("courseReviews", String.valueOf(course.getCourseReviews()));
     }
 
+    public void getCourseIntroductoryContent()
+    {
+
+        introductoryRecyclerView.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false));
+        introductoryRecyclerView.setItemAnimator(new DefaultItemAnimator());
+
+            introductoryImages = course.getIntroductoryContentImages();
+            introductoryVideos = course.getIntroductoryContentVideos();
+            introductoryImages.add("http://res.cloudinary.com/upsilon175/image/upload/v1605196689/Upsilon/Courses/5fad2ca3600686e14bc0950b/IntroductoryContent/Images/IntroductoryImage0.jpg");
+            //Log.v("introductoryImages", String.valueOf(introductoryImages));
+
+        courseIntroductoryMaterialAdapter = new IntroductoryContentAdapter(introductoryImages,introductoryVideos);
+        introductoryRecyclerView.setAdapter(courseIntroductoryMaterialAdapter);
+        courseIntroductoryMaterialAdapter.notifyDataSetChanged();
+    }
+
     public void initialise()
     {
 
@@ -175,6 +194,8 @@ public class ViewCourseActivity extends AppCompatActivity {
         reviewsRecyclerView.setItemAnimator(new DefaultItemAnimator());
         reviewsRecyclerView.setAdapter(courseReviewAdapter);
         courseReviewAdapter = new CourseReviewAdapter(courseReviewsArrayList);
+
+
     }
 
 

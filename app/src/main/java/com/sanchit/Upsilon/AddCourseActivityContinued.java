@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
@@ -29,6 +30,7 @@ import org.bson.types.ObjectId;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -114,16 +116,23 @@ public class AddCourseActivityContinued extends AppCompatActivity {
             }
         });
 
-        /*addDocuments.setOnClickListener(new View.OnClickListener() {
+        addDocuments.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(
-                        Intent.ACTION_PICK, );
-                i.setType("document/*");
+                /*Intent i = new Intent(
+                        Intent.ACTION_PICK);
+                i.setType("application/pdf");
+                i.addCategory(Intent.CATEGORY_OPENABLE);
                 i.putExtra(Intent.EXTRA_ALLOW_MULTIPLE,true);
-                startActivityForResult(i, RESULT_LOAD_VIDEO);
+                startActivityForResult(i, RESULT_LOAD_DOCUMENT);*/
+
+                Intent intent = new Intent();
+                intent.setType("*/*");
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE,true);
+                startActivityForResult(Intent.createChooser(intent, "Select Picture"), RESULT_LOAD_DOCUMENT);
             }
-        });*/
+        });
 
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -280,6 +289,99 @@ public class AddCourseActivityContinued extends AppCompatActivity {
                                                                 if (result.isSuccess()) {
                                                                     Log.v("EXAMPLE", "Inserted custom user data document. _id of inserted document: "
                                                                             + result.get().getModifiedCount());
+                                                                    startActivity(new Intent(AddCourseActivityContinued.this,MainActivity.class));
+                                                                    //Intent intent = new Intent(UserDataSetupActivity2.this,UserDataSetupActivity3.class);
+                                                                    //startActivity(intent);
+                                                                } else {
+                                                                    Log.e("EXAMPLE", "Unable to insert custom user data. Error: " + result.getError());
+                                                                }
+                                                            });
+                                                }
+                                                while (results.hasNext()) {
+                                                    //Log.v("EXAMPLE", results.next().toString());
+                                                    Document currentDoc = results.next();
+                                                    Log.v("User",currentDoc.getString("userid"));
+                                                }
+                                            } else {
+                                                Log.v("User","Failed to complete search");
+                                            }
+                                        });
+                                    }
+                                }
+
+                                @Override
+                                public void onError(String requestId, ErrorInfo error) {
+
+                                }
+
+                                @Override
+                                public void onReschedule(String requestId, ErrorInfo error) {
+
+                                }
+                            }).dispatch();
+
+                }
+
+                counter=0;
+                for (counter=0;counter<documentPaths.size();counter++)
+                {
+                    int finalCounter = counter;
+                    String requestId = MediaManager.get().upload(documentPaths.get(counter))
+                            .unsigned("preset1")
+                            .option("resource_type", "document")
+                            .option("folder", "Upsilon/Courses/"+id+"/IntroductoryContent/Documents")
+                            .option("public_id", "IntroductoryDocument"+counter)
+                            .callback(new UploadCallback() {
+                                @Override
+                                public void onStart(String requestId) {
+
+                                }
+
+                                @Override
+                                public void onProgress(String requestId, long bytes, long totalBytes) {
+
+                                }
+
+                                @Override
+                                public void onSuccess(String requestId, Map resultData) {
+                                    introductoryDocumentUrls.add(resultData.get("url").toString());
+                                    Log.v("Urls",introductoryDocumentUrls.toString());
+                                    if(finalCounter ==documentPaths.size()-1)
+                                    {
+                                        Document queryFilter  = new Document("_id",_id);
+
+                                        RealmResultTask<MongoCursor<Document>> findTask = mongoCollection.find(queryFilter).iterator();
+
+                                        findTask.getAsync(task -> {
+                                            if (task.isSuccess()) {
+                                                MongoCursor<Document> results = task.get();
+                                                if(!results.hasNext())
+                                                {
+                                                    /*mongoCollection.insertOne(
+                                                            new Document("userid", user.getId()).append("profilePicCounter",0).append("favoriteColor", "pink").append("profilePicUrl",resultData.get("url").toString()))
+                                                            .getAsync(result -> {
+                                                                if (result.isSuccess()) {
+                                                                    Log.v("EXAMPLE", "Inserted custom user data document. _id of inserted document: "
+                                                                            + result.get().getInsertedId());
+                                                                    //Intent intent = new Intent(UserDataSetupActivity2.this,UserDataSetupActivity3.class);
+                                                                    //startActivity(intent);
+                                                                } else {
+                                                                    Log.e("EXAMPLE", "Unable to insert custom user data. Error: " + result.getError());
+                                                                }
+                                                            });*/
+                                                }
+                                                else
+                                                {
+                                                    Document userdata = results.next();
+                                                    userdata.append("IntroductoryContentDocuments",introductoryDocumentUrls);
+                                                    userdata.append("IntroductoryDocumentCounter", finalCounter+1);
+
+                                                    mongoCollection.updateOne(
+                                                            new Document("_id",_id),(userdata))
+                                                            .getAsync(result -> {
+                                                                if (result.isSuccess()) {
+                                                                    Log.v("EXAMPLE", "Inserted custom user data document. _id of inserted document: "
+                                                                            + result.get().getModifiedCount());
                                                                     //Intent intent = new Intent(UserDataSetupActivity2.this,UserDataSetupActivity3.class);
                                                                     //startActivity(intent);
                                                                 } else {
@@ -406,6 +508,66 @@ public class AddCourseActivityContinued extends AppCompatActivity {
                     //ImageView imageView = (ImageView) findViewById(R.id.profilePhoto);
                     //imageView.setImageBitmap(BitmapFactory.decodeFile(picturePath));
                 }
+            }
+            else if (requestCode == RESULT_LOAD_DOCUMENT && resultCode == RESULT_OK && null != data) {
+                    // Checking for selection multiple files or single.
+                    if (data.getClipData() != null){
+
+                        // Getting the length of data and logging up the logs using index
+                        for (int index = 0; index < data.getClipData().getItemCount(); index++) {
+
+                            // Getting the URIs of the selected files and logging them into logcat at debug level
+                            /*Uri selectedImage = data.getClipData().getItemAt(index).getUri();
+                            String[] filePathColumn = {MediaStore.Images.Media.DATA};
+                            Cursor cursor = getContentResolver().query(selectedImage,
+                                    filePathColumn, null, null, null);
+                            cursor.moveToFirst();
+                            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                            documentPath = cursor.getString(columnIndex);
+                            documentPaths.add(documentPath);
+                            cursor.close();*/
+
+                            Log.v("Documents", String.valueOf(documentPaths));
+                            //Log.d("filesUri [" + uri + "] : ", String.valueOf(uri) );
+                        }
+                    }else{
+
+                        // Getting the URI of the selected file and logging into logcat at debug level
+                        Uri uri = data.getData();
+                        //Log.d("fileUri: ", String.valueOf(uri));
+                        Log.v("Documents", String.valueOf(documentPaths));
+                    }
+
+                /*if(data.getClipData()!=null)
+                {
+
+                    int count = data.getClipData().getItemCount(); //evaluate the count before the for loop --- otherwise, the count is evaluated every loop.
+                    for(int i = 0; i < count; i++) {
+                        Uri selectedImage = data.getClipData().getItemAt(i).getUri();
+                        String[] filePathColumn = {MediaStore.Images.Media.DATA};
+                        Cursor cursor = getContentResolver().query(selectedImage,
+                                filePathColumn, null, null, null);
+                        cursor.moveToFirst();
+                        int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                        documentPath = cursor.getString(columnIndex);
+                        documentPaths.add(documentPath);
+                        cursor.close();
+                    }
+                    Log.v("Documents","Hello"+ String.valueOf(documentPaths));
+                }
+                else if(data.getData()!=null) {
+                    Uri selectedImage = data.getData();
+                    String[] filePathColumn = { MediaStore.Images.Media.DATA };
+                    Cursor cursor = getContentResolver().query(selectedImage,
+                            filePathColumn, null, null, null);
+                    cursor.moveToFirst();
+                    int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                    documentPath = cursor.getString(columnIndex);
+                    cursor.close();
+                    // String picturePath contains the path of selected Image
+                    //ImageView imageView = (ImageView) findViewById(R.id.profilePhoto);
+                    //imageView.setImageBitmap(BitmapFactory.decodeFile(picturePath));
+                }*/
             }
         }
     }
