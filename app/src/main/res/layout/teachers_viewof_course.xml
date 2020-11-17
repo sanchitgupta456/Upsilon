@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/gradient">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="100"
+        android:id="@+id/linearLayoutTeachersViewOfCourse">
+        <ImageButton
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/back_icon"
+            android:backgroundTint="#0000"
+            android:layout_weight="45"
+            android:clickable="true"
+            android:focusable="true"
+            tools:ignore="ContentDescription" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:textSize="20sp"
+            android:textColor="@color/colorPrimaryDark"
+            android:textStyle="bold"
+            android:text="Introduction to C"
+            android:gravity="center"
+            android:layout_weight="10"/>
+        <ImageButton
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/edit_icon"
+            android:backgroundTint="#0000"
+            android:layout_weight="45"
+            android:clickable="true"
+            android:focusable="true"
+            tools:ignore="ContentDescription" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_below="@id/linearLayoutTeachersViewOfCourse"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin">
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:src="@drawable/background_alter"
+            android:scaleType="centerCrop"
+            tools:ignore="ContentDescription" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:textColor="@color/colorBlack"
+            android:textStyle="bold"
+            android:textSize="24sp"
+            android:text="Introduction to C"
+            android:typeface="sans"
+            android:gravity="center_vertical" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:textColor="@color/colorBlack"
+            android:textStyle="italic"
+            android:textSize="20sp"
+            android:text="Rating - 4.7/5"
+            android:typeface="normal"
+            android:gravity="center_vertical" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:textColor="@color/colorBlack"
+            android:textStyle="italic"
+            android:textSize="20sp"
+            android:text="47 currently enrolled"
+            android:typeface="normal"
+            android:gravity="center_vertical" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:textColor="@color/colorBlack"
+            android:textStyle="italic"
+            android:textSize="20sp"
+            android:text="Course started on 7/21/20"
+            android:typeface="normal"
+            android:gravity="center_vertical" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:textColor="@color/colorBlack"
+            android:textStyle="italic"
+            android:textSize="20sp"
+            android:text="37 % completed"
+            android:typeface="normal"
+            android:gravity="center_vertical" />
+    </LinearLayout>
+
+</RelativeLayout>

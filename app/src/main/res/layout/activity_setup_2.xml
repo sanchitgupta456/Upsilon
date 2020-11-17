@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@drawable/alterbackground">
+    android:background="@drawable/background_alter"
+    android:theme="@style/Theme.AppCompat.Light.NoActionBar">
 
     <TextView
         android:layout_width="match_parent"
@@ -67,7 +68,9 @@
         android:text="@string/your_name_and_photo_will_be_visible_to_your_teachers"
         android:textColor="@color/colorWhite"
         android:gravity="center"
-        android:layout_marginTop="24dp" />
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginStart="5dp"/>
 
     <ProgressBar
         android:layout_width="match_parent"
