@@ -21,6 +21,7 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
@@ -77,7 +78,10 @@ public class AddCourseActivity extends AppCompatActivity implements AdapterView.
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_course);
-
+        this.getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        getSupportActionBar().setDisplayShowCustomEnabled(true);
+        getSupportActionBar().setCustomView(R.layout.action_bar_add_course);
+        getSupportActionBar().setElevation(10);
         CourseName = (EditText) findViewById(R.id.add_course_name);
         CourseDescription = (EditText) findViewById(R.id.add_course_description);
         CourseDuration = (EditText) findViewById(R.id.add_course_duration);

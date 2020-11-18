@@ -6,7 +6,7 @@
     android:background="@drawable/gradient"
     tools:context=".AddCourseActivity">
 
-
+    <!--
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -21,14 +21,13 @@
         android:gravity="center"
         android:id="@+id/textAddCourseDetails"
         android:padding="10dp"/>
-
+    -->
 
 
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/textAddCourseDetails"
         android:layout_above="@id/btnNext"
         android:layout_margin="@dimen/activity_vertical_margin">
         <LinearLayout
