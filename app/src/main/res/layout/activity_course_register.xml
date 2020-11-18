@@ -17,6 +17,7 @@
             android:weightSum="100"
             android:id="@+id/linearLayoutRegisterCourse">
             <ImageButton
+                android:id="@+id/imgBtnBack"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:src="@drawable/back_icon"
@@ -36,6 +37,7 @@
                 android:gravity="center"
                 android:layout_weight="10"/>
             <ImageButton
+                android:id="@+id/imgBtnProceedToPay"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:src="@drawable/icon_tick"
@@ -168,6 +170,7 @@
             android:drawablePadding="10dp"/>
 
         <Button
+            android:id="@+id/btnProceedToPay"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/activity_horizontal_margin"
@@ -175,7 +178,7 @@
             android:background="@color/colorPrimary"
             android:textColor="@color/colorWhite"
             android:textSize="@dimen/text_margin"
-            android:text="Proceed to Pay"
+            android:text="@string/proceed_to_pay"
             android:elevation="20dp"/>
     </RelativeLayout>
 </ScrollView>
