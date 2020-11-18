@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/gradient">
-
+    <!--
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -15,14 +15,16 @@
         android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp"
         android:layout_marginBottom="@dimen/activity_vertical_margin"
-        android:id="@+id/textCoursesTaught1" />
+        android:id="@+id/textCoursesTaught1" /> -->
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="@dimen/text_margin"
+        android:textSize="20sp"
         android:textColor="@color/colorPrimaryDark"
-        android:layout_below="@id/textCoursesTaught1"
+        android:textStyle="bold"
+        android:typeface="sans"
+        android:padding="3dp"
         android:text="@string/your_active_courses"
         android:layout_marginTop="@dimen/activity_vertical_margin"
         android:layout_marginStart="24dp"
@@ -49,8 +51,11 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="@dimen/text_margin"
+        android:textSize="20sp"
         android:textColor="@color/colorPrimaryDark"
+        android:textStyle="bold"
+        android:typeface="sans"
+        android:padding="3dp"
         android:layout_below="@id/frameCurrentCoursesTaught"
         android:text="@string/your_time_with_us"
         android:layout_marginTop="@dimen/activity_vertical_margin"
