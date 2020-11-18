@@ -18,6 +18,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
@@ -70,7 +71,10 @@ public class AddCourseActivityContinued extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_course_contd);
-
+        this.getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        getSupportActionBar().setDisplayShowCustomEnabled(true);
+        getSupportActionBar().setCustomView(R.layout.action_bar_add_course_contd);
+        getSupportActionBar().setElevation(10);
         addImages = (LinearLayout) findViewById(R.id.add_images_introductory);
         addVideos = (LinearLayout) findViewById(R.id.add_video_introductory);
         addDocuments = (LinearLayout) findViewById(R.id.add_documents_introductory);

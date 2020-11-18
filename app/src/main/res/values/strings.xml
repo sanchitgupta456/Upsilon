@@ -85,4 +85,5 @@
     <string name="selected_course">Selected Course</string>
     <string name="proceed_to_pay">Proceed to Pay</string>
     <string name="home">HOME</string>
+    <string name="add_introductory_content">Add Introductory Content</string>
 </resources>
