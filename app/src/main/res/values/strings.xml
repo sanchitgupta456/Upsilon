@@ -86,4 +86,7 @@
         \n
         \nInstructor Details - Instructor is a well known... and an expert on... bla bla something...
     </string>
+    <string name="register">Register</string>
+    <string name="enter_you_street_address">Enter you street address</string>
+    <string name="selected_course">Selected Course</string>
 </resources>
