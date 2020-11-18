@@ -10,6 +10,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+        <!--
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -46,14 +47,13 @@
                 android:clickable="true"
                 android:focusable="true"
                 tools:ignore="ContentDescription" />
-        </LinearLayout>
+        </LinearLayout> -->
 
         <LinearLayout
             android:id="@+id/linearLayoutRegisterCourse2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_below="@id/linearLayoutRegisterCourse"
             android:layout_marginTop="24dp"
             android:layout_marginStart="@dimen/activity_horizontal_margin"
             android:layout_marginEnd="@dimen/activity_horizontal_margin">
