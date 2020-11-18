@@ -79,15 +79,10 @@
     <string name="your_time_with_us">Your Time With Us</string>
     <string name="add_new_course">Add a new course</string>
 
-    <string name="temp_course_details">
-        Instructor - Mr. Unknown Someone
-        \nCourse Duration - 70 hours
-        \nFees - ₹ 1100 /-
-        \n
-        \nInstructor Details - Instructor is a well known... and an expert on... bla bla something...
-    </string>
+    <string name="temp_course_details">T</string>
     <string name="register">Register</string>
     <string name="enter_you_street_address">Enter you street address</string>
     <string name="selected_course">Selected Course</string>
     <string name="proceed_to_pay">Proceed to Pay</string>
+    <string name="home">HOME</string>
 </resources>
