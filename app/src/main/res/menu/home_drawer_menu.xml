@@ -7,7 +7,7 @@
         android:id="@+id/homeDrawerMenuItem1"
         android:icon="@drawable/add_box_icon"/>
     <item
-        android:title="Title 2"
+        android:title="Courses Taught"
         android:id="@+id/homeDrawerMenuItem2"
         android:icon="@drawable/add_box_icon"/>
     <item

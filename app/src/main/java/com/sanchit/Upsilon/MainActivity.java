@@ -285,13 +285,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
         else if(id==R.id.homeDrawerMenuItem2)
         {
-            Intent intent = new Intent(MainActivity.this,AddCourseActivityContinued.class);
+            Intent intent = new Intent(MainActivity.this,CoursesTaughtActivity.class);
             startActivity(intent);
         }
         else if(id==R.id.homeDrawerMenuItem3)
         {
-            Intent intent = new Intent(MainActivity.this,CoursesTaughtActivity.class);
-            startActivity(intent);
+
         }
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

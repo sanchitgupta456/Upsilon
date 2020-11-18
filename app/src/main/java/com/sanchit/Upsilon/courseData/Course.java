@@ -2,6 +2,7 @@ package com.sanchit.Upsilon.courseData;
 
 import org.bson.codecs.BsonArrayCodec;
 import org.bson.types.BasicBSONList;
+import org.bson.types.ObjectId;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -10,6 +11,7 @@ import io.realm.RealmList;
 import io.realm.RealmObject;
 
 public class Course extends Object implements Serializable {
+    private ObjectId courseId;
     private String courseName;
     private String courseImage;
     private String tutorId;
@@ -24,6 +26,7 @@ public class Course extends Object implements Serializable {
     private int numberOfBatches;
     private BasicBSONList courseReviews;
     private String cardImgID;
+    private ArrayList<String> myRegisteredCourses;
     private ArrayList<String> IntroductoryContentImages;
     private int IntroductoryImageCounter;
     private ArrayList<String> IntroductoryContentVideos;
@@ -33,7 +36,7 @@ public class Course extends Object implements Serializable {
     public Course() {
     }
 
-    public Course(String courseName, String courseImage, String tutorId, String courseDescription, String coursePreReq, double courseRating, String courseMode, String courseFees, String instructorLocation, int courseDuration, int numberOfStudentsEnrolled, int numberOfBatches, BasicBSONList courseReviews, String cardImgID, ArrayList<String> introductoryContentImages, int introductoryImageCounter, ArrayList<String> introductoryContentVideos, int introductoryVideoCounter) {
+    public Course(String courseName, String courseImage, String tutorId, String courseDescription, String coursePreReq, double courseRating, String courseMode, String courseFees, String instructorLocation, int courseDuration, int numberOfStudentsEnrolled, int numberOfBatches, BasicBSONList courseReviews, String cardImgID, ArrayList<String> myRegisteredCourses, ArrayList<String> introductoryContentImages, int introductoryImageCounter, ArrayList<String> introductoryContentVideos, int introductoryVideoCounter) {
         this.courseName = courseName;
         this.courseImage = courseImage;
         this.tutorId = tutorId;
@@ -48,10 +51,50 @@ public class Course extends Object implements Serializable {
         this.numberOfBatches = numberOfBatches;
         this.courseReviews = courseReviews;
         this.cardImgID = cardImgID;
+        this.myRegisteredCourses = myRegisteredCourses;
         IntroductoryContentImages = introductoryContentImages;
         IntroductoryImageCounter = introductoryImageCounter;
         IntroductoryContentVideos = introductoryContentVideos;
         IntroductoryVideoCounter = introductoryVideoCounter;
+    }
+
+    public Course(ObjectId courseId, String courseName, String courseImage, String tutorId, String courseDescription, String coursePreReq, double courseRating, String courseMode, String courseFees, String instructorLocation, int courseDuration, int numberOfStudentsEnrolled, int numberOfBatches, BasicBSONList courseReviews, String cardImgID, ArrayList<String> myRegisteredCourses, ArrayList<String> introductoryContentImages, int introductoryImageCounter, ArrayList<String> introductoryContentVideos, int introductoryVideoCounter) {
+        this.courseId = courseId;
+        this.courseName = courseName;
+        this.courseImage = courseImage;
+        this.tutorId = tutorId;
+        this.courseDescription = courseDescription;
+        this.coursePreReq = coursePreReq;
+        this.courseRating = courseRating;
+        this.courseMode = courseMode;
+        this.courseFees = courseFees;
+        this.instructorLocation = instructorLocation;
+        this.courseDuration = courseDuration;
+        this.numberOfStudentsEnrolled = numberOfStudentsEnrolled;
+        this.numberOfBatches = numberOfBatches;
+        this.courseReviews = courseReviews;
+        this.cardImgID = cardImgID;
+        this.myRegisteredCourses = myRegisteredCourses;
+        IntroductoryContentImages = introductoryContentImages;
+        IntroductoryImageCounter = introductoryImageCounter;
+        IntroductoryContentVideos = introductoryContentVideos;
+        IntroductoryVideoCounter = introductoryVideoCounter;
+    }
+
+    public ObjectId getCourseId() {
+        return courseId;
+    }
+
+    public void setCourseId(ObjectId courseId) {
+        this.courseId = courseId;
+    }
+
+    public ArrayList<String> getMyRegisteredCourses() {
+        return myRegisteredCourses;
+    }
+
+    public void setMyRegisteredCourses(ArrayList<String> myRegisteredCourses) {
+        this.myRegisteredCourses = myRegisteredCourses;
     }
 
     public ArrayList<String> getIntroductoryContentImages() {

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RatingBar;
@@ -49,6 +50,7 @@ public class ViewCourseActivity extends AppCompatActivity {
     private ImageView BackButton,CourseImage;
     private TextView ActionBarCourseName,CourseDescription,CourseDuration,CourseMode,CourseCost,CourseTutorName;
     private ImageButton CourseLocation;
+    private Button RegisterButton;
     String appID = "upsilon-ityvn";
     App app;
     Course course;
@@ -82,6 +84,7 @@ public class ViewCourseActivity extends AppCompatActivity {
         reviewsRecyclerView = (RecyclerView) findViewById(R.id.listCourseReviews);
         introductoryRecyclerView = (RecyclerView) findViewById(R.id.listIntroductoryMaterial);
         CourseLocation = (ImageButton) findViewById(R.id.location_view_course);
+        RegisterButton = (Button) findViewById(R.id.view_course_register);
 
         app = new App(new AppConfiguration.Builder(appID)
                 .build());
@@ -93,6 +96,19 @@ public class ViewCourseActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         course = (Course)intent.getSerializableExtra("Course");
+
+        if(course.getTutorId().equals(user.getId()))
+        {
+            RegisterButton.setVisibility(View.INVISIBLE);
+        }
+        RegisterButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ViewCourseActivity.this,RegisterCourseActivity.class);
+                intent.putExtra("course",course);
+                startActivity(intent);
+            }
+        });
 
         initialise();
 
@@ -177,7 +193,7 @@ public class ViewCourseActivity extends AppCompatActivity {
 
             introductoryImages = course.getIntroductoryContentImages();
             introductoryVideos = course.getIntroductoryContentVideos();
-            introductoryImages.add("http://res.cloudinary.com/upsilon175/image/upload/v1605196689/Upsilon/Courses/5fad2ca3600686e14bc0950b/IntroductoryContent/Images/IntroductoryImage0.jpg");
+            //introductoryImages.add("http://res.cloudinary.com/upsilon175/image/upload/v1605196689/Upsilon/Courses/5fad2ca3600686e14bc0950b/IntroductoryContent/Images/IntroductoryImage0.jpg");
             //Log.v("introductoryImages", String.valueOf(introductoryImages));
 
         courseIntroductoryMaterialAdapter = new IntroductoryContentAdapter(introductoryImages,introductoryVideos);

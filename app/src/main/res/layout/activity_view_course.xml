@@ -242,6 +242,7 @@
     </ScrollView>
 
     <Button
+        android:id="@+id/view_course_register"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="10dp"

@@ -194,6 +194,7 @@ public class AddCourseActivityContinued extends AppCompatActivity {
                                                     Document userdata = results.next();
                                                     userdata.append("IntroductoryContentImages",introductoryImageUrls);
                                                     userdata.append("IntroductoryImageCounter", finalCounter +1);
+                                                    userdata.append("courseId",_id);
 
                                                     mongoCollection.updateOne(
                                                             new Document("_id",_id),(userdata))
@@ -476,6 +477,7 @@ public class AddCourseActivityContinued extends AppCompatActivity {
                     cursor.moveToFirst();
                     int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
                     picturePath = cursor.getString(columnIndex);
+                    picturePaths.add(picturePath);
                     cursor.close();
                     // String picturePath contains the path of selected Image
                     //ImageView imageView = (ImageView) findViewById(R.id.profilePhoto);
@@ -507,6 +509,7 @@ public class AddCourseActivityContinued extends AppCompatActivity {
                     cursor.moveToFirst();
                     int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
                     videoPath = cursor.getString(columnIndex);
+                    videoPaths.add(videoPath);
                     cursor.close();
                     // String picturePath contains the path of selected Image
                     //ImageView imageView = (ImageView) findViewById(R.id.profilePhoto);

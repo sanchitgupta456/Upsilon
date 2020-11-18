@@ -1,6 +1,7 @@
 package com.sanchit.Upsilon.courseData;
 
 import android.content.Context;
+import android.media.MediaPlayer;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -83,15 +84,19 @@ public class IntroductoryContentAdapter extends RecyclerView.Adapter<Introductor
             Log.v("Video",videoUrl);
             Log.v("Video","Binded");
             //holder.imgTvShow.setImageResource(course.getCardImgID());
-            holder.IntroductoryContentVideo.setVideoPath(videoUrl);
+            holder.IntroductoryContentVideo.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                @Override
+                public void onPrepared(MediaPlayer mp) {
+                    holder.IntroductoryContentVideo.setVideoPath(videoUrl);
+                }
+            });
+
             holder.IntroductoryContentImage.setVisibility(View.INVISIBLE);
             holder.cv.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
                     holder.IntroductoryContentVideo.start();
                     //Toast.makeText(context,"The position is:"+position,Toast.LENGTH_SHORT).show();
-
                 }
             });
 
