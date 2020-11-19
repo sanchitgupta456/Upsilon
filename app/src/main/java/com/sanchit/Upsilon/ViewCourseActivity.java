@@ -28,6 +28,7 @@ import com.squareup.picasso.Picasso;
 
 import org.bson.Document;
 import org.bson.types.BasicBSONList;
+import org.bson.types.ObjectId;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -105,6 +106,8 @@ public class ViewCourseActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(ViewCourseActivity.this,RegisterCourseActivity.class);
+                String id = course.getCourseId();
+                Log.v("ViewCourse", String.valueOf(course.getCourseId()));
                 intent.putExtra("course",course);
                 startActivity(intent);
             }

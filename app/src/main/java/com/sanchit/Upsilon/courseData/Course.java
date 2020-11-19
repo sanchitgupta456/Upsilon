@@ -1,17 +1,13 @@
 package com.sanchit.Upsilon.courseData;
 
-import org.bson.codecs.BsonArrayCodec;
 import org.bson.types.BasicBSONList;
 import org.bson.types.ObjectId;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 
-import io.realm.RealmList;
-import io.realm.RealmObject;
-
 public class Course extends Object implements Serializable {
-    private ObjectId courseId;
+    private String courseId;
     private String courseName;
     private String courseImage;
     private String tutorId;
@@ -58,7 +54,7 @@ public class Course extends Object implements Serializable {
         IntroductoryVideoCounter = introductoryVideoCounter;
     }
 
-    public Course(ObjectId courseId, String courseName, String courseImage, String tutorId, String courseDescription, String coursePreReq, double courseRating, String courseMode, String courseFees, String instructorLocation, int courseDuration, int numberOfStudentsEnrolled, int numberOfBatches, BasicBSONList courseReviews, String cardImgID, ArrayList<String> myRegisteredCourses, ArrayList<String> introductoryContentImages, int introductoryImageCounter, ArrayList<String> introductoryContentVideos, int introductoryVideoCounter) {
+    public Course(String courseId, String courseName, String courseImage, String tutorId, String courseDescription, String coursePreReq, double courseRating, String courseMode, String courseFees, String instructorLocation, int courseDuration, int numberOfStudentsEnrolled, int numberOfBatches, BasicBSONList courseReviews, String cardImgID, ArrayList<String> myRegisteredCourses, ArrayList<String> introductoryContentImages, int introductoryImageCounter, ArrayList<String> introductoryContentVideos, int introductoryVideoCounter) {
         this.courseId = courseId;
         this.courseName = courseName;
         this.courseImage = courseImage;
@@ -81,11 +77,11 @@ public class Course extends Object implements Serializable {
         IntroductoryVideoCounter = introductoryVideoCounter;
     }
 
-    public ObjectId getCourseId() {
+    public String getCourseId() {
         return courseId;
     }
 
-    public void setCourseId(ObjectId courseId) {
+    public void setCourseId(String courseId) {
         this.courseId = courseId;
     }
 
