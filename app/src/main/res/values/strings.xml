@@ -86,4 +86,11 @@
     <string name="proceed_to_pay">Proceed to Pay</string>
     <string name="home">HOME</string>
     <string name="add_introductory_content">Add Introductory Content</string>
+    <string name="courses_taught">Courses Taught</string>
+    <string name="name">Name</string>
+    <string name="email_id">Email ID</string>
+    <string name="number_of_courses_taken">Number of Courses Taken</string>
+    <string name="phone">Phone</string>
+    <string name="number_of_courses_taught">Number of Courses Taught</string>
+    <string name="your_profile">Your Profile</string>
 </resources>
