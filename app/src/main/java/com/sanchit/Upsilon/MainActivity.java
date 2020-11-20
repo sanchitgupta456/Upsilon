@@ -35,6 +35,7 @@ import com.sanchit.Upsilon.ui.login.LoginActivity;
 import com.squareup.picasso.Picasso;
 
 import org.bson.Document;
+import org.bson.types.ObjectId;
 
 import java.io.Console;
 import java.security.MessageDigest;
@@ -67,10 +68,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private Gson gson;
     private GsonBuilder gsonBuilder;
+    private ArrayList<String> myCourses;
 
-    RecyclerView recyclerView;
-    CoursesAdapter coursesAdapter;
+    RecyclerView recyclerView,recyclerView1;
+    CoursesAdapter coursesAdapter,coursesAdapter1;
     ArrayList<Course> courseArrayList = new ArrayList<Course>();
+    ArrayList<Course> courseArrayList1 = new ArrayList<>();
     App app;
     MongoClient mongoClient;
     MongoDatabase mongoDatabase;
@@ -159,7 +162,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     public void getCourseData(){
 
-
 // an authenticated user is required to access a MongoDB instance
 
             if (app.currentUser()!=null) {
@@ -170,6 +172,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 //Blank query to find every single course in db
                 //TODO: Modify query to look for user preferred course IDs
                 Document queryFilter  = new Document();
+                Document userdata = user.getCustomData();
+                 myCourses = (ArrayList<String>) userdata.get("myCourses");
+                if(myCourses==null)
+                {
+                    myCourses=new ArrayList<>();
+                }
 
                 RealmResultTask<MongoCursor<Document>> findTask = mongoCollection.find(queryFilter).iterator();
 
@@ -191,6 +199,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                             //course.setCourseName(currentDoc.getString("courseName"));
                             //TODO : implement card image fetching via database
                             //course.setCardImgID(TvShowImgs[0]);
+
+                            //Log.v("MyCourses", String.valueOf(myCourses));
+                            for(int i=0;i<myCourses.size();i++)
+                            {
+                                Log.v("currentCourse", course.getCourseId() + myCourses.get(i));
+                                if(myCourses.get(i).equals(course.getCourseId()))
+                                {
+                                    Log.v("CourseAdded","Added");
+                                    courseArrayList1.add(course);
+                                    break;
+                                }
+                            }
                             courseArrayList.add(course);
                         }
                         displayCoursesInRecycler();
@@ -218,7 +238,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         Toast.makeText(MainActivity.this,url,Toast.LENGTH_LONG).show();
                         //Log.v("User","Hi"+ url);
                         //Picasso.with(getApplicationContext()).load(url).into(imageView);
-
                     } else {
                         Log.e("COURSEHandler", "failed to find courses with: ", task.getError());
                     }
@@ -229,16 +248,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 }
 
         User user = app.currentUser();
-
     }
 
     public void displayCoursesInRecycler(){
         coursesAdapter = new CoursesAdapter(courseArrayList);
+        coursesAdapter1 = new CoursesAdapter(courseArrayList1);
 
-        recyclerView = (RecyclerView)findViewById(R.id.currentCourseListView);
+        recyclerView = (RecyclerView)findViewById(R.id.exploreCourseListView);
+        recyclerView1 = (RecyclerView)findViewById(R.id.currentCourseListView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false));
+        recyclerView1.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView1.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(coursesAdapter);
+        recyclerView1.setAdapter(coursesAdapter1);
     }
 
     @Override

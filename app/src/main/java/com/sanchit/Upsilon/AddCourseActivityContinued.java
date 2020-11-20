@@ -194,7 +194,8 @@ public class AddCourseActivityContinued extends AppCompatActivity {
                                                     Document userdata = results.next();
                                                     userdata.append("IntroductoryContentImages",introductoryImageUrls);
                                                     userdata.append("IntroductoryImageCounter", finalCounter +1);
-                                                    userdata.append("courseId",_id);
+                                                    userdata.append("courseId",_id.toString());
+                                                    Log.v("AddedCourseId", String.valueOf(_id));
 
                                                     mongoCollection.updateOne(
                                                             new Document("_id",_id),(userdata))
