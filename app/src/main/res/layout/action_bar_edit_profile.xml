@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal">
+    <ImageButton
+        android:id="@+id/imgBtnBackEditProfile"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/back_icon"
+        android:backgroundTint="#0000"
+        android:layout_weight="45"
+        android:clickable="true"
+        android:focusable="true"
+        tools:ignore="ContentDescription" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:textSize="20sp"
+        android:textColor="@color/colorPrimaryDark"
+        android:textStyle="bold"
+        android:text="@string/edit_your_profile"
+        android:gravity="center"
+        android:layout_weight="10"/>
+    <ImageButton
+        android:id="@+id/imgBtnSaveProfile"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/icon_tick"
+        android:backgroundTint="#0000"
+        android:layout_weight="45"
+        android:clickable="true"
+        android:focusable="true"
+        tools:ignore="ContentDescription" />
+</LinearLayout>
