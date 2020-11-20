@@ -10,7 +10,7 @@
         android:title="@string/courses_taught"
         android:id="@+id/homeDrawerMenuItem2"
         android:icon="@drawable/add_box_icon"/>
- <!--   <item
+    <item
         android:title="Title 3"
         android:id="@+id/homeDrawerMenuItem3"
         android:icon="@drawable/add_box_icon"/>
@@ -26,5 +26,5 @@
     <item
         android:title="Title 6"
         android:id="@+id/homeDrawerMenuItem6"
-        android:icon="@drawable/add_box_icon"/> -->
+        android:icon="@drawable/add_box_icon"/>
 </menu>
