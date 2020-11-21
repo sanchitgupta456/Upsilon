@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.gson.GsonBuilder;
 import com.sanchit.Upsilon.courseData.Course;
 import com.sanchit.Upsilon.courseData.CourseReview;
@@ -213,9 +214,23 @@ public class ViewCourseActivity extends AppCompatActivity {
         reviewsRecyclerView.setItemAnimator(new DefaultItemAnimator());
         reviewsRecyclerView.setAdapter(courseReviewAdapter);
         courseReviewAdapter = new CourseReviewAdapter(courseReviewsArrayList);
-
-
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        introductoryVideos.clear();
+        introductoryImages.clear();
+        courseIntroductoryMaterialAdapter.notifyDataSetChanged();
+        releaseExoPlayer(courseIntroductoryMaterialAdapter.exoPlayer);
+    }
 
+    public static void releaseExoPlayer(SimpleExoPlayer exoPlayer) {
+
+        if (exoPlayer != null) {
+            exoPlayer.release();
+
+        }
+
+    }
 }

@@ -27,10 +27,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/introductory_image"/>
-            <VideoView
+            <!--<VideoView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/introductory_video"/>
+                android:id="@+id/introductory_video"/>-->
+            <com.google.android.exoplayer2.ui.SimpleExoPlayerView
+                android:id="@+id/introductory_video"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
 
         </LinearLayout>
 

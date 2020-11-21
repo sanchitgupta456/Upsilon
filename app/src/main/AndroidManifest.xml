@@ -43,9 +43,9 @@
         <activity android:name=".ViewCourseActivity"></activity>
         <activity android:name=".CoursesTaughtActivity"></activity>
         <activity android:name=".RegisterCourseActivity"></activity>
+        <activity android:name=".ProfileViewActivity"></activity>
         <meta-data android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id"/>
-
         <activity android:name="com.facebook.FacebookActivity"
             android:configChanges=
                 "keyboard|keyboardHidden|screenLayout|screenSize|orientation"
