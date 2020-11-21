@@ -96,4 +96,10 @@
     <string name="edit_your_profile">Edit Your Profile</string>
     <string name="add_interest">Add Interest</string>
     <string name="select_your_college">Select Your College</string>
+    <string name="class_information">Class Information</string>
+    <string name="upload_resources">Upload Resources</string>
+    <string name="class_meeting_link">Class meeting link</string>
+    <string name="next_lecture_on">Next Lecture On</string>
+    <string name="course_details">Course Details</string>
+    <string name="course_resources">Course Resources</string>
 </resources>
