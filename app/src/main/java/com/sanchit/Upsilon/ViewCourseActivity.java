@@ -219,8 +219,14 @@ public class ViewCourseActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        introductoryVideos.clear();
-        introductoryImages.clear();
+        if(introductoryImages!=null)
+        {
+            introductoryImages.clear();
+        }
+        if(introductoryVideos!=null)
+        {
+            introductoryVideos.clear();
+        }
         courseIntroductoryMaterialAdapter.notifyDataSetChanged();
         releaseExoPlayer(courseIntroductoryMaterialAdapter.exoPlayer);
     }
@@ -229,7 +235,6 @@ public class ViewCourseActivity extends AppCompatActivity {
 
         if (exoPlayer != null) {
             exoPlayer.release();
-
         }
 
     }

@@ -150,6 +150,10 @@ public class IntroductoryContentAdapter extends RecyclerView.Adapter<Introductor
 
     @Override
     public int getItemCount() {
+        if(ImageUrls==null && VideoUrls==null)
+        {
+            return 0;
+        }
         return ImageUrls.size()+VideoUrls.size();
     }
 

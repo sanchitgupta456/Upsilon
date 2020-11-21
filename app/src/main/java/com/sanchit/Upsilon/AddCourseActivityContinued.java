@@ -141,6 +141,63 @@ public class AddCourseActivityContinued extends AppCompatActivity {
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                if(picturePaths.size()==0 && videoPaths.size()==0 && documentPaths.size()==0)
+                {
+                    Document queryFilter  = new Document("_id",_id);
+
+                    RealmResultTask<MongoCursor<Document>> findTask = mongoCollection.find(queryFilter).iterator();
+
+                    findTask.getAsync(task -> {
+                        if (task.isSuccess()) {
+                            MongoCursor<Document> results = task.get();
+                            if(!results.hasNext())
+                            {
+                                                    /*mongoCollection.insertOne(
+                                                            new Document("userid", user.getId()).append("profilePicCounter",0).append("favoriteColor", "pink").append("profilePicUrl",resultData.get("url").toString()))
+                                                            .getAsync(result -> {
+                                                                if (result.isSuccess()) {
+                                                                    Log.v("EXAMPLE", "Inserted custom user data document. _id of inserted document: "
+                                                                            + result.get().getInsertedId());
+                                                                    //Intent intent = new Intent(UserDataSetupActivity2.this,UserDataSetupActivity3.class);
+                                                                    //startActivity(intent);
+                                                                } else {
+                                                                    Log.e("EXAMPLE", "Unable to insert custom user data. Error: " + result.getError());
+                                                                }
+                                                            });*/
+                            }
+                            else
+                            {
+                                Document userdata = results.next();
+                                userdata.append("IntroductoryContentImages",introductoryImageUrls);
+                                userdata.append("IntroductoryImageCounter", 0);
+                                userdata.append("courseId",_id.toString());
+                                Log.v("AddedCourseId", String.valueOf(_id));
+
+                                mongoCollection.updateOne(
+                                        new Document("_id",_id),(userdata))
+                                        .getAsync(result -> {
+                                            if (result.isSuccess()) {
+                                                Log.v("EXAMPLE", "Inserted custom user data document. _id of inserted document: "
+                                                        + result.get().getModifiedCount());
+                                                //Intent intent = new Intent(UserDataSetupActivity2.this,UserDataSetupActivity3.class);
+                                                //startActivity(intent);
+                                            } else {
+                                                Log.e("EXAMPLE", "Unable to insert custom user data. Error: " + result.getError());
+                                            }
+                                        });
+                            }
+                            while (results.hasNext()) {
+                                //Log.v("EXAMPLE", results.next().toString());
+                                Document currentDoc = results.next();
+                                Log.v("User",currentDoc.getString("userid"));
+                            }
+                        } else {
+                            Log.v("User","Failed to complete search");
+                        }
+                    });
+                }
+
                 int counter=0;
                 for (counter=0;counter<picturePaths.size();counter++)
                 {
@@ -203,6 +260,10 @@ public class AddCourseActivityContinued extends AppCompatActivity {
                                                                 if (result.isSuccess()) {
                                                                     Log.v("EXAMPLE", "Inserted custom user data document. _id of inserted document: "
                                                                             + result.get().getModifiedCount());
+                                                                    if(videoPaths.size()==0)
+                                                                    {
+                                                                        startActivity(new Intent(AddCourseActivityContinued.this,MainActivity.class));
+                                                                    }
                                                                     //Intent intent = new Intent(UserDataSetupActivity2.this,UserDataSetupActivity3.class);
                                                                     //startActivity(intent);
                                                                 } else {
