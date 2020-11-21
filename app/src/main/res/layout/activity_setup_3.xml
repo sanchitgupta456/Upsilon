@@ -20,7 +20,7 @@
                 android:textSize="@dimen/text_margin"
                 android:textStyle="bold"
                 android:typeface="serif"
-                android:text="Select Your College"
+                android:text="@string/select_your_college"
                 android:gravity="center"
                 android:layout_margin="@dimen/activity_horizontal_margin"/>
             <Spinner

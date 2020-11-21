@@ -6,6 +6,7 @@
     android:layout_height="wrap_content"
     android:weightSum="100">
     <ImageButton
+        android:id="@+id/imgBtnBackTeachersViewCourse"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:src="@drawable/back_icon"
@@ -15,6 +16,7 @@
         android:focusable="true"
         tools:ignore="ContentDescription" />
     <TextView
+        android:id="@+id/courseNameTeachersView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="10dp"
@@ -22,8 +24,10 @@
         android:textColor="@color/colorPrimaryDark"
         android:textStyle="bold"
         android:gravity="center"
-        android:layout_weight="10"/>
+        android:layout_weight="10"
+        android:text="@string/course_name"/>
     <ImageButton
+        android:id="@+id/imgBtnEditTeachersViewCourse"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:src="@drawable/edit_icon"
