@@ -102,4 +102,6 @@
     <string name="next_lecture_on">Next Lecture On</string>
     <string name="course_details">Course Details</string>
     <string name="course_resources">Course Resources</string>
+    <string name="new_registrations_closed">New Registrations Closed</string>
+    <string name="accepting_registrations_now">Accepting Registrations Now</string>
 </resources>

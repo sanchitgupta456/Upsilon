@@ -111,6 +111,20 @@
                 android:text="0 % completed"
                 android:typeface="normal"
                 android:gravity="center_vertical" />
+            <ToggleButton
+                android:id="@+id/toggleRegistrationAcceptance"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textOff="@string/new_registrations_closed"
+                android:textOn="@string/accepting_registrations_now"
+                android:layout_margin="@dimen/text_margin"
+                android:background="@drawable/btn_multi_select"
+                android:elevation="100dp"
+                android:shadowColor="@color/colorPrimaryDark"
+                android:textColor="@color/colorBlack"
+                android:textSize="@dimen/text_margin"
+                android:textStyle="bold"
+                android:checked="true"/>
         </LinearLayout>
         <TextView
             android:id="@+id/textClassInfo"
