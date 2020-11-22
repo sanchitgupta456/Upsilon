@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:gravity="center_vertical"
-    android:weightSum="100">
+    android:weightSum="100"
+    android:background="@color/colorPrimary">
 
     <ImageButton
         android:layout_width="match_parent"
@@ -14,7 +15,8 @@
         android:layout_weight="45"
         android:id="@+id/action_bar_back_button"
         android:backgroundTint="#00000000"
-        tools:ignore="ContentDescription" />
+        tools:ignore="ContentDescription"
+        android:tint="@color/colorWhite"/>
 
     <TextView
         android:layout_width="match_parent"
@@ -24,17 +26,19 @@
         android:gravity="center"
         android:id="@+id/action_bar_course_name"
         android:textSize="20sp"
-        android:textColor="@color/colorPrimaryDark"
+        android:textColor="@color/colorWhite"
         android:textStyle="bold"
-        android:layout_weight="10" />
+        android:layout_weight="10"/>
 
     <ImageButton
+        android:id="@+id/imgBtnMenuViewCourse"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="45"
         android:src="@drawable/menu_button"
         android:backgroundTint="#00000000"
-        tools:ignore="ContentDescription" />
+        tools:ignore="ContentDescription"
+        android:tint="@color/colorWhite"/>
 
 
 </LinearLayout>

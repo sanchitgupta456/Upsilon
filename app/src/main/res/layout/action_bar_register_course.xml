@@ -4,7 +4,8 @@
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:weightSum="100">
+    android:weightSum="100"
+    android:background="@color/colorPrimary">
     <ImageButton
         android:id="@+id/imgBtnBack"
         android:layout_width="match_parent"
@@ -14,13 +15,14 @@
         android:layout_weight="45"
         android:clickable="true"
         android:focusable="true"
-        tools:ignore="ContentDescription" />
+        tools:ignore="ContentDescription"
+        android:tint="@color/colorWhite"/>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="5dp"
         android:textSize="20sp"
-        android:textColor="@color/colorPrimaryDark"
+        android:textColor="@color/colorWhite"
         android:textStyle="bold"
         android:text="@string/register"
         android:gravity="center"
@@ -34,5 +36,6 @@
         android:layout_weight="45"
         android:clickable="true"
         android:focusable="true"
-        tools:ignore="ContentDescription" />
+        tools:ignore="ContentDescription"
+        android:tint="@color/colorWhite"/>
 </LinearLayout>
