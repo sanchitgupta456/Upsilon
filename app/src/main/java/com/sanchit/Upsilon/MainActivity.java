@@ -91,6 +91,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         app = new App(new AppConfiguration.Builder(appID)
                 .build());
         User user = app.currentUser();
+        if (user == null){
+            startActivity(new Intent(MainActivity.this, LoginActivity.class));
+        }
 
         //imageView = (ImageView) findViewById(R.id.profilePhotoTest);
         Toolbar toolbar = findViewById(R.id.toolbar);

@@ -7,6 +7,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -89,6 +90,23 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         App app = new App(new AppConfiguration.Builder(appID)
                 .build());
 
+        usernameEditText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view)
+            {
+                usernameEditText.setHintTextColor(Color.WHITE);
+                usernameEditText.setHint("Email");
+            }
+        });
+        passwordEditText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view)
+            {
+                passwordEditText.setHintTextColor(Color.WHITE);
+                passwordEditText.setHint("Password");
+            }
+        });
+
         callbackManager = CallbackManager.Factory.create();
         fbloginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
@@ -132,24 +150,50 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             @Override
             public void onClick(View view)
             {
+                usernameEditText.setHintTextColor(Color.WHITE);
+                usernameEditText.setHint("Email");
+                passwordEditText.setHintTextColor(Color.WHITE);
+                passwordEditText.setHint("Password");
                 String email = usernameEditText.getText().toString();
                 String password = passwordEditText.getText().toString();
-                Credentials emailPasswordCredentials = Credentials.emailPassword(email, password);
 
-                app.loginAsync(emailPasswordCredentials, new App.Callback<User>() {
-                    @Override
-                    public void onResult(App.Result<User> it) {
-                        if (it.isSuccess()) {
-                            Log.v(TAG, "Successfully authenticated using an email and password.");
+                if (email.length() != 0 && password.length() != 0) {
+                    Credentials emailPasswordCredentials = Credentials.emailPassword(email, password);
 
-                            User user = app.currentUser();
-                            goToMainActivity();
-                        } else {
-                            Log.v(TAG, "LOGIN FAILED!");
-                            Log.e(TAG, it.getError().toString());
+                    app.loginAsync(emailPasswordCredentials, new App.Callback<User>() {
+                        @Override
+                        public void onResult(App.Result<User> it) {
+                            if (it.isSuccess()) {
+                                Log.v(TAG, "Successfully authenticated using an email and password.");
+
+                                User user = app.currentUser();
+                                goToMainActivity();
+                            } else {
+                                //Toast toast = Toast.makeText(getApplicationContext(), "Either your email or password was incorrect!", Toast.LENGTH_LONG);
+                                //toast.show();
+                                usernameEditText.requestFocus();
+                                usernameEditText.setHintTextColor(Color.RED);
+                                usernameEditText.setText("");
+                                passwordEditText.setText("");
+                                usernameEditText.setHint("Incorrect email or password!");
+                                Log.v(TAG, "LOGIN FAILED!");
+                                Log.e(TAG, it.getError().toString());
+                            }
                         }
+                    });
+                }
+                else{
+                    if (usernameEditText.length() == 0) {
+                        usernameEditText.requestFocus();
+                        usernameEditText.setHintTextColor(Color.RED);
+                        usernameEditText.setText("");
                     }
-                });
+                    if (passwordEditText.length() == 0) {
+                        passwordEditText.requestFocus();
+                        passwordEditText.setHintTextColor(Color.RED);
+                        passwordEditText.setText("");
+                    }
+                }
             }
         });
 
