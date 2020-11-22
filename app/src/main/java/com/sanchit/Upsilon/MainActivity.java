@@ -82,6 +82,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     public static final List<String> TvShows  = new ArrayList<String>();
     public static final int[] TvShowImgs = {R.drawable.google, R.drawable.facebook};
+    private String college;
 
 
     @Override
@@ -179,12 +180,36 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 assert user != null;
                 MongoCollection<Document> mongoCollection  = mongoDatabase.getCollection("CourseData");
                 MongoCollection<Document> mongoCollection2  = mongoDatabase.getCollection("UserData");
-
                 //Blank query to find every single course in db
                 //TODO: Modify query to look for user preferred course IDs
+
+                Document queryFilter2 = new Document("userid", user.getId());
+
+                RealmResultTask<MongoCursor<Document>> findTask2 = mongoCollection2.find(queryFilter2).iterator();
+
+                findTask2.getAsync(task2 -> {
+                    if (task2.isSuccess()) {
+                        MongoCursor<Document> results1 = task2.get();
+                        if (!results1.hasNext()) {
+                            Log.v("ViewCourse", "Couldnt Find The Tutor");
+                        } else {
+                            Log.v("User", "successfully found the Tutor");
+                        }
+                        while (results1.hasNext()) {
+                            //Log.v("EXAMPLE", results.next().toString());
+                            Document currentDoc1 = results1.next();
+                            myCourses = (ArrayList<String>) currentDoc1.get("myCourses");
+                            college = currentDoc1.getString("college");
+                        }
+                    } else {
+                        Log.v("User", "Failed to complete search");
+                    }
+                });
+
+
                 Document queryFilter  = new Document();
-                Document userdata = user.getCustomData();
-                 myCourses = (ArrayList<String>) userdata.get("myCourses");
+                //Document userdata = user.getCustomData();
+                // myCourses = (ArrayList<String>) userdata.get("myCourses");
                 if(myCourses==null)
                 {
                     myCourses=new ArrayList<>();
@@ -249,9 +274,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                                             //Log.v("EXAMPLE", results.next().toString());
                                             Document currentDoc1 = results1.next();
                                             Log.v("CourseBySenior", (String) currentDoc1.get("college"));
-                                            Log.v("CourseBySenior", (String)  userdata.get("college"));
+                                            Log.v("CourseBySenior", (String)  college);
 
-                                            if (currentDoc1.getString("college").equals(userdata.getString("college"))) {
+                                            if (currentDoc1.getString("college").equals(college)) {
                                                 Log.v("CourseBy","Hello");
                                                 courseArrayList2.add(course);
                                                 coursesAdapter2.notifyDataSetChanged();
