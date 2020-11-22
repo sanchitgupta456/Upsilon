@@ -12,11 +12,15 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.sanchit.Upsilon.courseData.Course;
 import com.squareup.picasso.Picasso;
 
+import org.bson.BsonDocument;
 import org.bson.Document;
 import org.bson.types.ObjectId;
+import org.json.JSONObject;
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
@@ -42,6 +46,8 @@ public class RegisterCourseActivity extends AppCompatActivity {
     MongoDatabase mongoDatabase;
     Button proceedToPay;
     ArrayList<String> myRegisteredCourses;
+    private Gson gson;
+    private GsonBuilder gsonBuilder;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -89,7 +95,7 @@ public class RegisterCourseActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                MongoCollection<Document> mongoCollection1  = mongoDatabase.getCollection("UserData");
+                MongoCollection<Document> mongoCollection1  = mongoDatabase.getCollection("CourseData");
 
                 //Blank query to find every single course in db
                 //TODO: Modify query to look for user preferred course IDs
@@ -115,8 +121,23 @@ public class RegisterCourseActivity extends AppCompatActivity {
                             mongoCollection.updateOne(new Document("userid",user.getId()),userdata).getAsync(result -> {
                                 if(result.isSuccess())
                                 {
-                                    Toast.makeText(getApplicationContext(),"Successfully Registered for the Course",Toast.LENGTH_LONG).show();
-                                    startActivity(new Intent(RegisterCourseActivity.this,MainActivity.class));
+                                    course.setNumberOfStudentsEnrolled(course.getNumberOfStudentsEnrolled()+1);
+                                    BsonDocument courseDoc = new BsonDocument();
+                                    gsonBuilder = new GsonBuilder();
+                                    gson = gsonBuilder.create();
+
+                                    String object = gson.toJson(course,Course.class);
+
+                                    courseDoc = BsonDocument.parse(object);
+
+                                    mongoCollection1.updateOne(new Document("courseId",course.getCourseId()),courseDoc).getAsync(result1 -> {
+                                        if(result1.isSuccess())
+                                        {
+                                            Toast.makeText(getApplicationContext(),"Successfully Registered for the Course",Toast.LENGTH_LONG).show();
+                                            startActivity(new Intent(RegisterCourseActivity.this,MainActivity.class));
+                                        }
+                                    });
+
                                 }
                                 else
                                 {

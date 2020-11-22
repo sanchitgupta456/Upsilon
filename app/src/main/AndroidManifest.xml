@@ -44,6 +44,7 @@
         <activity android:name=".CoursesTaughtActivity"></activity>
         <activity android:name=".RegisterCourseActivity"></activity>
         <activity android:name=".ProfileViewActivity"></activity>
+        <activity android:name=".TeacherViewCourseActivity"></activity>
         <meta-data android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id"/>
         <activity android:name="com.facebook.FacebookActivity"

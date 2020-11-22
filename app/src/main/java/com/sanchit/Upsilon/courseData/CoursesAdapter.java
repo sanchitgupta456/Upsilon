@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.sanchit.Upsilon.MainActivity;
 import com.sanchit.Upsilon.R;
+import com.sanchit.Upsilon.TeacherViewCourseActivity;
 import com.sanchit.Upsilon.UserDataSetupActivity1;
 import com.sanchit.Upsilon.ViewCourseActivity;
 import com.sanchit.Upsilon.ui.login.LoginActivity;
@@ -24,10 +25,15 @@ import com.squareup.picasso.Picasso;
 import java.io.Serializable;
 import java.util.List;
 
+import io.realm.mongodb.App;
+import io.realm.mongodb.AppConfiguration;
+import io.realm.mongodb.User;
+
 public class CoursesAdapter extends RecyclerView.Adapter<CoursesAdapter.ViewHolder> {
 
     List<Course> courseList;
     Context context;
+    String appID = "upsilon-ityvn";
 
     public CoursesAdapter(List<Course>_courseList)
     {
@@ -54,11 +60,25 @@ public class CoursesAdapter extends RecyclerView.Adapter<CoursesAdapter.ViewHold
         holder.cv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(context,"The position is:"+position,Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(holder.itemView.getContext(), ViewCourseActivity.class);
-                intent.putExtra("Course", course);
-                holder.itemView.getContext().startActivity(intent);
-
+                //Toast.makeText(context,"The position is:"+position,Toast.LENGTH_SHORT).show();
+                App app = new App(new AppConfiguration.Builder(appID)
+                        .build());
+                User user = app.currentUser();
+                Log.v("Id",course.getTutorId());
+                Log.v("Id",user.getId());
+                if(course.getTutorId().equals(user.getId()))
+                {
+                    Log.v("Id","matched");
+                    Intent intent = new Intent(holder.itemView.getContext(), TeacherViewCourseActivity.class);
+                    intent.putExtra("Course", course);
+                    holder.itemView.getContext().startActivity(intent);
+                }
+                else
+                {
+                    Intent intent = new Intent(holder.itemView.getContext(), ViewCourseActivity.class);
+                    intent.putExtra("Course", course);
+                    holder.itemView.getContext().startActivity(intent);
+                }
             }
         });
 
