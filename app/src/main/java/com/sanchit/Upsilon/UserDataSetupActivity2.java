@@ -24,9 +24,11 @@ import androidx.core.app.ActivityCompat;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.Transformation;
+import com.cloudinary.android.CloudinaryRequest;
 import com.cloudinary.android.MediaManager;
 import com.cloudinary.utils.ObjectUtils;
 import com.google.android.gms.common.internal.Constants;
+import com.sanchit.Upsilon.cloudinaryUpload.Data;
 import com.sanchit.Upsilon.cloudinaryUpload.Signature;
 import com.sanchit.Upsilon.cloudinaryUpload.SignatureProvider;
 
@@ -34,6 +36,11 @@ import org.bson.Document;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -81,10 +88,6 @@ public class UserDataSetupActivity2 extends AppCompatActivity {
         profilepic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               /* Intent intent = new Intent();
-                intent.setType("image/*");
-                intent.setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(Intent.createChooser(intent, "Select Picture"),1);*/
                 Intent i = new Intent(
                         Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 startActivityForResult(i, RESULT_LOAD_IMAGE);
@@ -96,6 +99,9 @@ public class UserDataSetupActivity2 extends AppCompatActivity {
             public void onClick(View v) {
                 if(flag==1)
                 {
+
+                    //TODO failed signed upload attempt commented below
+                    /*
                     Map config = new HashMap();
                     config.put("cloud_name", "myCloudName");
                     MediaManager.init(this, new SignatureProvider(){
@@ -110,6 +116,11 @@ public class UserDataSetupActivity2 extends AppCompatActivity {
                             return "SampleSignatureProvider"; // for logging purposes
                         }
                     }, config);
+                    */
+
+
+
+
                     Map config = new HashMap();
                     config.put("cloud_name", "upsilon175");
                     MediaManager.init(UserDataSetupActivity2.this, config);
@@ -154,10 +165,21 @@ public class UserDataSetupActivity2 extends AppCompatActivity {
                             }
                             else
                             {
+                                /*
+                                 if there is an entry, since the userid is unique, there will be only one entry
+                                 that means the user has signed up before. Either he skipped the profile picture, or made a previous one
+                                 userdata["profilePicUrl"] = "NONE" if the user skipped it before
+                                 If the url is valid, all we have to do is overwrite the url and update the document in mongo client
+                                 */
                                 Document userdata = results.next();
+                                String oldURL = userdata.getString("profilePicUrl");
+                                //This method deletes the old image off cloudinary
+                                deleteExistingImage(oldURL);
+                                //update the userdata document
                                 userdata.append("name",name);
-                                userdata.append("profilePicUrl",url);
+                                userdata.put("profilePicUrl", url);
 
+                                //upload the document on mongo
                                 mongoCollection.updateOne(
                                         new Document("userid", user.getId()),(userdata))
                                         .getAsync(result -> {
@@ -171,11 +193,13 @@ public class UserDataSetupActivity2 extends AppCompatActivity {
                                             }
                                         });
                             }
+                            /*
                             while (results.hasNext()) {
                                 //Log.v("EXAMPLE", results.next().toString());
                                 Document currentDoc = results.next();
                                 Log.v("User",currentDoc.getString("userid"));
                             }
+                            */
                         } else {
                             Log.v("User","Failed to complete search");
                         }
@@ -207,6 +231,20 @@ public class UserDataSetupActivity2 extends AppCompatActivity {
         Name.addTextChangedListener(textWatcher);
 
 
+    }
+
+    /*
+    This method implements deleting the old profile picture
+    First it checks the legitimacy of the old url, if it is "NONE" then obviously it will give an error which we can simply return if that happens
+    If the old url is legitimate, then it will remove it off cloudinary and then return
+     */
+    void deleteExistingImage(String oldURL){
+        //TODO: implement this properly
+        /*
+        Cloudinary cloudinary=new Cloudinary(oldURL);
+        Map deleteParams = ObjectUtils.asMap("invalidate", true );
+        cloudinary.uploader().destroy(user.getId(), deleteParams);
+        */
     }
 
     // To handle when an image is selected from the browser, add the following to your Activity
