@@ -166,7 +166,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     public void getCourseData(){
 
-        displayCoursesInRecycler();
+        courseArrayList=new ArrayList<>();
+        courseArrayList1=new ArrayList<>();
+        courseArrayList2=new ArrayList<>();
+
+
+            displayCoursesInRecycler();
 // an authenticated user is required to access a MongoDB instance
 
             if (app.currentUser()!=null) {
@@ -187,6 +192,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                 RealmResultTask<MongoCursor<Document>> findTask = mongoCollection.find(queryFilter).iterator();
 
+                final int[] flag = {0};
                 findTask.getAsync(task -> {
                     if (task.isSuccess()) {
                         MongoCursor<Document> results = task.get();
@@ -205,7 +211,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                             //course.setCourseName(currentDoc.getString("courseName"));
                             //TODO : implement card image fetching via database
                             //course.setCardImgID(TvShowImgs[0]);
-
+                            flag[0] =0;
                             //Log.v("MyCourses", String.valueOf(myCourses));
                             for(int i=0;i<myCourses.size();i++)
                             {
@@ -215,8 +221,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                                     Log.v("CourseAdded","Added");
                                     courseArrayList1.add(course);
                                     coursesAdapter1.notifyDataSetChanged();
+                                    flag[0] =1;
                                     break;
                                 }
+                            }
+                            if(flag[0] ==1)
+                            {
+                                continue;
                             }
                             if(!course.getTutorId().equals(user.getId())) {
                                 courseArrayList.add(course);
@@ -233,7 +244,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                                             Log.v("ViewCourse", "Couldnt Find The Tutor");
                                         } else {
                                             Log.v("User", "successfully found the Tutor");
-
                                         }
                                         while (results1.hasNext()) {
                                             //Log.v("EXAMPLE", results.next().toString());
@@ -322,6 +332,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if(item.getItemId()==R.id.signOut)
         {
             signOut();
+        }
+        else if(item.getItemId()==R.id.refresh)
+        {
+            getCourseData();
         }
         return true;
     }
