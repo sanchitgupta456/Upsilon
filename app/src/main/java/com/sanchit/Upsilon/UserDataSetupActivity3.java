@@ -16,8 +16,11 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -49,7 +52,7 @@ import io.realm.mongodb.mongo.MongoCollection;
 import io.realm.mongodb.mongo.MongoDatabase;
 import io.realm.mongodb.mongo.iterable.MongoCursor;
 
-public class UserDataSetupActivity3 extends AppCompatActivity {
+public class UserDataSetupActivity3 extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     String appID = "upsilon-ityvn";
     Button nextButton;
@@ -62,6 +65,8 @@ public class UserDataSetupActivity3 extends AppCompatActivity {
     MongoDatabase mongoDatabase;
     private final int REQUEST_FINE_LOCATION = 1234;
     FusedLocationProviderClient fusedLocationProviderClient;
+    private Spinner selectYourCollege;
+    private String College;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -73,6 +78,13 @@ public class UserDataSetupActivity3 extends AppCompatActivity {
         Pincode = (EditText) findViewById(R.id.pincodeHolder);
         PhoneNumber = (EditText) findViewById(R.id.contactNumberHolder);
         locationbutton = (CircleImageView) findViewById(R.id.user_data_setup_google_location);
+        selectYourCollege = (Spinner) findViewById(R.id.spinnerUserCollege);
+
+        String[] Colleges = {"IIT Madras"};
+
+        ArrayAdapter adapter = new ArrayAdapter(getApplicationContext(), android.R.layout.simple_expandable_list_item_1,Colleges);
+        selectYourCollege.setAdapter(adapter);
+        selectYourCollege.setOnItemSelectedListener(UserDataSetupActivity3.this);
 
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         locationbutton.setOnClickListener(new View.OnClickListener() {
@@ -128,7 +140,7 @@ public class UserDataSetupActivity3 extends AppCompatActivity {
                         MongoCursor<Document> results = task.get();
                         if (!results.hasNext()) {
                             mongoCollection.insertOne(
-                                    new Document("userid", user.getId()).append("favoriteColor", "pink").append("city", city).append("pincode", pincode).append("phonenumber", phonenumber))
+                                    new Document("userid", user.getId()).append("favoriteColor", "pink").append("city", city).append("pincode", pincode).append("phonenumber", phonenumber).append("college",College))
                                     .getAsync(result -> {
                                         if (result.isSuccess()) {
                                             Log.v("EXAMPLE", "Inserted custom user data document. _id of inserted document: "
@@ -169,6 +181,16 @@ public class UserDataSetupActivity3 extends AppCompatActivity {
         });
     }
 
+    public void onItemSelected(AdapterView parent, View view, int pos,
+                               long id) {
+
+        College = selectYourCollege.getItemAtPosition(pos).toString();
+
+        //Toast.makeText(getApplicationContext(),
+        //      spinner.getItemAtPosition(pos).toString(), Toast.LENGTH_LONG)
+        //    .show();
+    }
+
     private void getLocation() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
@@ -206,4 +228,13 @@ public class UserDataSetupActivity3 extends AppCompatActivity {
         });
     }
 
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
+    }
+
+    @Override
+    public void onPointerCaptureChanged(boolean hasCapture) {
+
+    }
 }

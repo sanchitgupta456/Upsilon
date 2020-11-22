@@ -70,10 +70,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private GsonBuilder gsonBuilder;
     private ArrayList<String> myCourses;
 
-    RecyclerView recyclerView,recyclerView1;
-    CoursesAdapter coursesAdapter,coursesAdapter1;
+    RecyclerView recyclerView,recyclerView1,recyclerView2;
+    CoursesAdapter coursesAdapter,coursesAdapter1,coursesAdapter2;
     ArrayList<Course> courseArrayList = new ArrayList<Course>();
     ArrayList<Course> courseArrayList1 = new ArrayList<>();
+    ArrayList<Course> courseArrayList2 = new ArrayList<>();
     App app;
     MongoClient mongoClient;
     MongoDatabase mongoDatabase;
@@ -162,12 +163,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     public void getCourseData(){
 
+        displayCoursesInRecycler();
 // an authenticated user is required to access a MongoDB instance
 
             if (app.currentUser()!=null) {
                 final User user = app.currentUser();
                 assert user != null;
                 MongoCollection<Document> mongoCollection  = mongoDatabase.getCollection("CourseData");
+                MongoCollection<Document> mongoCollection2  = mongoDatabase.getCollection("UserData");
 
                 //Blank query to find every single course in db
                 //TODO: Modify query to look for user preferred course IDs
@@ -208,12 +211,47 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                                 {
                                     Log.v("CourseAdded","Added");
                                     courseArrayList1.add(course);
+                                    coursesAdapter1.notifyDataSetChanged();
                                     break;
                                 }
                             }
-                            courseArrayList.add(course);
+                            if(!course.getTutorId().equals(user.getId())) {
+                                courseArrayList.add(course);
+                                coursesAdapter.notifyDataSetChanged();
+                                //courseArrayList2.add(course);
+                                Document queryFilter1 = new Document("userid", course.getTutorId());
+
+                                RealmResultTask<MongoCursor<Document>> findTask1 = mongoCollection2.find(queryFilter1).iterator();
+
+                                findTask1.getAsync(task1 -> {
+                                    if (task1.isSuccess()) {
+                                        MongoCursor<Document> results1 = task1.get();
+                                        if (!results1.hasNext()) {
+                                            Log.v("ViewCourse", "Couldnt Find The Tutor");
+                                        } else {
+                                            Log.v("User", "successfully found the Tutor");
+
+                                        }
+                                        while (results1.hasNext()) {
+                                            //Log.v("EXAMPLE", results.next().toString());
+                                            Document currentDoc1 = results1.next();
+                                            Log.v("CourseBySenior", (String) currentDoc1.get("college"));
+                                            Log.v("CourseBySenior", (String)  userdata.get("college"));
+
+                                            if (currentDoc1.getString("college").equals(userdata.getString("college"))) {
+                                                Log.v("CourseBy","Hello");
+                                                courseArrayList2.add(course);
+                                                coursesAdapter2.notifyDataSetChanged();
+                                                Log.v("CoursesySeniors", String.valueOf(courseArrayList2));
+                                            }
+                                            Log.v("User", currentDoc1.getString("userid"));
+                                        }
+                                    } else {
+                                        Log.v("User", "Failed to complete search");
+                                    }
+                                });
+                            }
                         }
-                        displayCoursesInRecycler();
                     } else {
                         Log.e("COURSEHandler", "failed to find courses with: ", task.getError());
                     }
@@ -253,15 +291,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void displayCoursesInRecycler(){
         coursesAdapter = new CoursesAdapter(courseArrayList);
         coursesAdapter1 = new CoursesAdapter(courseArrayList1);
+        coursesAdapter2 = new CoursesAdapter(courseArrayList2);
 
         recyclerView = (RecyclerView)findViewById(R.id.exploreCourseListView);
         recyclerView1 = (RecyclerView)findViewById(R.id.currentCourseListView);
+        recyclerView2 = (RecyclerView) findViewById(R.id.recommendedCourseListView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false));
         recyclerView1.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false));
+        recyclerView2.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView1.setItemAnimator(new DefaultItemAnimator());
+        recyclerView2.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(coursesAdapter);
         recyclerView1.setAdapter(coursesAdapter1);
+        recyclerView2.setAdapter(coursesAdapter2);
     }
 
     @Override
