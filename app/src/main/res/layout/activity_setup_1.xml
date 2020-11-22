@@ -3,17 +3,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@drawable/background">
+    android:background="@drawable/background_alter"
+    android:theme="@style/AppTheme">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/welcome_to_upsilon"
-        android:textColor="@color/colorWhite"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:layout_margin="@dimen/activity_vertical_margin"
-        android:id="@+id/textSetupTitle1" />
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -21,10 +13,10 @@
         android:gravity="start"
         android:textSize="@dimen/text_margin"
         android:layout_marginStart="@dimen/activity_vertical_margin"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="10dp"
         android:id="@+id/textSetupTitle2"
-        android:textColor="@color/colorWhite"
-        android:layout_below="@id/textSetupTitle1"
-        />
+        android:textColor="@color/colorWhite"/>
 
     <SearchView
         android:layout_width="match_parent"
@@ -33,14 +25,6 @@
         android:layout_below="@id/textSetupTitle2"
         android:layout_margin="@dimen/activity_vertical_margin"
         android:id="@+id/searchInterests"/>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/addInterest"
-        android:layout_margin="@dimen/text_margin"
-        android:id="@+id/listInterests"/>
-
     <Button
         android:id="@+id/addInterest"
         android:layout_width="wrap_content"
@@ -49,7 +33,16 @@
         android:layout_below="@+id/searchInterests"
         android:layout_marginTop="27dp"
         android:gravity="center"
-        android:text="Add Interest" />
+        android:background="@drawable/btn_rounded_rect"
+        android:padding="20dp"
+        android:text="@string/add_interest" />
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/addInterest"
+        android:layout_margin="@dimen/text_margin"
+        android:id="@+id/listInterests"
+        android:background="@drawable/text_view_login"/>
 
     <ProgressBar
         android:layout_width="match_parent"

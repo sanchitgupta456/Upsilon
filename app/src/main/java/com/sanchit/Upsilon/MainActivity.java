@@ -11,7 +11,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.Signature;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -20,17 +24,26 @@ import android.view.Window;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.cloudinary.android.MediaManager;
+import com.facebook.login.LoginManager;
 import com.google.android.material.navigation.NavigationView;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.sanchit.Upsilon.courseData.Course;
 import com.sanchit.Upsilon.courseData.CoursesAdapter;
 import com.sanchit.Upsilon.ui.login.LoginActivity;
-//import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Picasso;
 
 import org.bson.Document;
+import org.bson.types.ObjectId;
 
 import java.io.Console;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import io.realm.Realm;
 import io.realm.mongodb.App;
@@ -53,9 +66,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     String appID = "upsilon-ityvn";
     private static final String TAG = "MainActivity";
 
-    RecyclerView recyclerView;
-    CoursesAdapter coursesAdapter;
+    private Gson gson;
+    private GsonBuilder gsonBuilder;
+    private ArrayList<String> myCourses;
+
+    RecyclerView recyclerView,recyclerView1,recyclerView2;
+    CoursesAdapter coursesAdapter,coursesAdapter1,coursesAdapter2;
     ArrayList<Course> courseArrayList = new ArrayList<Course>();
+    ArrayList<Course> courseArrayList1 = new ArrayList<>();
+    ArrayList<Course> courseArrayList2 = new ArrayList<>();
     App app;
     MongoClient mongoClient;
     MongoDatabase mongoDatabase;
@@ -69,14 +88,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Realm.init(this); // initialize Realm, required before interacting with SDK
         app = new App(new AppConfiguration.Builder(appID)
                 .build());
         User user = app.currentUser();
 
         //imageView = (ImageView) findViewById(R.id.profilePhotoTest);
         Toolbar toolbar = findViewById(R.id.toolbar);
-        //setSupportActionBar(toolbar);
+//        setSupportActionBar(toolbar);
         //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         drawer = findViewById(R.id.drawer_layout);
@@ -145,17 +163,24 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     public void getCourseData(){
 
-
+        displayCoursesInRecycler();
 // an authenticated user is required to access a MongoDB instance
 
             if (app.currentUser()!=null) {
                 final User user = app.currentUser();
                 assert user != null;
                 MongoCollection<Document> mongoCollection  = mongoDatabase.getCollection("CourseData");
+                MongoCollection<Document> mongoCollection2  = mongoDatabase.getCollection("UserData");
 
                 //Blank query to find every single course in db
                 //TODO: Modify query to look for user preferred course IDs
                 Document queryFilter  = new Document();
+                Document userdata = user.getCustomData();
+                 myCourses = (ArrayList<String>) userdata.get("myCourses");
+                if(myCourses==null)
+                {
+                    myCourses=new ArrayList<>();
+                }
 
                 RealmResultTask<MongoCursor<Document>> findTask = mongoCollection.find(queryFilter).iterator();
 
@@ -167,14 +192,66 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                             //Log.v("EXAMPLE", results.next().toString());
                             Document currentDoc = results.next();
 
-                            Course course = new Course();
+                            currentDoc.toJson();
+                            gsonBuilder = new GsonBuilder();
+                            gson = gsonBuilder.create();
 
-                            course.setCourseName(currentDoc.getString("courseName"));
+                            Course course = gson.fromJson(currentDoc.toJson(),Course.class);
+
+                            //course = currentDoc;
+                            //course.setCourseName(currentDoc.getString("courseName"));
                             //TODO : implement card image fetching via database
                             //course.setCardImgID(TvShowImgs[0]);
-                            courseArrayList.add(course);
+
+                            //Log.v("MyCourses", String.valueOf(myCourses));
+                            for(int i=0;i<myCourses.size();i++)
+                            {
+                                Log.v("currentCourse", course.getCourseId() + myCourses.get(i));
+                                if(myCourses.get(i).equals(course.getCourseId()))
+                                {
+                                    Log.v("CourseAdded","Added");
+                                    courseArrayList1.add(course);
+                                    coursesAdapter1.notifyDataSetChanged();
+                                    break;
+                                }
+                            }
+                            if(!course.getTutorId().equals(user.getId())) {
+                                courseArrayList.add(course);
+                                coursesAdapter.notifyDataSetChanged();
+                                //courseArrayList2.add(course);
+                                Document queryFilter1 = new Document("userid", course.getTutorId());
+
+                                RealmResultTask<MongoCursor<Document>> findTask1 = mongoCollection2.find(queryFilter1).iterator();
+
+                                findTask1.getAsync(task1 -> {
+                                    if (task1.isSuccess()) {
+                                        MongoCursor<Document> results1 = task1.get();
+                                        if (!results1.hasNext()) {
+                                            Log.v("ViewCourse", "Couldnt Find The Tutor");
+                                        } else {
+                                            Log.v("User", "successfully found the Tutor");
+
+                                        }
+                                        while (results1.hasNext()) {
+                                            //Log.v("EXAMPLE", results.next().toString());
+                                            Document currentDoc1 = results1.next();
+                                            Log.v("CourseBySenior", (String) currentDoc1.get("college"));
+                                            Log.v("CourseBySenior", (String)  userdata.get("college"));
+
+                                            if (currentDoc1.getString("college").equals(userdata.getString("college"))) {
+                                                Log.v("CourseBy","Hello");
+                                                courseArrayList2.add(course);
+                                                coursesAdapter2.notifyDataSetChanged();
+                                                Log.v("CoursesySeniors", String.valueOf(courseArrayList2));
+                                            }
+                                            Log.v("User", currentDoc1.getString("userid"));
+                                        }
+                                    } else {
+                                        Log.v("User", "Failed to complete search");
+                                    }
+                                });
+                            }
                         }
-                        displayCoursesInRecycler();
                     } else {
                         Log.e("COURSEHandler", "failed to find courses with: ", task.getError());
                     }
@@ -199,7 +276,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         Toast.makeText(MainActivity.this,url,Toast.LENGTH_LONG).show();
                         //Log.v("User","Hi"+ url);
                         //Picasso.with(getApplicationContext()).load(url).into(imageView);
-
                     } else {
                         Log.e("COURSEHandler", "failed to find courses with: ", task.getError());
                     }
@@ -210,16 +286,25 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 }
 
         User user = app.currentUser();
-
     }
 
     public void displayCoursesInRecycler(){
         coursesAdapter = new CoursesAdapter(courseArrayList);
+        coursesAdapter1 = new CoursesAdapter(courseArrayList1);
+        coursesAdapter2 = new CoursesAdapter(courseArrayList2);
 
-        recyclerView = (RecyclerView)findViewById(R.id.currentCourseListView);
+        recyclerView = (RecyclerView)findViewById(R.id.exploreCourseListView);
+        recyclerView1 = (RecyclerView)findViewById(R.id.currentCourseListView);
+        recyclerView2 = (RecyclerView) findViewById(R.id.recommendedCourseListView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false));
+        recyclerView1.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false));
+        recyclerView2.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView1.setItemAnimator(new DefaultItemAnimator());
+        recyclerView2.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(coursesAdapter);
+        recyclerView1.setAdapter(coursesAdapter1);
+        recyclerView2.setAdapter(coursesAdapter2);
     }
 
     @Override
@@ -240,6 +325,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void signOut() {
         User user = app.currentUser();
+        LoginManager.getInstance().logOut();
         user.logOutAsync(new App.Callback<User>() {
             @Override
             public void onResult(App.Result<User> result) {
@@ -263,9 +349,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             Intent intent = new Intent(MainActivity.this,AddCourseActivity.class);
             startActivity(intent);
         }
-        if(id==R.id.homeDrawerMenuItem2)
+        else if(id==R.id.homeDrawerMenuItem2)
         {
-            Intent intent = new Intent(MainActivity.this,UserDataSetupActivity2.class);
+            Intent intent = new Intent(MainActivity.this,CoursesTaughtActivity.class);
+            startActivity(intent);
+        }
+        else if(id==R.id.homeDrawerMenuItem3)
+        {
+            Intent intent = new Intent(MainActivity.this,ProfileViewActivity.class);
             startActivity(intent);
         }
         DrawerLayout drawer = findViewById(R.id.drawer_layout);

@@ -24,23 +24,16 @@ import androidx.core.app.ActivityCompat;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.Transformation;
-import com.cloudinary.android.CloudinaryRequest;
 import com.cloudinary.android.MediaManager;
+import com.cloudinary.android.callback.ErrorInfo;
+import com.cloudinary.android.callback.UploadCallback;
 import com.cloudinary.utils.ObjectUtils;
 import com.google.android.gms.common.internal.Constants;
-import com.sanchit.Upsilon.cloudinaryUpload.Data;
-import com.sanchit.Upsilon.cloudinaryUpload.Signature;
-import com.sanchit.Upsilon.cloudinaryUpload.SignatureProvider;
 
 import org.bson.Document;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -88,6 +81,10 @@ public class UserDataSetupActivity2 extends AppCompatActivity {
         profilepic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+               /* Intent intent = new Intent();
+                intent.setType("image/*");
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(Intent.createChooser(intent, "Select Picture"),1);*/
                 Intent i = new Intent(
                         Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 startActivityForResult(i, RESULT_LOAD_IMAGE);
@@ -97,113 +94,122 @@ public class UserDataSetupActivity2 extends AppCompatActivity {
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mongoClient = user.getMongoClient("mongodb-atlas");
+                mongoDatabase = mongoClient.getDatabase("Upsilon");
+                MongoCollection<Document> mongoCollection  = mongoDatabase.getCollection("UserData");
+                Document queryFilter  = new Document("userid",user.getId());
+
+                RealmResultTask<MongoCursor<Document>> findTask = mongoCollection.find(queryFilter).iterator();
+
+                findTask.getAsync(task -> {
+                    if(task.isSuccess())
+                    {
+                        MongoCursor<Document> results = task.get();
+                        Document result=results.next();
+                        final int[] counter = {result.getInteger("profilePicCounter")};
+
+                        String requestId = MediaManager.get().upload(picturePath)
+                                .unsigned("preset1")
+                                .option("resource_type", "image")
+                                .option("folder", "Upsilon/".concat(user.getId()).concat("/"))
+                                .option("public_id", "profilePic"+ counter[0])
+                                .callback(new UploadCallback() {
+                                    @Override
+                                    public void onStart(String requestId) {
+                                    }
+
+                                    @Override
+                                    public void onProgress(String requestId, long bytes, long totalBytes) {
+
+                                    }
+
+                                    @Override
+                                    public void onSuccess(String requestId, Map resultData) {
+
+                                        Log.v("User",resultData.toString());
+                                        Log.v("User",requestId);
+                                        counter[0]++;
+                                        name = Name.getText().toString();
+
+                                        //Blank query to find every single course in db
+                                        //TODO: Modify query to look for user preferred course IDs
+                                        Document queryFilter  = new Document("userid",user.getId());
+
+                                        RealmResultTask<MongoCursor<Document>> findTask = mongoCollection.find(queryFilter).iterator();
+
+                                        findTask.getAsync(task -> {
+                                            if (task.isSuccess()) {
+                                                MongoCursor<Document> results = task.get();
+                                                if(!results.hasNext())
+                                                {
+                                                    mongoCollection.insertOne(
+                                                            new Document("userid", user.getId()).append("profilePicCounter",0).append("favoriteColor", "pink").append("profilePicUrl",resultData.get("url").toString()))
+                                                            .getAsync(result -> {
+                                                                if (result.isSuccess()) {
+                                                                    Log.v("EXAMPLE", "Inserted custom user data document. _id of inserted document: "
+                                                                            + result.get().getInsertedId());
+                                                                    Intent intent = new Intent(UserDataSetupActivity2.this,UserDataSetupActivity3.class);
+                                                                    startActivity(intent);
+                                                                } else {
+                                                                    Log.e("EXAMPLE", "Unable to insert custom user data. Error: " + result.getError());
+                                                                }
+                                                            });
+                                                }
+                                                else
+                                                {
+                                                    Document userdata = results.next();
+                                                    userdata.append("name",name);
+                                                    userdata.append("profilePicCounter", counter[0]);
+                                                    userdata.append("profilePicUrl",resultData.get("url").toString());
+
+                                                    mongoCollection.updateOne(
+                                                            new Document("userid", user.getId()),(userdata))
+                                                            .getAsync(result -> {
+                                                                if (result.isSuccess()) {
+                                                                    Log.v("EXAMPLE", "Inserted custom user data document. _id of inserted document: "
+                                                                            + result.get().getModifiedCount());
+                                                                    Intent intent = new Intent(UserDataSetupActivity2.this,UserDataSetupActivity3.class);
+                                                                    startActivity(intent);
+                                                                } else {
+                                                                    Log.e("EXAMPLE", "Unable to insert custom user data. Error: " + result.getError());
+                                                                }
+                                                            });
+                                                }
+                                                while (results.hasNext()) {
+                                                    //Log.v("EXAMPLE", results.next().toString());
+                                                    Document currentDoc = results.next();
+                                                    Log.v("User",currentDoc.getString("userid"));
+                                                }
+                                            } else {
+                                                Log.v("User","Failed to complete search");
+                                            }
+                                        });
+                                    }
+
+                                    @Override
+                                    public void onError(String requestId, ErrorInfo error) {
+
+                                    }
+
+                                    @Override
+                                    public void onReschedule(String requestId, ErrorInfo error) {
+
+                                    }
+                                })
+                                .dispatch();
+                    }
+                    else
+                    {
+
+                    }
+                });
+
                 if(flag==1)
                 {
-
-                    //TODO failed signed upload attempt commented below
-                    /*
-                    Map config = new HashMap();
-                    config.put("cloud_name", "myCloudName");
-                    MediaManager.init(this, new SignatureProvider(){
-                        @Override
-                        public Signature provideSignature(Map options) {
-                            // replace the following with a function that calls your backend signature generation endpoint
-                            SignResult res = signUpload(options);  // example name of a function that implements a synchronous HTTPS call
-                            return new Signature(res.getSignature(), res.getApiKey(), res.getTimestamp());
-                        }
-                        @Override
-                        public String getName() {
-                            return "SampleSignatureProvider"; // for logging purposes
-                        }
-                    }, config);
-                    */
-
-
-
-
-                    Map config = new HashMap();
-                    config.put("cloud_name", "upsilon175");
-                    MediaManager.init(UserDataSetupActivity2.this, config);
-                    String requestId = MediaManager.get().upload(picturePath)
-                            .unsigned("preset1")
-                            .option("resource_type", "image")
-                            .option("folder", "Upsilon/".concat(user.getId()).concat("/"))
-                            .option("public_id", "profPic")
-                            .dispatch();
-                    String fileExtension = picturePath.substring(picturePath.lastIndexOf('.'));
+                    /*String fileExtension = picturePath.substring(picturePath.lastIndexOf('.'));
                     String serverPath = "Upsilon/".concat(user.getId()).concat("/profPic").concat(fileExtension);
                     String url = MediaManager.get().url().generate(serverPath);
-                    Log.v("CLOUDINARY", url);
-                    name = Name.getText().toString();
-                    mongoClient = user.getMongoClient("mongodb-atlas");
-                    mongoDatabase = mongoClient.getDatabase("Upsilon");
-                    MongoCollection<Document> mongoCollection  = mongoDatabase.getCollection("UserData");
-
-                    //Blank query to find every single course in db
-                    //TODO: Modify query to look for user preferred course IDs
-                    Document queryFilter  = new Document("userid",user.getId());
-
-                    RealmResultTask<MongoCursor<Document>> findTask = mongoCollection.find(queryFilter).iterator();
-
-                    findTask.getAsync(task -> {
-                        if (task.isSuccess()) {
-                            MongoCursor<Document> results = task.get();
-                            if(!results.hasNext())
-                            {
-                                mongoCollection.insertOne(
-                                        new Document("userid", user.getId()).append("favoriteColor", "pink").append("profilePicUrl",url))
-                                        .getAsync(result -> {
-                                            if (result.isSuccess()) {
-                                                Log.v("EXAMPLE", "Inserted custom user data document. _id of inserted document: "
-                                                        + result.get().getInsertedId());
-                                                Intent intent = new Intent(UserDataSetupActivity2.this,UserDataSetupActivity3.class);
-                                                startActivity(intent);
-                                            } else {
-                                                Log.e("EXAMPLE", "Unable to insert custom user data. Error: " + result.getError());
-                                            }
-                                        });
-                            }
-                            else
-                            {
-                                /*
-                                 if there is an entry, since the userid is unique, there will be only one entry
-                                 that means the user has signed up before. Either he skipped the profile picture, or made a previous one
-                                 userdata["profilePicUrl"] = "NONE" if the user skipped it before
-                                 If the url is valid, all we have to do is overwrite the url and update the document in mongo client
-                                 */
-                                Document userdata = results.next();
-                                String oldURL = userdata.getString("profilePicUrl");
-                                //This method deletes the old image off cloudinary
-                                deleteExistingImage(oldURL);
-                                //update the userdata document
-                                userdata.append("name",name);
-                                userdata.put("profilePicUrl", url);
-
-                                //upload the document on mongo
-                                mongoCollection.updateOne(
-                                        new Document("userid", user.getId()),(userdata))
-                                        .getAsync(result -> {
-                                            if (result.isSuccess()) {
-                                                Log.v("EXAMPLE", "Inserted custom user data document. _id of inserted document: "
-                                                        + result.get().getModifiedCount());
-                                                Intent intent = new Intent(UserDataSetupActivity2.this,UserDataSetupActivity3.class);
-                                                startActivity(intent);
-                                            } else {
-                                                Log.e("EXAMPLE", "Unable to insert custom user data. Error: " + result.getError());
-                                            }
-                                        });
-                            }
-                            /*
-                            while (results.hasNext()) {
-                                //Log.v("EXAMPLE", results.next().toString());
-                                Document currentDoc = results.next();
-                                Log.v("User",currentDoc.getString("userid"));
-                            }
-                            */
-                        } else {
-                            Log.v("User","Failed to complete search");
-                        }
-                    });
+                    Log.v("CLOUDINARY", url);*/
                 }
                 //Intent intent = new Intent(UserDataSetupActivity2.this,UserDataSetupActivity3.class);
                 //startActivity(intent);
@@ -231,20 +237,6 @@ public class UserDataSetupActivity2 extends AppCompatActivity {
         Name.addTextChangedListener(textWatcher);
 
 
-    }
-
-    /*
-    This method implements deleting the old profile picture
-    First it checks the legitimacy of the old url, if it is "NONE" then obviously it will give an error which we can simply return if that happens
-    If the old url is legitimate, then it will remove it off cloudinary and then return
-     */
-    void deleteExistingImage(String oldURL){
-        //TODO: implement this properly
-        /*
-        Cloudinary cloudinary=new Cloudinary(oldURL);
-        Map deleteParams = ObjectUtils.asMap("invalidate", true );
-        cloudinary.uploader().destroy(user.getId(), deleteParams);
-        */
     }
 
     // To handle when an image is selected from the browser, add the following to your Activity

@@ -1,12 +1,15 @@
 package com.sanchit.Upsilon.courseData;
 
+import org.bson.types.BasicBSONList;
+import org.bson.types.ObjectId;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 
-import io.realm.RealmList;
-import io.realm.RealmObject;
-
-public class Course extends RealmObject{
+public class Course extends Object implements Serializable {
+    private String courseId;
     private String courseName;
+    private String courseImage;
     private String tutorId;
     private String courseDescription;
     private String coursePreReq;
@@ -14,15 +17,126 @@ public class Course extends RealmObject{
     private String courseMode;
     private String courseFees;
     private String instructorLocation;
-    private String courseDurationMeasure;
     private int courseDuration;
     private int numberOfStudentsEnrolled;
     private int numberOfBatches;
-    private RealmList<CourseReview> courseReviews;
+    private BasicBSONList courseReviews;
     private String cardImgID;
+    private ArrayList<String> myRegisteredCourses;
+    private ArrayList<String> IntroductoryContentImages;
+    private int IntroductoryImageCounter;
+    private ArrayList<String> IntroductoryContentVideos;
+    private int IntroductoryVideoCounter;
+
 
     public Course() {
     }
+
+    public Course(String courseName, String courseImage, String tutorId, String courseDescription, String coursePreReq, double courseRating, String courseMode, String courseFees, String instructorLocation, int courseDuration, int numberOfStudentsEnrolled, int numberOfBatches, BasicBSONList courseReviews, String cardImgID, ArrayList<String> myRegisteredCourses, ArrayList<String> introductoryContentImages, int introductoryImageCounter, ArrayList<String> introductoryContentVideos, int introductoryVideoCounter) {
+        this.courseName = courseName;
+        this.courseImage = courseImage;
+        this.tutorId = tutorId;
+        this.courseDescription = courseDescription;
+        this.coursePreReq = coursePreReq;
+        this.courseRating = courseRating;
+        this.courseMode = courseMode;
+        this.courseFees = courseFees;
+        this.instructorLocation = instructorLocation;
+        this.courseDuration = courseDuration;
+        this.numberOfStudentsEnrolled = numberOfStudentsEnrolled;
+        this.numberOfBatches = numberOfBatches;
+        this.courseReviews = courseReviews;
+        this.cardImgID = cardImgID;
+        this.myRegisteredCourses = myRegisteredCourses;
+        IntroductoryContentImages = introductoryContentImages;
+        IntroductoryImageCounter = introductoryImageCounter;
+        IntroductoryContentVideos = introductoryContentVideos;
+        IntroductoryVideoCounter = introductoryVideoCounter;
+    }
+
+    public Course(String courseId, String courseName, String courseImage, String tutorId, String courseDescription, String coursePreReq, double courseRating, String courseMode, String courseFees, String instructorLocation, int courseDuration, int numberOfStudentsEnrolled, int numberOfBatches, BasicBSONList courseReviews, String cardImgID, ArrayList<String> myRegisteredCourses, ArrayList<String> introductoryContentImages, int introductoryImageCounter, ArrayList<String> introductoryContentVideos, int introductoryVideoCounter) {
+        this.courseId = courseId;
+        this.courseName = courseName;
+        this.courseImage = courseImage;
+        this.tutorId = tutorId;
+        this.courseDescription = courseDescription;
+        this.coursePreReq = coursePreReq;
+        this.courseRating = courseRating;
+        this.courseMode = courseMode;
+        this.courseFees = courseFees;
+        this.instructorLocation = instructorLocation;
+        this.courseDuration = courseDuration;
+        this.numberOfStudentsEnrolled = numberOfStudentsEnrolled;
+        this.numberOfBatches = numberOfBatches;
+        this.courseReviews = courseReviews;
+        this.cardImgID = cardImgID;
+        this.myRegisteredCourses = myRegisteredCourses;
+        IntroductoryContentImages = introductoryContentImages;
+        IntroductoryImageCounter = introductoryImageCounter;
+        IntroductoryContentVideos = introductoryContentVideos;
+        IntroductoryVideoCounter = introductoryVideoCounter;
+    }
+
+    public String getCourseId() {
+        return courseId;
+    }
+
+    public void setCourseId(String courseId) {
+        this.courseId = courseId;
+    }
+
+    public ArrayList<String> getMyRegisteredCourses() {
+        return myRegisteredCourses;
+    }
+
+    public void setMyRegisteredCourses(ArrayList<String> myRegisteredCourses) {
+        this.myRegisteredCourses = myRegisteredCourses;
+    }
+
+    public ArrayList<String> getIntroductoryContentImages() {
+        return IntroductoryContentImages;
+    }
+
+    public void setIntroductoryContentImages(ArrayList<String> introductoryContentImages) {
+        IntroductoryContentImages = introductoryContentImages;
+    }
+
+    public int getIntroductoryImageCounter() {
+        return IntroductoryImageCounter;
+    }
+
+    public void setIntroductoryImageCounter(int introductoryImageCounter) {
+        IntroductoryImageCounter = introductoryImageCounter;
+    }
+
+    public ArrayList<String> getIntroductoryContentVideos() {
+        return IntroductoryContentVideos;
+    }
+
+    public void setIntroductoryContentVideos(ArrayList<String> introductoryContentVideos) {
+        IntroductoryContentVideos = introductoryContentVideos;
+    }
+
+    public int getIntroductoryVideoCounter() {
+        return IntroductoryVideoCounter;
+    }
+
+    public void setIntroductoryVideoCounter(int introductoryVideoCounter) {
+        IntroductoryVideoCounter = introductoryVideoCounter;
+    }
+
+    public String getCourseImage() {
+        return courseImage;
+    }
+
+    public void setCourseImage(String courseImage) {
+        this.courseImage = courseImage;
+    }
+
+    public void setCourseRating(double courseRating) {
+        this.courseRating = courseRating;
+    }
+
 
     public String getCourseName() {
         return courseName;
@@ -88,14 +202,6 @@ public class Course extends RealmObject{
         this.instructorLocation = instructorLocation;
     }
 
-    public String getCourseDurationMeasure() {
-        return courseDurationMeasure;
-    }
-
-    public void setCourseDurationMeasure(String courseDurationMeasure) {
-        this.courseDurationMeasure = courseDurationMeasure;
-    }
-
     public int getCourseDuration() {
         return courseDuration;
     }
@@ -120,11 +226,11 @@ public class Course extends RealmObject{
         this.numberOfBatches = numberOfBatches;
     }
 
-    public RealmList<CourseReview> getCourseReviews() {
+    public BasicBSONList getCourseReviews() {
         return courseReviews;
     }
 
-    public void setCourseReviews(RealmList<CourseReview> courseReviews) {
+    public void setCourseReviews(BasicBSONList courseReviews) {
         this.courseReviews = courseReviews;
     }
 

@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@drawable/background">
+    android:background="@drawable/background_alter"
+    android:theme="@style/Theme.AppCompat.Light.NoActionBar">
 
     <TextView
         android:id="@+id/signupText"
@@ -39,7 +40,8 @@
             android:hint="@string/username"
             android:inputType="textPersonName"
             android:padding="10dp"
-            android:textColorHint="@color/colorWhite" />
+            android:textColorHint="@color/colorWhite"
+            android:textColor="@color/colorPrimaryDark"/>
 
         <EditText
             android:id="@+id/email"
@@ -51,7 +53,8 @@
             android:hint="@string/prompt_email"
             android:inputType="textEmailAddress"
             android:padding="10dp"
-            android:textColorHint="@color/colorWhite" />
+            android:textColorHint="@color/colorWhite"
+            android:textColor="@color/colorPrimaryDark"/>
 
         <EditText
             android:id="@+id/password"
@@ -63,7 +66,8 @@
             android:hint="@string/prompt_password"
             android:inputType="textPassword"
             android:padding="10dp"
-            android:textColorHint="@color/colorWhite" />
+            android:textColorHint="@color/colorWhite"
+            android:textColor="@color/colorPrimaryDark"/>
 
         <EditText
             android:id="@+id/confirmPassword"
@@ -75,7 +79,8 @@
             android:hint="@string/confirm_password"
             android:inputType="textPassword"
             android:padding="10dp"
-            android:textColorHint="@color/colorWhite" />
+            android:textColorHint="@color/colorWhite"
+            android:textColor="@color/colorPrimaryDark"/>
 
     </LinearLayout>
 
@@ -146,13 +151,27 @@
             android:src="@drawable/google"
             android:layout_margin="12dp"
             android:contentDescription="@string/google_icon"/>
-        <ImageView
-            android:id="@+id/facebookSignUp"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:src="@drawable/facebook"
-            android:layout_margin="12dp"
-            android:contentDescription="@string/facebook_icon"/>
+        <FrameLayout
+            android:id="@+id/fbSignUpFrame"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <com.facebook.login.widget.LoginButton
+                android:id="@+id/signup_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone" />
+
+            <ImageView
+                android:id="@+id/facebookSignUp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/facebook"
+                android:layout_margin="12dp"
+                android:contentDescription="@string/facebook_icon"/>
+
+        </FrameLayout>
+
         <ImageView
             android:id="@+id/twitterSignUp"
             android:layout_width="30dp"
@@ -169,7 +188,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="96dp"
         android:text="@string/already_a_member"
-        android:textColor="@color/colorWhite"
+        android:textColor="@color/colorYellow"
         android:textSize="@dimen/text_margin"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

@@ -13,6 +13,11 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -39,6 +44,9 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
     private GoogleSignInClient mGoogleSignInClient;
 
+    private CallbackManager callbackManager1;
+    LoginButton fbsignupButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,8 +60,45 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         final EditText cnfPasswordEditText = findViewById(R.id.confirmPassword);
         final EditText emailEditText = findViewById(R.id.email);
         final Button signUpButton = findViewById(R.id.signupBtn);
+        fbsignupButton = findViewById(R.id.signup_button);
         final TextView memberalready = findViewById(R.id.alreadyAMember);
+        final ImageView FacebookSignInImage = findViewById(R.id.facebookSignUp);
+        findViewById(R.id.facebookSignUp).setOnClickListener(this);
         findViewById(R.id.googleSignUp).setOnClickListener(this);
+
+        callbackManager1 = CallbackManager.Factory.create();
+        fbsignupButton.registerCallback(callbackManager1, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+                Log.v("User","Facebook Sign Up"+loginResult.toString());
+
+                String accessToken = loginResult.getAccessToken().getToken().toString();
+
+                Credentials facebookCredentials  = Credentials.facebook(accessToken);
+                app.loginAsync(facebookCredentials, it -> {
+                    if (it.isSuccess()) {
+                        Log.v("AUTH", "Successfully logged in to MongoDB Realm using Facebook OAuth.");
+                        goToMainActivity();
+                    } else {
+                        Log.e("AUTH", "Failed to log in to MongoDB Realm", it.getError());
+                    }
+                });
+            }
+
+            @Override
+            public void onCancel() {
+
+                Log.v("Error","Cancelled");
+            }
+
+            @Override
+            public void onError(FacebookException error) {
+                Log.v("Error","Error"+error.toString());
+            }
+        });
+
+
+
         signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view)
@@ -191,6 +236,8 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
             case R.id.googleSignUp:
                 getAuthCode();
                 break;
+            case R.id.facebookSignUp:
+                fbsignupButton.performClick();
 
         }
     }

@@ -27,6 +27,13 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.AccessToken;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.login.LoginManager;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -40,6 +47,8 @@ import com.sanchit.Upsilon.MainActivity;
 import com.sanchit.Upsilon.R;
 
 import org.bson.Document;
+
+import java.util.Arrays;
 
 import io.realm.Realm;
 import io.realm.mongodb.App;
@@ -58,6 +67,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     String appID = "upsilon-ityvn";
 
     private GoogleSignInClient mGoogleSignInClient;
+    private CallbackManager callbackManager;
+    LoginButton fbloginButton;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -66,14 +77,48 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         final EditText usernameEditText = findViewById(R.id.username);
         final EditText passwordEditText = findViewById(R.id.password);
-        final Button loginButton = (Button)findViewById(R.id.login);
+        Button loginButton = findViewById(R.id.login);
+        fbloginButton = findViewById(R.id.login_button);
         final Button signUpButton = (Button)findViewById(R.id.signUp);
         final ProgressBar loadingProgressBar = findViewById(R.id.loading);
         final ImageView GoogleSignInImage = findViewById(R.id.googleSignIn);
+        final ImageView FacebookSignInImage = findViewById(R.id.facebookSignIn);
         findViewById(R.id.googleSignIn).setOnClickListener(this);
+        findViewById(R.id.facebookSignIn).setOnClickListener(this);
         //Realm.init(this); // context, usually an Activity or Application
         App app = new App(new AppConfiguration.Builder(appID)
                 .build());
+
+        callbackManager = CallbackManager.Factory.create();
+        fbloginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+                Log.v("User","Facebook Signed In"+loginResult.toString());
+
+                String accessToken = loginResult.getAccessToken().getToken().toString();
+
+                Credentials facebookCredentials  = Credentials.facebook(accessToken);
+                app.loginAsync(facebookCredentials, it -> {
+                    if (it.isSuccess()) {
+                        Log.v("AUTH", "Successfully logged in to MongoDB Realm using Facebook OAuth.");
+                        goToMainActivity();
+                    } else {
+                        Log.e("AUTH", "Failed to log in to MongoDB Realm", it.getError());
+                    }
+                });
+            }
+
+            @Override
+            public void onCancel() {
+
+            }
+
+            @Override
+            public void onError(FacebookException error) {
+
+            }
+        });
+
 
         signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -162,7 +207,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
+        callbackManager.onActivityResult(requestCode, resultCode, data);
         if (requestCode == RC_GET_AUTH_CODE) {
             // [START get_auth_code]
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
@@ -246,7 +291,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             case R.id.googleSignIn:
                         getAuthCode();
                 break;
-
+            case R.id.facebookSignIn:
+                fbloginButton.performClick();
         }
     }
 

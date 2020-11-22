@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.sanchit.Upsilon">
+
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-feature android:name="android.hardware.location.gps" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -12,27 +16,50 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.AppCompat.Light"
+        android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true"
+        android:name=".Upsilon"
         >
         <meta-data android:name="cloudinary://937567483347128:wQLZU0pYv4hJt1sqF9fHB1uuEs8@upsilon175" android:value="cloudinary://@upsilon175"/>
         <activity
             android:name="com.sanchit.Upsilon.ui.login.LoginActivity"
             android:label="Upsilon">
         </activity>
-        <activity android:name=".MainActivity">
+        <activity android:name=".TeachActivity"></activity>
+        <activity android:name="com.sanchit.Upsilon.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.sanchit.Upsilon.TeachActivity"></activity>
         <activity android:name="com.sanchit.Upsilon.ui.login.SignUpActivity"></activity>
         <activity android:name="com.sanchit.Upsilon.SearchActivity"></activity>
         <activity android:name=".UserDataSetupActivity1"></activity>
         <activity android:name=".UserDataSetupActivity2"></activity>
         <activity android:name=".UserDataSetupActivity3"></activity>
         <activity android:name=".AddCourseActivity"></activity>
+        <activity android:name=".AddCourseActivityContinued"></activity>
+        <activity android:name=".ViewCourseActivity"></activity>
+        <activity android:name=".CoursesTaughtActivity"></activity>
+        <activity android:name=".RegisterCourseActivity"></activity>
+        <activity android:name=".ProfileViewActivity"></activity>
+        <meta-data android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id"/>
+        <activity android:name="com.facebook.FacebookActivity"
+            android:configChanges=
+                "keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:label="@string/app_name" />
+        <activity
+            android:name="com.facebook.CustomTabActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="@string/fb_login_protocol_scheme" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

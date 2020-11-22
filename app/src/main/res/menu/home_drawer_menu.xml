@@ -3,15 +3,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
     <item
-        android:title="Add Course"
+        android:title="@string/add_new_course"
         android:id="@+id/homeDrawerMenuItem1"
         android:icon="@drawable/add_box_icon"/>
     <item
-        android:title="Title 2"
+        android:title="@string/courses_taught"
         android:id="@+id/homeDrawerMenuItem2"
         android:icon="@drawable/add_box_icon"/>
     <item
-        android:title="Title 3"
+        android:title="View Your Profile"
         android:id="@+id/homeDrawerMenuItem3"
         android:icon="@drawable/add_box_icon"/>
 

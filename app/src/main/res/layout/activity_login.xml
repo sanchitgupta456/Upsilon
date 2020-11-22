@@ -10,7 +10,8 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
     tools:context=".ui.login.LoginActivity"
-    android:background="@color/colorGrey">
+    android:background="@drawable/background_alter"
+    android:theme="@style/Theme.AppCompat.Light.NoActionBar">
 
 
 
@@ -23,7 +24,8 @@
         android:layout_marginTop="64dp"
         android:autofillHints="Email"
         android:hint="@string/prompt_email"
-        android:textColorHint="#80ffffff"
+        android:textColorHint="@color/colorWhite"
+        android:textColor="@color/colorPrimaryDark"
         android:inputType="textEmailAddress"
         android:selectAllOnFocus="true"
         app:layout_constraintEnd_toEndOf="parent"
@@ -40,7 +42,8 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="24dp"
         android:hint="@string/prompt_password"
-        android:textColorHint="#80ffffff"
+        android:textColorHint="@color/colorWhite"
+        android:textColor="@color/colorPrimaryDark"
         android:imeActionLabel="@string/action_sign_in_short"
         android:imeOptions="actionDone"
         android:inputType="textPassword"
@@ -163,13 +166,26 @@
             android:layout_margin="12dp"
             android:contentDescription="@string/google_icon"/>
 
-        <ImageView
-            android:id="@+id/facebookSignIn"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:src="@drawable/facebook"
-            android:layout_margin="12dp"
-            android:contentDescription="@string/facebook_icon"/>
+        <FrameLayout
+            android:id="@+id/fbLoginFrame"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <com.facebook.login.widget.LoginButton
+                android:id="@+id/login_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone" />
+
+            <ImageView
+                android:id="@+id/facebookSignIn"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/facebook"
+                android:layout_margin="12dp"
+                android:contentDescription="@string/facebook_icon"/>
+        </FrameLayout>
+
         <ImageView
             android:id="@+id/twitterSignIn"
             android:layout_width="30dp"

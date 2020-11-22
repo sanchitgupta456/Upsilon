@@ -2,6 +2,7 @@ package com.sanchit.Upsilon.courseData;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,11 +13,15 @@ import android.widget.Toast;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.sanchit.Upsilon.MainActivity;
 import com.sanchit.Upsilon.R;
 import com.sanchit.Upsilon.UserDataSetupActivity1;
+import com.sanchit.Upsilon.ViewCourseActivity;
 import com.sanchit.Upsilon.ui.login.LoginActivity;
+import com.squareup.picasso.Picasso;
 
+import java.io.Serializable;
 import java.util.List;
 
 public class CoursesAdapter extends RecyclerView.Adapter<CoursesAdapter.ViewHolder> {
@@ -42,11 +47,18 @@ public class CoursesAdapter extends RecyclerView.Adapter<CoursesAdapter.ViewHold
         Course course = courseList.get(position);
 
         holder.textTvShow.setText(course.getCourseName());
+        Log.v("CourseAdapter",course.getCourseImage());
+        //Picasso.with(context).load(course.getCourseImage()).fit().centerCrop().into(holder.imgTvShow);
+        Glide.with(context).load(course.getCourseImage()).into(holder.imgTvShow);
         //holder.imgTvShow.setImageResource(course.getCardImgID());
         holder.cv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Toast.makeText(context,"The position is:"+position,Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(holder.itemView.getContext(), ViewCourseActivity.class);
+                intent.putExtra("Course", course);
+                holder.itemView.getContext().startActivity(intent);
+
             }
         });
 
