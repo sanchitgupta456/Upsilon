@@ -114,6 +114,7 @@ public class RegisterCourseActivity extends AppCompatActivity {
                         {
                             Log.v("User", "successfully found the user");
                             Document userdata = results.next();
+                            myRegisteredCourses = (ArrayList<String>) userdata.get("myCourses");
                             Log.v("Register", String.valueOf(course.getCourseId()));
                             myRegisteredCourses.add(course.getCourseId());
                             userdata.append("myCourses",myRegisteredCourses);

@@ -10,6 +10,7 @@ public class RegisteredStudentViewCourse extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.re);
+        setContentView(R.layout.activity_active_course);
+
     }
 }
