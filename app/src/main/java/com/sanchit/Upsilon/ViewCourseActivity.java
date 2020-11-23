@@ -183,7 +183,7 @@ public class ViewCourseActivity extends AppCompatActivity {
         {
             CourseLocation.setVisibility(View.INVISIBLE);
         }
-        CourseCost.setText(course.getCourseFees());
+        CourseCost.setText("Rs. " +String.valueOf(course.getCourseFees()));
         CourseDuration.setText(course.getCourseDuration() + " Class Hours");
         Picasso.with(getApplicationContext()).load(course.getCourseImage()).fit().centerInside().into(CourseImage);
 

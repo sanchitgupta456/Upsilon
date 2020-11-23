@@ -17,6 +17,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
@@ -58,8 +59,9 @@ public class AddCourseActivity extends AppCompatActivity implements AdapterView.
 
 
     String appID = "upsilon-ityvn";
-    EditText CourseName,CourseDescription,CourseDuration,NumberOfBatches;
+    EditText CourseName,CourseDescription,CourseDuration,NumberOfBatches,CourseFees;
     String courseName,courseDescription,courseDuration,numOfBatches,mode,courseDurationMeasure;
+    int fees;
     Button nextButton;
     RadioButton Group,Individual,Free,Paid;
     ToggleButton offline_online;
@@ -89,6 +91,9 @@ public class AddCourseActivity extends AppCompatActivity implements AdapterView.
         nextButton = (Button) findViewById(R.id.btnNext);
         offline_online = (ToggleButton) findViewById(R.id.add_course_mode);
         CourseImage = (ImageView) findViewById(R.id.imgAddCourseImage);
+        CourseFees = (EditText) findViewById(R.id.course_fee);
+        Free = (RadioButton) findViewById(R.id.add_course_free);
+        Paid = (RadioButton) findViewById(R.id.add_course_paid);
         //spinner = (Spinner) findViewById(R.id.courseDurationMeasureSpinner);
 
         app = new App(new AppConfiguration.Builder(appID)
@@ -108,6 +113,21 @@ public class AddCourseActivity extends AppCompatActivity implements AdapterView.
             }
         });
 
+        Free.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CourseFees.setVisibility(View.INVISIBLE);
+                fees=0;
+            }
+        });
+
+        Paid.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CourseFees.setVisibility(View.VISIBLE);
+            }
+        });
+
         //String[] measureOfTime = {"minutes","hours","days","weeks","months","years"};
 
         //ArrayAdapter adapter = new ArrayAdapter(getApplicationContext(), android.R.layout.simple_expandable_list_item_1,measureOfTime);
@@ -122,6 +142,7 @@ public class AddCourseActivity extends AppCompatActivity implements AdapterView.
                 courseDescription = CourseDescription.getText().toString();
                 courseDuration = CourseDuration.getText().toString();
                 numOfBatches = NumberOfBatches.getText().toString();
+                fees = Integer.parseInt(CourseFees.getText().toString());
 
                 //courseReviews = new ArrayList<CourseReview>();
                 if(offline_online.isChecked())
@@ -150,7 +171,7 @@ public class AddCourseActivity extends AppCompatActivity implements AdapterView.
                 courseDetails.append("coursePreReq","");
                 courseDetails.append("courseRating",4.98);
                 courseDetails.append("courseMode",mode);
-                courseDetails.append("courseFees",0);
+                courseDetails.append("courseFees",fees);
                 courseDetails.append("courseImage","balh");
                 courseDetails.append("instructorLocation","Here");
                 //courseDetails.append("courseDurationMeasure","hours");

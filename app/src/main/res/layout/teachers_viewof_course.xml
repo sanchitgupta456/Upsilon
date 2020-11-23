@@ -164,18 +164,20 @@
                 android:typeface="normal"
                 android:gravity="center_vertical"
                 android:layout_weight="60"/>
+
             <EditText
-                android:inputType="datetime"
+                android:id="@+id/view_course_teacher_schedule_class"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_weight="40"
+                android:background="@drawable/text_view_add_course"
+                android:gravity="center_vertical"
+                android:inputType="datetime"
                 android:padding="10dp"
                 android:textColor="@color/colorBlack"
-                android:textStyle="italic"
                 android:textSize="@dimen/text_margin"
-                android:typeface="normal"
-                android:gravity="center_vertical"
-                android:layout_weight="40"
-                android:background="@drawable/text_view_add_course"/>
+                android:textStyle="italic"
+                android:typeface="normal" />
         </LinearLayout>
         <Button
             android:id="@+id/btnScheduleClass"
