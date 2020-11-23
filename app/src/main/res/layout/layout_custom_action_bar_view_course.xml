@@ -2,9 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="horizontal"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:gravity="center_vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="match_parent"
+    android:gravity="fill"
     android:weightSum="100"
     android:background="@color/colorPrimary">
 
@@ -19,16 +19,16 @@
         android:tint="@color/colorWhite"/>
 
     <TextView
+        android:id="@+id/action_bar_course_name"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/course_name"
-        android:padding="5dp"
+        android:layout_weight="10"
         android:gravity="center"
-        android:id="@+id/action_bar_course_name"
-        android:textSize="20sp"
+        android:padding="5dp"
+        android:text="@string/course_name"
         android:textColor="@color/colorWhite"
-        android:textStyle="bold"
-        android:layout_weight="10"/>
+        android:textSize="20sp"
+        android:textStyle="bold" />
 
     <ImageButton
         android:id="@+id/imgBtnMenuViewCourse"

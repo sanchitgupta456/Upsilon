@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/gradient">
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:menu="@menu/bottom_navigation_menu"
+        android:layout_alignParentBottom="true"
+        app:backgroundTint="@color/colorPrimary"
+        android:background="@drawable/bottom_app_bar"
+        app:elevation="20dp"
+        app:itemIconTint="@color/colorWhite"
+        app:itemTextColor="@color/colorWhite"/>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <!-- Following Text View and Recycler Views should bn displayed upon click on Resources button -->
+            <TextView
+                android:id="@+id/textNotifications"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginStart="@dimen/activity_horizontal_margin"
+                android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                android:textColor="@color/colorBlack"
+                android:textStyle="bold"
+                android:textSize="24sp"
+                android:text="@string/notifications"
+                android:typeface="sans"
+                android:gravity="center_vertical"/>
+            <!-- This view should be vertical -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/listNotifications"
+                android:orientation="vertical"
+                android:layout_below="@id/textNotifications"
+                android:layout_marginTop="24dp"
+                android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
+                android:padding="10dp"
+                android:background="@drawable/text_view_add_course"/>
+            <!-- End DisplayOnClickingResourcesButton -->
+
+        </RelativeLayout>
+    </ScrollView>
+</RelativeLayout>

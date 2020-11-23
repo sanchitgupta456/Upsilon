@@ -6,10 +6,10 @@
     android:orientation="horizontal"
     android:background="@color/colorPrimary">
     <ImageButton
-        android:id="@+id/imgBtnBackHome"
+        android:id="@+id/imgBtnHomeDrawer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:src="@drawable/back_icon"
+        android:src="@drawable/icon_hamburger"
         android:backgroundTint="#0000"
         android:layout_weight="45"
         android:clickable="true"
