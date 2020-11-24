@@ -15,7 +15,7 @@ public class Course extends Object implements Serializable {
     private String coursePreReq;
     private double courseRating;
     private String courseMode;
-    private String courseFees;
+    private int courseFees;
     private String instructorLocation;
     private int courseDuration;
     private int numberOfStudentsEnrolled;
@@ -32,7 +32,7 @@ public class Course extends Object implements Serializable {
     public Course() {
     }
 
-    public Course(String courseName, String courseImage, String tutorId, String courseDescription, String coursePreReq, double courseRating, String courseMode, String courseFees, String instructorLocation, int courseDuration, int numberOfStudentsEnrolled, int numberOfBatches, BasicBSONList courseReviews, String cardImgID, ArrayList<String> myRegisteredCourses, ArrayList<String> introductoryContentImages, int introductoryImageCounter, ArrayList<String> introductoryContentVideos, int introductoryVideoCounter) {
+    public Course(String courseName, String courseImage, String tutorId, String courseDescription, String coursePreReq, double courseRating, String courseMode, int courseFees, String instructorLocation, int courseDuration, int numberOfStudentsEnrolled, int numberOfBatches, BasicBSONList courseReviews, String cardImgID, ArrayList<String> myRegisteredCourses, ArrayList<String> introductoryContentImages, int introductoryImageCounter, ArrayList<String> introductoryContentVideos, int introductoryVideoCounter) {
         this.courseName = courseName;
         this.courseImage = courseImage;
         this.tutorId = tutorId;
@@ -54,7 +54,7 @@ public class Course extends Object implements Serializable {
         IntroductoryVideoCounter = introductoryVideoCounter;
     }
 
-    public Course(String courseId, String courseName, String courseImage, String tutorId, String courseDescription, String coursePreReq, double courseRating, String courseMode, String courseFees, String instructorLocation, int courseDuration, int numberOfStudentsEnrolled, int numberOfBatches, BasicBSONList courseReviews, String cardImgID, ArrayList<String> myRegisteredCourses, ArrayList<String> introductoryContentImages, int introductoryImageCounter, ArrayList<String> introductoryContentVideos, int introductoryVideoCounter) {
+    public Course(String courseId, String courseName, String courseImage, String tutorId, String courseDescription, String coursePreReq, double courseRating, String courseMode, int courseFees, String instructorLocation, int courseDuration, int numberOfStudentsEnrolled, int numberOfBatches, BasicBSONList courseReviews, String cardImgID, ArrayList<String> myRegisteredCourses, ArrayList<String> introductoryContentImages, int introductoryImageCounter, ArrayList<String> introductoryContentVideos, int introductoryVideoCounter) {
         this.courseId = courseId;
         this.courseName = courseName;
         this.courseImage = courseImage;
@@ -186,11 +186,11 @@ public class Course extends Object implements Serializable {
         this.courseMode = courseMode;
     }
 
-    public String getCourseFees() {
+    public int getCourseFees() {
         return courseFees;
     }
 
-    public void setCourseFees(String courseFees) {
+    public void setCourseFees(int courseFees) {
         this.courseFees = courseFees;
     }
 

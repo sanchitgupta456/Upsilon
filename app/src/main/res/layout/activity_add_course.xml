@@ -262,6 +262,7 @@
                 android:padding="5dp">
 
                 <RadioButton
+                    android:id="@+id/add_course_free"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="50"
@@ -271,6 +272,7 @@
                     android:text="@string/teach_for_free"/>
 
                 <RadioButton
+                    android:id="@+id/add_course_paid"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="50"
