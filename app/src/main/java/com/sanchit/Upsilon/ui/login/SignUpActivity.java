@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -106,6 +108,40 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                 Toast.makeText(SignUpActivity.this,"Hello",Toast.LENGTH_LONG);
                 String email = emailEditText.getText().toString();
                 String password = passwordEditText.getText().toString();
+                String confirm = cnfPasswordEditText.getText().toString();
+
+                if (email.length() == 0){
+                    Animation shake = AnimationUtils.loadAnimation(SignUpActivity.this, R.anim.shake);
+                    emailEditText.startAnimation(shake);
+                    emailEditText.setError("Please Enter an Email!");
+                    emailEditText.requestFocus();
+                    return;
+                }
+                else if (password.length() == 0){
+                    Animation shake = AnimationUtils.loadAnimation(SignUpActivity.this, R.anim.shake);
+                    passwordEditText.startAnimation(shake);
+                    passwordEditText.setText("");
+                    cnfPasswordEditText.setText("");
+                    passwordEditText.setError("Please Enter a Valid Password!");
+                    passwordEditText.requestFocus();
+                    return;
+                }
+                else if (usernameEditText.getText().length() == 0){
+                    Animation shake = AnimationUtils.loadAnimation(SignUpActivity.this, R.anim.shake);
+                    usernameEditText.startAnimation(shake);
+                    usernameEditText.setError("Please Enter a Valid Username!");
+                    usernameEditText.requestFocus();
+                    return;
+                }
+                else if (!password.equals(confirm)){
+                    Animation shake = AnimationUtils.loadAnimation(SignUpActivity.this, R.anim.shake);
+                    passwordEditText.startAnimation(shake);
+                    passwordEditText.setText("");
+                    cnfPasswordEditText.setText("");
+                    passwordEditText.setError("Passwords do not match!");
+                    passwordEditText.requestFocus();
+                    return;
+                }
 
                 app.getEmailPassword().registerUserAsync(email, password, it -> {
                     if (it.isSuccess()) {
@@ -114,6 +150,11 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
                     } else {
                         Log.e(TAG,"Failed to register user: ${it.error}");
+                        Animation shake = AnimationUtils.loadAnimation(SignUpActivity.this, R.anim.shake);
+                        emailEditText.startAnimation(shake);
+                        emailEditText.setText("");
+                        emailEditText.setError("Invalid email!");
+                        emailEditText.requestFocus();
                     }
                 });
             }
