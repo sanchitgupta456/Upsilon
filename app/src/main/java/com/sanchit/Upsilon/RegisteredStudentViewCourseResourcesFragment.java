@@ -33,12 +33,14 @@ public class RegisteredStudentViewCourseResourcesFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.activity_active_course_resources,null);
         courseResources = view.findViewById(R.id.listResources);
+        courseResources.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false));
+        courseResources.setItemAnimator(new DefaultItemAnimator());
         //resourcesAdapter = new IntroductoryContentAdapter(introductoryImages,introductoryVideos);
         course = (Course) getArguments().get("Course");
         Log.v("CourseResources",course.getCourseId());
         introductoryImages = course.getIntroductoryContentImages();
         introductoryVideos = course.getIntroductoryContentVideos();
-
+        //resourcesAdapter.notifyDataSetChanged();
         //course = getArguments().getBundle().get("Course");
 
         initialise();
@@ -59,6 +61,7 @@ public class RegisteredStudentViewCourseResourcesFragment extends Fragment {
 
         introductoryImages = course.getIntroductoryContentImages();
         introductoryVideos = course.getIntroductoryContentVideos();
+        resourcesAdapter.notifyDataSetChanged();
         //Log.v("Course", String.valueOf(introductoryImages));
 
         //introductoryImages.add("http://res.cloudinary.com/upsilon175/image/upload/v1605196689/Upsilon/Courses/5fad2ca3600686e14bc0950b/IntroductoryContent/Images/IntroductoryImage0.jpg");
@@ -70,50 +73,52 @@ public class RegisteredStudentViewCourseResourcesFragment extends Fragment {
     public void onResume() {
         super.onResume();
         initialise();
+        resourcesAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void onStart() {
         super.onStart();
         initialise();
+        resourcesAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        if (introductoryImages != null) {
+        /*if (introductoryImages != null) {
             introductoryImages.clear();
         }
         if (introductoryVideos != null) {
             introductoryVideos.clear();
         }
-        resourcesAdapter.notifyDataSetChanged();
+        resourcesAdapter.notifyDataSetChanged();*/
         releaseExoPlayer(resourcesAdapter.exoPlayer);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (introductoryImages != null) {
+        /*if (introductoryImages != null) {
             introductoryImages.clear();
         }
         if (introductoryVideos != null) {
             introductoryVideos.clear();
         }
-        resourcesAdapter.notifyDataSetChanged();
+        resourcesAdapter.notifyDataSetChanged();*/
         releaseExoPlayer(resourcesAdapter.exoPlayer);
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        if (introductoryImages != null) {
+        /*if (introductoryImages != null) {
             introductoryImages.clear();
         }
         if (introductoryVideos != null) {
             introductoryVideos.clear();
         }
-        resourcesAdapter.notifyDataSetChanged();
+        resourcesAdapter.notifyDataSetChanged();*/
         releaseExoPlayer(resourcesAdapter.exoPlayer);
 
     }
