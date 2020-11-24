@@ -262,6 +262,7 @@
                 android:padding="5dp">
 
                 <RadioButton
+                    android:id="@+id/add_course_free"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="50"
@@ -271,6 +272,7 @@
                     android:text="@string/teach_for_free"/>
 
                 <RadioButton
+                    android:id="@+id/add_course_paid"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="50"
@@ -282,6 +284,20 @@
 
 
             </RadioGroup>
+
+            <!-- to be made visible only if charge a fee is checked -->
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/prompt_fees"
+                android:inputType="number"
+                android:textColorHint="@color/colorPrimaryDark"
+                android:textColor="@color/colorPrimaryDark"
+                android:background="@drawable/text_view_add_course"
+                android:padding="10dp"
+                android:layout_margin="@dimen/text_margin"
+                android:id="@+id/course_fee"
+                android:visibility="gone"/>
 
 
         </LinearLayout>

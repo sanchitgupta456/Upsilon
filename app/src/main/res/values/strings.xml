@@ -104,4 +104,10 @@
     <string name="course_resources">Course Resources</string>
     <string name="new_registrations_closed">New Registrations Closed</string>
     <string name="accepting_registrations_now">Accepting Registrations Now</string>
+    <string name="course_home">Home</string>
+    <string name="notifications">Notifications</string>
+    <string name="resources">Resources</string>
+    <string name="write_a_review">Write a review</string>
+    <string name="prompt_fees">Enter fees you wish to charge</string>
+    <string name="remember_me">Remember me</string>
 </resources>

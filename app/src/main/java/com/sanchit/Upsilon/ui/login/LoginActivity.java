@@ -7,7 +7,6 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -19,6 +18,8 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
@@ -70,6 +71,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private GoogleSignInClient mGoogleSignInClient;
     private CallbackManager callbackManager;
     LoginButton fbloginButton;
+    ProgressBar loadingProgressBar;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -81,7 +83,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         Button loginButton = findViewById(R.id.login);
         fbloginButton = findViewById(R.id.login_button);
         final Button signUpButton = (Button)findViewById(R.id.signUp);
-        final ProgressBar loadingProgressBar = findViewById(R.id.loading);
+        loadingProgressBar = findViewById(R.id.loading);
+        loadingProgressBar.setScaleX((float) 1.6);
+        loadingProgressBar.setScaleY((float) 1.6);
         final ImageView GoogleSignInImage = findViewById(R.id.googleSignIn);
         final ImageView FacebookSignInImage = findViewById(R.id.facebookSignIn);
         findViewById(R.id.googleSignIn).setOnClickListener(this);
@@ -89,23 +93,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         //Realm.init(this); // context, usually an Activity or Application
         App app = new App(new AppConfiguration.Builder(appID)
                 .build());
-
-        usernameEditText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view)
-            {
-                usernameEditText.setHintTextColor(Color.WHITE);
-                usernameEditText.setHint("Email");
-            }
-        });
-        passwordEditText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view)
-            {
-                passwordEditText.setHintTextColor(Color.WHITE);
-                passwordEditText.setHint("Password");
-            }
-        });
 
         callbackManager = CallbackManager.Factory.create();
         fbloginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
@@ -150,14 +137,31 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             @Override
             public void onClick(View view)
             {
-                usernameEditText.setHintTextColor(Color.WHITE);
-                usernameEditText.setHint("Email");
-                passwordEditText.setHintTextColor(Color.WHITE);
-                passwordEditText.setHint("Password");
+                loadingProgressBar.setVisibility(View.VISIBLE);
+                loadingProgressBar.setIndeterminate(true);
+                loadingProgressBar.setProgress(0);
                 String email = usernameEditText.getText().toString();
+
                 String password = passwordEditText.getText().toString();
 
-                if (email.length() != 0 && password.length() != 0) {
+                if(email.isEmpty())
+                {
+                    Animation shake = AnimationUtils.loadAnimation(LoginActivity.this, R.anim.shake);
+                    usernameEditText.startAnimation(shake);
+                    usernameEditText.setError("Please Enter a Valid Email");
+                    usernameEditText.requestFocus();
+                    loadingProgressBar.setVisibility(View.INVISIBLE);
+                }
+                else if(password.isEmpty())
+                {
+                    Animation shake = AnimationUtils.loadAnimation(LoginActivity.this, R.anim.shake);
+                    passwordEditText.startAnimation(shake);
+                    passwordEditText.setError("Please Enter a Valid Password");
+                    passwordEditText.requestFocus();
+                    loadingProgressBar.setVisibility(View.INVISIBLE);
+                }
+                else
+                {
                     Credentials emailPasswordCredentials = Credentials.emailPassword(email, password);
 
                     app.loginAsync(emailPasswordCredentials, new App.Callback<User>() {
@@ -165,35 +169,25 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         public void onResult(App.Result<User> it) {
                             if (it.isSuccess()) {
                                 Log.v(TAG, "Successfully authenticated using an email and password.");
-
+                                loadingProgressBar.setVisibility(View.INVISIBLE);
                                 User user = app.currentUser();
                                 goToMainActivity();
                             } else {
-                                //Toast toast = Toast.makeText(getApplicationContext(), "Either your email or password was incorrect!", Toast.LENGTH_LONG);
-                                //toast.show();
-                                usernameEditText.requestFocus();
-                                usernameEditText.setHintTextColor(Color.RED);
-                                usernameEditText.setText("");
-                                passwordEditText.setText("");
-                                usernameEditText.setHint("Incorrect email or password!");
+                                Animation shake = AnimationUtils.loadAnimation(LoginActivity.this, R.anim.shake);
+                                //usernameEditText.startAnimation(shake);
+                                //usernameEditText.setError("Please Enter a Valid UserName");
+
+                                passwordEditText.startAnimation(shake);
+                                passwordEditText.setError(it.getError().getErrorMessage().toString());
+                                passwordEditText.requestFocus();
+                                loadingProgressBar.setVisibility(View.INVISIBLE);
                                 Log.v(TAG, "LOGIN FAILED!");
                                 Log.e(TAG, it.getError().toString());
                             }
                         }
                     });
                 }
-                else{
-                    if (usernameEditText.length() == 0) {
-                        usernameEditText.requestFocus();
-                        usernameEditText.setHintTextColor(Color.RED);
-                        usernameEditText.setText("");
-                    }
-                    if (passwordEditText.length() == 0) {
-                        passwordEditText.requestFocus();
-                        passwordEditText.setHintTextColor(Color.RED);
-                        passwordEditText.setText("");
-                    }
-                }
+
             }
         });
 
@@ -226,6 +220,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         // token.  Otherwise, only get an access token if a refresh token has been previously
         // retrieved.  Getting a new access token for an existing grant does not require
         // user consent.
+        loadingProgressBar.setVisibility(View.VISIBLE);
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_GET_AUTH_CODE);
     }
@@ -293,7 +288,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                             Log.e("EXAMPLE", "Unable to insert custom user data. Error: " + result.getError());
                                         }
                                     });*/
-
+                            loadingProgressBar.setVisibility(View.INVISIBLE);
                             goToMainActivity();
 
                         } else {

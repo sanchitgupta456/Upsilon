@@ -64,6 +64,7 @@ public class ViewCourseActivity extends AppCompatActivity {
     ArrayList<CourseReview> courseReviewsArrayList = new ArrayList<CourseReview>();
     ArrayList<String> introductoryImages = new ArrayList<String>();
     ArrayList<String> introductoryVideos = new ArrayList<String>();
+    ArrayList<String> myCourses = new ArrayList<>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -142,6 +143,22 @@ public class ViewCourseActivity extends AppCompatActivity {
                     //Log.v("EXAMPLE", results.next().toString());
                     Document currentDoc = results.next();
                     CourseTutorName.setText("Course By "+ currentDoc.getString("name"));
+                    myCourses = (ArrayList<String>) currentDoc.get("myCourses");
+                    if(myCourses==null)
+                    {
+
+                    }
+                    else
+                    {
+                        for(int i=0;i<myCourses.size();i++)
+                        {
+                            if(myCourses.get(i).equals(course.getCourseId()))
+                            {
+                                RegisterButton.setVisibility(View.INVISIBLE);
+                            }
+                        }
+                    }
+
                     Log.v("User",currentDoc.getString("userid"));
                 }
             } else {
@@ -166,7 +183,7 @@ public class ViewCourseActivity extends AppCompatActivity {
         {
             CourseLocation.setVisibility(View.INVISIBLE);
         }
-        CourseCost.setText(course.getCourseFees());
+        CourseCost.setText("Rs. " +String.valueOf(course.getCourseFees()));
         CourseDuration.setText(course.getCourseDuration() + " Class Hours");
         Picasso.with(getApplicationContext()).load(course.getCourseImage()).fit().centerInside().into(CourseImage);
 

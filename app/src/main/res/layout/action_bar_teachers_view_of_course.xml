@@ -29,10 +29,10 @@
         android:layout_weight="10"
         android:text="@string/course_name"/>
     <ImageButton
-        android:id="@+id/imgBtnEditTeachersViewCourse"
+        android:id="@+id/imgBtnUpdateTeachersViewCourse"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:src="@drawable/edit_icon"
+        android:src="@drawable/icon_tick"
         android:backgroundTint="#0000"
         android:layout_weight="45"
         android:clickable="true"

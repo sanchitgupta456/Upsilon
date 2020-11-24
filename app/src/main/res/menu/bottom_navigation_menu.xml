@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/bottomNavMenuHome"
+        android:enabled="true"
+        android:icon="@drawable/icon_home"
+        android:title="@string/course_home"/>
+    <item
+        android:id="@+id/bottomNavMenuNotifications"
+        android:enabled="true"
+        android:icon="@drawable/icon_notifications"
+        android:title="@string/notifications"/>
+    <item
+        android:id="@+id/bottomNavMenuResources"
+        android:enabled="true"
+        android:icon="@drawable/icon_resources"
+        android:title="@string/resources"/>
+    <item
+        android:id="@+id/bottomNavMenuReview"
+        android:enabled="true"
+        android:icon="@drawable/icon_review"
+        android:title="@string/write_a_review"/>
+</menu>
