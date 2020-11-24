@@ -71,6 +71,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private GoogleSignInClient mGoogleSignInClient;
     private CallbackManager callbackManager;
     LoginButton fbloginButton;
+    ProgressBar loadingProgressBar;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -82,7 +83,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         Button loginButton = findViewById(R.id.login);
         fbloginButton = findViewById(R.id.login_button);
         final Button signUpButton = (Button)findViewById(R.id.signUp);
-        final ProgressBar loadingProgressBar = findViewById(R.id.loading);
+        loadingProgressBar = findViewById(R.id.loading);
         final ImageView GoogleSignInImage = findViewById(R.id.googleSignIn);
         final ImageView FacebookSignInImage = findViewById(R.id.facebookSignIn);
         findViewById(R.id.googleSignIn).setOnClickListener(this);
@@ -134,8 +135,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             @Override
             public void onClick(View view)
             {
+                loadingProgressBar.setVisibility(View.VISIBLE);
+                loadingProgressBar.setIndeterminate(true);
+                loadingProgressBar.setProgress(0);
                 String email = usernameEditText.getText().toString();
-
 
                 String password = passwordEditText.getText().toString();
 
@@ -143,13 +146,17 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 {
                     Animation shake = AnimationUtils.loadAnimation(LoginActivity.this, R.anim.shake);
                     usernameEditText.startAnimation(shake);
-                    usernameEditText.setError("Please Enter a Valid UserName");
+                    usernameEditText.setError("Please Enter a Valid Email");
+                    usernameEditText.requestFocus();
+                    loadingProgressBar.setVisibility(View.INVISIBLE);
                 }
                 else if(password.isEmpty())
                 {
                     Animation shake = AnimationUtils.loadAnimation(LoginActivity.this, R.anim.shake);
                     passwordEditText.startAnimation(shake);
                     passwordEditText.setError("Please Enter a Valid Password");
+                    passwordEditText.requestFocus();
+                    loadingProgressBar.setVisibility(View.INVISIBLE);
                 }
                 else
                 {
@@ -160,10 +167,18 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         public void onResult(App.Result<User> it) {
                             if (it.isSuccess()) {
                                 Log.v(TAG, "Successfully authenticated using an email and password.");
-
+                                loadingProgressBar.setVisibility(View.INVISIBLE);
                                 User user = app.currentUser();
                                 goToMainActivity();
                             } else {
+                                Animation shake = AnimationUtils.loadAnimation(LoginActivity.this, R.anim.shake);
+                                //usernameEditText.startAnimation(shake);
+                                //usernameEditText.setError("Please Enter a Valid UserName");
+
+                                passwordEditText.startAnimation(shake);
+                                passwordEditText.setError(it.getError().getErrorMessage().toString());
+                                passwordEditText.requestFocus();
+                                loadingProgressBar.setVisibility(View.INVISIBLE);
                                 Log.v(TAG, "LOGIN FAILED!");
                                 Log.e(TAG, it.getError().toString());
                             }
@@ -203,6 +218,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         // token.  Otherwise, only get an access token if a refresh token has been previously
         // retrieved.  Getting a new access token for an existing grant does not require
         // user consent.
+        loadingProgressBar.setVisibility(View.VISIBLE);
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_GET_AUTH_CODE);
     }
@@ -270,7 +286,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                             Log.e("EXAMPLE", "Unable to insert custom user data. Error: " + result.getError());
                                         }
                                     });*/
-
+                            loadingProgressBar.setVisibility(View.INVISIBLE);
                             goToMainActivity();
 
                         } else {
