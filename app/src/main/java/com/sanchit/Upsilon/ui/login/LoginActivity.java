@@ -18,6 +18,8 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
@@ -133,23 +135,42 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             public void onClick(View view)
             {
                 String email = usernameEditText.getText().toString();
+
+
                 String password = passwordEditText.getText().toString();
-                Credentials emailPasswordCredentials = Credentials.emailPassword(email, password);
 
-                app.loginAsync(emailPasswordCredentials, new App.Callback<User>() {
-                    @Override
-                    public void onResult(App.Result<User> it) {
-                        if (it.isSuccess()) {
-                            Log.v(TAG, "Successfully authenticated using an email and password.");
+                if(email.isEmpty())
+                {
+                    Animation shake = AnimationUtils.loadAnimation(LoginActivity.this, R.anim.shake);
+                    usernameEditText.startAnimation(shake);
+                    usernameEditText.setError("Please Enter a Valid UserName");
+                }
+                else if(password.isEmpty())
+                {
+                    Animation shake = AnimationUtils.loadAnimation(LoginActivity.this, R.anim.shake);
+                    passwordEditText.startAnimation(shake);
+                    passwordEditText.setError("Please Enter a Valid Password");
+                }
+                else
+                {
+                    Credentials emailPasswordCredentials = Credentials.emailPassword(email, password);
 
-                            User user = app.currentUser();
-                            goToMainActivity();
-                        } else {
-                            Log.v(TAG, "LOGIN FAILED!");
-                            Log.e(TAG, it.getError().toString());
+                    app.loginAsync(emailPasswordCredentials, new App.Callback<User>() {
+                        @Override
+                        public void onResult(App.Result<User> it) {
+                            if (it.isSuccess()) {
+                                Log.v(TAG, "Successfully authenticated using an email and password.");
+
+                                User user = app.currentUser();
+                                goToMainActivity();
+                            } else {
+                                Log.v(TAG, "LOGIN FAILED!");
+                                Log.e(TAG, it.getError().toString());
+                            }
                         }
-                    }
-                });
+                    });
+                }
+
             }
         });
 
