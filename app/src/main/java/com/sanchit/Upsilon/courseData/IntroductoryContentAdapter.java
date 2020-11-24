@@ -57,13 +57,8 @@ public class IntroductoryContentAdapter extends RecyclerView.Adapter<Introductor
         Log.v("Adapter","Images Initialised");
         Log.v("Adapter", String.valueOf(ImageUrls));
 
-
-
     }
 
-    public IntroductoryContentAdapter(List<String> imageUrls) {
-
-    }
 
     @NonNull
     @Override
@@ -80,6 +75,7 @@ public class IntroductoryContentAdapter extends RecyclerView.Adapter<Introductor
     @Override
     public void onBindViewHolder(@NonNull IntroductoryContentViewHolder holder, int position) {
 
+        Log.v("Adapter","Binded");
         if(position<ImageUrls.size())
         {
             String imageUrl = ImageUrls.get(position);
@@ -150,6 +146,7 @@ public class IntroductoryContentAdapter extends RecyclerView.Adapter<Introductor
 
     @Override
     public int getItemCount() {
+
         if(ImageUrls==null && VideoUrls==null)
         {
             return 0;

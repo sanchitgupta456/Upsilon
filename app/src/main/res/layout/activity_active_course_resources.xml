@@ -5,9 +5,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/gradient">
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -29,9 +26,10 @@
                 android:gravity="center_vertical"/>
             <!-- This view should be vertical -->
             <androidx.recyclerview.widget.RecyclerView
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/listNotifications"
+                android:layout_height="match_parent"
+                android:id="@+id/listResources"
                 android:orientation="vertical"
                 android:layout_below="@id/textCourseResources"
                 android:layout_marginTop="24dp"
@@ -41,5 +39,4 @@
             <!-- End DisplayOnClickingResourcesButton -->
 
         </RelativeLayout>
-    </ScrollView>
 </RelativeLayout>
