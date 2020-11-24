@@ -84,6 +84,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         fbloginButton = findViewById(R.id.login_button);
         final Button signUpButton = (Button)findViewById(R.id.signUp);
         loadingProgressBar = findViewById(R.id.loading);
+        loadingProgressBar.setScaleX((float) 1.6);
+        loadingProgressBar.setScaleY((float) 1.6);
         final ImageView GoogleSignInImage = findViewById(R.id.googleSignIn);
         final ImageView FacebookSignInImage = findViewById(R.id.facebookSignIn);
         findViewById(R.id.googleSignIn).setOnClickListener(this);

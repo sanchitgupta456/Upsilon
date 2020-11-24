@@ -109,4 +109,5 @@
     <string name="resources">Resources</string>
     <string name="write_a_review">Write a review</string>
     <string name="prompt_fees">Enter fees you wish to charge</string>
+    <string name="remember_me">Remember me</string>
 </resources>

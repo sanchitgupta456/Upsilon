@@ -14,4 +14,10 @@
         <item name="android:colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="LoadingProgressBar" parent="Widget.AppCompat.ProgressBar">
+        <item name="iconSize">36dp</item>
+        <item name="android:scaleY">8</item>
+        <item name="android:scaleX">8</item>
+    </style>
+
 </resources>
