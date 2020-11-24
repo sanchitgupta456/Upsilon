@@ -5,17 +5,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/gradient">
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottom_navigation"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:menu="@menu/bottom_navigation_menu"
-        android:layout_alignParentBottom="true"
-        app:backgroundTint="@color/colorPrimary"
-        android:background="@drawable/bottom_app_bar"
-        app:elevation="20dp"
-        app:itemIconTint="@color/colorWhite"
-        app:itemTextColor="@color/colorWhite"/>
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
