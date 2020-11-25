@@ -204,7 +204,7 @@ public class RegisterCourseActivity extends AppCompatActivity implements Payment
              *     etc.
              */
             //options.put("description", "Reference No. #123456");
-            //options.put("image", "https://s3.amazonaws.com/rzp-mobile/images/rzp.png");
+            //options.put("image", R.drawable.lightlogo1);
             //options.put("order_id", "order_9A33XWu170gUtm");
             options.put("currency", "INR");
             /**

@@ -151,6 +151,14 @@ public class IntroductoryContentAdapter extends RecyclerView.Adapter<Introductor
         {
             return 0;
         }
+        else if(ImageUrls==null)
+        {
+            return VideoUrls.size();
+        }
+        else if(VideoUrls==null)
+        {
+            return ImageUrls.size();
+        }
         return ImageUrls.size()+VideoUrls.size();
     }
 

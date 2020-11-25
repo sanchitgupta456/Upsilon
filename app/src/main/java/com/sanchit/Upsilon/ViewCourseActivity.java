@@ -107,6 +107,7 @@ public class ViewCourseActivity extends AppCompatActivity {
         RegisterButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                releaseExoPlayer(courseIntroductoryMaterialAdapter.exoPlayer);
                 Intent intent = new Intent(ViewCourseActivity.this,RegisterCourseActivity.class);
                 String id = course.getCourseId();
                 Log.v("ViewCourse", String.valueOf(course.getCourseId()));
@@ -169,6 +170,7 @@ public class ViewCourseActivity extends AppCompatActivity {
         BackButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                releaseExoPlayer(courseIntroductoryMaterialAdapter.exoPlayer);
                 finish();
             }
         });
