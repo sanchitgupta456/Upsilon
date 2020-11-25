@@ -9,6 +9,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Canvas;
 import android.graphics.ColorFilter;
 import android.graphics.drawable.ColorDrawable;
@@ -28,6 +29,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -40,6 +42,7 @@ import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
+import com.facebook.login.Login;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
@@ -80,6 +83,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private CallbackManager callbackManager;
     LoginButton fbloginButton;
     ProgressBar loadingProgressBar;
+    private CheckBox rememberMe;
+    public static final String PREFS_NAME = "MyPrefsFile";
+    private static String PREF_USERNAME = "username";
+    private static String PREF_PASSWORD = "password";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -98,8 +105,21 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         loadingProgressBar = findViewById(R.id.loading);
         final ImageView GoogleSignInImage = findViewById(R.id.googleSignIn);
         final ImageView FacebookSignInImage = findViewById(R.id.facebookSignIn);
+        rememberMe = (CheckBox) findViewById(R.id.checkRememberMe);
+
         findViewById(R.id.googleSignIn).setOnClickListener(this);
         findViewById(R.id.facebookSignIn).setOnClickListener(this);
+
+
+        SharedPreferences pref = getApplication().getSharedPreferences(PREFS_NAME,MODE_PRIVATE);
+        String username = pref.getString("user", null);
+        String password = pref.getString("pass", null);
+        if(username!=null && password!=null) {
+            usernameEditText.setText(username);
+            passwordEditText.setText(password);
+        }
+
+
         //Realm.init(this); // context, usually an Activity or Application
         App app = new App(new AppConfiguration.Builder(appID)
                 .build());
@@ -172,6 +192,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 }
                 else
                 {
+                    if(rememberMe.isChecked())
+                    {
+                        getApplication().getSharedPreferences(PREFS_NAME,MODE_PRIVATE)
+                                .edit()
+                                .putString("user", email)
+                                .putString("pass", password)
+                                .commit();
+
+                    }
                     Credentials emailPasswordCredentials = Credentials.emailPassword(email, password);
 
                     app.loginAsync(emailPasswordCredentials, new App.Callback<User>() {
