@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- This layout is pending improvements -->
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/gradient">
+    android:background="@drawable/background_light">
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -170,14 +171,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="40"
-                android:background="@drawable/text_view_add_course"
+                android:background="@drawable/text_view_login"
                 android:gravity="center_vertical"
                 android:inputType="datetime"
                 android:padding="10dp"
                 android:textColor="@color/colorBlack"
                 android:textSize="@dimen/text_margin"
                 android:textStyle="italic"
-                android:typeface="normal" />
+                android:typeface="normal"/>
         </LinearLayout>
         <Button
             android:id="@+id/btnScheduleClass"
@@ -218,7 +219,7 @@
             <EditText
                 android:inputType="textUri"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:padding="10dp"
                 android:textColor="@color/colorBlack"
                 android:textStyle="italic"
@@ -226,7 +227,7 @@
                 android:typeface="normal"
                 android:gravity="center_vertical"
                 android:layout_weight="40"
-                android:background="@drawable/text_view_add_course"/>
+                android:background="@drawable/text_view_login"/>
         </LinearLayout>
         <TextView
             android:id="@+id/textCourseResources"
@@ -250,7 +251,7 @@
             android:layout_below="@id/textCourseResources"
             android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
             android:padding="10dp"
-            android:background="@drawable/text_view_add_course"/>
+            android:background="@drawable/text_view_login"/>
         <Button
             android:id="@+id/btnUploadResources"
             android:layout_width="wrap_content"

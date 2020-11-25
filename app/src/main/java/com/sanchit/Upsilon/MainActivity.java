@@ -98,9 +98,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         //imageView = (ImageView) findViewById(R.id.profilePhotoTest);
         Toolbar toolbar = findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbar);
+ //        setSupportActionBar(toolbar);
         //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
+        getSupportActionBar().setTitle("Home");
+        getSupportActionBar().setIcon(R.drawable.icon_hamburger);
         drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
