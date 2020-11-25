@@ -19,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
@@ -36,6 +37,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import io.realm.mongodb.App;
@@ -50,6 +52,7 @@ import io.realm.mongodb.mongo.iterable.MongoCursor;
 public class UserDataSetupActivity2 extends AppCompatActivity {
 
     String appID = "upsilon-ityvn";
+    View actionBarView;
     Button nextButton;
     EditText Name;
     String name;
@@ -67,7 +70,12 @@ public class UserDataSetupActivity2 extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setup_2);
+        Objects.requireNonNull(this.getSupportActionBar()).setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        getSupportActionBar().setDisplayShowCustomEnabled(true);
+        getSupportActionBar().setCustomView(R.layout.action_bar_setup_2);
+        getSupportActionBar().setElevation(10);
 
+        actionBarView = getSupportActionBar().getCustomView(); //to be implemented
         requestWritePermission();
 
         nextButton = (Button) findViewById(R.id.selectLaterNext2);

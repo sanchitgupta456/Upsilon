@@ -25,6 +25,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -41,6 +42,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import io.realm.mongodb.App;
@@ -55,6 +57,7 @@ import io.realm.mongodb.mongo.iterable.MongoCursor;
 public class UserDataSetupActivity3 extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     String appID = "upsilon-ityvn";
+    View actionBarView;
     Button nextButton;
     CircleImageView locationbutton;
     EditText City, Pincode, PhoneNumber;
@@ -72,7 +75,12 @@ public class UserDataSetupActivity3 extends AppCompatActivity implements Adapter
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setup_3);
+        Objects.requireNonNull(this.getSupportActionBar()).setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        getSupportActionBar().setDisplayShowCustomEnabled(true);
+        getSupportActionBar().setCustomView(R.layout.action_bar_setup_3);
+        getSupportActionBar().setElevation(10);
 
+        actionBarView = getSupportActionBar().getCustomView(); //to be implemented
         nextButton = (Button) findViewById(R.id.selectLaterNext3);
         City = (EditText) findViewById(R.id.cityNameHolder);
         Pincode = (EditText) findViewById(R.id.pincodeHolder);

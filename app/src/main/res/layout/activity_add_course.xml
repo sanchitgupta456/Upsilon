@@ -37,9 +37,9 @@
             android:gravity="start">
             <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="160dp"
                 android:maxHeight="160dp"
-                android:src="@drawable/background_alter"
+                android:src="@drawable/background"
                 android:id="@+id/frameAddCourseCourseImage"
                 android:scaleType="centerCrop"
                 android:layout_marginStart="24dp"
@@ -47,9 +47,9 @@
 
                 <ImageView
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="160dp"
                     android:maxHeight="160dp"
-                    android:src="@drawable/background_alter"
+                    android:src="@drawable/background"
                     android:id="@+id/imgAddCourseImage"
                     android:scaleType="centerCrop"
                     tools:ignore="ContentDescription" />

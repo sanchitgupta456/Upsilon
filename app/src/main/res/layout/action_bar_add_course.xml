@@ -12,7 +12,7 @@
         android:layout_height="match_parent"
         android:src="@drawable/back_icon"
         android:backgroundTint="#0000"
-        android:layout_weight="90"
+        android:layout_weight="45"
         android:clickable="true"
         android:focusable="true"
         tools:ignore="ContentDescription"
@@ -27,4 +27,15 @@
         android:text="@string/add_course_details"
         android:gravity="center"
         android:layout_weight="10"/>
+    <ImageButton
+        android:id="@+id/imgBtnNextAddCourse"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/next"
+        android:backgroundTint="#0000"
+        android:layout_weight="45"
+        android:clickable="true"
+        android:focusable="true"
+        tools:ignore="ContentDescription"
+        android:tint="@color/colorWhite"/>
 </LinearLayout>

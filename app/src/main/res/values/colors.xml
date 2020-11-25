@@ -15,4 +15,6 @@
     <color name="colorYellow">#FFFF00</color>
     <color name="colorLiteGrey">#CCCCCC</color>
     <color name="colorGrey">#AAAAAA</color>
+    <color name="colorError">@color/colorRed</color>
+    <color name="transparent">#00000000</color>
 </resources>

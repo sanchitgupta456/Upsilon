@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.SearchView;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -19,6 +20,7 @@ import org.bson.Document;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Objects;
 
 import io.realm.mongodb.App;
 import io.realm.mongodb.AppConfiguration;
@@ -32,6 +34,7 @@ import io.realm.mongodb.mongo.iterable.MongoCursor;
 public class UserDataSetupActivity1 extends AppCompatActivity {
 
     String appID = "upsilon-ityvn";
+    View actionBarView;
     Button nextButton,addInterests;
     SearchView searchView;
     RecyclerView showInterests;
@@ -50,7 +53,12 @@ public class UserDataSetupActivity1 extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setup_1);
+        Objects.requireNonNull(this.getSupportActionBar()).setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        getSupportActionBar().setDisplayShowCustomEnabled(true);
+        getSupportActionBar().setCustomView(R.layout.action_bar_setup_1);
+        getSupportActionBar().setElevation(10);
 
+        actionBarView = getSupportActionBar().getCustomView(); //to be implemented
         nextButton = (Button) findViewById(R.id.selectLaterNext1);
         addInterests = (Button) findViewById(R.id.addInterest);
         searchView = (SearchView) findViewById(R.id.searchInterests);

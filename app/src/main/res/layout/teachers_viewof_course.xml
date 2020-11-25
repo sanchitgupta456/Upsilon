@@ -57,7 +57,7 @@
                 android:id="@+id/imgCourseImage"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
-                android:src="@drawable/background_alter"
+                android:src="@drawable/background"
                 android:scaleType="centerCrop"
                 tools:ignore="ContentDescription" />
             <TextView

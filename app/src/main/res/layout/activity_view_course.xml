@@ -37,7 +37,7 @@
                         android:layout_height="match_parent"
                         android:contentDescription="Course Representative Image"
                         android:scaleType="centerCrop"
-                        android:src="@drawable/background_alter" />
+                        android:src="@drawable/background" />
 
                     <TextView
                         android:id="@+id/textCourseCoverCard"

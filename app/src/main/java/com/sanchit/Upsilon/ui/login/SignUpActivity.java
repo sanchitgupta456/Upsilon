@@ -32,6 +32,8 @@ import com.google.android.gms.tasks.Task;
 import com.sanchit.Upsilon.MainActivity;
 import com.sanchit.Upsilon.R;
 
+import java.util.Objects;
+
 import io.realm.mongodb.App;
 import io.realm.mongodb.AppConfiguration;
 import io.realm.mongodb.Credentials;
@@ -53,7 +55,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.signup);
-
+        Objects.requireNonNull(this.getSupportActionBar()).hide();
         App app = new App(new AppConfiguration.Builder(appID)
                 .build());
 

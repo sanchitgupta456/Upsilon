@@ -3,10 +3,16 @@ package com.sanchit.Upsilon.ui.login;
 import android.app.Activity;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.content.Intent;
+import android.graphics.Canvas;
+import android.graphics.ColorFilter;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -29,6 +35,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.load.resource.drawable.DrawableResource;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -51,6 +58,7 @@ import com.sanchit.Upsilon.R;
 import org.bson.Document;
 
 import java.util.Arrays;
+import java.util.Objects;
 
 import io.realm.Realm;
 import io.realm.mongodb.App;
@@ -77,15 +85,17 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
+        Objects.requireNonNull(this.getSupportActionBar()).hide();
+        /*
+        getSupportActionBar().setTitle(R.string.login_title_text);
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getColor(R.color.colorPrimaryDark)));
+         */
         final EditText usernameEditText = findViewById(R.id.username);
         final EditText passwordEditText = findViewById(R.id.password);
         Button loginButton = findViewById(R.id.login);
         fbloginButton = findViewById(R.id.login_button);
         final Button signUpButton = (Button)findViewById(R.id.signUp);
         loadingProgressBar = findViewById(R.id.loading);
-        loadingProgressBar.setScaleX((float) 1.6);
-        loadingProgressBar.setScaleY((float) 1.6);
         final ImageView GoogleSignInImage = findViewById(R.id.googleSignIn);
         final ImageView FacebookSignInImage = findViewById(R.id.facebookSignIn);
         findViewById(R.id.googleSignIn).setOnClickListener(this);
