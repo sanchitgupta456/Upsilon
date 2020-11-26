@@ -3,12 +3,12 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background_texture">
+    android:background="@drawable/background_light">
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:layout_margin="@dimen/activity_horizontal_margin"
-        android:background="@drawable/background_texture"/>
+        android:background="@drawable/text_view_login"/>
 
 </RelativeLayout>

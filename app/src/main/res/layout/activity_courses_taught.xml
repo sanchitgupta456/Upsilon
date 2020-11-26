@@ -35,7 +35,7 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/frame_recycler_view"
+        android:background="@drawable/text_view_login"
         android:layout_below="@id/textCoursesTaught2"
         android:layout_margin="10dp"
         android:padding="1dp"
@@ -67,7 +67,7 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/frame_recycler_view"
+        android:background="@drawable/text_view_login"
         android:layout_below="@id/textCoursesTaught3"
         android:layout_margin="10dp"
         android:padding="1dp">

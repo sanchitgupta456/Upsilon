@@ -8,7 +8,7 @@
     tools:context=".MainActivity"
     android:id="@+id/drawer_layout"
     tools:openDrawer="left"
-    android:background="@drawable/background_texture">
+    android:background="@drawable/background_light">
 
     <ScrollView
         android:layout_width="match_parent"
