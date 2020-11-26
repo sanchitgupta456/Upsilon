@@ -110,4 +110,6 @@
     <string name="write_a_review">Write a review</string>
     <string name="prompt_fees">Enter fees you wish to charge</string>
     <string name="remember_me">Remember me</string>
+
+    <string name="enter_course_rating">Enter course rating (out of 5)</string>
 </resources>

@@ -12,7 +12,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <!-- Following Text View and Recycler Views should bn displayed upon click on Resources button -->
+            <!-- Following Text View and Recycler Views should bn displayed upon click on Notifications button -->
             <TextView
                 android:id="@+id/textNotifications"
                 android:layout_width="match_parent"
