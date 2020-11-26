@@ -102,6 +102,7 @@ public class AddCourseActivity extends AppCompatActivity implements AdapterView.
         mongoClient = user.getMongoClient("mongodb-atlas");
         mongoDatabase = mongoClient.getDatabase("Upsilon");
         MongoCollection<Document> mongoCollection  = mongoDatabase.getCollection("CourseData");
+        MongoCollection<Document> mongoCollection1  = mongoDatabase.getCollection("ForumData");
 
         CourseImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -207,6 +208,16 @@ public class AddCourseActivity extends AppCompatActivity implements AdapterView.
                             @Override
                             public void onSuccess(String requestId, Map resultData) {
 
+                                mongoCollection1.insertOne(new Document("courseId",result.get().getInsertedId())).getAsync(result2 -> {
+                                    if(result2.isSuccess())
+                                    {
+                                        Log.v("Course","Successfully Created Forum");
+                                    }
+                                    else
+                                    {
+                                        Log.v("Course",result2.getError().toString());
+                                    }
+                                });
 
                                 courseDetails.append("courseImage",resultData.get("url").toString());
                                 mongoCollection.updateOne(new Document("_id",result.get().getInsertedId()),courseDetails).getAsync(result1 -> {

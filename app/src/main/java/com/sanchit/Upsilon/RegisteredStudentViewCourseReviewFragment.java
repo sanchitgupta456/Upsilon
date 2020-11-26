@@ -58,8 +58,8 @@ public class RegisteredStudentViewCourseReviewFragment extends Fragment {
         View view = inflater.inflate(R.layout.activity_active_course_review,null);
         course = (Course) getArguments().get("Course");
         textView = view.findViewById(R.id.textReviewTitleText);
-        ratingBar = view.findViewById(R.id.courseRatings);
-        rating = view.findViewById(R.id.courseReviewRating);
+        ratingBar = view.findViewById(R.id.rateCourse);
+        //rating = view.findViewById(R.id.rateCourse);
         review = view.findViewById(R.id.courseReview);
         submitReview = view.findViewById(R.id.submitReview);
 
@@ -79,7 +79,9 @@ public class RegisteredStudentViewCourseReviewFragment extends Fragment {
                 LinkedHashMap courseReview1 = (LinkedHashMap) courseReview;
                 if(courseReview1.get("reviewAuthorId").equals(user.getId()))
                 {
-                    rating.setText(courseReview1.get("reviewRating").toString());
+                    //rating.setText(courseReview1.get("reviewRating").toString());
+                    //TODO
+                    rating.setText((int) Double.parseDouble(String.valueOf(4.5)));
                     review.setText(courseReview1.get("review").toString());
                     submitReview.setVisibility(View.INVISIBLE);
                     break;
@@ -103,7 +105,6 @@ public class RegisteredStudentViewCourseReviewFragment extends Fragment {
                 BsonDocument courseDoc = new BsonDocument();
                 gsonBuilder = new GsonBuilder();
                 gson = gsonBuilder.create();
-
                 String object = gson.toJson(course,Course.class);
 
                 courseDoc = BsonDocument.parse(object);

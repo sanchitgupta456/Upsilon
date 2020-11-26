@@ -20,4 +20,9 @@
         android:enabled="true"
         android:icon="@drawable/icon_review"
         android:title="@string/write_a_review"/>
+    <item
+        android:id="@+id/bottomNavMenuForum"
+        android:enabled="true"
+        android:icon="@drawable/icon_review"
+        android:title="@string/Forum"/>
 </menu>

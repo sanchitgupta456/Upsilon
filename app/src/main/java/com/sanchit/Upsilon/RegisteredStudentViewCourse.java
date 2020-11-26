@@ -87,6 +87,9 @@ public class RegisteredStudentViewCourse extends AppCompatActivity implements Bo
                 fragment = new RegisteredStudentViewCourseReviewFragment();
                 fragment.setArguments(bundle);
                 break;
+            case R.id.bottomNavMenuForum:
+                fragment = new RegisteredStudentViewCourseForumFragment();
+                fragment.setArguments(bundle);
         }
 
         return loadFragment(fragment);
