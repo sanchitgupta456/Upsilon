@@ -112,4 +112,6 @@
     <string name="remember_me">Remember me</string>
 
     <string name="enter_course_rating">Enter course rating (out of 5)</string>
+    <string name="submit_review">Submit Review</string>
+    <string name="free">Free</string>
 </resources>

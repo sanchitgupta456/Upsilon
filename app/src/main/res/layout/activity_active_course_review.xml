@@ -78,7 +78,7 @@
             android:paddingVertical="10dp"
             android:paddingHorizontal="20dp"
             android:textColor="@color/colorBlack"
-            android:text="Submit Review"
+            android:text="@string/submit_review"
             android:typeface="sans"
             android:textSize="@dimen/text_margin"
             android:gravity="center"
