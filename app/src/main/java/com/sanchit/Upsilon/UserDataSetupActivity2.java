@@ -13,6 +13,8 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -30,6 +32,7 @@ import com.cloudinary.android.callback.ErrorInfo;
 import com.cloudinary.android.callback.UploadCallback;
 import com.cloudinary.utils.ObjectUtils;
 import com.google.android.gms.common.internal.Constants;
+import com.sanchit.Upsilon.ui.login.SignUpActivity;
 
 import org.bson.Document;
 
@@ -62,7 +65,8 @@ public class UserDataSetupActivity2 extends AppCompatActivity {
     MongoClient mongoClient;
     MongoDatabase mongoDatabase;
     CircleImageView profilepic;
-    String picturePath;
+    String picturePath = null;
+    String defaultUrl = "https://res.cloudinary.com/upsilon175/image/upload/v1606421188/Upsilon/blankPP_phfegu.png";
     private static int RESULT_LOAD_IMAGE = 1;
     private static final int WRITE_PERMISSION = 0x01;
 
@@ -102,149 +106,199 @@ public class UserDataSetupActivity2 extends AppCompatActivity {
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mongoClient = user.getMongoClient("mongodb-atlas");
-                mongoDatabase = mongoClient.getDatabase("Upsilon");
-                MongoCollection<Document> mongoCollection  = mongoDatabase.getCollection("UserData");
-                Document queryFilter  = new Document("userid",user.getId());
-
-                RealmResultTask<MongoCursor<Document>> findTask = mongoCollection.find(queryFilter).iterator();
-
-                findTask.getAsync(task -> {
-                    if(task.isSuccess())
-                    {
-                        MongoCursor<Document> results = task.get();
-                        Document result=results.next();
-                        final int[] counter = {result.getInteger("profilePicCounter")};
-
-                        String requestId = MediaManager.get().upload(picturePath)
-                                .unsigned("preset1")
-                                .option("resource_type", "image")
-                                .option("folder", "Upsilon/".concat(user.getId()).concat("/"))
-                                .option("public_id", "profilePic"+ counter[0])
-                                .callback(new UploadCallback() {
-                                    @Override
-                                    public void onStart(String requestId) {
-                                    }
-
-                                    @Override
-                                    public void onProgress(String requestId, long bytes, long totalBytes) {
-
-                                    }
-
-                                    @Override
-                                    public void onSuccess(String requestId, Map resultData) {
-
-                                        Log.v("User",resultData.toString());
-                                        Log.v("User",requestId);
-                                        counter[0]++;
-                                        name = Name.getText().toString();
-
-                                        //Blank query to find every single course in db
-                                        //TODO: Modify query to look for user preferred course IDs
-                                        Document queryFilter  = new Document("userid",user.getId());
-
-                                        RealmResultTask<MongoCursor<Document>> findTask = mongoCollection.find(queryFilter).iterator();
-
-                                        findTask.getAsync(task -> {
-                                            if (task.isSuccess()) {
-                                                MongoCursor<Document> results = task.get();
-                                                if(!results.hasNext())
-                                                {
-                                                    mongoCollection.insertOne(
-                                                            new Document("userid", user.getId()).append("profilePicCounter",0).append("favoriteColor", "pink").append("profilePicUrl",resultData.get("url").toString()))
-                                                            .getAsync(result -> {
-                                                                if (result.isSuccess()) {
-                                                                    Log.v("EXAMPLE", "Inserted custom user data document. _id of inserted document: "
-                                                                            + result.get().getInsertedId());
-                                                                    Intent intent = new Intent(UserDataSetupActivity2.this,UserDataSetupActivity3.class);
-                                                                    startActivity(intent);
-                                                                } else {
-                                                                    Log.e("EXAMPLE", "Unable to insert custom user data. Error: " + result.getError());
-                                                                }
-                                                            });
-                                                }
-                                                else
-                                                {
-                                                    Document userdata = results.next();
-                                                    userdata.append("name",name);
-                                                    userdata.append("profilePicCounter", counter[0]);
-                                                    userdata.append("profilePicUrl",resultData.get("url").toString());
-
-                                                    mongoCollection.updateOne(
-                                                            new Document("userid", user.getId()),(userdata))
-                                                            .getAsync(result -> {
-                                                                if (result.isSuccess()) {
-                                                                    Log.v("EXAMPLE", "Inserted custom user data document. _id of inserted document: "
-                                                                            + result.get().getModifiedCount());
-                                                                    Intent intent = new Intent(UserDataSetupActivity2.this,UserDataSetupActivity3.class);
-                                                                    startActivity(intent);
-                                                                } else {
-                                                                    Log.e("EXAMPLE", "Unable to insert custom user data. Error: " + result.getError());
-                                                                }
-                                                            });
-                                                }
-                                                while (results.hasNext()) {
-                                                    //Log.v("EXAMPLE", results.next().toString());
-                                                    Document currentDoc = results.next();
-                                                    Log.v("User",currentDoc.getString("userid"));
-                                                }
-                                            } else {
-                                                Log.v("User","Failed to complete search");
-                                            }
-                                        });
-                                    }
-
-                                    @Override
-                                    public void onError(String requestId, ErrorInfo error) {
-
-                                    }
-
-                                    @Override
-                                    public void onReschedule(String requestId, ErrorInfo error) {
-
-                                    }
-                                })
-                                .dispatch();
-                    }
-                    else
-                    {
-
-                    }
-                });
-
-                if(flag==1)
-                {
-                    /*String fileExtension = picturePath.substring(picturePath.lastIndexOf('.'));
-                    String serverPath = "Upsilon/".concat(user.getId()).concat("/profPic").concat(fileExtension);
-                    String url = MediaManager.get().url().generate(serverPath);
-                    Log.v("CLOUDINARY", url);*/
+                String name = Name.getText().toString();
+                if (name.length() == 0){
+                    Animation shake = AnimationUtils.loadAnimation(UserDataSetupActivity2.this, R.anim.shake);
+                    Name.startAnimation(shake);
+                    Name.setText("");
+                    Name.setError("Please Enter a Name!");
+                    Name.requestFocus();
+                    return;
                 }
-                //Intent intent = new Intent(UserDataSetupActivity2.this,UserDataSetupActivity3.class);
-                //startActivity(intent);
+                if (picturePath == null) {
+                    uploadDefault();
+                } else {
+                    uploadGiven();
+                }
+
+                TextWatcher textWatcher = new TextWatcher() {
+
+                    public void afterTextChanged(Editable s) {
+                        nextButton.setText("Next");
+                        flag = 1;
+                    }
+
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                        nextButton.setText("Select Later");
+                    }
+
+                    public void onTextChanged(CharSequence s, int start, int before,
+                                              int count) {
+                        nextButton.setText("Next");
+                        flag = 1;
+                    }
+                };
+
+                Name.addTextChangedListener(textWatcher);
             }
         });
+    }
 
-        TextWatcher textWatcher = new TextWatcher() {
+    void uploadGiven(){
+        app = new App(new AppConfiguration.Builder(appID)
+                .build());
+        User user = app.currentUser();
+        mongoClient = user.getMongoClient("mongodb-atlas");
+        mongoDatabase = mongoClient.getDatabase("Upsilon");
+        MongoCollection<Document> mongoCollection  = mongoDatabase.getCollection("UserData");
+        Document queryFilter  = new Document("userid",user.getId());
 
-            public void afterTextChanged(Editable s) {
-                nextButton.setText("Next");
-                flag=1;
+        RealmResultTask<MongoCursor<Document>> findTask = mongoCollection.find(queryFilter).iterator();
+
+        findTask.getAsync(task -> {
+            if(task.isSuccess()) {
+                MongoCursor<Document> results = task.get();
+                Document result = results.next();
+                final int[] counter = {result.getInteger("profilePicCounter")};
+                String requestId = MediaManager.get().upload(picturePath)
+                        .unsigned("preset1")
+                        .option("resource_type", "image")
+                        .option("folder", "Upsilon/".concat(user.getId()).concat("/"))
+                        .option("public_id", "profilePic" + counter[0])
+                        .callback(new UploadCallback() {
+                            @Override
+                            public void onStart(String requestId) {
+                            }
+
+                            @Override
+                            public void onProgress(String requestId, long bytes, long totalBytes) {
+
+                            }
+
+                            @Override
+                            public void onSuccess(String requestId, Map resultData) {
+
+                                Log.v("User", resultData.toString());
+                                Log.v("User", requestId);
+                                counter[0]++;
+                                name = Name.getText().toString();
+
+                                //Blank query to find every single course in db
+                                //TODO: Modify query to look for user preferred course IDs
+                                Document queryFilter = new Document("userid", user.getId());
+
+                                RealmResultTask<MongoCursor<Document>> findTask = mongoCollection.find(queryFilter).iterator();
+
+                                findTask.getAsync(task -> {
+                                    if (task.isSuccess()) {
+                                        MongoCursor<Document> results = task.get();
+                                        if (!results.hasNext()) {
+                                            mongoCollection.insertOne(
+                                                    new Document("userid", user.getId()).append("profilePicCounter", 0).append("favoriteColor", "pink").append("profilePicUrl", resultData.get("url").toString()))
+                                                    .getAsync(result -> {
+                                                        if (result.isSuccess()) {
+                                                            Log.v("EXAMPLE", "Inserted custom user data document. _id of inserted document: "
+                                                                    + result.get().getInsertedId());
+                                                            Intent intent = new Intent(UserDataSetupActivity2.this, UserDataSetupActivity3.class);
+                                                            startActivity(intent);
+                                                        } else {
+                                                            Log.e("EXAMPLE", "Unable to insert custom user data. Error: " + result.getError());
+                                                        }
+                                                    });
+                                        } else {
+                                            Document userdata = results.next();
+                                            userdata.append("name", name);
+                                            userdata.append("profilePicCounter", counter[0]);
+                                            userdata.append("profilePicUrl", resultData.get("url").toString());
+
+                                            mongoCollection.updateOne(
+                                                    new Document("userid", user.getId()), (userdata))
+                                                    .getAsync(result -> {
+                                                        if (result.isSuccess()) {
+                                                            Log.v("EXAMPLE", "Inserted custom user data document. _id of inserted document: "
+                                                                    + result.get().getModifiedCount());
+                                                            Intent intent = new Intent(UserDataSetupActivity2.this, UserDataSetupActivity3.class);
+                                                            startActivity(intent);
+                                                        } else {
+                                                            Log.e("EXAMPLE", "Unable to insert custom user data. Error: " + result.getError());
+                                                        }
+                                                    });
+                                        }
+                                        while (results.hasNext()) {
+                                            //Log.v("EXAMPLE", results.next().toString());
+                                            Document currentDoc = results.next();
+                                            Log.v("User", currentDoc.getString("userid"));
+                                        }
+                                    } else {
+                                        Log.v("User", "Failed to complete search");
+                                    }
+                                });
+                            }
+
+                            @Override
+                            public void onError(String requestId, ErrorInfo error) {
+
+                            }
+
+                            @Override
+                            public void onReschedule(String requestId, ErrorInfo error) {
+
+                            }
+                        })
+                        .dispatch();
             }
+        });
+    }
 
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                nextButton.setText("Select Later");
+    void uploadDefault(){
+        app = new App(new AppConfiguration.Builder(appID)
+                .build());
+        User user = app.currentUser();
+        mongoClient = user.getMongoClient("mongodb-atlas");
+        mongoDatabase = mongoClient.getDatabase("Upsilon");
+        MongoCollection<Document> mongoCollection  = mongoDatabase.getCollection("UserData");
+        Document queryFilter  = new Document("userid",user.getId());
+
+        RealmResultTask<MongoCursor<Document>> findTask = mongoCollection.find(queryFilter).iterator();
+
+        findTask.getAsync(task -> {
+            if(task.isSuccess()) {
+                MongoCursor<Document> results = task.get();
+
+                if (!results.hasNext()) {
+                    mongoCollection.insertOne(
+                            new Document("userid", user.getId()).append("profilePicCounter", 0).append("favoriteColor", "pink").append("profilePicUrl", defaultUrl))
+                            .getAsync(result -> {
+                                if (result.isSuccess()) {
+                                    Log.v("EXAMPLE", "Inserted custom user data document. _id of inserted document: "
+                                            + result.get().getInsertedId());
+                                    Intent intent = new Intent(UserDataSetupActivity2.this, UserDataSetupActivity3.class);
+                                    startActivity(intent);
+                                } else {
+                                    Log.e("EXAMPLE", "Unable to insert custom user data. Error: " + result.getError());
+                                }
+                            });
+                } else {
+                    Document userdata = results.next();
+                    userdata.append("name", name);
+                    userdata.append("profilePicCounter", 0);
+                    userdata.append("profilePicUrl", defaultUrl);
+
+                    mongoCollection.updateOne(
+                            new Document("userid", user.getId()), (userdata))
+                            .getAsync(result -> {
+                                if (result.isSuccess()) {
+                                    Log.v("EXAMPLE", "Inserted custom user data document. _id of inserted document: "
+                                            + result.get().getModifiedCount());
+                                    Intent intent = new Intent(UserDataSetupActivity2.this, UserDataSetupActivity3.class);
+                                    startActivity(intent);
+                                } else {
+                                    Log.e("EXAMPLE", "Unable to insert custom user data. Error: " + result.getError());
+                                }
+                            });
+                }
             }
-
-            public void onTextChanged(CharSequence s, int start, int before,
-                                      int count) {
-            nextButton.setText("Next");
-            flag=1;
-            }
-        };
-
-        Name.addTextChangedListener(textWatcher);
-
-
+        });
     }
 
     // To handle when an image is selected from the browser, add the following to your Activity
