@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:weightSum="100"
+    android:background="@drawable/text_view_add_course"
+    android:padding="10dp">
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/icon_doc"
+        android:tint="@color/colorWhite"
+        android:layout_weight="90"
+        tools:ignore="ContentDescription"
+        android:layout_gravity="center"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/text_margin"
+        android:textColor="@color/colorWhite"
+        android:textStyle="italic"
+        android:typeface="monospace"
+        android:layout_weight="10"
+        android:padding="10dp"
+        android:text="Video recording FUN101 class 6"
+        android:layout_gravity="center"
+        android:gravity="center_vertical"/>
+</LinearLayout>
