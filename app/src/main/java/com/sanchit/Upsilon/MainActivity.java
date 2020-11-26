@@ -312,7 +312,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         Log.v("COURSEHandler", "successfully found all courses:");
                         Document document = results.next();
                         String url = document.getString("profilePicUrl");
-                        Toast.makeText(MainActivity.this,url,Toast.LENGTH_LONG).show();
+                        //Toast.makeText(MainActivity.this,url,Toast.LENGTH_LONG).show();
                         //Log.v("User","Hi"+ url);
                         //Picasso.with(getApplicationContext()).load(url).into(imageView);
                     } else {

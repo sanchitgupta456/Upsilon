@@ -229,7 +229,7 @@ public class ViewCourseActivity extends AppCompatActivity {
 
         courseReviewAdapter = new CourseReviewAdapter(courseReviewsArrayList);
 
-        reviewsRecyclerView.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false));
+        reviewsRecyclerView.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false));
         reviewsRecyclerView.setItemAnimator(new DefaultItemAnimator());
         reviewsRecyclerView.setAdapter(courseReviewAdapter);
         courseReviewAdapter = new CourseReviewAdapter(courseReviewsArrayList);

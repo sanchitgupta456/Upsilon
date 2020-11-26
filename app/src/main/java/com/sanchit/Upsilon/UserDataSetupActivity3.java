@@ -159,7 +159,7 @@ public class UserDataSetupActivity3 extends AppCompatActivity implements Adapter
                                     });
                         } else {
                             Document userdata = results.next();
-                            userdata.append("city", city).append("pincode", pincode).append("phonenumber", phonenumber);
+                            userdata.append("city", city).append("pincode", pincode).append("phonenumber", phonenumber).append("college",College);
 
                             mongoCollection.updateOne(
                                     new Document("userid", user.getId()), (userdata))

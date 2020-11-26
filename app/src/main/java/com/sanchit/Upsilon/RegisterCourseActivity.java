@@ -100,7 +100,12 @@ public class RegisterCourseActivity extends AppCompatActivity implements Payment
         proceedToPay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               startPayment(course.getCourseFees()*100);
+
+                if (course.getCourseFees() == 0) {
+                    RegisterStudent();
+                } else {
+                    startPayment(course.getCourseFees() * 100);
+                }
             }
         });
 
@@ -108,7 +113,6 @@ public class RegisterCourseActivity extends AppCompatActivity implements Payment
 
     public void RegisterStudent()
     {
-
         mongoClient = user.getMongoClient("mongodb-atlas");
         mongoDatabase = mongoClient.getDatabase("Upsilon");
         MongoCollection<Document> mongoCollection  = mongoDatabase.getCollection("UserData");
