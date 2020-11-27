@@ -33,9 +33,9 @@
             android:text="@string/username"
             android:typeface="sans"
             android:textStyle="bold"
-            android:textSize="@dimen/text_margin"
+            android:textSize="12sp"
             android:textColor="@color/colorPrimary"
-            android:lineSpacingExtra="2dp"/>
+            android:lineSpacingExtra="1dp"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -45,7 +45,7 @@
             android:text="receivers messages here"
             android:textSize="14sp"
             android:textColor="@color/colorBlack"
-            android:lineSpacingExtra="2dp"/>
+            android:lineSpacingExtra="1dp"/>
     </RelativeLayout>
 
     <ImageView
@@ -109,7 +109,7 @@
             android:text="senders messages here"
             android:textSize="14sp"
             android:textColor="@color/colorBlack"
-            android:lineSpacingExtra="2dp"/>
+            android:lineSpacingExtra="1dp"/>
     </RelativeLayout>
 
 
