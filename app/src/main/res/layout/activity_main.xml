@@ -43,7 +43,7 @@
                     android:textStyle="bold"
                     android:paddingVertical="5dp"
                     android:paddingHorizontal="10dp"
-                    android:typeface="monospace" />
+                    android:typeface="serif" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/currentCourseListView"
@@ -65,7 +65,7 @@
                     android:textStyle="bold"
                     android:paddingVertical="5dp"
                     android:paddingHorizontal="10dp"
-                    android:typeface="monospace"
+                    android:typeface="serif"
                     android:layout_below="@id/currentCourseListView"
                     android:layout_marginTop="48dp"/>
                 <androidx.recyclerview.widget.RecyclerView
@@ -87,7 +87,7 @@
                     android:textStyle="bold"
                     android:paddingVertical="5dp"
                     android:paddingHorizontal="10dp"
-                    android:typeface="monospace"
+                    android:typeface="serif"
                     android:layout_marginTop="24dp"
                     android:layout_below="@id/recommendedCourseListView"
                     android:clickable="true"

@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.cardview.widget.CardView;
@@ -63,7 +64,13 @@ public class CoursesAdapter1 extends RecyclerView.Adapter<CoursesAdapter1.ViewHo
         //Picasso.with(context).load(course.getCourseImage()).fit().centerCrop().into(holder.imgTvShow);
         Glide.with(context).load(course.getCourseImage()).into(holder.imgTvShow);
         //holder.imgTvShow.setImageResource(course.getCardImgID());
-        holder.cv.setOnClickListener(new View.OnClickListener() {
+
+        //holder.textTutorTvShow.setText(course.getTutorId());
+        holder.textModeTvShow.setText(course.getCourseMode());
+        //holder.textFeeTvShow.setText(course.getCourseFees());
+        holder.textRatingTvShow.setText(String.format("%s/5", course.getCourseRating()));
+
+        holder.rl.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //Toast.makeText(context,"The position is:"+position,Toast.LENGTH_SHORT).show();
@@ -144,13 +151,23 @@ public class CoursesAdapter1 extends RecyclerView.Adapter<CoursesAdapter1.ViewHo
         ImageView imgTvShow;
         TextView textTvShow;
         CardView cv;
+        TextView textTutorTvShow;
+        TextView textModeTvShow;
+        TextView textFeeTvShow;
+        TextView textRatingTvShow;
+        RelativeLayout rl;
 
         public ViewHolder(View itemView)
         {
             super(itemView);
             imgTvShow = (ImageView)itemView.findViewById(R.id.courseImage);
             textTvShow = (TextView)itemView.findViewById(R.id.courseName);
+            textTutorTvShow = (TextView)itemView.findViewById(R.id.courseInstructor);
+            textModeTvShow = (TextView)itemView.findViewById(R.id.courseMode);
+            textFeeTvShow = (TextView)itemView.findViewById(R.id.courseFee);
+            textRatingTvShow = (TextView)itemView.findViewById(R.id.courseRating);
             cv = (CardView)itemView.findViewById(R.id.courseCard);
+            rl = (RelativeLayout)itemView.findViewById(R.id.rlCourseFullCard);
         }
     }
 }
