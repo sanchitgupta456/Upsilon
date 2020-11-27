@@ -128,7 +128,7 @@ public class RegisteredStudentViewCourseForumFragment extends Fragment {
         String messageText = MessageInputText.getText().toString();
         if(TextUtils.isEmpty(messageText))
         {
-            Toast.makeText(getActivity(),"First write your message ..",Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(),"Enter your message",Toast.LENGTH_SHORT).show();
         }
         else
         {

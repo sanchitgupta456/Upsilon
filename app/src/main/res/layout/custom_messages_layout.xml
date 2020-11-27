@@ -9,6 +9,7 @@
         android:layout_height="45dp"
         android:src="@drawable/profile_image"
         android:layout_marginTop="10dp"
+        android:layout_marginStart="5dp"
         android:id="@+id/message_profile_image"
         />
 
@@ -17,16 +18,19 @@
         android:layout_height="wrap_content"
         android:id="@+id/receiver_message_text"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="10dp"
         android:layout_toEndOf="@+id/message_profile_image"
-        android:layout_toRightOf="@+id/message_profile_image"
         android:background="@drawable/receiver_message_layout"
         android:text="receiver messages here"
-        android:padding="10dp"
+        android:typeface="monospace"
         android:textSize="14sp"
-        android:textStyle="bold"
-        android:textColor="@android:color/black"
-        />
+        android:textColor="@color/colorBlack"
+        android:lineSpacingExtra="2dp"
+        android:paddingLeft="10dp"
+        android:paddingTop="10dp"
+        android:paddingRight="20dp"
+        android:paddingBottom="10dp"/>
 
     <ImageView
         android:id="@+id/message_sender_image_view"
@@ -34,34 +38,37 @@
         android:layout_height="150dp"
         android:layout_alignParentEnd="true"
         android:layout_marginTop="13dp"
-        android:layout_alignParentRight="true"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"
         android:scaleType="centerCrop"
-        android:layout_margin="5dp"/>
+        android:layout_marginBottom="5dp"/>
 
     <ImageView
         android:id="@+id/message_receiver_image_view"
         android:layout_width="150dp"
         android:layout_height="150dp"
-        android:layout_marginStart="100dp"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
         android:layout_marginTop="13dp"
         android:scaleType="centerCrop"
-        android:layout_margin="5dp"
-        android:layout_marginLeft="50dp" />
+        android:layout_marginBottom="5dp" />
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:id="@+id/sender_messages_text"
         android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginTop="10dp"
-        android:layout_alignParentTop="@+id/receiver_message_text"
-        android:background="@drawable/sender_messages_layout"
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/sender_message_layout_forum"
         android:text="sender messages"
-        android:padding="10dp"
+        android:typeface="monospace"
         android:textSize="14sp"
-        android:textStyle="bold"
-        android:textColor="@android:color/black"/>
+        android:textColor="@color/colorBlack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:lineSpacingExtra="2dp"
+        android:paddingLeft="10dp"
+        android:paddingTop="10dp"
+        android:paddingRight="20dp"
+        android:paddingBottom="10dp"/>
 
 
 
