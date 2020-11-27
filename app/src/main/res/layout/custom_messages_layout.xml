@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
+    <!--
     <de.hdodenhof.circleimageview.CircleImageView
         android:layout_width="45dp"
         android:layout_height="45dp"
@@ -11,26 +12,41 @@
         android:layout_marginTop="10dp"
         android:layout_marginStart="5dp"
         android:id="@+id/message_profile_image"
-        />
-
-    <TextView
+        /> -->
+    <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/receiver_message_text"
+        android:id="@+id/receiver_message"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="10dp"
-        android:layout_toEndOf="@+id/message_profile_image"
-        android:background="@drawable/receiver_message_layout"
-        android:text="receiver messages here"
-        android:typeface="monospace"
-        android:textSize="14sp"
-        android:textColor="@color/colorBlack"
-        android:lineSpacingExtra="2dp"
-        android:paddingLeft="10dp"
-        android:paddingTop="10dp"
-        android:paddingRight="20dp"
-        android:paddingBottom="10dp"/>
+        android:layout_marginTop="3dp"
+        android:layout_marginHorizontal="10dp"
+        android:background="@drawable/receiver_message_layout_forum"
+        android:paddingStart="20dp"
+        android:paddingTop="5dp"
+        android:paddingEnd="10dp"
+        android:paddingBottom="5dp"
+        tools:ignore="RelativeOverlap">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/usernameSender"
+            android:text="@string/username"
+            android:typeface="sans"
+            android:textStyle="bold"
+            android:textSize="12sp"
+            android:textColor="@color/colorPrimary"
+            android:lineSpacingExtra="1dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/usernameSender"
+            android:id="@+id/receiver_message_text"
+            android:typeface="monospace"
+            android:text="receivers messages here"
+            android:textSize="14sp"
+            android:textColor="@color/colorBlack"
+            android:lineSpacingExtra="1dp"/>
+    </RelativeLayout>
 
     <ImageView
         android:id="@+id/message_sender_image_view"
@@ -40,7 +56,8 @@
         android:layout_marginTop="13dp"
         android:layout_marginEnd="@dimen/activity_horizontal_margin"
         android:scaleType="centerCrop"
-        android:layout_marginBottom="5dp"/>
+        android:layout_marginBottom="5dp"
+        tools:ignore="ContentDescription" />
 
     <ImageView
         android:id="@+id/message_receiver_image_view"
@@ -49,27 +66,51 @@
         android:layout_marginStart="@dimen/activity_horizontal_margin"
         android:layout_marginTop="13dp"
         android:scaleType="centerCrop"
-        android:layout_marginBottom="5dp" />
-
+        android:layout_marginBottom="5dp"
+        tools:ignore="ContentDescription" />
+    <!--
     <TextView
         android:id="@+id/sender_messages_text"
-        android:layout_alignParentEnd="true"
         android:layout_marginHorizontal="10dp"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="3dp"
         android:layout_alignParentTop="true"
         android:background="@drawable/sender_message_layout_forum"
-        android:text="sender messages"
         android:typeface="monospace"
         android:textSize="14sp"
+        android:text="senders messages here"
         android:textColor="@color/colorBlack"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:lineSpacingExtra="2dp"
-        android:paddingLeft="10dp"
-        android:paddingTop="10dp"
-        android:paddingRight="30dp"
-        android:paddingBottom="10dp"/>
-
+        android:paddingStart="10dp"
+        android:paddingTop="5dp"
+        android:paddingEnd="40dp"
+        android:paddingBottom="5dp"
+        tools:ignore="RelativeOverlap" /> -->
+    <RelativeLayout
+        android:layout_alignParentEnd="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/sender_message"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="3dp"
+        android:layout_marginHorizontal="10dp"
+        android:background="@drawable/sender_message_layout_forum"
+        android:paddingStart="10dp"
+        android:paddingTop="5dp"
+        android:paddingEnd="20dp"
+        android:paddingBottom="5dp"
+        tools:ignore="RelativeOverlap">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/sender_messages_text"
+            android:typeface="monospace"
+            android:text="senders messages here"
+            android:textSize="14sp"
+            android:textColor="@color/colorBlack"
+            android:lineSpacingExtra="1dp"/>
+    </RelativeLayout>
 
 
 

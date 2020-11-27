@@ -10,29 +10,42 @@
     tools:openDrawer="left"
     android:background="@drawable/background_light">
 
-    <ScrollView
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scrollbars="vertical">
-        <RelativeLayout
-            android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ProgressBar
+            android:id="@+id/loadingMain"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="6dp"
+            android:visibility="gone"
+            android:layout_centerHorizontal="true"
+            android:indeterminateTint="@color/colorPrimary"/>
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/loadingMain"
             android:scrollbars="vertical">
-            <TextView
-                android:id="@+id/textYourCurrentCourses"
-                android:layout_width="wrap_content"
+            <RelativeLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:gravity="center_vertical"
-                android:text="@string/resume_learning"
-                android:textColor="@color/colorPrimaryDark"
-                android:textSize="@dimen/text_margin"
-                android:textStyle="bold"
-                android:paddingVertical="5dp"
-                android:paddingHorizontal="10dp"
-                android:typeface="monospace" />
+                android:scrollbars="vertical">
+                <TextView
+                    android:id="@+id/textYourCurrentCourses"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:gravity="center_vertical"
+                    android:text="@string/resume_learning"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="@dimen/text_margin"
+                    android:textStyle="bold"
+                    android:paddingVertical="5dp"
+                    android:paddingHorizontal="10dp"
+                    android:typeface="monospace" />
 
-            <androidx.recyclerview.widget.RecyclerView
+                <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/currentCourseListView"
                     android:scrollbars="horizontal"
                     android:layout_width="wrap_content"
@@ -90,14 +103,16 @@
                     android:scrollbars="horizontal"
                     android:layout_below="@id/textExploreCoursesList"
                     android:layout_margin="5dp"/>
-            <!--<ImageView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:id="@+id/profilePhotoTest"/>-->
+                <!--<ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:id="@+id/profilePhotoTest"/>-->
 
-        </RelativeLayout>
-    </ScrollView>
+            </RelativeLayout>
+        </ScrollView>
+    </RelativeLayout>
+
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/nav_view"
         android:layout_width="wrap_content"

@@ -17,9 +17,20 @@
         android:layout_marginBottom="@dimen/activity_vertical_margin"
         android:id="@+id/textCoursesTaught1" /> -->
 
+    <ProgressBar
+        android:id="@+id/loadingCoursesTaught"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="6dp"
+        android:visibility="gone"
+        android:layout_centerHorizontal="true"
+        android:indeterminateTint="@color/colorPrimary"/>
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@id/loadingCoursesTaught"
         android:textSize="20sp"
         android:textColor="@color/colorPrimaryDark"
         android:textStyle="bold"

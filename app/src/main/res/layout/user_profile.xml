@@ -3,17 +3,24 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/background">
-
-
+    <ProgressBar
+        android:id="@+id/loadingUserProfile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="12dp"
+        android:visibility="gone"
+        android:layout_centerHorizontal="true"
+        android:indeterminateTint="@color/colorYellow"/>
     <de.hdodenhof.circleimageview.CircleImageView
         android:layout_width="160dp"
         android:layout_height="160dp"
         android:src="@drawable/default_person_image"
         android:layout_centerHorizontal="true"
         android:layout_margin="@dimen/activity_horizontal_margin"
-        android:id="@+id/imgProfileImage"/>
+        android:id="@+id/imgProfileImage"
+        android:layout_below="@id/loadingUserProfile"/>
 
     <!--<view
         android:layout_width="match_parent"
