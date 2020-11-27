@@ -180,26 +180,11 @@
                 android:textStyle="italic"
                 android:typeface="normal"/>
         </LinearLayout>
-        <Button
-            android:id="@+id/btnScheduleClass"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/linearLayoutNextLecture"
-            android:layout_margin="10dp"
-            android:background="@drawable/btn_rounded_rect"
-            android:textColor="@color/colorBlack"
-            android:textSize="@dimen/text_margin"
-            android:text="Schedule Class"
-            android:paddingStart="20dp"
-            android:paddingEnd="20dp"
-            android:paddingBottom="10dp"
-            android:paddingTop="10dp"
-            android:layout_centerHorizontal="true"/>
         <LinearLayout
             android:id="@+id/linearLayoutMeetLink"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/btnScheduleClass"
+            android:layout_below="@id/linearLayoutNextLecture"
             android:layout_marginTop="10dp"
             android:layout_marginStart="@dimen/activity_horizontal_margin"
             android:layout_marginEnd="@dimen/activity_horizontal_margin"
@@ -229,9 +214,24 @@
                 android:layout_weight="40"
                 android:background="@drawable/text_view_login"/>
         </LinearLayout>
+        <Button
+            android:id="@+id/btnUpdateClassInformation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/linearLayoutMeetLink"
+            android:layout_margin="10dp"
+            android:background="@drawable/btn_blue"
+            android:textColor="@color/colorBlack"
+            android:textSize="@dimen/text_margin"
+            android:text="Update Class Information"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:layout_centerHorizontal="true"/>
         <TextView
             android:id="@+id/textCourseResources"
-            android:layout_below="@id/linearLayoutMeetLink"
+            android:layout_below="@id/btnUpdateClassInformation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="10dp"
@@ -258,7 +258,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/listCourseMaterial"
             android:layout_margin="10dp"
-            android:background="@drawable/btn_rounded_rect"
+            android:background="@drawable/btn_blue"
             android:textColor="@color/colorBlack"
             android:textSize="@dimen/text_margin"
             android:text="@string/upload_resources"
