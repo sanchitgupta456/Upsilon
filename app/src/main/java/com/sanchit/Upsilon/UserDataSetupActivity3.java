@@ -16,6 +16,8 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -35,6 +37,7 @@ import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.sanchit.Upsilon.ui.login.SignUpActivity;
 
 import org.bson.Document;
 
@@ -88,7 +91,8 @@ public class UserDataSetupActivity3 extends AppCompatActivity implements Adapter
         locationbutton = (CircleImageView) findViewById(R.id.user_data_setup_google_location);
         selectYourCollege = (Spinner) findViewById(R.id.spinnerUserCollege);
 
-        String[] Colleges = {"IIT Madras"};
+        String[] Colleges = {"None", "IIT Madras"};
+        College = "None";
 
         ArrayAdapter adapter = new ArrayAdapter(getApplicationContext(), android.R.layout.simple_expandable_list_item_1,Colleges);
         selectYourCollege.setAdapter(adapter);
@@ -141,6 +145,22 @@ public class UserDataSetupActivity3 extends AppCompatActivity implements Adapter
                 city = City.getText().toString();
                 pincode = Pincode.getText().toString();
                 phonenumber = PhoneNumber.getText().toString();
+
+                if (city.length() == 0){
+                    city = "world";
+                }
+
+                if (pincode.length() == 0){
+                    pincode = "-1";
+                }
+
+                if (College == "None"){
+                    selectYourCollege.requestFocus();
+                    Toast toast = Toast.makeText(getApplicationContext(), "Please select a campus!", Toast.LENGTH_SHORT);
+                    toast.show();
+                    return;
+                }
+
                 RealmResultTask<MongoCursor<Document>> findTask = mongoCollection.find(queryFilter).iterator();
 
                 findTask.getAsync(task -> {
