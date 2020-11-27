@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -48,7 +49,8 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
     public class MessageViewHolder extends RecyclerView.ViewHolder
     {
         public TextView senderMessageText,receievrMessageText;
-        public CircleImageView receiverProfileImage;
+        public TextView receiverProfileName;
+        public RelativeLayout relativeLayoutReceiverMessage,relativeLayoutSenderMessage;
         public ImageView messageSenderPicture,messageReceiverPicture;
 
         public MessageViewHolder(@NonNull View itemView) {
@@ -56,10 +58,11 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
 
             senderMessageText = (TextView) itemView.findViewById(R.id.sender_messages_text);
             receievrMessageText = (TextView) itemView.findViewById(R.id.receiver_message_text);
-            receiverProfileImage = (CircleImageView) itemView.findViewById(R.id.message_profile_image);
+            receiverProfileName = (TextView) itemView.findViewById(R.id.usernameSender);
+            relativeLayoutReceiverMessage = (RelativeLayout) itemView.findViewById(R.id.receiver_message);
+            relativeLayoutSenderMessage = (RelativeLayout) itemView.findViewById(R.id.sender_message);
             messageReceiverPicture = (ImageView) itemView.findViewById(R.id.message_receiver_image_view);
             messageSenderPicture = (ImageView) itemView.findViewById(R.id.message_sender_image_view);
-
         }
     }
 
@@ -108,7 +111,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
                     //Log.v("EXAMPLE", results.next().toString());
                     Document currentDoc = results.next();
                     receiverImage = currentDoc.getString("profilePicUrl");
-                    Picasso.with(holder.itemView.getContext()).load(receiverImage).placeholder(R.drawable.profile_image).into(holder.receiverProfileImage);
+                    //Picasso.with(holder.itemView.getContext()).load(receiverImage).placeholder(R.drawable.profile_image).into(holder.receiverProfileImage);
                     Log.v("User",currentDoc.getString("userid"));
                 }
             } else {
@@ -138,7 +141,9 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
         });*/
 
         holder.receievrMessageText.setVisibility(View.GONE);
-        holder.receiverProfileImage.setVisibility(View.GONE);
+        holder.receiverProfileName.setVisibility(View.GONE);
+        holder.relativeLayoutReceiverMessage.setVisibility(View.GONE);
+        holder.relativeLayoutSenderMessage.setVisibility(View.GONE);
         holder.senderMessageText.setVisibility(View.GONE);
         holder.messageReceiverPicture.setVisibility(View.GONE);
         holder.messageSenderPicture.setVisibility(View.GONE);
@@ -151,18 +156,17 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
             if(fromUserId.equals(messageSenderId))
             {
                 holder.senderMessageText.setVisibility(View.VISIBLE);
+                holder.relativeLayoutSenderMessage.setVisibility(View.VISIBLE);
                 holder.senderMessageText.setBackgroundResource(R.drawable.sender_message_layout_forum);
                 holder.senderMessageText.setTextColor(Color.BLACK);
-                holder.senderMessageText.setPadding(20,5,40,10);
                 holder.senderMessageText.setText(messages.getMessage());
             }
             else
             {
                 holder.receievrMessageText.setVisibility(View.VISIBLE);
-                holder.receiverProfileImage.setVisibility(View.VISIBLE);
-                holder.receievrMessageText.setBackgroundResource(R.drawable.receiver_message_layout);
+                holder.receiverProfileName.setVisibility(View.VISIBLE);
+                holder.relativeLayoutReceiverMessage.setVisibility(View.VISIBLE);
                 holder.receievrMessageText.setTextColor(Color.BLACK);
-                holder.senderMessageText.setPadding(20,5,20,10);
                 holder.receievrMessageText.setText(messages.getMessage());
             }
         }
@@ -171,6 +175,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
             if(fromUserId.equals(messageSenderId))
             {
                 holder.messageSenderPicture.setVisibility(View.VISIBLE);
+                holder.relativeLayoutSenderMessage.setVisibility(View.VISIBLE);
 
                 Picasso.with(holder.itemView.getContext()).load(messages.getMessage()).into(holder.messageSenderPicture);
 
@@ -185,7 +190,8 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
             else
             {
                 holder.messageReceiverPicture.setVisibility(View.VISIBLE);
-                holder.receiverProfileImage.setVisibility(View.VISIBLE);
+                holder.receiverProfileName.setVisibility(View.VISIBLE);
+                holder.relativeLayoutReceiverMessage.setVisibility(View.VISIBLE);
 
                 Picasso.with(holder.itemView.getContext()).load(messages.getMessage()).into(holder.messageReceiverPicture);
 
@@ -204,6 +210,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
             if(fromUserId.equals(messageSenderId))
             {
                 holder.messageSenderPicture.setVisibility(View.VISIBLE);
+                holder.relativeLayoutSenderMessage.setVisibility(View.VISIBLE);
                 holder.messageSenderPicture.setBackgroundResource(R.drawable.file);
 
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -216,8 +223,9 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
             }
             else
             {
-                holder.receiverProfileImage.setVisibility(View.VISIBLE);
+                holder.receiverProfileName.setVisibility(View.VISIBLE);
                 holder.messageReceiverPicture.setVisibility(View.VISIBLE);
+                holder.relativeLayoutReceiverMessage.setVisibility(View.VISIBLE);
                 holder.messageReceiverPicture.setBackgroundResource(R.drawable.file);
 
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
