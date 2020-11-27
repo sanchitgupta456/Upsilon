@@ -153,7 +153,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
                 holder.senderMessageText.setVisibility(View.VISIBLE);
                 holder.senderMessageText.setBackgroundResource(R.drawable.sender_message_layout_forum);
                 holder.senderMessageText.setTextColor(Color.BLACK);
-                holder.senderMessageText.setPadding(20,5,30,10);
+                holder.senderMessageText.setPadding(20,5,40,10);
                 holder.senderMessageText.setText(messages.getMessage());
             }
             else
@@ -162,7 +162,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
                 holder.receiverProfileImage.setVisibility(View.VISIBLE);
                 holder.receievrMessageText.setBackgroundResource(R.drawable.receiver_message_layout);
                 holder.receievrMessageText.setTextColor(Color.BLACK);
-                holder.senderMessageText.setPadding(20,5,30,10);
+                holder.senderMessageText.setPadding(20,5,20,10);
                 holder.receievrMessageText.setText(messages.getMessage());
             }
         }

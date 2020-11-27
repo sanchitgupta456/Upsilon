@@ -1,11 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorWhite">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/background_light">
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/refreshForum"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:layout_margin="@dimen/activity_horizontal_margin"
+        android:background="@color/colorWhite"
+        android:backgroundTint="@color/colorWhite"
+        android:tint="@color/colorBlack"
+        android:src="@drawable/icon_refresh"
+        android:elevation="30dp"
+        android:contentDescription="@string/refresh" />
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/private_messages_list_of_users1"
         android:layout_width="match_parent"
@@ -19,7 +32,9 @@
         android:layout_alignParentBottom="true"
         android:orientation="horizontal"
         android:background="@drawable/forum_chat_bar_layout"
-        android:weightSum="100">
+        android:weightSum="100"
+        android:layout_marginHorizontal="5dp"
+        android:layout_marginVertical="10dp">
 
         <ImageButton
             android:layout_width="match_parent"
@@ -30,7 +45,9 @@
             android:backgroundTint="@android:color/transparent"
             android:tint="@color/colorBlack"
             android:layout_weight="45"
-            tools:ignore="ContentDescription" />
+            tools:ignore="ContentDescription"
+            android:paddingVertical="15dp"
+            android:paddingHorizontal="5dp"/>
 
         <EditText
             android:layout_width="match_parent"
@@ -55,7 +72,9 @@
             android:backgroundTint="@android:color/transparent"
             android:tint="@color/colorBlack"
             android:layout_weight="45"
-            tools:ignore="ContentDescription" />
+            tools:ignore="ContentDescription"
+            android:paddingVertical="15dp"
+            android:paddingHorizontal="5dp"/>
 
     </LinearLayout>
 </RelativeLayout>
