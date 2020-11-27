@@ -42,9 +42,18 @@
             android:layout_below="@id/usernameSender"
             android:id="@+id/receiver_message_text"
             android:typeface="monospace"
-            android:text="receivers messages here"
             android:textSize="14sp"
             android:textColor="@color/colorBlack"
+            android:lineSpacingExtra="1dp"/>
+        <TextView
+            android:id="@+id/receiver_message_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/receiver_message_text"
+            android:padding="2dp"
+            android:typeface="sans"
+            android:textSize="12sp"
+            android:textColor="#B3000000"
             android:lineSpacingExtra="1dp"/>
     </RelativeLayout>
 
@@ -106,9 +115,18 @@
             android:layout_height="wrap_content"
             android:id="@+id/sender_messages_text"
             android:typeface="monospace"
-            android:text="senders messages here"
             android:textSize="14sp"
             android:textColor="@color/colorBlack"
+            android:lineSpacingExtra="1dp"/>
+        <TextView
+            android:id="@+id/sender_message_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/sender_messages_text"
+            android:padding="2dp"
+            android:typeface="sans"
+            android:textSize="12sp"
+            android:textColor="#B3000000"
             android:lineSpacingExtra="1dp"/>
     </RelativeLayout>
 
