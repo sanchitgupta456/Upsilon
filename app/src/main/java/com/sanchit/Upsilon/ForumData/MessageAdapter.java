@@ -93,7 +93,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
         mongoDatabase = mongoClient.getDatabase("Upsilon");
         MongoCollection<Document> mongoCollection  = mongoDatabase.getCollection("UserData");
 
-        Document queryFilter  = new Document("userid",user.getId());
+        Document queryFilter  = new Document("userid",messages.getFrom());
 
         RealmResultTask<MongoCursor<Document>> findTask = mongoCollection.find(queryFilter).iterator();
 
@@ -111,7 +111,8 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
                 while (results.hasNext()) {
                     //Log.v("EXAMPLE", results.next().toString());
                     Document currentDoc = results.next();
-                    receiverImage = currentDoc.getString("profilePicUrl");
+                    holder.receiverProfileName.setText(currentDoc.getString("name"));
+                    //receiverImage = currentDoc.getString("profilePicUrl");
                     //Picasso.with(holder.itemView.getContext()).load(receiverImage).placeholder(R.drawable.profile_image).into(holder.receiverProfileImage);
                     Log.v("User",currentDoc.getString("userid"));
                 }
