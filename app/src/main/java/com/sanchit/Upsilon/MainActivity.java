@@ -31,6 +31,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.sanchit.Upsilon.courseData.Course;
 import com.sanchit.Upsilon.courseData.CoursesAdapter;
+import com.sanchit.Upsilon.courseData.CoursesAdapter1;
 import com.sanchit.Upsilon.ui.login.LoginActivity;
 import com.squareup.picasso.Picasso;
 
@@ -71,7 +72,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private ArrayList<String> myCourses;
 
     RecyclerView recyclerView,recyclerView1,recyclerView2;
-    CoursesAdapter coursesAdapter,coursesAdapter1,coursesAdapter2;
+    CoursesAdapter1 coursesAdapter;
+    CoursesAdapter coursesAdapter1;
+    CoursesAdapter coursesAdapter2;
     ArrayList<Course> courseArrayList = new ArrayList<Course>();
     ArrayList<Course> courseArrayList1 = new ArrayList<>();
     ArrayList<Course> courseArrayList2 = new ArrayList<>();
@@ -328,14 +331,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     public void displayCoursesInRecycler(){
-        coursesAdapter = new CoursesAdapter(courseArrayList);
+        coursesAdapter = new CoursesAdapter1(courseArrayList);
         coursesAdapter1 = new CoursesAdapter(courseArrayList1);
         coursesAdapter2 = new CoursesAdapter(courseArrayList2);
 
         recyclerView = (RecyclerView)findViewById(R.id.exploreCourseListView);
         recyclerView1 = (RecyclerView)findViewById(R.id.currentCourseListView);
         recyclerView2 = (RecyclerView) findViewById(R.id.recommendedCourseListView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false));
+        recyclerView.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false));
         recyclerView1.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false));
         recyclerView2.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false));
         recyclerView.setItemAnimator(new DefaultItemAnimator());

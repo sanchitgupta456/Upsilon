@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -15,6 +16,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -22,6 +24,7 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -75,6 +78,7 @@ public class AddCourseActivity extends AppCompatActivity implements AdapterView.
     String CourseImageUrl;
     private static int RESULT_LOAD_IMAGE = 1;
     private static final int WRITE_PERMISSION = 0x01;
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -94,6 +98,8 @@ public class AddCourseActivity extends AppCompatActivity implements AdapterView.
         CourseFees = (EditText) findViewById(R.id.course_fee);
         Free = (RadioButton) findViewById(R.id.add_course_free);
         Paid = (RadioButton) findViewById(R.id.add_course_paid);
+        progressBar = (ProgressBar) findViewById(R.id.loadingAddCourse);
+
         //spinner = (Spinner) findViewById(R.id.courseDurationMeasureSpinner);
 
         app = new App(new AppConfiguration.Builder(appID)
@@ -138,12 +144,19 @@ public class AddCourseActivity extends AppCompatActivity implements AdapterView.
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                progressBar.setProgress(0);
+                progressBar.setIndeterminate(false);
+                nextButton.setVisibility(View.INVISIBLE);
+                progressBar.setVisibility(View.VISIBLE);
                 courseName = CourseName.getText().toString();
                 courseDescription = CourseDescription.getText().toString();
                 courseDuration = CourseDuration.getText().toString();
                 numOfBatches = NumberOfBatches.getText().toString();
-                fees = Integer.parseInt(CourseFees.getText().toString());
+
+                if(Paid.isChecked())
+                {
+                    fees = Integer.parseInt(CourseFees.getText().toString());
+                }
 
                 //courseReviews = new ArrayList<CourseReview>();
                 if(offline_online.isChecked())
@@ -200,9 +213,10 @@ public class AddCourseActivity extends AppCompatActivity implements AdapterView.
                             public void onStart(String requestId) {
                             }
 
+                            @RequiresApi(api = Build.VERSION_CODES.N)
                             @Override
                             public void onProgress(String requestId, long bytes, long totalBytes) {
-
+                                progressBar.setProgress(Math.toIntExact((bytes / totalBytes) * 100));
                             }
 
                             @Override
@@ -223,6 +237,8 @@ public class AddCourseActivity extends AppCompatActivity implements AdapterView.
                                 mongoCollection.updateOne(new Document("_id",result.get().getInsertedId()),courseDetails).getAsync(result1 -> {
                                     if(result1.isSuccess())
                                     {
+                                        progressBar.setProgress(100);
+                                        progressBar.setVisibility(View.INVISIBLE);
                                         Log.v("EXAMPLE", "Inserted custom user data document. _id of inserted document: "
                                                 + result1.get().getModifiedCount());
                                         Log.v("AddCourse","Updated Image Successfully");
@@ -327,4 +343,8 @@ public class AddCourseActivity extends AppCompatActivity implements AdapterView.
         }
     }
 
+    @Override
+    public void onBackPressed() {
+
+    }
 }
