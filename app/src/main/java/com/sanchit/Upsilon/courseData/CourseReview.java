@@ -6,15 +6,15 @@ public class CourseReview extends Object {
 
     private String review;
     private double reviewRating;
-    private String ratingAuthorId;
+    private String reviewAuthorId;
 
     public CourseReview() {
     }
 
-    public CourseReview(String review, Double reviewRating, String ratingAuthorId) {
+    public CourseReview(String review, Double reviewRating, String reviewAuthorId) {
         this.review = review;
         this.reviewRating = reviewRating;
-        this.ratingAuthorId = ratingAuthorId;
+        this.reviewAuthorId = reviewAuthorId;
     }
 
     public String getReview() {
@@ -34,10 +34,10 @@ public class CourseReview extends Object {
     }
 
     public String getRatingAuthorId() {
-        return ratingAuthorId;
+        return reviewAuthorId;
     }
 
-    public void setRatingAuthorId(String ratingAuthorId) {
-        this.ratingAuthorId = ratingAuthorId;
+    public void setRatingAuthorId(String reviewAuthorId) {
+        this.reviewAuthorId = reviewAuthorId;
     }
 }

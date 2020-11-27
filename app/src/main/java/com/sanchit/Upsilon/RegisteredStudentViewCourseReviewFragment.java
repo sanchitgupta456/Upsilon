@@ -73,34 +73,47 @@ public class RegisteredStudentViewCourseReviewFragment extends Fragment {
         else
         {
             BasicBSONList courseReviews = course.getCourseReviews();
-            for(int counter=0;counter<courseReviews.size();counter++)
+            Log.v("courseReview", String.valueOf(courseReviews));
+            if(courseReviews!=null)
             {
-                Object courseReview = (Object) courseReviews.get(counter);
-                LinkedHashMap courseReview1 = (LinkedHashMap) courseReview;
-                if(courseReview1.get("reviewAuthorId").equals(user.getId()))
+                for(int counter=0;counter<courseReviews.size();counter++)
                 {
-                    //rating.setText(courseReview1.get("reviewRating").toString());
-                    //TODO
-                    rating.setText((int) Double.parseDouble(String.valueOf(4.5)));
-                    review.setText(courseReview1.get("review").toString());
-                    submitReview.setVisibility(View.INVISIBLE);
-                    break;
-                }
+                    //Object courseReview = (Object) courseReviews.get(counter);
+                    LinkedHashMap courseReview1 = (LinkedHashMap) courseReviews.get(counter);
+                    if(courseReview1.get("reviewAuthorId").equals(user.getId()))
+                    {
+                        //rating.setText(courseReview1.get("reviewRating").toString());
+                        //TODO
+                        ratingBar.setRating(Float.parseFloat(courseReview1.get("reviewRating").toString()));
+                        //rating.setText((int) Double.parseDouble(String.valueOf(4.5)));
+                        review.setText(courseReview1.get("review").toString());
+                        submitReview.setVisibility(View.INVISIBLE);
+                        break;
+                    }
                     //CourseReview courseReview2 = new CourseReview(courseReview1.get("review").toString(), (Double) courseReview1.get("reviewRating"),courseReview1.get("reviewAuthorId").toString());
                     //courseReviewsArrayList.add(courseReview2);
                     //courseReviewAdapter.notifyDataSetChanged();
                     Log.v("test", (String) courseReview1.get("review"));
+                }
             }
+
         }
         submitReview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Review = review.getText().toString();
-                Rating = Double.parseDouble(rating.getText().toString());
+                Rating = ratingBar.getRating();
 
                 CourseReview courseReview = new CourseReview(Review,Rating,user.getId().toString());
                 BasicBSONList courseReviews = course.getCourseReviews();
+                if(courseReviews==null)
+                {
+                    courseReviews=new BasicBSONList();
+                }
+
                 courseReviews.add(courseReview);
+
+
                 course.setCourseReviews(courseReviews);
                 BsonDocument courseDoc = new BsonDocument();
                 gsonBuilder = new GsonBuilder();

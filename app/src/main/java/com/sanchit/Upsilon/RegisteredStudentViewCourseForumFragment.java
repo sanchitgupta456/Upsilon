@@ -126,6 +126,7 @@ public class RegisteredStudentViewCourseForumFragment extends Fragment {
 
     private void sendMessage() {
         String messageText = MessageInputText.getText().toString();
+        MessageInputText.setText("");
         if(TextUtils.isEmpty(messageText))
         {
             Toast.makeText(getActivity(),"Enter your message",Toast.LENGTH_SHORT).show();
@@ -144,6 +145,8 @@ public class RegisteredStudentViewCourseForumFragment extends Fragment {
 
             messages.setDate(saveCurrentDate);
             messages.setTime(saveCurrentTime);
+            messageList1.add(messages);
+            messageAdapter.notifyDataSetChanged();
 
             mongoClient = user.getMongoClient("mongodb-atlas");
             mongoDatabase = mongoClient.getDatabase("Upsilon");
@@ -154,9 +157,6 @@ public class RegisteredStudentViewCourseForumFragment extends Fragment {
             //Blank query to find every single course in db
             //TODO: Modify query to look for user preferred course IDs
             Document queryFilter  = new Document("courseId",course.getCourseId());
-
-
-
 
             RealmResultTask<MongoCursor<Document>> findTask = mongoCollection.find(queryFilter).iterator();
 
@@ -191,6 +191,7 @@ public class RegisteredStudentViewCourseForumFragment extends Fragment {
                             mongoCollection.updateOne(new Document("courseId",course.getCourseId()),currentDoc).getAsync(result -> {
                                 if(result.isSuccess())
                                 {
+                                    getMessages();
                                     Log.v("Message","Message Sent");
                                 }
                                 else
@@ -216,6 +217,7 @@ public class RegisteredStudentViewCourseForumFragment extends Fragment {
                         mongoCollection.insertOne(document1).getAsync(result -> {
                             if(result.isSuccess())
                             {
+                                getMessages();
                                 Log.v("Message","Message Sent");
                             }
                             else
@@ -238,6 +240,7 @@ public class RegisteredStudentViewCourseForumFragment extends Fragment {
                     mongoCollection.insertOne(document1).getAsync(result -> {
                         if(result.isSuccess())
                         {
+                            getMessages();
                             Log.v("Message","Message Sent");
                         }
                         else
@@ -251,6 +254,11 @@ public class RegisteredStudentViewCourseForumFragment extends Fragment {
     }
 
     private void getMessages() {
+
+        if(messageList1!=null)
+        {
+            messageList1.clear();
+        }
 
         mongoClient = user.getMongoClient("mongodb-atlas");
         mongoDatabase = mongoClient.getDatabase("Upsilon");
@@ -285,6 +293,7 @@ public class RegisteredStudentViewCourseForumFragment extends Fragment {
                             messageAdapter.notifyDataSetChanged();
                             Log.v("test", (String) message.get("message"));
                         }
+                        userMessageList.scrollToPosition(messageList.size()-1);
                     }
                 }
             }
