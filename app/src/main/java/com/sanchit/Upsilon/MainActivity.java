@@ -1,6 +1,7 @@
 package com.sanchit.Upsilon;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -23,7 +24,9 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,6 +36,7 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.sanchit.Upsilon.courseData.Course;
+import com.sanchit.Upsilon.courseData.CourseAdapter2;
 import com.sanchit.Upsilon.courseData.CoursesAdapter;
 import com.sanchit.Upsilon.courseData.CoursesAdapter1;
 import com.sanchit.Upsilon.ui.login.LoginActivity;
@@ -48,6 +52,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import io.realm.Realm;
 import io.realm.mongodb.App;
@@ -77,7 +82,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     RecyclerView recyclerView,recyclerView1,recyclerView2;
     CoursesAdapter1 coursesAdapter;
-    CoursesAdapter coursesAdapter1;
+    CourseAdapter2 coursesAdapter1;
     CoursesAdapter coursesAdapter2;
     ArrayList<Course> courseArrayList = new ArrayList<Course>();
     ArrayList<Course> courseArrayList1 = new ArrayList<>();
@@ -102,7 +107,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (user == null){
             startActivity(new Intent(MainActivity.this, LoginActivity.class));
         }
-
         //imageView = (ImageView) findViewById(R.id.profilePhotoTest);
         Toolbar toolbar = findViewById(R.id.toolbar);
  //        setSupportActionBar(toolbar);
@@ -350,7 +354,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     public void displayCoursesInRecycler(){
         coursesAdapter = new CoursesAdapter1(courseArrayList);
-        coursesAdapter1 = new CoursesAdapter(courseArrayList1);
+        coursesAdapter1 = new CourseAdapter2(courseArrayList1);
         coursesAdapter2 = new CoursesAdapter(courseArrayList2);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);

@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.cardview.widget.CardView;
@@ -33,7 +32,7 @@ import io.realm.mongodb.mongo.MongoCollection;
 import io.realm.mongodb.mongo.MongoDatabase;
 import io.realm.mongodb.mongo.iterable.MongoCursor;
 
-public class CoursesAdapter1 extends RecyclerView.Adapter<CoursesAdapter1.ViewHolder> {
+public class CourseAdapter2 extends RecyclerView.Adapter<CourseAdapter2.ViewHolder> {
 
     List<Course> courseList;
     Context context;
@@ -42,14 +41,14 @@ public class CoursesAdapter1 extends RecyclerView.Adapter<CoursesAdapter1.ViewHo
     MongoClient mongoClient;
     MongoDatabase mongoDatabase;
 
-    public CoursesAdapter1(List<Course>_courseList)
+    public CourseAdapter2(List<Course>_courseList)
     {
         this.courseList = _courseList;
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.explore_course_recycler_card,parent,false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.course_card_dark_mode,parent,false);
         ViewHolder viewHolder = new ViewHolder(view);
         context = parent.getContext();
         return viewHolder;
@@ -64,12 +63,7 @@ public class CoursesAdapter1 extends RecyclerView.Adapter<CoursesAdapter1.ViewHo
         //Picasso.with(context).load(course.getCourseImage()).fit().centerCrop().into(holder.imgTvShow);
         Glide.with(context).load(course.getCourseImage()).into(holder.imgTvShow);
         //holder.imgTvShow.setImageResource(course.getCardImgID());
-        //holder.textTutorTvShow.setText(course.getTutorId());
-        holder.textModeTvShow.setText(course.getCourseMode());
-        //holder.textFeeTvShow.setText(course.getCourseFees());
-        holder.textRatingTvShow.setText(String.format("%s/5", course.getCourseRating()));
-
-        holder.rl.setOnClickListener(new View.OnClickListener() {
+        holder.cv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //Toast.makeText(context,"The position is:"+position,Toast.LENGTH_SHORT).show();
@@ -150,23 +144,14 @@ public class CoursesAdapter1 extends RecyclerView.Adapter<CoursesAdapter1.ViewHo
         ImageView imgTvShow;
         TextView textTvShow;
         CardView cv;
-        TextView textTutorTvShow;
-        TextView textModeTvShow;
-        TextView textFeeTvShow;
-        TextView textRatingTvShow;
-        RelativeLayout rl;
 
         public ViewHolder(View itemView)
         {
             super(itemView);
             imgTvShow = (ImageView)itemView.findViewById(R.id.courseImage);
             textTvShow = (TextView)itemView.findViewById(R.id.courseName);
-            textTutorTvShow = (TextView)itemView.findViewById(R.id.courseInstructor);
-            textModeTvShow = (TextView)itemView.findViewById(R.id.courseMode);
-            textFeeTvShow = (TextView)itemView.findViewById(R.id.courseFee);
-            textRatingTvShow = (TextView)itemView.findViewById(R.id.courseRating);
             cv = (CardView)itemView.findViewById(R.id.courseCard);
-            rl = (RelativeLayout)itemView.findViewById(R.id.rlCourseFullCard);
         }
+
     }
 }

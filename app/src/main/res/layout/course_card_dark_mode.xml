@@ -20,7 +20,7 @@
             android:layout_width="150dp"
             android:layout_height="120dp"
             android:scaleType="centerCrop"
-            android:src="@color/colorPrimary"
+            android:src="@color/colorWhite"
             tools:ignore="ContentDescription" />
     </androidx.cardview.widget.CardView>
     <TextView
@@ -29,7 +29,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/courseCard"
         android:layout_marginTop="@dimen/activity_horizontal_margin"
-        android:textColor="@color/colorPrimaryDark"
+        android:textColor="@color/colorLiteGrey"
         android:text="@string/course_name"
         android:textSize="@dimen/text_margin"
         android:textStyle="bold"
