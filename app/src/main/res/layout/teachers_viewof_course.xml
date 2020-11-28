@@ -232,7 +232,8 @@
                     android:gravity="center_vertical"
                     android:layout_weight="60"/>
                 <EditText
-                    android:inputType="textUri"
+                    android:id="@+id/teacher_view_course_meet_link"
+                    android:inputType="text"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:padding="10dp"

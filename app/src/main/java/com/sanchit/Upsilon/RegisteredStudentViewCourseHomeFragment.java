@@ -18,7 +18,7 @@ import java.util.Locale;
 
 public class RegisteredStudentViewCourseHomeFragment extends Fragment {
 
-    private TextView nextLecture;
+    private TextView nextLecture,meetLink;
     private Course course;
 
     @Nullable
@@ -28,10 +28,12 @@ public class RegisteredStudentViewCourseHomeFragment extends Fragment {
         View view = inflater.inflate(R.layout.activity_active_course_home,null);
         course = (Course) getArguments().get("Course");
         nextLecture = view.findViewById(R.id.textDateTimeNextLecture);
+        meetLink = view.findViewById(R.id.meetingLink);
         Calendar cal = Calendar.getInstance(Locale.ENGLISH);
         cal.setTimeInMillis(Long.parseLong(course.getNextLectureOn()));
         String date = DateFormat.format("dd-MM-yyyy HH:mm:ss", cal).toString();
         nextLecture.setText(date);
+        meetLink.setText(course.getMeetLink());
         return view;
     }
 }

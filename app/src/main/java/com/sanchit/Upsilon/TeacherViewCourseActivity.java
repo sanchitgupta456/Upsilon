@@ -8,8 +8,11 @@ import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -23,6 +26,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.sanchit.Upsilon.courseData.Course;
+import com.sanchit.Upsilon.ui.login.LoginActivity;
 import com.squareup.picasso.Picasso;
 
 import org.bson.Document;
@@ -60,6 +64,7 @@ public class TeacherViewCourseActivity extends AppCompatActivity {
     AlertDialog alertDialog;
     private Gson gson;
     private GsonBuilder gsonBuilder;
+    private EditText meetLink;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -97,6 +102,7 @@ public class TeacherViewCourseActivity extends AppCompatActivity {
         ScheduleClass = (Button) findViewById(R.id.btnScheduleClass);
         UpdateLink = (Button) findViewById(R.id.btnUpdateLink); //yet to be set up
         nextClass = (TextView) findViewById(R.id.view_course_teacher_schedule_class);
+        meetLink = (EditText) findViewById(R.id.teacher_view_course_meet_link);
 
         Picasso.with(getApplicationContext()).load(course.getCourseImage()).into(courseImage);
         rating.setText("Rating "+course.getCourseRating() + "/5");
@@ -105,6 +111,7 @@ public class TeacherViewCourseActivity extends AppCompatActivity {
         cal.setTimeInMillis(Long.parseLong(course.getNextLectureOn()));
         String date = DateFormat.format("dd-MM-yyyy HH:mm:ss", cal).toString();
         nextClass.setText(date);
+        meetLink.setText(course.getMeetLink());
 
 
 
@@ -123,6 +130,35 @@ public class TeacherViewCourseActivity extends AppCompatActivity {
         UpdateLink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String link = meetLink.getText().toString();
+                if(link.isEmpty())
+                {
+                    meetLink.setError("Please Enter a valid meet link");
+                    Animation shake = AnimationUtils.loadAnimation(TeacherViewCourseActivity.this, R.anim.shake);
+                    meetLink.startAnimation(shake);
+                    meetLink.requestFocus();
+                }
+                else
+                {
+                    course.setMeetLink(link);
+                    gsonBuilder = new GsonBuilder();
+                    gson = gsonBuilder.create();
+                    String json = gson.toJson(course,Course.class);
+                    Document document = Document.parse(json);
+                    //document.append("nextLectureOn",String.valueOf(time));
+
+                    mongoCollection.updateOne(new Document("courseId",course.getCourseId()),document).getAsync(result -> {
+                        if(result.isSuccess())
+                        {
+                            Log.v("MeetLink","Meet Link Updated");
+                        }
+                        else
+                        {
+                            Log.v("MeetLink","Error"+result.getError().toString());
+                        }
+                    });
+
+                }
                 //update link
             }
         });
