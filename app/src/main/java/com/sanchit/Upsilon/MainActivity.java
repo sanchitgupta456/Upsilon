@@ -7,6 +7,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -20,8 +21,10 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
+import android.view.View;
 import android.view.Window;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.cloudinary.android.MediaManager;
@@ -63,6 +66,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     boolean swapped = false;
     static final int MIN_DISTANCE = 500;
     DrawerLayout drawer;
+    TextView explore;
 
     String appID = "upsilon-ityvn";
     private static final String TAG = "MainActivity";
@@ -162,6 +166,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 }
             });
         }
+        explore = (TextView) findViewById(R.id.textExploreCoursesList);
+        explore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Intent intent = new Intent();
+                //startActivity(intent);
+            }
+        });
     }
 
     private void goToSetupActivity() {
@@ -341,15 +353,27 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         coursesAdapter1 = new CoursesAdapter(courseArrayList1);
         coursesAdapter2 = new CoursesAdapter(courseArrayList2);
 
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        LinearLayoutManager layoutManager1 = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        LinearLayoutManager layoutManager2 = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+
         recyclerView = (RecyclerView)findViewById(R.id.exploreCourseListView);
         recyclerView1 = (RecyclerView)findViewById(R.id.currentCourseListView);
         recyclerView2 = (RecyclerView) findViewById(R.id.recommendedCourseListView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false));
-        recyclerView1.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false));
-        recyclerView2.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false));
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView1.setLayoutManager(layoutManager1);
+        recyclerView2.setLayoutManager(layoutManager2);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView1.setItemAnimator(new DefaultItemAnimator());
         recyclerView2.setItemAnimator(new DefaultItemAnimator());
+
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(), layoutManager.getOrientation());
+        DividerItemDecoration dividerItemDecoration1 = new DividerItemDecoration(recyclerView.getContext(), layoutManager1.getOrientation());
+        DividerItemDecoration dividerItemDecoration2 = new DividerItemDecoration(recyclerView.getContext(), layoutManager2.getOrientation());
+
+        recyclerView.addItemDecoration(dividerItemDecoration);
+        recyclerView1.addItemDecoration(dividerItemDecoration1);
+        recyclerView2.addItemDecoration(dividerItemDecoration2);
         recyclerView.setAdapter(coursesAdapter);
         recyclerView1.setAdapter(coursesAdapter1);
         recyclerView2.setAdapter(coursesAdapter2);
