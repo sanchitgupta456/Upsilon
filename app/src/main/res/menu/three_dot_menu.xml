@@ -6,8 +6,7 @@
     <item
         android:title="Refresh"
         android:id="@+id/refresh"
-        android:icon="@drawable/icon_refresh"
-        android:iconTint="@color/colorBlack"/>
+        android:icon="@drawable/icon_refresh"/>
     <item
         android:title="Sign out"
         android:id="@+id/signOut"

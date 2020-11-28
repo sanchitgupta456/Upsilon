@@ -8,7 +8,8 @@
     tools:context=".MainActivity"
     android:id="@+id/drawer_layout"
     tools:openDrawer="left"
-    android:background="@drawable/background_light">
+    android:background="#cdfffd"
+    android:fitsSystemWindows="true">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -31,35 +32,43 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:scrollbars="vertical">
-                <RelativeLayout
+                <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/frameCurrentCourseListView"
-                    android:background="@color/colorBlack">
-                    <TextView
-                        android:id="@+id/textYourCurrentCourses"
-                        android:layout_width="wrap_content"
+                    app:cardElevation="@dimen/text_margin">
+                    <RelativeLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:text="@string/resume_learning"
-                        android:textColor="@color/colorWhite"
-                        android:layout_marginTop="24dp"
-                        android:textSize="@dimen/text_margin"
-                        android:textStyle="bold"
-                        android:paddingVertical="5dp"
-                        android:paddingHorizontal="10dp"
-                        android:typeface="serif" />
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/currentCourseListView"
-                        android:scrollbars="horizontal"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="10dp"
-                        android:orientation="horizontal"
-                        android:layout_below="@id/textYourCurrentCourses"
-                        android:layout_margin="5dp"
-                        android:foregroundTint="@color/colorWhite"/>
-                </RelativeLayout>
+                        android:background="#cdfffd"
+                        android:fitsSystemWindows="true"
+                        android:elevation="?attr/actionBarSize"
+                        android:paddingBottom="5dp">
+                        <TextView
+                            android:id="@+id/textYourCurrentCourses"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:text="@string/resume_learning"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:layout_marginTop="5dp"
+                            android:textSize="@dimen/text_margin"
+                            android:textStyle="bold"
+                            android:paddingVertical="5dp"
+                            android:paddingHorizontal="10dp"
+                            android:typeface="sans" />
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/currentCourseListView"
+                            android:scrollbars="horizontal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="10dp"
+                            android:orientation="horizontal"
+                            android:layout_below="@id/textYourCurrentCourses"
+                            android:foregroundTint="@color/colorWhite"/>
+                    </RelativeLayout>
+                </androidx.cardview.widget.CardView>
+
 
                 <TextView
                     android:id="@+id/textRecommendedCoursesList"
@@ -72,9 +81,9 @@
                     android:textStyle="bold"
                     android:paddingVertical="5dp"
                     android:paddingHorizontal="10dp"
-                    android:typeface="serif"
+                    android:typeface="sans"
                     android:layout_below="@id/frameCurrentCourseListView"
-                    android:layout_marginTop="48dp"/>
+                    android:layout_marginTop="24dp"/>
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recommendedCourseListView"
                     android:layout_width="wrap_content"
@@ -94,7 +103,7 @@
                     android:textStyle="bold"
                     android:paddingVertical="5dp"
                     android:paddingHorizontal="10dp"
-                    android:typeface="serif"
+                    android:typeface="sans"
                     android:layout_marginTop="24dp"
                     android:layout_below="@id/recommendedCourseListView"
                     android:clickable="true"
@@ -130,6 +139,6 @@
         app:headerLayout="@layout/header_layout"
         app:itemIconTint="@color/colorPrimaryDark"
         app:itemTextColor="@color/colorPrimaryDark"
-        app:menu="@menu/home_drawer_menu"/>
-
+        app:menu="@menu/home_drawer_menu"
+        app:elevation="12dp"/>
 </androidx.drawerlayout.widget.DrawerLayout>

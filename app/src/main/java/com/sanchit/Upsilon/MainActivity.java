@@ -82,7 +82,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     RecyclerView recyclerView,recyclerView1,recyclerView2;
     CoursesAdapter1 coursesAdapter;
-    CourseAdapter2 coursesAdapter1;
+    CoursesAdapter coursesAdapter1;
     CoursesAdapter coursesAdapter2;
     ArrayList<Course> courseArrayList = new ArrayList<Course>();
     ArrayList<Course> courseArrayList1 = new ArrayList<>();
@@ -108,15 +108,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             startActivity(new Intent(MainActivity.this, LoginActivity.class));
         }
         //imageView = (ImageView) findViewById(R.id.profilePhotoTest);
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        //Toolbar toolbar = findViewById(R.id.toolbar);
  //        setSupportActionBar(toolbar);
         //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("Home");
-        getSupportActionBar().setIcon(R.drawable.icon_hamburger);
         drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+                this, drawer, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(MainActivity.this);
@@ -354,7 +352,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     public void displayCoursesInRecycler(){
         coursesAdapter = new CoursesAdapter1(courseArrayList);
-        coursesAdapter1 = new CourseAdapter2(courseArrayList1);
+        coursesAdapter1 = new CoursesAdapter(courseArrayList1);
         coursesAdapter2 = new CoursesAdapter(courseArrayList2);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);

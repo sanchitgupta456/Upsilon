@@ -13,7 +13,7 @@
     <item
         android:id="@+id/bottomNavMenuResources"
         android:enabled="true"
-        android:icon="@drawable/icon_resources"
+        android:icon="@drawable/icon_files"
         android:title="@string/resources"/>
     <item
         android:id="@+id/bottomNavMenuForum"

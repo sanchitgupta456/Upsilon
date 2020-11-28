@@ -6,8 +6,7 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_gravity="center_horizontal"
-    android:layout_margin="3dp"
-    android:padding="5dp">
+    android:layout_margin="3dp">
     <androidx.cardview.widget.CardView
         android:id="@+id/courseCard"
         android:layout_width="150dp"
@@ -28,10 +27,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/courseCard"
-        android:layout_marginTop="@dimen/activity_horizontal_margin"
-        android:textColor="@color/colorLiteGrey"
+        android:layout_marginTop="5dp"
+        android:textColor="@color/colorWhite"
         android:text="@string/course_name"
-        android:textSize="@dimen/text_margin"
+        android:textSize="12sp"
         android:textStyle="bold"
         android:typeface="sans"
         android:layout_centerHorizontal="true"/>
