@@ -27,32 +27,8 @@ public class Course extends Object implements Serializable {
     private int IntroductoryImageCounter;
     private ArrayList<String> IntroductoryContentVideos;
     private int IntroductoryVideoCounter;
+    private String nextLectureOn;
 
-
-    public Course() {
-    }
-
-    public Course(String courseName, String courseImage, String tutorId, String courseDescription, String coursePreReq, double courseRating, String courseMode, int courseFees, String instructorLocation, int courseDuration, int numberOfStudentsEnrolled, int numberOfBatches, BasicBSONList courseReviews, String cardImgID, ArrayList<String> myRegisteredCourses, ArrayList<String> introductoryContentImages, int introductoryImageCounter, ArrayList<String> introductoryContentVideos, int introductoryVideoCounter) {
-        this.courseName = courseName;
-        this.courseImage = courseImage;
-        this.tutorId = tutorId;
-        this.courseDescription = courseDescription;
-        this.coursePreReq = coursePreReq;
-        this.courseRating = courseRating;
-        this.courseMode = courseMode;
-        this.courseFees = courseFees;
-        this.instructorLocation = instructorLocation;
-        this.courseDuration = courseDuration;
-        this.numberOfStudentsEnrolled = numberOfStudentsEnrolled;
-        this.numberOfBatches = numberOfBatches;
-        this.courseReviews = courseReviews;
-        this.cardImgID = cardImgID;
-        this.myRegisteredCourses = myRegisteredCourses;
-        IntroductoryContentImages = introductoryContentImages;
-        IntroductoryImageCounter = introductoryImageCounter;
-        IntroductoryContentVideos = introductoryContentVideos;
-        IntroductoryVideoCounter = introductoryVideoCounter;
-    }
 
     public Course(String courseId, String courseName, String courseImage, String tutorId, String courseDescription, String coursePreReq, double courseRating, String courseMode, int courseFees, String instructorLocation, int courseDuration, int numberOfStudentsEnrolled, int numberOfBatches, BasicBSONList courseReviews, String cardImgID, ArrayList<String> myRegisteredCourses, ArrayList<String> introductoryContentImages, int introductoryImageCounter, ArrayList<String> introductoryContentVideos, int introductoryVideoCounter) {
         this.courseId = courseId;
@@ -75,6 +51,41 @@ public class Course extends Object implements Serializable {
         IntroductoryImageCounter = introductoryImageCounter;
         IntroductoryContentVideos = introductoryContentVideos;
         IntroductoryVideoCounter = introductoryVideoCounter;
+    }
+
+    public Course(String courseId, String courseName, String courseImage, String tutorId, String courseDescription, String coursePreReq, double courseRating, String courseMode, int courseFees, String instructorLocation, int courseDuration, int numberOfStudentsEnrolled, int numberOfBatches, BasicBSONList courseReviews, String cardImgID, ArrayList<String> myRegisteredCourses, ArrayList<String> introductoryContentImages, int introductoryImageCounter, ArrayList<String> introductoryContentVideos, int introductoryVideoCounter, String nextLectureOn) {
+        this.courseId = courseId;
+        this.courseName = courseName;
+        this.courseImage = courseImage;
+        this.tutorId = tutorId;
+        this.courseDescription = courseDescription;
+        this.coursePreReq = coursePreReq;
+        this.courseRating = courseRating;
+        this.courseMode = courseMode;
+        this.courseFees = courseFees;
+        this.instructorLocation = instructorLocation;
+        this.courseDuration = courseDuration;
+        this.numberOfStudentsEnrolled = numberOfStudentsEnrolled;
+        this.numberOfBatches = numberOfBatches;
+        this.courseReviews = courseReviews;
+        this.cardImgID = cardImgID;
+        this.myRegisteredCourses = myRegisteredCourses;
+        IntroductoryContentImages = introductoryContentImages;
+        IntroductoryImageCounter = introductoryImageCounter;
+        IntroductoryContentVideos = introductoryContentVideos;
+        IntroductoryVideoCounter = introductoryVideoCounter;
+        this.nextLectureOn = nextLectureOn;
+    }
+
+    public String getNextLectureOn() {
+        return nextLectureOn;
+    }
+
+    public void setNextLectureOn(String nextLectureOn) {
+        this.nextLectureOn = nextLectureOn;
+    }
+
+    public Course() {
     }
 
     public String getCourseId() {

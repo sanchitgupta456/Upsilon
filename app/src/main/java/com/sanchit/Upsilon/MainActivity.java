@@ -230,6 +230,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                             //Log.v("EXAMPLE", results.next().toString());
                             Document currentDoc = results.next();
 
+                            //Log.v("IMPORTANT","Error:"+currentDoc.getString("nextLectureOn"));
+
+                            if(currentDoc.getString("nextLectureOn")==null)
+                            {
+                                currentDoc.append("nextLectureOn","0");
+                            }
                             currentDoc.toJson();
                             gsonBuilder = new GsonBuilder();
                             gson = gsonBuilder.create();
