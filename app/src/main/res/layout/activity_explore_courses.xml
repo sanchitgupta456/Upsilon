@@ -11,5 +11,4 @@
         android:orientation="vertical"
         android:layout_margin="@dimen/activity_horizontal_margin"
         android:background="@drawable/text_view_login"/>
-
 </RelativeLayout>
