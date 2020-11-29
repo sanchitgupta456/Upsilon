@@ -41,6 +41,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Locale;
+import java.util.Objects;
 
 import io.realm.mongodb.App;
 import io.realm.mongodb.AppConfiguration;
@@ -83,15 +84,34 @@ public class TeacherViewCourseActivity extends AppCompatActivity implements Bott
 
         fragmentContainer = (FrameLayout) findViewById(R.id.course_teacher_frame);
 
-        this.getSupportActionBar().setDisplayOptions(androidx.appcompat.app.ActionBar.DISPLAY_SHOW_CUSTOM);
+        Objects.requireNonNull(this.getSupportActionBar()).setDisplayOptions(androidx.appcompat.app.ActionBar.DISPLAY_SHOW_CUSTOM);
         getSupportActionBar().setDisplayShowCustomEnabled(true);
         getSupportActionBar().setCustomView(R.layout.action_bar_teachers_view_of_course);
         getSupportActionBar().setElevation(12);
+
+        courseName = (TextView) findViewById(R.id.courseNameTeachersView);
+        imageButtonBack = (ImageButton) findViewById(R.id.imgBtnBackTeachersViewCourse);
+        imageButtonUpdate = (ImageButton) findViewById(R.id.imgBtnUpdateTeachersViewCourse);
 
         loadFragment(new RegisteredStudentViewCourseHomeFragment());
 
         bottomNavigationView = findViewById(R.id.bottom_navigation_teacher);
         bottomNavigationView.setOnNavigationItemSelectedListener(TeacherViewCourseActivity.this);
+
+        courseName.setText(course.getCourseName());
+        imageButtonBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(TeacherViewCourseActivity.this, MainActivity.class);
+                startActivity(intent);
+            }
+        });
+        imageButtonUpdate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
     }
 
     @Override
@@ -120,8 +140,8 @@ public class TeacherViewCourseActivity extends AppCompatActivity implements Bott
                 break;
 
             case R.id.bottomNavMenuForumTeacher:
-                //fragment = new TeacherViewCourseActivityHomeFragment();
-                //fragment.setArguments(bundle);
+                fragment = new TeacherViewCourseActivityForumFragment();
+                fragment.setArguments(bundle);
                 break;
             case R.id.bottomNavMenuSettingsTeacher:
                 //fragment = new TeacherViewCourseActivityHomeFragment();
