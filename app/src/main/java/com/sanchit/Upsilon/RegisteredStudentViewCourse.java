@@ -2,8 +2,12 @@ package com.sanchit.Upsilon;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -22,6 +26,9 @@ public class RegisteredStudentViewCourse extends AppCompatActivity implements Bo
     private FrameLayout fragmentContainer;
     private BottomNavigationView bottomNavigationView;
     private Course course;
+    private TextView courseName;
+    private ImageButton btnBack;
+    View actionBar;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -37,12 +44,23 @@ public class RegisteredStudentViewCourse extends AppCompatActivity implements Bo
         getSupportActionBar().setDisplayShowCustomEnabled(true);
         getSupportActionBar().setCustomView(R.layout.action_bar_active_course);
         getSupportActionBar().setElevation(12);
-        getSupportActionBar().setTitle(course.getCourseName());
+        actionBar = getSupportActionBar().getCustomView();
+        courseName = (TextView) actionBar.findViewById(R.id.textCourseNameActiveCourse);
+        btnBack = (ImageButton) actionBar.findViewById(R.id.imgBtnBackActiveCourse);
+        courseName.setText(course.getCourseName());
 
         loadFragment(new RegisteredStudentViewCourseHomeFragment());
 
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(RegisteredStudentViewCourse.this);
+
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(RegisteredStudentViewCourse.this, MainActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private boolean loadFragment(Fragment fragment) {
@@ -102,4 +120,31 @@ public class RegisteredStudentViewCourse extends AppCompatActivity implements Bo
 
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.registered_student_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if(item.getItemId()==R.id.menuItemReview)
+        {
+            loadFragment(new RegisteredStudentViewCourseReviewFragment());
+        }
+        else if(item.getItemId()==R.id.menuItemSettings)
+        {
+            //open settings page
+        }
+        else if (item.getItemId()==R.id.menuItemUnregister)
+        {
+            //unregister the course if registration happened < 7 days before, else do not
+        }
+        else if (item.getItemId()==R.id.menuItemRefresh)
+        {
+            //refresh the layout - meant for the forum page
+        }
+        return true;
+    }
 }
