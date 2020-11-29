@@ -19,6 +19,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.sanchit.Upsilon.courseData.Course;
 
 import java.util.List;
+import java.util.Objects;
 
 public class RegisteredStudentViewCourse extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
 
@@ -40,7 +41,7 @@ public class RegisteredStudentViewCourse extends AppCompatActivity implements Bo
 
         fragmentContainer = (FrameLayout) findViewById(R.id.student_registered_frame);
 
-        this.getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        Objects.requireNonNull(this.getSupportActionBar()).setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         getSupportActionBar().setDisplayShowCustomEnabled(true);
         getSupportActionBar().setCustomView(R.layout.action_bar_active_course);
         getSupportActionBar().setElevation(12);

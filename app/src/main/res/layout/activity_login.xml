@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container"
@@ -13,11 +14,9 @@
     android:background="@drawable/background"
     android:theme="@style/Theme.AppCompat.Light.NoActionBar">
 
-
-
     <EditText
         android:id="@+id/username"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp"
@@ -28,19 +27,18 @@
         android:textColor="@color/colorWhite"
         android:inputType="textEmailAddress"
         android:selectAllOnFocus="true"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        android:layout_gravity="center_horizontal"
         android:background="@drawable/text_view_login"
         android:padding="12dp"/>
 
     <EditText
         android:id="@+id/password"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="24dp"
+        android:layout_below="@id/username"
         android:hint="@string/prompt_password"
         android:textColorHint="@color/colorGrey"
         android:textColor="@color/colorWhite"
@@ -48,9 +46,6 @@
         android:imeOptions="actionDone"
         android:inputType="textPassword"
         android:selectAllOnFocus="true"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/username"
         android:autofillHints="Password"
         android:background="@drawable/text_view_login"
         android:padding="12dp"/>
@@ -62,9 +57,7 @@
         android:text="@string/remember_me"
         android:textColor="@color/colorWhite"
         android:textSize="@dimen/text_margin"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/password"
+        android:layout_below="@id/password"
         android:buttonTint="@color/colorWhite"
         android:layout_marginHorizontal="24dp"
         android:paddingHorizontal="12dp"/>
@@ -76,9 +69,8 @@
         android:layout_marginTop="24dp"
         android:text="@string/forgot_password"
         android:textColor="@color/colorWhite"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/checkRememberMe" />
+        android:layout_below="@id/checkRememberMe"
+        android:layout_centerHorizontal="true"/>
 
     <Button
         android:id="@+id/login"
@@ -89,46 +81,47 @@
         android:background="@drawable/btn_rounded_rect"
         android:enabled="true"
         android:text="@string/action_sign_in"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView3" />
+        android:layout_below="@id/textView3"/>
 
-    <View
-        android:id="@+id/divider"
-        android:layout_width="0dp"
-        android:layout_height="1dp"
-        android:layout_marginEnd="12dp"
-        android:background="?android:attr/listDivider"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
-        app:layout_constraintEnd_toStartOf="@+id/textView2"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/login"
-        android:backgroundTint="@color/colorWhite"/>
-
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/or"
-        android:textAlignment="center"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/login"
-        android:textColor="@color/colorWhite"/>
+        android:orientation="horizontal"
+        android:id="@id/linearLayout2"
+        android:layout_below="@id/login"
+        android:layout_marginTop="48dp"
+        android:gravity="center">
+        <View
+            android:id="@+id/divider"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginEnd="12dp"
+            android:background="?android:attr/listDivider"
+            android:backgroundTint="@color/colorWhite"
+            android:layout_weight="9"/>
 
-    <View
-        android:id="@+id/divider2"
-        android:layout_width="0dp"
-        android:layout_height="1dp"
-        android:layout_marginStart="12dp"
-        android:background="?android:attr/listDivider"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/textView2"
-        app:layout_constraintTop_toBottomOf="@+id/login"
-        android:backgroundTint="@color/colorWhite"/>
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/or"
+            android:gravity="center"
+            android:textSize="@dimen/text_margin"
+            android:textColor="@color/colorWhite"
+            android:layout_weight="2"/>
+
+        <View
+            android:id="@+id/divider2"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginStart="12dp"
+            android:background="?android:attr/listDivider"
+            android:layout_above="@id/linearLayout"
+            app:layout_constraintHorizontal_bias="1.0"
+            android:backgroundTint="@color/colorWhite"
+            android:layout_weight="9"/>
+    </LinearLayout>
+
 
     <ProgressBar
         android:id="@+id/loading"
@@ -140,9 +133,7 @@
         android:layout_marginBottom="64dp"
         android:layout_marginTop="12dp"
         android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        android:layout_centerHorizontal="true"
         android:indeterminateTint="@color/colorYellow"/>
 
 
@@ -153,11 +144,9 @@
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="96dp"
+        android:layout_marginTop="48dp"
         android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/login"
+        android:layout_below="@id/linearLayout2"
         android:gravity="center">
         <!--
         <Button
@@ -224,13 +213,10 @@
 
     <View
         android:id="@+id/divider3"
-        android:layout_width="409dp"
+        android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginBottom="96dp"
         android:background="?android:attr/listDivider"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_above="@id/signUp"
         android:backgroundTint="@color/colorWhite"/>
 
     <Button
@@ -240,11 +226,9 @@
         android:layout_marginTop="24dp"
         android:background="@drawable/btn_rounded_rect"
         android:text="@string/signup_text"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/divider3"
+        android:layout_alignParentBottom="true"
         android:textColor="@color/colorBlack"/>
 
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</RelativeLayout>
