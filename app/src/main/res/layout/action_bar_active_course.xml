@@ -16,7 +16,7 @@
         android:focusable="true"
         tools:ignore="ContentDescription"
         android:tint="@color/colorWhite"
-        android:layout_weight="30"/>
+        android:layout_weight="45"/>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -26,18 +26,8 @@
         android:textStyle="bold"
         android:text="@string/course_name"
         android:gravity="center"
-        android:layout_weight="10"/>
-    <ImageButton
-        android:id="@+id/imgBtnNotificationsActiveCourse"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:src="@drawable/icon_notifications"
-        android:backgroundTint="#0000"
-        android:clickable="true"
-        android:focusable="true"
-        tools:ignore="ContentDescription"
-        android:tint="@color/colorWhite"
-        android:layout_weight="30"/>
+        android:layout_weight="10"
+        android:layout_gravity="center_vertical"/>
     <ImageButton
         android:id="@+id/imgBtnMenuActiveCourse"
         android:layout_width="match_parent"
@@ -48,5 +38,5 @@
         android:focusable="true"
         tools:ignore="ContentDescription"
         android:tint="@color/colorWhite"
-        android:layout_weight="30"/>
+        android:layout_weight="45"/>
 </LinearLayout>

@@ -91,6 +91,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     MongoClient mongoClient;
     MongoDatabase mongoDatabase;
     ImageView imageView;
+    ActionBarDrawerToggle toggle;
 
     public static final List<String> TvShows  = new ArrayList<String>();
     public static final int[] TvShowImgs = {R.drawable.google, R.drawable.facebook};
@@ -110,10 +111,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         //imageView = (ImageView) findViewById(R.id.profilePhotoTest);
         //Toolbar toolbar = findViewById(R.id.toolbar);
  //        setSupportActionBar(toolbar);
-        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle(R.string.home);
         drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+        toggle = new ActionBarDrawerToggle(
                 this, drawer, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
@@ -390,6 +392,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if(toggle.onOptionsItemSelected(item)){
+            return true;
+        }
         if(item.getItemId()==R.id.signOut)
         {
             signOut();
