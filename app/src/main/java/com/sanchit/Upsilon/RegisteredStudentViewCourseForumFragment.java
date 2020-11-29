@@ -37,6 +37,7 @@ import com.cloudinary.android.callback.UploadCallback;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.sanchit.Upsilon.ForumData.MessageAdapter;
@@ -48,6 +49,7 @@ import com.sanchit.Upsilon.courseData.CourseReviewAdapter;
 import org.bson.Document;
 import org.bson.types.BasicBSONList;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -396,7 +398,40 @@ public class RegisteredStudentViewCourseForumFragment extends Fragment {
             fileUri = data.getData();
             if(!checker.equals("image"))
             {
+                Messages messages = new Messages();
+                messages.setFrom(user.getId());
+                messages.setType("pdf");
+                //messages.setMessage(messageText);
+                Calendar calendar = Calendar.getInstance();
+                SimpleDateFormat currentDate = new SimpleDateFormat("MMM  dd, yyyy");
+                saveCurrentDate = currentDate.format(calendar.getTime());
+                SimpleDateFormat currentTime = new SimpleDateFormat("hh:mm a");
+                saveCurrentTime = currentTime.format(calendar.getTime());
 
+                messages.setDate(saveCurrentDate);
+                messages.setTime(saveCurrentTime);
+                //messageList1.add(messages);
+                //messageAdapter.notifyDataSetChanged();
+                //String picturePath;
+                /*String[] filePathColumn = { MediaStore.Files.FileColumns.DATA };
+                Cursor cursor = getActivity().getContentResolver().query(fileUri,
+                        filePathColumn, null, null, null);
+                cursor.moveToFirst();
+                int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                picturePath = cursor.getString(columnIndex);
+                cursor.close();*/
+
+                /*String[] proj = { MediaStore.MediaColumns.DATA };
+                Cursor cursor = getActivity().getContentResolver().query(fileUri, proj, null, null, null);
+                if (cursor.moveToFirst()) {
+                    int column_index = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
+                    picturePath = cursor.getString(column_index);
+                }
+                cursor.close();*/
+                File myFile = new File(fileUri.getPath());
+                picturePath = myFile.getAbsolutePath();
+                Log.v("Path",picturePath);
+                uploadGiven1(messages);
             }
             else if(checker.equals("image"))
             {
@@ -435,10 +470,8 @@ public class RegisteredStudentViewCourseForumFragment extends Fragment {
     }
 
     void uploadGiven(Messages messages){
-
                 String requestId = MediaManager.get().upload(picturePath)
                         .unsigned("preset1")
-                        .option("resource_type", "image")
                         .option("folder", "Upsilon/".concat(course.getCourseId()).concat("/forum/"))
                         .option("public_id", "forumImage"+user.getId()+System.currentTimeMillis())
                         .callback(new UploadCallback() {
@@ -460,7 +493,8 @@ public class RegisteredStudentViewCourseForumFragment extends Fragment {
 
                             @Override
                             public void onError(String requestId, ErrorInfo error) {
-
+                                loadingBar.dismiss();
+                                Snackbar.make(getView(),"Error"+error,Snackbar.LENGTH_LONG).show();
                             }
 
                             @Override
@@ -471,5 +505,42 @@ public class RegisteredStudentViewCourseForumFragment extends Fragment {
                         .dispatch();
             }
 
+    void uploadGiven1(Messages messages){
+        String requestId = MediaManager.get().upload(fileUri)
+                .unsigned("preset1")
+                .option("resource_type","auto")
+                .option("folder", "Upsilon/".concat(course.getCourseId()).concat("/forum/"))
+                .option("public_id", "forumImage"+user.getId()+System.currentTimeMillis())
+                .callback(new UploadCallback() {
+                    @Override
+                    public void onStart(String requestId) {
+                    }
+
+                    @Override
+                    public void onProgress(String requestId, long bytes, long totalBytes) {
+
+                    }
+
+                    @Override
+                    public void onSuccess(String requestId, Map resultData) {
+                        messages.setMessage(resultData.get("url").toString());
+                        loadingBar.dismiss();
+                        sendMessage(messages);
+                    }
+
+                    @Override
+                    public void onError(String requestId, ErrorInfo error) {
+                        loadingBar.dismiss();
+                        Snackbar.make(getView(),"Error"+error,Snackbar.LENGTH_LONG).show();
+                    }
+
+                    @Override
+                    public void onReschedule(String requestId, ErrorInfo error) {
+
+                    }
+                })
+                .dispatch();
     }
+
+}
 
