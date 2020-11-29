@@ -508,7 +508,8 @@ public class RegisteredStudentViewCourseForumFragment extends Fragment {
     void uploadGiven1(Messages messages){
         String requestId = MediaManager.get().upload(fileUri)
                 .unsigned("preset1")
-                .option("resource_type","auto")
+                .option("resource_type","auto" +
+                        "")
                 .option("folder", "Upsilon/".concat(course.getCourseId()).concat("/forum/"))
                 .option("public_id", "forumImage"+user.getId()+System.currentTimeMillis())
                 .callback(new UploadCallback() {

@@ -102,6 +102,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         app = new App(new AppConfiguration.Builder(appID)
                 .build());
         User user = app.currentUser();
@@ -174,8 +175,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         explore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Intent intent = new Intent();
-                //startActivity(intent);
+                Intent intent = new Intent(MainActivity.this,ExploreActivity.class);
+                startActivity(intent);
             }
         });
     }

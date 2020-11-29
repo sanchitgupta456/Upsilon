@@ -311,7 +311,7 @@ public class AddCourseActivity extends AppCompatActivity implements AdapterView.
                 }
                 //Object object = new CourseReview("Hi",5,"Hello");
                 courseReviews = new ArrayList();
-                Document test = new Document().append("review","This is a test review").append("reviewRating",2.75).append("reviewAuthorId",user.getId());
+                Document test = new Document().append("review","A Step for bringing Knowledge down the years of College").append("reviewRating",5).append("reviewAuthorId",user.getId());
                 courseReviews.add(test);
                 //courseReviews.add(2,object);
                 //courseReviews.put("hello",object);
@@ -326,13 +326,13 @@ public class AddCourseActivity extends AppCompatActivity implements AdapterView.
                 courseDetails.append("tutorId",user.getId().toString());
                 courseDetails.append("courseDescription",courseDescription);
                 courseDetails.append("coursePreReq","");
-                courseDetails.append("courseRating",4.98);
+                courseDetails.append("courseRating",5);
                 courseDetails.append("courseMode",mode);
                 courseDetails.append("courseFees",fees);
                 courseDetails.append("courseImage","balh");
                 courseDetails.append("instructorLocation","Here");
                 //courseDetails.append("courseDurationMeasure","hours");
-                courseDetails.append("numberOfStudentsEnrolled",10);
+                courseDetails.append("numberOfStudentsEnrolled",0);
                 courseDetails.append("courseDuration",courseDuration);
                 courseDetails.append("numberOfBatches",numOfBatches);
                 courseDetails.append("courseReviews",courseReviews);

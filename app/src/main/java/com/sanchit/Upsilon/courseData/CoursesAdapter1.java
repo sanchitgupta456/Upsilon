@@ -58,6 +58,35 @@ public class CoursesAdapter1 extends RecyclerView.Adapter<CoursesAdapter1.ViewHo
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
         Course course = courseList.get(position);
+        App app = new App(new AppConfiguration.Builder(appID)
+                .build());
+        User user = app.currentUser();
+        mongoClient = user.getMongoClient("mongodb-atlas");
+        mongoDatabase = mongoClient.getDatabase("Upsilon");
+        MongoCollection<Document> mongoCollection  = mongoDatabase.getCollection("UserData");
+
+        Document queryFilter1  = new Document("userid",course.getTutorId());
+
+        RealmResultTask<MongoCursor<Document>> findTask1 = mongoCollection.find(queryFilter1).iterator();
+
+        findTask1.getAsync(task1 -> {
+            if (task1.isSuccess()) {
+                MongoCursor<Document> results = task1.get();
+                if(!results.hasNext())
+                {
+
+                }
+                else
+                {
+                    Document currentDoc = results.next();
+                    holder.textTutorTvShow.setText(currentDoc.getString("name"));
+                }
+            } else {
+                Log.v("User","Failed to complete search");
+            }
+        });
+
+
 
         holder.textTvShow.setText(course.getCourseName());
         Log.v("CourseAdapter",course.getCourseImage());
@@ -66,16 +95,21 @@ public class CoursesAdapter1 extends RecyclerView.Adapter<CoursesAdapter1.ViewHo
         //holder.imgTvShow.setImageResource(course.getCardImgID());
         //holder.textTutorTvShow.setText(course.getTutorId());
         holder.textModeTvShow.setText(course.getCourseMode());
-        //holder.textFeeTvShow.setText(course.getCourseFees());
+        if(course.getCourseFees()==0)
+        {
+            holder.textFeeTvShow.setText("Free");
+        }
+        else
+        {
+            holder.textFeeTvShow.setText("Rs."+course.getCourseFees());
+        }
         holder.textRatingTvShow.setText(String.format("%s/5", course.getCourseRating()));
 
         holder.rl.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //Toast.makeText(context,"The position is:"+position,Toast.LENGTH_SHORT).show();
-                App app = new App(new AppConfiguration.Builder(appID)
-                        .build());
-                User user = app.currentUser();
+
                 Log.v("Id",course.getTutorId());
                 Log.v("Id",user.getId());
                 if(course.getTutorId().equals(user.getId()))
@@ -87,9 +121,6 @@ public class CoursesAdapter1 extends RecyclerView.Adapter<CoursesAdapter1.ViewHo
                 }
                 else
                 {
-                    mongoClient = user.getMongoClient("mongodb-atlas");
-                    mongoDatabase = mongoClient.getDatabase("Upsilon");
-                    MongoCollection<Document> mongoCollection  = mongoDatabase.getCollection("UserData");
 
                     //Blank query to find every single course in db
                     //TODO: Modify query to look for user preferred course IDs
