@@ -5,6 +5,9 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -12,10 +15,18 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.app.job.JobInfo;
+import android.app.job.JobScheduler;
+import android.content.ComponentName;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
@@ -39,6 +50,8 @@ import com.sanchit.Upsilon.courseData.Course;
 import com.sanchit.Upsilon.courseData.CourseAdapter2;
 import com.sanchit.Upsilon.courseData.CoursesAdapter;
 import com.sanchit.Upsilon.courseData.CoursesAdapter1;
+import com.sanchit.Upsilon.notifications.NotifService;
+import com.sanchit.Upsilon.notifications.UpsilonJobService;
 import com.sanchit.Upsilon.ui.login.LoginActivity;
 import com.squareup.picasso.Picasso;
 
@@ -64,6 +77,8 @@ import io.realm.mongodb.mongo.MongoClient;
 import io.realm.mongodb.mongo.MongoCollection;
 import io.realm.mongodb.mongo.MongoDatabase;
 import io.realm.mongodb.mongo.iterable.MongoCursor;
+
+import static com.sanchit.Upsilon.notifications.NotifChannel.CHANNEL_ID;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -97,11 +112,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public static final int[] TvShowImgs = {R.drawable.google, R.drawable.facebook};
     private String college;
 
+    //NOTIFS
+    Intent serviceIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Intent i = new Intent(this, UpsilonJobService.class);
+        startService(i);
+
+        //displayNotif();
+
+        scheduleJob();
+        //createNotificationChannel();
+        //displayNotif();
 
         app = new App(new AppConfiguration.Builder(appID)
                 .build());
@@ -491,4 +517,83 @@ since the dispatchTouchEvent might dispatch your touch event to this function ag
         return super.dispatchTouchEvent(event);
     }
 
+    public void scheduleJob() {
+        ComponentName componentName = new ComponentName(this, UpsilonJobService.class);
+        JobInfo info = new JobInfo.Builder(123, componentName)
+                .build();
+        JobScheduler scheduler = (JobScheduler) getSystemService(JOB_SCHEDULER_SERVICE);
+        int resultCode = scheduler.schedule(info);
+        if (resultCode == JobScheduler.RESULT_SUCCESS) {
+            Log.d("NotificationService", "Job scheduled");
+        } else {
+            Log.d("NotificationService", "Job scheduling failed");
+        }
+    }
+    public void cancelJob() {
+        JobScheduler scheduler = (JobScheduler) getSystemService(JOB_SCHEDULER_SERVICE);
+        scheduler.cancel(123);
+        Log.d("NotificationService", "Job cancelled");
+    }
+
+    public void startService() {
+        String input = "Upsilon";
+        serviceIntent = new Intent(this, NotifService.class);
+        serviceIntent.putExtra("inputExtra", input);
+        ContextCompat.startForegroundService(this, serviceIntent);
+    }
+    public void stopService() {
+        Intent serviceIntent = new Intent(this, NotifService.class);
+        stopService(serviceIntent);
+    }
+
+    public void displayNotif(){
+        Intent fullScreenIntent = new Intent(this, MainActivity.class);
+        PendingIntent fullScreenPendingIntent = PendingIntent.getActivity(this, 0,
+                fullScreenIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        NotificationCompat.Builder notificationBuilder =
+                new NotificationCompat.Builder(this, CHANNEL_ID)
+                        .setSmallIcon(R.drawable.lightlogo1)
+                        .setContentTitle("Incoming call")
+                        .setContentText("(919) 555-1234")
+                        .setPriority(NotificationCompat.PRIORITY_HIGH)
+                        .setCategory(NotificationCompat.CATEGORY_CALL)
+
+                        // Use a full-screen intent only for the highest-priority alerts where you
+                        // have an associated activity that you would like to launch after the user
+                        // interacts with the notification. Also, if your app targets Android 10
+                        // or higher, you need to request the USE_FULL_SCREEN_INTENT permission in
+                        // order for the platform to invoke this notification.
+                        .setFullScreenIntent(fullScreenPendingIntent, true);
+
+        Notification incomingCallNotification = notificationBuilder.build();
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(MainActivity.this);
+
+// notificationId is a unique int for each notification that you must define
+        notificationManager.notify(123, notificationBuilder.build());
+    }
+
+    private void createNotificationChannel() {
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is new and not in the support library
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = "Upsilon";
+            String description = "Helllo!!";
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
+            channel.setDescription(description);
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        cancelJob();
+        Log.i("MAINACT", "onDestroy!");
+        super.onDestroy();
+
+    }
 }
