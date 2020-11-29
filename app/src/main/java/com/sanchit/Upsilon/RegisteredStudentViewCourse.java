@@ -37,6 +37,7 @@ public class RegisteredStudentViewCourse extends AppCompatActivity implements Bo
         getSupportActionBar().setDisplayShowCustomEnabled(true);
         getSupportActionBar().setCustomView(R.layout.action_bar_active_course);
         getSupportActionBar().setElevation(12);
+        getSupportActionBar().setTitle(course.getCourseName());
 
         loadFragment(new RegisteredStudentViewCourseHomeFragment());
 

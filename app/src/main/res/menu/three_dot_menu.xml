@@ -10,12 +10,10 @@
     <item
         android:title="Sign out"
         android:id="@+id/signOut"
-        android:icon="@drawable/icon_close"
-        android:iconTint="@color/colorBlack"/>
+        android:icon="@drawable/icon_close"/>
     <item
         android:title="Search"
         app:showAsAction="always"
-        android:icon="@drawable/icon_search"
-        android:iconTint="@color/colorWhite"/>
+        android:icon="@drawable/icon_search_holo_dark"/>
 
 </menu>
