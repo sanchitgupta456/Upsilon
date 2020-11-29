@@ -10,6 +10,9 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.job.JobInfo;
+import android.app.job.JobScheduler;
+import android.content.ComponentName;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -20,6 +23,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
+import android.view.View;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -31,6 +35,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.sanchit.Upsilon.courseData.Course;
 import com.sanchit.Upsilon.courseData.CoursesAdapter;
+import com.sanchit.Upsilon.notifications.UpsilonJobService;
 import com.sanchit.Upsilon.ui.login.LoginActivity;
 import com.squareup.picasso.Picasso;
 
@@ -89,6 +94,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        scheduleJob();
+
         app = new App(new AppConfiguration.Builder(appID)
                 .build());
         User user = app.currentUser();
@@ -450,4 +458,29 @@ since the dispatchTouchEvent might dispatch your touch event to this function ag
         return super.dispatchTouchEvent(event);
     }
 
+    //TODO: Finish notifications completely
+    //NOTIFICATIONS TEST
+
+    public void scheduleJob(){
+        ComponentName componentName = new ComponentName(this, UpsilonJobService.class);
+        JobInfo info = new JobInfo.Builder(123, componentName)
+                .build();
+        JobScheduler scheduler = (JobScheduler)getSystemService(JOB_SCHEDULER_SERVICE);
+        scheduler.schedule(info);
+
+        int resultCode = scheduler.schedule(info);
+
+        if (resultCode == JobScheduler.RESULT_SUCCESS){
+            Log.v("Notifications", "Successful!");
+        }
+        else{
+            Log.v("Notifications", "Failure!");
+        }
+    }
+
+    public void cancelJob(){
+        JobScheduler scheduler = (JobScheduler)getSystemService(JOB_SCHEDULER_SERVICE);
+        scheduler.cancel(123);
+        Log.v("Notifications", "Job cancelled!");
+    }
 }
