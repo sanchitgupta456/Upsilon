@@ -96,8 +96,6 @@
             </LinearLayout>
 
             <!-- course information here. to be added later. -->
-
-
         </RelativeLayout>
     </ScrollView>
 </RelativeLayout>

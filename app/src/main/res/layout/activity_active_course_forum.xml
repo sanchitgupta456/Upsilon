@@ -19,6 +19,12 @@
         android:src="@drawable/icon_refresh"
         android:elevation="30dp"
         android:contentDescription="@string/refresh" />
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:id="@+id/forum_progress_bar"
+        android:visibility="invisible"/>
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/private_messages_list_of_users1"
         android:layout_width="match_parent"
