@@ -7,51 +7,49 @@
     android:background="@drawable/background_light">
 
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:id="@+id/linearLayout"
-        android:layout_centerHorizontal="true">
+        android:layout_width="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_height="wrap_content"
+        android:id="@+id/layoutUploadButtons"
+        android:background="@color/transparent"
+        android:elevation="12dp">
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_margin="20dp"
             android:id="@+id/btnUploadDocument"
-            android:tint="@color/colorBlack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:backgroundTint="@color/colorWhite"
+            android:elevation="30dp"
+            android:layout_margin="@dimen/activity_horizontal_margin"
             android:src="@drawable/icon_doc"
-            android:layout_gravity="center"
-            android:scaleType="centerInside"
-            tools:ignore="ContentDescription"
-            android:foregroundGravity="center"/>
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_margin="20dp"
-            android:id="@+id/btnUploadImage"
             android:tint="@color/colorBlack"
-            android:backgroundTint="@color/colorWhite"
-            android:src="@drawable/icon_image"
-            android:layout_gravity="center"
-            android:scaleType="centerInside"
             tools:ignore="ContentDescription" />
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_margin="20dp"
-            android:id="@+id/btnUploadVideo"
-            android:tint="@color/colorBlack"
+            android:id="@+id/btnUploadImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:backgroundTint="@color/colorWhite"
+            android:elevation="30dp"
+            android:layout_margin="@dimen/activity_horizontal_margin"
+            android:tint="@color/colorBlack"
+            android:src="@drawable/icon_image"
+            tools:ignore="ContentDescription" />
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/btnUploadVideo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/colorWhite"
+            android:elevation="20dp"
+            android:layout_margin="@dimen/activity_horizontal_margin"
+            android:tint="@color/colorBlack"
             android:src="@drawable/icon_video"
-            android:layout_gravity="center"
-            android:scaleType="centerInside"
             tools:ignore="ContentDescription" />
     </LinearLayout>
     <TextView
         android:id="@+id/textCourseResources"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/linearLayout"
+        android:layout_below="@id/layoutUploadButtons"
         android:padding="10dp"
         android:layout_marginTop="20dp"
         android:layout_marginStart="@dimen/activity_horizontal_margin"
