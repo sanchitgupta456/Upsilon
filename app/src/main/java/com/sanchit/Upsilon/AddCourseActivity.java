@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -14,7 +15,9 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -22,6 +25,7 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -75,6 +79,8 @@ public class AddCourseActivity extends AppCompatActivity implements AdapterView.
     String CourseImageUrl;
     private static int RESULT_LOAD_IMAGE = 1;
     private static final int WRITE_PERMISSION = 0x01;
+    private ProgressBar progressBar;
+    private ImageButton imageButtonBack, imageButtonNext;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -94,6 +100,10 @@ public class AddCourseActivity extends AppCompatActivity implements AdapterView.
         CourseFees = (EditText) findViewById(R.id.course_fee);
         Free = (RadioButton) findViewById(R.id.add_course_free);
         Paid = (RadioButton) findViewById(R.id.add_course_paid);
+        progressBar = (ProgressBar) findViewById(R.id.loadingAddCourse);
+        imageButtonBack = (ImageButton) findViewById(R.id.imgBtnBackAddCourse);
+        imageButtonNext = (ImageButton) findViewById(R.id.imgBtnNextAddCourse);
+
         //spinner = (Spinner) findViewById(R.id.courseDurationMeasureSpinner);
 
         app = new App(new AppConfiguration.Builder(appID)
@@ -135,15 +145,29 @@ public class AddCourseActivity extends AppCompatActivity implements AdapterView.
         //spinner.setAdapter(adapter);
         //spinner.setOnItemSelectedListener(this);
 
-        nextButton.setOnClickListener(new View.OnClickListener() {
+        imageButtonBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(AddCourseActivity.this, MainActivity.class);
+                startActivity(intent);
+            }
+        });
+        imageButtonNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                progressBar.setProgress(0);
+                progressBar.setIndeterminate(false);
+                nextButton.setVisibility(View.INVISIBLE);
+                progressBar.setVisibility(View.VISIBLE);
                 courseName = CourseName.getText().toString();
                 courseDescription = CourseDescription.getText().toString();
                 courseDuration = CourseDuration.getText().toString();
                 numOfBatches = NumberOfBatches.getText().toString();
-                fees = Integer.parseInt(CourseFees.getText().toString());
+
+                if(Paid.isChecked())
+                {
+                    fees = Integer.parseInt(CourseFees.getText().toString());
+                }
 
                 //courseReviews = new ArrayList<CourseReview>();
                 if(offline_online.isChecked())
@@ -190,6 +214,138 @@ public class AddCourseActivity extends AppCompatActivity implements AdapterView.
                     {
                         String id= String.valueOf(result.get().getInsertedId().asObjectId().getValue());
                         Log.v("Added Course",id);
+                        String requestId = MediaManager.get().upload(CourseImageUrl)
+                                .unsigned("preset1")
+                                .option("resource_type", "image")
+                                .option("folder", "Upsilon/Courses/".concat(id))
+                                .option("public_id", "CourseImage "+0)
+                                .callback(new UploadCallback() {
+                                    @Override
+                                    public void onStart(String requestId) {
+                                    }
+
+                                    @RequiresApi(api = Build.VERSION_CODES.N)
+                                    @Override
+                                    public void onProgress(String requestId, long bytes, long totalBytes) {
+                                        progressBar.setProgress(Math.toIntExact((bytes / totalBytes) * 100));
+                                    }
+
+                                    @Override
+                                    public void onSuccess(String requestId, Map resultData) {
+
+                                        mongoCollection1.insertOne(new Document("courseId",result.get().getInsertedId())).getAsync(result2 -> {
+                                            if(result2.isSuccess())
+                                            {
+                                                Log.v("Course","Successfully Created Forum");
+                                            }
+                                            else
+                                            {
+                                                Log.v("Course",result2.getError().toString());
+                                            }
+                                        });
+
+                                        courseDetails.append("courseImage",resultData.get("url").toString());
+                                        mongoCollection.updateOne(new Document("_id",result.get().getInsertedId()),courseDetails).getAsync(result1 -> {
+                                            if(result1.isSuccess())
+                                            {
+                                                progressBar.setProgress(100);
+                                                progressBar.setVisibility(View.INVISIBLE);
+                                                Log.v("EXAMPLE", "Inserted custom user data document. _id of inserted document: "
+                                                        + result1.get().getModifiedCount());
+                                                Log.v("AddCourse","Updated Image Successfully");
+                                                Intent intent = new Intent(AddCourseActivity.this,AddCourseActivityContinued.class);
+                                                intent.putExtra("InsertedDocument", result.get().getInsertedId().asObjectId().getValue().toString());
+                                                startActivity(intent);
+                                            }
+                                            else
+                                            {
+                                                Log.v("AddCourse",result1.getError().toString());
+                                            }
+                                        });
+                                    }
+
+                                    @Override
+                                    public void onError(String requestId, ErrorInfo error) {
+
+                                    }
+
+                                    @Override
+                                    public void onReschedule(String requestId, ErrorInfo error) {
+
+                                    }
+                                })
+                                .dispatch();
+                        //Toast.makeText(getApplicationContext(),"Successfully Added The Course",Toast.LENGTH_LONG).show();
+                    }
+                    else
+                    {
+                        Log.v("User",result.getError().toString());
+                    }
+                });
+            }
+        });
+        nextButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                progressBar.setProgress(0);
+                progressBar.setIndeterminate(false);
+                nextButton.setVisibility(View.INVISIBLE);
+                progressBar.setVisibility(View.VISIBLE);
+                courseName = CourseName.getText().toString();
+                courseDescription = CourseDescription.getText().toString();
+                courseDuration = CourseDuration.getText().toString();
+                numOfBatches = NumberOfBatches.getText().toString();
+
+                if(Paid.isChecked())
+                {
+                    fees = Integer.parseInt(CourseFees.getText().toString());
+                }
+
+                //courseReviews = new ArrayList<CourseReview>();
+                if(offline_online.isChecked())
+                {
+                    mode="Online";
+                }
+                else {
+                    mode = "Offline";
+                }
+                //Object object = new CourseReview("Hi",5,"Hello");
+                courseReviews = new ArrayList();
+                Document test = new Document().append("review","A Step for bringing Knowledge down the years of College").append("reviewRating",5).append("reviewAuthorId",user.getId());
+                courseReviews.add(test);
+                //courseReviews.add(2,object);
+                //courseReviews.put("hello",object);
+                /*course.setRatingAuthorId("h");
+                course.setReview("fd");
+                course.setReviewRating(1.23);
+                courseReviews.add(course);*/
+                Document courseDetails = new Document();
+
+                courseDetails.append("_partitionkey","_partitionKey");
+                courseDetails.append("courseName",courseName);
+                courseDetails.append("tutorId",user.getId().toString());
+                courseDetails.append("courseDescription",courseDescription);
+                courseDetails.append("coursePreReq","");
+                courseDetails.append("courseRating",5);
+                courseDetails.append("courseMode",mode);
+                courseDetails.append("courseFees",fees);
+                courseDetails.append("courseImage","balh");
+                courseDetails.append("instructorLocation","Here");
+                //courseDetails.append("courseDurationMeasure","hours");
+                courseDetails.append("numberOfStudentsEnrolled",0);
+                courseDetails.append("courseDuration",courseDuration);
+                courseDetails.append("numberOfBatches",numOfBatches);
+                courseDetails.append("courseReviews",courseReviews);
+                courseDetails.append("courseImageCounter",0);
+
+                /*Intent intent = new Intent(AddCourseActivity.this,AddCourseActivityContinued.class);
+                intent.putExtra("courseDetails",courseDetails.toJson().toString());
+                startActivity(intent);*/
+                mongoCollection.insertOne(courseDetails).getAsync(result -> {
+                    if(result.isSuccess())
+                    {
+                        String id= String.valueOf(result.get().getInsertedId().asObjectId().getValue());
+                        Log.v("Added Course",id);
                                        String requestId = MediaManager.get().upload(CourseImageUrl)
                         .unsigned("preset1")
                         .option("resource_type", "image")
@@ -200,9 +356,10 @@ public class AddCourseActivity extends AppCompatActivity implements AdapterView.
                             public void onStart(String requestId) {
                             }
 
+                            @RequiresApi(api = Build.VERSION_CODES.N)
                             @Override
                             public void onProgress(String requestId, long bytes, long totalBytes) {
-
+                                progressBar.setProgress(Math.toIntExact((bytes / totalBytes) * 100));
                             }
 
                             @Override
@@ -223,6 +380,8 @@ public class AddCourseActivity extends AppCompatActivity implements AdapterView.
                                 mongoCollection.updateOne(new Document("_id",result.get().getInsertedId()),courseDetails).getAsync(result1 -> {
                                     if(result1.isSuccess())
                                     {
+                                        progressBar.setProgress(100);
+                                        progressBar.setVisibility(View.INVISIBLE);
                                         Log.v("EXAMPLE", "Inserted custom user data document. _id of inserted document: "
                                                 + result1.get().getModifiedCount());
                                         Log.v("AddCourse","Updated Image Successfully");
@@ -327,4 +486,8 @@ public class AddCourseActivity extends AppCompatActivity implements AdapterView.
         }
     }
 
+    @Override
+    public void onBackPressed() {
+
+    }
 }

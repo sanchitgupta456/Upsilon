@@ -3,91 +3,172 @@ package com.sanchit.Upsilon;
 import android.app.ActionBar;
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.text.format.DateFormat;
+import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.TimePicker;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.sanchit.Upsilon.courseData.Course;
+import com.sanchit.Upsilon.ui.login.LoginActivity;
 import com.squareup.picasso.Picasso;
 
+import org.bson.Document;
+
+import java.sql.Time;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.Locale;
+import java.util.Objects;
+
+import io.realm.mongodb.App;
+import io.realm.mongodb.AppConfiguration;
+import io.realm.mongodb.User;
+import io.realm.mongodb.mongo.MongoClient;
+import io.realm.mongodb.mongo.MongoCollection;
+import io.realm.mongodb.mongo.MongoDatabase;
+import io.realm.mongodb.mongo.options.UpdateOptions;
 
 import static android.app.ActionBar.DISPLAY_SHOW_CUSTOM;
 
-public class TeacherViewCourseActivity extends AppCompatActivity {
+public class TeacherViewCourseActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
 
+    String appID = "upsilon-ityvn";
     Course course;
-    private ImageView courseImage;
-    private TextView rating,enrolled,nextClass, courseName;
+    //private ImageView courseImage;
+    //private TextView rating,enrolled,nextClass, courseName;
+    private TextView courseName;
     private View actionBar;
     ImageButton imageButtonBack, imageButtonUpdate;
-    Button ScheduleClass, UpdateLink;
+    //Button ScheduleClass, UpdateLink;
     int year,month,day;
+    App app;
+    View dialogView;
+    AlertDialog alertDialog;
+    MongoClient mongoClient;
+    MongoDatabase mongoDatabase;
+    private Gson gson;
+    private GsonBuilder gsonBuilder;
+    private EditText meetLink;
+    private FrameLayout fragmentContainer;
+    private BottomNavigationView bottomNavigationView;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.teachers_viewof_course);
         Intent intent = getIntent();
         course = (Course) intent.getSerializableExtra("Course");
-        this.getSupportActionBar().setDisplayOptions(androidx.appcompat.app.ActionBar.DISPLAY_SHOW_CUSTOM);
+
+        fragmentContainer = (FrameLayout) findViewById(R.id.course_teacher_frame);
+
+        Objects.requireNonNull(this.getSupportActionBar()).setDisplayOptions(androidx.appcompat.app.ActionBar.DISPLAY_SHOW_CUSTOM);
         getSupportActionBar().setDisplayShowCustomEnabled(true);
         getSupportActionBar().setCustomView(R.layout.action_bar_teachers_view_of_course);
-        getSupportActionBar().setElevation(10);
-        actionBar = getSupportActionBar().getCustomView();
-        imageButtonBack = (ImageButton)findViewById(R.id.imgBtnBackTeachersViewCourse); //yet to be set up
-        imageButtonUpdate = (ImageButton)findViewById(R.id.imgBtnUpdateTeachersViewCourse); //yet to be set up
+        getSupportActionBar().setElevation(12);
+
         courseName = (TextView) findViewById(R.id.courseNameTeachersView);
+        imageButtonBack = (ImageButton) findViewById(R.id.imgBtnBackTeachersViewCourse);
+        imageButtonUpdate = (ImageButton) findViewById(R.id.imgBtnUpdateTeachersViewCourse);
+
+        loadFragment(new RegisteredStudentViewCourseHomeFragment());
+
+        bottomNavigationView = findViewById(R.id.bottom_navigation_teacher);
+        bottomNavigationView.setOnNavigationItemSelectedListener(TeacherViewCourseActivity.this);
+
         courseName.setText(course.getCourseName());
-        courseImage = (ImageView) findViewById(R.id.imgCourseImage);
-        rating = (TextView) findViewById(R.id.teacher_view_course_rating);
-        enrolled = (TextView) findViewById(R.id.teacher_view_course_enrolled);
-        ScheduleClass = (Button) findViewById(R.id.btnScheduleClass);
-        UpdateLink = (Button) findViewById(R.id.btnUpdateLink); //yet to be set up
-        nextClass = (TextView) findViewById(R.id.view_course_teacher_schedule_class);
-        Picasso.with(getApplicationContext()).load(course.getCourseImage()).into(courseImage);
-        rating.setText("Rating "+course.getCourseRating() + "/5");
-        enrolled.setText(course.getNumberOfStudentsEnrolled() + " students have enrolled in this course");
-        ScheduleClass.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final Calendar c = Calendar.getInstance();
-                year = c.get(Calendar.YEAR);
-                month = c.get(Calendar.MONTH);
-                day = c.get(Calendar.DAY_OF_MONTH);
-                DateDialog();
-            }
-        });
-        UpdateLink.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //update link
-            }
-        });
         imageButtonBack.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(TeacherViewCourseActivity.this,MainActivity.class);
+            public void onClick(View view) {
+                Intent intent = new Intent(TeacherViewCourseActivity.this, MainActivity.class);
                 startActivity(intent);
             }
         });
-    }
-
-    public void DateDialog(){
-        DatePickerDialog.OnDateSetListener listener=new DatePickerDialog.OnDateSetListener() {
-
+        imageButtonUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth)
-            {
-                nextClass.setText(dayOfMonth + "/" + monthOfYear + "/" + year);
-            }};
-        DatePickerDialog dpDialog=new DatePickerDialog(TeacherViewCourseActivity.this, listener, year, month, day);
-        dpDialog.show();
+            public void onClick(View view) {
+
+            }
+        });
     }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("Course",course);
+
+        Fragment fragment = new RegisteredStudentViewCourseHomeFragment();
+        fragment.setArguments(bundle);
+
+        switch (item.getItemId()) {
+            case R.id.bottomNavMenuHomeTeacher:
+                fragment = new TeacherViewCourseActivityHomeFragment();
+                fragment.setArguments(bundle);
+                break;
+
+            case R.id.bottomNavMenuNotificationsTeacher:
+                //fragment = new TeacherViewCourseActivityHomeFragment();
+                //fragment.setArguments(bundle);
+                break;
+
+            case R.id.bottomNavMenuResources:
+                //fragment = new TeacherViewCourseActivityHomeFragment();
+                //fragment.setArguments(bundle);
+                break;
+
+            case R.id.bottomNavMenuForumTeacher:
+                fragment = new TeacherViewCourseActivityForumFragment();
+                fragment.setArguments(bundle);
+                break;
+            case R.id.bottomNavMenuSettingsTeacher:
+                //fragment = new TeacherViewCourseActivityHomeFragment();
+                //fragment.setArguments(bundle);
+        }
+
+        return loadFragment(fragment);
+    }
+
+    @Override
+    public void onPointerCaptureChanged(boolean hasCapture) {
+
+    }
+
+    private boolean loadFragment(Fragment fragment) {
+        //switching fragment
+        if (fragment != null) {
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("Course",course);
+            fragment.setArguments(bundle);
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.course_teacher_frame, fragment)
+                    .commit();
+            return true;
+        }
+        return false;
+    }
+
 }

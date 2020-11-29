@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="?attr/actionBarSize"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/transparent"
+    android:layout_alignParentTop="true"
+    android:id="@+id/custom_toolbar"
+    app:title="@string/home"
+    app:navigationIcon="@drawable/icon_hamburger"
+    app:menu="@menu/three_dot_menu">
+</androidx.appcompat.widget.Toolbar>

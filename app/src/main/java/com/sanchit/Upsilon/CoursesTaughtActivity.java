@@ -111,6 +111,10 @@ public class CoursesTaughtActivity extends AppCompatActivity {
                         //Log.v("EXAMPLE", results.next().toString());
                         Document currentDoc = results.next();
 
+                        if(currentDoc.get("nextLectureOn")==null)
+                        {
+                            currentDoc.append("nextLectureOn",0);
+                        }
                         currentDoc.toJson();
                         gsonBuilder = new GsonBuilder();
                         gson = gsonBuilder.create();

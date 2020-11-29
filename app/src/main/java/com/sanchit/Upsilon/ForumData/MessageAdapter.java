@@ -48,8 +48,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
 
     public class MessageViewHolder extends RecyclerView.ViewHolder
     {
-        public TextView senderMessageText,receievrMessageText;
-        public TextView receiverProfileName;
+        public TextView senderMessageText,receievrMessageText,receiverProfileName,senderMessageTime,receiverMessageTime;
         public RelativeLayout relativeLayoutReceiverMessage,relativeLayoutSenderMessage;
         public ImageView messageSenderPicture,messageReceiverPicture;
 
@@ -57,7 +56,9 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
             super(itemView);
 
             senderMessageText = (TextView) itemView.findViewById(R.id.sender_messages_text);
+            senderMessageTime = (TextView) itemView.findViewById(R.id.sender_message_time);
             receievrMessageText = (TextView) itemView.findViewById(R.id.receiver_message_text);
+            receiverMessageTime = (TextView) itemView.findViewById(R.id.receiver_message_time);
             receiverProfileName = (TextView) itemView.findViewById(R.id.usernameSender);
             relativeLayoutReceiverMessage = (RelativeLayout) itemView.findViewById(R.id.receiver_message);
             relativeLayoutSenderMessage = (RelativeLayout) itemView.findViewById(R.id.sender_message);
@@ -92,7 +93,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
         mongoDatabase = mongoClient.getDatabase("Upsilon");
         MongoCollection<Document> mongoCollection  = mongoDatabase.getCollection("UserData");
 
-        Document queryFilter  = new Document("userid",user.getId());
+        Document queryFilter  = new Document("userid",messages.getFrom());
 
         RealmResultTask<MongoCursor<Document>> findTask = mongoCollection.find(queryFilter).iterator();
 
@@ -110,7 +111,8 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
                 while (results.hasNext()) {
                     //Log.v("EXAMPLE", results.next().toString());
                     Document currentDoc = results.next();
-                    receiverImage = currentDoc.getString("profilePicUrl");
+                    holder.receiverProfileName.setText(currentDoc.getString("name"));
+                    //receiverImage = currentDoc.getString("profilePicUrl");
                     //Picasso.with(holder.itemView.getContext()).load(receiverImage).placeholder(R.drawable.profile_image).into(holder.receiverProfileImage);
                     Log.v("User",currentDoc.getString("userid"));
                 }
@@ -160,6 +162,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
                 holder.senderMessageText.setBackgroundResource(R.drawable.sender_message_layout_forum);
                 holder.senderMessageText.setTextColor(Color.BLACK);
                 holder.senderMessageText.setText(messages.getMessage());
+                holder.senderMessageTime.setText(messages.getTime());
             }
             else
             {
@@ -168,6 +171,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
                 holder.relativeLayoutReceiverMessage.setVisibility(View.VISIBLE);
                 holder.receievrMessageText.setTextColor(Color.BLACK);
                 holder.receievrMessageText.setText(messages.getMessage());
+                holder.receiverMessageTime.setText(messages.getTime());
             }
         }
         else if(fromMessageType.equals("image"))
@@ -175,6 +179,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
             if(fromUserId.equals(messageSenderId))
             {
                 holder.messageSenderPicture.setVisibility(View.VISIBLE);
+                holder.senderMessageTime.setText(messages.getTime());
                 holder.relativeLayoutSenderMessage.setVisibility(View.VISIBLE);
 
                 Picasso.with(holder.itemView.getContext()).load(messages.getMessage()).into(holder.messageSenderPicture);
@@ -191,6 +196,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
             {
                 holder.messageReceiverPicture.setVisibility(View.VISIBLE);
                 holder.receiverProfileName.setVisibility(View.VISIBLE);
+                holder.receiverMessageTime.setText(messages.getTime());
                 holder.relativeLayoutReceiverMessage.setVisibility(View.VISIBLE);
 
                 Picasso.with(holder.itemView.getContext()).load(messages.getMessage()).into(holder.messageReceiverPicture);
@@ -211,6 +217,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
             {
                 holder.messageSenderPicture.setVisibility(View.VISIBLE);
                 holder.relativeLayoutSenderMessage.setVisibility(View.VISIBLE);
+                holder.senderMessageTime.setText(messages.getTime());
                 holder.messageSenderPicture.setBackgroundResource(R.drawable.file);
 
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -225,6 +232,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
             {
                 holder.receiverProfileName.setVisibility(View.VISIBLE);
                 holder.messageReceiverPicture.setVisibility(View.VISIBLE);
+                holder.receiverMessageTime.setText(messages.getTime());
                 holder.relativeLayoutReceiverMessage.setVisibility(View.VISIBLE);
                 holder.messageReceiverPicture.setBackgroundResource(R.drawable.file);
 

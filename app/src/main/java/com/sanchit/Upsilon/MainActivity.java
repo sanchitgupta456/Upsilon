@@ -1,18 +1,17 @@
 package com.sanchit.Upsilon;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.job.JobInfo;
-import android.app.job.JobScheduler;
-import android.content.ComponentName;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -25,7 +24,10 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.cloudinary.android.MediaManager;
@@ -34,8 +36,9 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.sanchit.Upsilon.courseData.Course;
+import com.sanchit.Upsilon.courseData.CourseAdapter2;
 import com.sanchit.Upsilon.courseData.CoursesAdapter;
-import com.sanchit.Upsilon.notifications.UpsilonJobService;
+import com.sanchit.Upsilon.courseData.CoursesAdapter1;
 import com.sanchit.Upsilon.ui.login.LoginActivity;
 import com.squareup.picasso.Picasso;
 
@@ -49,6 +52,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import io.realm.Realm;
 import io.realm.mongodb.App;
@@ -67,6 +71,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     boolean swapped = false;
     static final int MIN_DISTANCE = 500;
     DrawerLayout drawer;
+    TextView explore;
 
     String appID = "upsilon-ityvn";
     private static final String TAG = "MainActivity";
@@ -76,7 +81,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private ArrayList<String> myCourses;
 
     RecyclerView recyclerView,recyclerView1,recyclerView2;
-    CoursesAdapter coursesAdapter,coursesAdapter1,coursesAdapter2;
+    CoursesAdapter1 coursesAdapter;
+    CoursesAdapter coursesAdapter1;
+    CoursesAdapter coursesAdapter2;
     ArrayList<Course> courseArrayList = new ArrayList<Course>();
     ArrayList<Course> courseArrayList1 = new ArrayList<>();
     ArrayList<Course> courseArrayList2 = new ArrayList<>();
@@ -84,6 +91,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     MongoClient mongoClient;
     MongoDatabase mongoDatabase;
     ImageView imageView;
+    ActionBarDrawerToggle toggle;
 
     public static final List<String> TvShows  = new ArrayList<String>();
     public static final int[] TvShowImgs = {R.drawable.google, R.drawable.facebook};
@@ -95,25 +103,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        scheduleJob();
-
         app = new App(new AppConfiguration.Builder(appID)
                 .build());
         User user = app.currentUser();
         if (user == null){
             startActivity(new Intent(MainActivity.this, LoginActivity.class));
         }
-
         //imageView = (ImageView) findViewById(R.id.profilePhotoTest);
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        //Toolbar toolbar = findViewById(R.id.toolbar);
  //        setSupportActionBar(toolbar);
-        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("Home");
-        getSupportActionBar().setIcon(R.drawable.icon_hamburger);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle(R.string.home);
         drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        toggle = new ActionBarDrawerToggle(
+                this, drawer, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(MainActivity.this);
@@ -167,6 +171,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 }
             });
         }
+        explore = (TextView) findViewById(R.id.textExploreCoursesList);
+        explore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this,ExploreActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void goToSetupActivity() {
@@ -235,6 +247,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                             //Log.v("EXAMPLE", results.next().toString());
                             Document currentDoc = results.next();
 
+                            //Log.v("IMPORTANT","Error:"+currentDoc.getString("nextLectureOn"));
+
+                            if(currentDoc.getString("nextLectureOn")==null)
+                            {
+                                currentDoc.append("nextLectureOn","0");
+                            }
                             currentDoc.toJson();
                             gsonBuilder = new GsonBuilder();
                             gson = gsonBuilder.create();
@@ -336,19 +354,31 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     public void displayCoursesInRecycler(){
-        coursesAdapter = new CoursesAdapter(courseArrayList);
+        coursesAdapter = new CoursesAdapter1(courseArrayList);
         coursesAdapter1 = new CoursesAdapter(courseArrayList1);
         coursesAdapter2 = new CoursesAdapter(courseArrayList2);
+
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        LinearLayoutManager layoutManager1 = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        LinearLayoutManager layoutManager2 = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
 
         recyclerView = (RecyclerView)findViewById(R.id.exploreCourseListView);
         recyclerView1 = (RecyclerView)findViewById(R.id.currentCourseListView);
         recyclerView2 = (RecyclerView) findViewById(R.id.recommendedCourseListView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false));
-        recyclerView1.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false));
-        recyclerView2.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false));
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView1.setLayoutManager(layoutManager1);
+        recyclerView2.setLayoutManager(layoutManager2);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView1.setItemAnimator(new DefaultItemAnimator());
         recyclerView2.setItemAnimator(new DefaultItemAnimator());
+
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(), layoutManager.getOrientation());
+        DividerItemDecoration dividerItemDecoration1 = new DividerItemDecoration(recyclerView.getContext(), layoutManager1.getOrientation());
+        DividerItemDecoration dividerItemDecoration2 = new DividerItemDecoration(recyclerView.getContext(), layoutManager2.getOrientation());
+
+        recyclerView.addItemDecoration(dividerItemDecoration);
+        recyclerView1.addItemDecoration(dividerItemDecoration1);
+        recyclerView2.addItemDecoration(dividerItemDecoration2);
         recyclerView.setAdapter(coursesAdapter);
         recyclerView1.setAdapter(coursesAdapter1);
         recyclerView2.setAdapter(coursesAdapter2);
@@ -363,6 +393,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if(toggle.onOptionsItemSelected(item)){
+            return true;
+        }
         if(item.getItemId()==R.id.signOut)
         {
             signOut();
@@ -458,29 +491,4 @@ since the dispatchTouchEvent might dispatch your touch event to this function ag
         return super.dispatchTouchEvent(event);
     }
 
-    //TODO: Finish notifications completely
-    //NOTIFICATIONS TEST
-
-    public void scheduleJob(){
-        ComponentName componentName = new ComponentName(this, UpsilonJobService.class);
-        JobInfo info = new JobInfo.Builder(123, componentName)
-                .build();
-        JobScheduler scheduler = (JobScheduler)getSystemService(JOB_SCHEDULER_SERVICE);
-        scheduler.schedule(info);
-
-        int resultCode = scheduler.schedule(info);
-
-        if (resultCode == JobScheduler.RESULT_SUCCESS){
-            Log.v("Notifications", "Successful!");
-        }
-        else{
-            Log.v("Notifications", "Failure!");
-        }
-    }
-
-    public void cancelJob(){
-        JobScheduler scheduler = (JobScheduler)getSystemService(JOB_SCHEDULER_SERVICE);
-        scheduler.cancel(123);
-        Log.v("Notifications", "Job cancelled!");
-    }
 }

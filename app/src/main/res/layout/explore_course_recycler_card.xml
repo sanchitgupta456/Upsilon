@@ -5,10 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    android:id="@+id/rlCourseFullCard">
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_toStartOf="@id/courseCard"
+        android:layout_alignParentStart="true"
         android:orientation="vertical"
         android:id="@+id/cardInfo"
         android:layout_marginHorizontal="@dimen/activity_horizontal_margin">
@@ -18,72 +21,65 @@
             android:layout_height="wrap_content"
             android:text="@string/course_name"
             android:textColor="@color/colorPrimaryDark"
-            android:textSize="20sp"
+            android:textSize="@dimen/text_margin"
             android:textStyle="bold"
             android:typeface="serif"
-            android:gravity="center_vertical"
-            android:padding="10dp"/>
+            android:gravity="center_vertical"/>
         <TextView
             android:id="@+id/courseInstructor"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="#B211042E"
-            android:text="Adrian Gilatos Junior"
-            android:textSize="@dimen/text_margin"
+            android:text="Upsilon"
+            android:textSize="14sp"
             android:textStyle="italic"
             android:typeface="serif"
-            android:gravity="center_vertical"
-            android:paddingHorizontal="10dp"/>
+            android:gravity="center_vertical"/>
         <TextView
             android:id="@+id/courseMode"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/online"
             android:textColor="#B211042E"
-            android:textSize="@dimen/text_margin"
+            android:textSize="14sp"
             android:textStyle="italic"
             android:typeface="serif"
-            android:gravity="center_vertical"
-            android:paddingHorizontal="10dp"/>
+            android:gravity="center_vertical"/>
         <TextView
             android:id="@+id/courseFee"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/free"
             android:textColor="#B211042E"
-            android:textSize="@dimen/text_margin"
+            android:textSize="14sp"
             android:textStyle="italic"
             android:typeface="serif"
-            android:gravity="center_vertical"
-            android:paddingHorizontal="10dp"/>
+            android:gravity="center_vertical"/>
         <TextView
             android:id="@+id/courseRating"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="3.7/5"
             android:textColor="#B211042E"
-            android:textSize="@dimen/text_margin"
+            android:textSize="14sp"
             android:textStyle="italic"
             android:typeface="serif"
             android:gravity="center_vertical"
-            android:paddingHorizontal="10dp"
-            android:paddingVertical="5dp"
-            android:drawableEnd="@drawable/icon_star_dark"
-            android:drawablePadding="@dimen/activity_vertical_margin"/>
+            android:drawableEnd="@drawable/icon_star_dark"/>
     </LinearLayout>
     <androidx.cardview.widget.CardView
         android:id="@+id/courseCard"
-        android:layout_width="100dp"
-        android:layout_height="80dp"
+        android:layout_width="105dp"
+        android:layout_height="84dp"
         app:cardCornerRadius="10dp"
         app:cardElevation="12dp"
         android:layout_alignParentEnd="true"
         android:layout_margin="@dimen/activity_horizontal_margin">
         <ImageView
             android:id="@+id/courseImage"
-            android:layout_width="100dp"
-            android:layout_height="80dp"
-            android:scaleType="fitCenter"
+            android:layout_width="105dp"
+            android:layout_height="84dp"
+            android:scaleType="centerCrop"
             android:src="@color/colorPrimary"
             tools:ignore="ContentDescription"/>
     </androidx.cardview.widget.CardView>

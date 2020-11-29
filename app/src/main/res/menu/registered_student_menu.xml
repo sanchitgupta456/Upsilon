@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <group
+        android:checkableBehavior="none">
+        <item
+            android:id="@+id/menuItemRefresh"
+            android:title="@string/refresh"
+            android:icon="@drawable/icon_refresh"
+            app:showAsAction="never"
+            />
+        <item
+            android:id="@+id/menuItemSettings"
+            android:title="Settings"
+            android:icon="@drawable/icon_settings_holo_dark"
+            app:showAsAction="ifRoom"
+            />
+        <item
+            android:id="@+id/menuItemReview"
+            android:title="@string/write_a_review"
+            android:icon="@drawable/icon_review"
+            app:showAsAction="never"
+            />
+        <item
+            android:id="@+id/menuItemUnregister"
+            android:title="Drop the course"
+            android:icon="@drawable/icon_close"
+            app:showAsAction="never"
+            />
+    </group>
+
+</menu>

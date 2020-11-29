@@ -81,6 +81,8 @@
                     android:gravity="center_vertical"
                     android:layout_weight="60"/>
                 <TextView
+                    android:autoLink="web"
+                    android:linksClickable="true"
                     android:id="@+id/meetingLink"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -94,8 +96,6 @@
             </LinearLayout>
 
             <!-- course information here. to be added later. -->
-
-
         </RelativeLayout>
     </ScrollView>
 </RelativeLayout>
