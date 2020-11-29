@@ -115,8 +115,7 @@
                 android:typeface="monospace"
                 android:textSize="14sp"
                 android:textColor="@color/colorBlack"
-                android:lineSpacingExtra="1dp"
-                android:text="sender message typical"/>
+                android:lineSpacingExtra="1dp"/>
             <ImageView
                 android:id="@+id/message_sender_image_view"
                 android:layout_width="150dp"
@@ -134,8 +133,7 @@
             android:typeface="sans"
             android:textSize="12sp"
             android:textColor="#B3000000"
-            android:lineSpacingExtra="1dp"
-            android:text="18:46 AM"/>
+            android:lineSpacingExtra="1dp"/>
     </RelativeLayout>
 
 
