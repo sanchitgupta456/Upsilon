@@ -27,6 +27,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.cloudinary.android.MediaManager;
 import com.cloudinary.android.callback.ErrorInfo;
 import com.cloudinary.android.callback.UploadCallback;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.bson.Document;
 import org.bson.types.ObjectId;
@@ -57,7 +58,7 @@ public class AddCourseActivityContinued extends AppCompatActivity {
     Button nextButton;
     JSONObject json;
     String insertedId;
-    LinearLayout addImages,addVideos,addDocuments;
+    FloatingActionButton addImages,addVideos,addDocuments;
     String picturePath,videoPath,documentPath;
     ArrayList<String> picturePaths;
     ArrayList<String> introductoryImageUrls;
@@ -79,9 +80,9 @@ public class AddCourseActivityContinued extends AppCompatActivity {
         getSupportActionBar().setDisplayShowCustomEnabled(true);
         getSupportActionBar().setCustomView(R.layout.action_bar_add_course_contd);
         getSupportActionBar().setElevation(10);
-        addImages = (LinearLayout) findViewById(R.id.add_images_introductory);
-        addVideos = (LinearLayout) findViewById(R.id.add_video_introductory);
-        addDocuments = (LinearLayout) findViewById(R.id.add_documents_introductory);
+        addImages = (FloatingActionButton) findViewById(R.id.add_images_introductory);
+        addVideos = (FloatingActionButton) findViewById(R.id.add_video_introductory);
+        addDocuments = (FloatingActionButton) findViewById(R.id.add_documents_introductory);
         recyclerView =(RecyclerView) findViewById(R.id.listIntroductoryMaterial);
         imageButtonBack = (ImageButton) findViewById(R.id.imgBtnBackAddCourseContd);
         imageButtonProceed = (ImageButton) findViewById(R.id.imgBtnProceedAddCourseContd);

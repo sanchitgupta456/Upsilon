@@ -3,8 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@drawable/background_light">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/refreshForum"
@@ -14,7 +13,6 @@
         android:layout_alignParentTop="true"
         android:layout_margin="@dimen/activity_horizontal_margin"
         android:background="@color/colorWhite"
-        android:backgroundTint="@color/colorWhite"
         android:tint="@color/colorBlack"
         android:src="@drawable/icon_refresh"
         android:elevation="30dp"
@@ -29,7 +27,7 @@
         android:id="@+id/private_messages_list_of_users1"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/chat_linear_layout1"/>
+        android:layout_above="@+id/chat_linear_layout1" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -40,7 +38,8 @@
         android:background="@drawable/forum_chat_bar_layout"
         android:weightSum="100"
         android:layout_marginHorizontal="5dp"
-        android:layout_marginVertical="10dp">
+        android:layout_marginVertical="5dp"
+        android:padding="5dp">
 
         <ImageButton
             android:layout_width="match_parent"

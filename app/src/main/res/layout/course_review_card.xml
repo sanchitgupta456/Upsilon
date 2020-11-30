@@ -46,7 +46,7 @@
                 android:textColor="@color/colorPrimaryDark"
                 android:textStyle="bold"
                 android:textSize="@dimen/text_margin"
-                android:text="3.6/5"
+                android:text="3.5/5"
                 android:gravity="center_vertical"
                 android:paddingStart="20dp"
                 android:paddingEnd="20dp"
@@ -54,6 +54,7 @@
                 android:paddingBottom="5dp"
                 tools:ignore="RtlSymmetry"
                 android:drawableEnd="@drawable/icon_star_dark"
+                android:drawableTint="@color/colorPrimary"
                 android:drawablePadding="5dp"/>
 
             <TextView

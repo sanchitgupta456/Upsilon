@@ -144,7 +144,7 @@
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="24dp"
         android:orientation="horizontal"
         android:layout_below="@id/linearLayout2"
         android:gravity="center">

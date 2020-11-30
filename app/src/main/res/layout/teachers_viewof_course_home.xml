@@ -3,9 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@drawable/background_light">
+    xmlns:tools="http://schemas.android.com/tools">
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -65,7 +63,7 @@
             android:layout_below="@id/linearLayoutNextLecture"
             android:layout_margin="10dp"
             android:background="@drawable/btn_blue"
-            android:textColor="@color/colorBlack"
+            android:textColor="@color/colorWhite"
             android:textSize="@dimen/text_margin"
             android:text="Schedule Class"
             android:paddingStart="20dp"
@@ -75,7 +73,7 @@
             android:layout_centerHorizontal="true"
             android:drawableStart="@drawable/icon_clock"
             android:drawablePadding="@dimen/activity_horizontal_margin"
-            android:drawableTint="@color/colorBlack"/>
+            android:drawableTint="@color/colorWhite"/>
         <LinearLayout
             android:id="@+id/linearLayoutMeetLink"
             android:layout_width="match_parent"
@@ -118,7 +116,7 @@
             android:layout_below="@id/linearLayoutMeetLink"
             android:layout_margin="10dp"
             android:background="@drawable/btn_blue"
-            android:textColor="@color/colorBlack"
+            android:textColor="@color/colorWhite"
             android:textSize="@dimen/text_margin"
             android:text="Update Link"
             android:paddingStart="20dp"
@@ -211,7 +209,7 @@
                 android:checked="true"
                 android:elevation="100dp"
                 android:shadowColor="@color/colorPrimaryDark"
-                android:textColor="@color/colorBlack"
+                android:textColor="@color/colorWhite"
                 android:textOff="@string/new_registrations_closed"
                 android:textOn="@string/accepting_registrations_now"
                 android:textSize="@dimen/text_margin"

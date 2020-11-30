@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:weightSum="100"
-    android:background="@drawable/text_view_add_course"
+    android:background="@drawable/btn_blue"
     android:padding="10dp">
     <ImageView
         android:layout_width="match_parent"

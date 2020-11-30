@@ -44,7 +44,6 @@ public class RegisteredStudentViewCourse extends AppCompatActivity implements Bo
         Objects.requireNonNull(this.getSupportActionBar()).setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         getSupportActionBar().setDisplayShowCustomEnabled(true);
         getSupportActionBar().setCustomView(R.layout.action_bar_active_course);
-        getSupportActionBar().setElevation(12);
         actionBar = getSupportActionBar().getCustomView();
         courseName = (TextView) actionBar.findViewById(R.id.textCourseNameActiveCourse);
         btnBack = (ImageButton) actionBar.findViewById(R.id.imgBtnBackActiveCourse);

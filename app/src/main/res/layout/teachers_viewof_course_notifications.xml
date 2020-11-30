@@ -2,9 +2,7 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@drawable/background_light">
+    android:layout_height="match_parent">
 
     <!-- Following Text View and Recycler Views should bn displayed upon click on Notifications button -->
     <TextView

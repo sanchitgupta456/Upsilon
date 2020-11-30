@@ -10,7 +10,7 @@
         android:calendarViewShown="true"
         android:spinnersShown="true"
         android:layout_weight="4"
-        android:layout_height="0dp" />
+        android:layout_height="0dp"/>
 
     <TimePicker
         android:id="@+id/time_picker"
@@ -24,6 +24,8 @@
         android:layout_weight="1"
         android:layout_width="match_parent"
         android:text="Set"
-        android:layout_height="0dp" />
+        android:textColor="@color/colorWhite"
+        android:layout_height="0dp"
+        android:background="@drawable/btn_blue"/>
 
 </LinearLayout>

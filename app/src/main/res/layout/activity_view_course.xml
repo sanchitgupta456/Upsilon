@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@drawable/background_light">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <ProgressBar
         android:id="@+id/loadingViewCourse"
@@ -18,6 +18,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/loadingViewCourse"
+        android:layout_above="@id/view_course_register"
         android:scrollbars="vertical">
 
         <RelativeLayout
@@ -27,7 +28,7 @@
             android:scrollbars="vertical">
 
             <androidx.cardview.widget.CardView
-                android:layout_width="320dp"
+                android:layout_width="200dp"
                 android:layout_height="160dp"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="24dp"
@@ -42,11 +43,11 @@
 
                     <ImageView
                         android:id="@+id/imageCourseCoverCard"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:contentDescription="Course Representative Image"
+                        android:layout_width="200dp"
+                        android:layout_height="160dp"
                         android:scaleType="centerCrop"
-                        android:src="@drawable/background" />
+                        android:src="@drawable/background"
+                        tools:ignore="ContentDescription" />
 
                     <TextView
                         android:id="@+id/textCourseCoverCard"
@@ -57,10 +58,9 @@
                         android:layout_margin="@dimen/text_margin"
                         android:layout_marginBottom="@dimen/activity_vertical_margin"
                         android:textColor="@color/colorWhite"
-                        android:textSize="24sp"
+                        android:textSize="20sp"
                         android:textStyle="bold"
-                        android:typeface="sans"
-                        android:text="COURSE NAME"/>
+                        android:typeface="sans"/>
                 </RelativeLayout>
 
             </androidx.cardview.widget.CardView>
@@ -83,18 +83,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:maxHeight="48dp"
-                android:inputType="textMultiLine"
-                android:background="@drawable/text_view_login"
-                android:textColor="@color/colorPrimaryDark"
+                android:background="@drawable/text_view_add_course"
+                android:textColor="@color/colorBlack"
                 android:textSize="@dimen/text_margin"
                 android:typeface="sans"
                 android:textStyle="italic"
-                android:text="COURSE DESCRIPTION"
                 android:layout_marginTop="@dimen/activity_vertical_margin"
                 android:layout_below="@id/courseCoverCard"
                 android:layout_marginStart="@dimen/activity_horizontal_margin"
                 android:layout_marginEnd="@dimen/activity_horizontal_margin"
-                android:id="@+id/textCourseDescription" />
+                android:id="@+id/textCourseDescription"
+                android:padding="5dp"/>
 
             <RatingBar
                 android:layout_width="wrap_content"
@@ -107,7 +106,7 @@
                 android:layout_margin="@dimen/text_margin"
                 android:isIndicator="true"
                 android:progressTint="@color/colorYellow"
-                android:progressBackgroundTint="@color/colorPrimaryDark"/>
+                android:progressBackgroundTint="@color/colorGrey"/>
 
             <FrameLayout
                 android:layout_width="match_parent"
@@ -117,7 +116,7 @@
                 android:layout_marginStart="@dimen/activity_horizontal_margin"
                 android:layout_marginEnd="@dimen/activity_horizontal_margin"
                 android:id="@+id/frameCourseDetails"
-                android:background="@drawable/text_view_login">
+                android:background="@drawable/text_view_add_course">
 
                 <LinearLayout
                     android:orientation="vertical"
@@ -133,7 +132,6 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:text="Course by Mr. Somebody"
                             android:textColor="@color/colorPrimaryDark"
                             android:textSize="18sp"
                             android:typeface="sans"
@@ -147,14 +145,14 @@
                             android:src="@drawable/info_icon_dark"
                             android:layout_weight="85"
                             android:backgroundTint="#00000000"
+                            android:tint="@color/colorPrimary"
                             android:gravity="end"
-                            android:contentDescription="Info about course instructor" />
+                            android:contentDescription="@string/info_about_course_instructor" />
                     </LinearLayout>
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Duration - 60 hours"
                         android:textColor="@color/colorPrimaryDark"
                         android:id="@+id/view_course_duration"
                         android:textSize="18sp"
@@ -171,7 +169,6 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:text="Online Mode"
                             android:textColor="@color/colorPrimaryDark"
                             android:textSize="18sp"
                             android:id="@+id/view_course_mode"
@@ -186,15 +183,15 @@
                             android:id="@+id/location_view_course"
                             android:layout_weight="85"
                             android:backgroundTint="#00000000"
+                            android:tint="@color/colorPrimary"
                             android:gravity="end"
-                            android:contentDescription="See Location of offline course" />
+                            android:contentDescription="@string/see_location_of_offline_course" />
                     </LinearLayout>
 
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Free of cost."
                         android:id="@+id/view_course_fees"
                         android:textColor="@color/colorPrimaryDark"
                         android:textSize="18sp"
@@ -233,7 +230,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/listIntroductoryMaterial"
-                android:text="Reviews"
+                android:text="@string/reviews"
                 android:textSize="18sp"
                 android:textStyle="italic"
                 android:textColor="@color/colorPrimaryDark"
@@ -255,13 +252,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="10dp"
-        android:background="@drawable/btn_rounded_rect"
+        android:background="@drawable/btn_blue"
         android:layout_alignParentBottom="true"
         android:layout_margin="@dimen/activity_vertical_margin"
-        android:text="Register Now!"
-        android:textColor="@color/colorBlack"
+        android:text="@string/register_now"
+        android:textColor="@color/colorWhite"
         android:typeface="sans"
         android:textStyle="bold"
         android:textSize="@dimen/text_margin"
-        android:drawableStart="@drawable/add_icon" />
+        android:drawableStart="@drawable/add_icon"
+        android:drawableTint="@color/colorWhite"/>
 </RelativeLayout>

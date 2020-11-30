@@ -3,8 +3,7 @@
     android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:background="@drawable/background_light">
+    xmlns:tools="http://schemas.android.com/tools">
     <ProgressBar
         android:id="@+id/loadingRegister"
         android:layout_width="wrap_content"
@@ -14,10 +13,11 @@
         android:visibility="gone"
         android:layout_centerHorizontal="true"
         android:indeterminateTint="@color/colorPrimary"/>
-    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/loadingRegister">
+        android:layout_below="@id/loadingRegister"
+        android:layout_above="@id/btnProceedToPay">
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -72,17 +72,17 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
-                    android:background="@drawable/text_view_login"
+                    android:background="@drawable/text_view_add_course"
                     android:padding="@dimen/text_margin"
                     android:hint="@string/enter_your_name"
-                    android:textColor="@color/colorPrimaryDark"
+                    android:textColor="@color/colorBlack"
                     android:inputType="text"
                     android:id="@+id/nameStudent"/>
                 <EditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
-                    android:background="@drawable/text_view_login"
+                    android:background="@drawable/text_view_add_course"
                     android:padding="@dimen/text_margin"
                     android:hint="@string/enter_contact_number"
                     android:textColor="@color/colorPrimaryDark"
@@ -92,7 +92,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
-                    android:background="@drawable/text_view_login"
+                    android:background="@drawable/text_view_add_course"
                     android:padding="@dimen/text_margin"
                     android:hint="@string/enter_you_street_address"
                     android:textColor="@color/colorPrimaryDark"
@@ -172,26 +172,28 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/activity_horizontal_margin"
                 android:layout_below="@id/textFees"
-                android:textColor="@color/colorPrimaryDark"
+                android:textColor="@color/colorPrimary"
                 android:textSize="@dimen/text_margin"
                 android:typeface="serif"
-                android:text="Amount once deducted can be refunded only within one week of payment."
-                android:drawableLeft="@drawable/info_icon_dark"
+                android:text="@string/amount_once_deducted_can_be_refunded_only_within_one_week_of_payment"
+                android:drawableStart="@drawable/info_icon_dark"
+                android:drawableTint="@color/colorPrimary"
                 android:padding="5dp"
                 android:drawablePadding="10dp"/>
 
-            <Button
-                android:id="@+id/btnProceedToPay"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/activity_horizontal_margin"
-                android:layout_below="@id/textRefundPolicy"
-                android:background="@color/colorPrimary"
-                android:textColor="@color/colorWhite"
-                android:textSize="@dimen/text_margin"
-                android:text="@string/proceed_to_pay"
-                android:elevation="20dp"/>
+
         </RelativeLayout>
     </ScrollView>
+    <Button
+        android:id="@+id/btnProceedToPay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/activity_horizontal_margin"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/btn_blue"
+        android:textColor="@color/colorWhite"
+        android:textSize="@dimen/text_margin"
+        android:text="@string/proceed_to_pay"
+        android:elevation="20dp"/>
 
 </RelativeLayout>

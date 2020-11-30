@@ -22,10 +22,11 @@
         android:layout_height="wrap_content"
         android:text="@string/tell_us_about_yourselves"
         android:textColor="@color/colorWhite"
-        android:textSize="20sp"
+        android:textSize="16sp"
         android:textStyle="bold"
         android:layout_margin="@dimen/activity_vertical_margin"
-        android:id="@+id/textSetupTitle3" />
+        android:id="@+id/textSetupTitle3"
+        android:layout_below="@id/loadingSetUp2"/>
 
     <EditText
         android:layout_width="match_parent"

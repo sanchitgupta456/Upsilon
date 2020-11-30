@@ -3,7 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background_light"
     tools:context=".AddCourseActivity">
 
     <!--
@@ -141,8 +140,7 @@
                 android:layout_margin="@dimen/text_margin"
                 android:background="@drawable/btn_multi_select"
                 android:elevation="100dp"
-                android:shadowColor="@color/colorPrimaryDark"
-                android:textColor="@color/colorBlack"
+                android:textColor="@color/colorWhite"
                 android:textSize="@dimen/text_margin"
                 android:textStyle="bold"
                 android:checked="true"/>
@@ -319,12 +317,13 @@
         android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp"
         style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="4dp"
         android:layout_alignParentBottom="true"
         android:progress="50"
-        android:progressTint="@color/colorYellow"
-        android:progressBackgroundTint="@color/colorWhite"
-        android:id="@+id/add_course_progress"/>
+        android:progressTint="@color/colorPrimary"
+        android:progressBackgroundTint="@color/colorGrey"
+        android:id="@+id/add_course_progress"
+        android:scaleY="3"/>
 
     <Button
         android:id="@+id/btnNext"
@@ -332,8 +331,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_margin="24dp"
-        android:background="@drawable/btn_rounded_rect"
-        android:textColor="@color/colorBlack"
+        android:background="@drawable/btn_blue"
+        android:textColor="@color/colorWhite"
         android:textSize="@dimen/text_margin"
         android:text="@string/next"
         android:paddingStart="40dp"
