@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.ActivityManager;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -22,6 +23,7 @@ import android.app.PendingIntent;
 import android.app.job.JobInfo;
 import android.app.job.JobScheduler;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -116,11 +118,27 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     //NOTIFS
     Intent serviceIntent;
+    Intent mServiceIntent;
+    private NotifService mSensorService;
+    private UpsilonJobService upsilonJobService;
+    Context ctx;
+    public Context getCtx() {
+        return ctx;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        ctx = this;
+        setContentView(R.layout.activity_main);
+        startService(upsilonJobService);
+        mSensorService = new NotifService(getCtx());
+        mServiceIntent = new Intent(getCtx(), mSensorService.getClass());
+        if (!isMyServiceRunning(mSensorService.getClass())) {
+            startService(mServiceIntent);
+        }
 
         Intent i = new Intent(this, UpsilonJobService.class);
         startService(i);
@@ -548,7 +566,7 @@ since the dispatchTouchEvent might dispatch your touch event to this function ag
         Log.d("NotificationService", "Job cancelled");
     }
 
-    public void startService() {
+    public void startService(UpsilonJobService upsilonJobService) {
         String input = "Upsilon";
         serviceIntent = new Intent(this, NotifService.class);
         serviceIntent.putExtra("inputExtra", input);
@@ -606,7 +624,19 @@ since the dispatchTouchEvent might dispatch your touch event to this function ag
     protected void onDestroy() {
         cancelJob();
         Log.i("MAINACT", "onDestroy!");
+        stopService(mServiceIntent);
         super.onDestroy();
+    }
 
+    private boolean isMyServiceRunning(Class<?> serviceClass) {
+        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (serviceClass.getName().equals(service.service.getClassName())) {
+                Log.i ("isMyServiceRunning?", true+"");
+                return true;
+            }
+        }
+        Log.i ("isMyServiceRunning?", false+"");
+        return false;
     }
 }

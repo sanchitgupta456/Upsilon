@@ -67,8 +67,10 @@
         </activity>
 
         <service android:name=".notifications.UpsilonJobService"
+            android:enabled="true"
             android:permission="android.permission.BIND_JOB_SERVICE"/>
         <service android:name=".notifications.NotifService"
+            android:enabled="true"
             android:permission="android.permission.BIND_JOB_SERVICE"/>
         <receiver android:name=".notifications.UpsilonBroadcastReciever"
             android:enabled="true"

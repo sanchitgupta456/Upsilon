@@ -17,16 +17,32 @@ import androidx.core.app.NotificationManagerCompat;
 import com.sanchit.Upsilon.MainActivity;
 import com.sanchit.Upsilon.R;
 
+import org.bson.Document;
+
+import java.util.ArrayList;
+
+import io.realm.mongodb.App;
+import io.realm.mongodb.AppConfiguration;
+import io.realm.mongodb.RealmResultTask;
+import io.realm.mongodb.User;
+import io.realm.mongodb.mongo.MongoClient;
+import io.realm.mongodb.mongo.MongoCollection;
+import io.realm.mongodb.mongo.MongoDatabase;
+import io.realm.mongodb.mongo.iterable.MongoCursor;
+
 import static com.sanchit.Upsilon.notifications.NotifChannel.CHANNEL_ID;
 
 public class UpsilonJobService extends JobService {
     private static final String TAG = "UpsilonJobService";
     private boolean jobCancelled = false;
+    String appID = "upsilon-ityvn";
+    MongoClient mongoClient;
+    MongoDatabase mongoDatabase;
+    private ArrayList<String> myCourses;
 
     @Override
     public boolean onStartJob(JobParameters params) {
         Log.d(TAG, "Job started!");
-
         doBackgroundWork(params);
         return true;
     }
@@ -35,17 +51,98 @@ public class UpsilonJobService extends JobService {
         new Thread(new Runnable(){
             @Override
             public void run(){
-                for (int i = 0; i < 5; i++) {
+                while(true) {
                     try {
-                        Thread.sleep(5000);
+                        Thread.sleep(30000);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-                    createNotificationChannel();
-                    displayNotif();
-                    Log.d(TAG, "Job finished!");
-                    jobFinished(params, false);
+
+                    App app = new App(new AppConfiguration.Builder(appID).build());
+                    User user = app.currentUser();
+                    mongoClient = user.getMongoClient("mongodb-atlas");
+                    mongoDatabase = mongoClient.getDatabase("Upsilon");
+                    MongoCollection<Document> mongoCollection = mongoDatabase.getCollection("UserData");
+                    MongoCollection<Document> mongoCollection2 = mongoDatabase.getCollection("CourseData");
+
+                    myCourses = new ArrayList<>();
+                    Document queryFilter = new Document("userid", user.getId());
+
+                    RealmResultTask<MongoCursor<Document>> findTask = mongoCollection.find(queryFilter).iterator();
+
+
+                    Document results = findTask.get().next();
+                    myCourses = (ArrayList<String>) results.get("myCourses");
+                    for(int i=0;i<myCourses.size();i++)
+                    {
+                        Document queryFilter1 = new Document("courseId",myCourses.get(i));
+                        RealmResultTask<MongoCursor<Document>> findTask1 = mongoCollection2.find(queryFilter1).iterator();
+                        MongoCursor<Document> result2 = findTask1.get();
+                        //Log.v("Iterating",myCourses.get(i));
+                        //Log.v("Result", String.valueOf(result2.next()));
+                        if(result2.hasNext())
+                        {
+                            Log.v("Found","found");
+                            Document result1 = result2.next();
+                            if(result1!=null && result1.getString("nextLectureOn")!=null)
+                            {
+                                Log.v("Found Lecture",String.valueOf(Long.parseLong(result1.getString("nextLectureOn"))));
+                                Log.v("System Time", String.valueOf(System.currentTimeMillis()));
+                                Long a = Long.parseLong(result1.getString("nextLectureOn"));
+                                Long b = System.currentTimeMillis();
+                                if(a>=b & a<=(b+3600000))
+                                {
+                                    Log.v("Hello","Notif");
+                                    createNotificationChannel();
+                                    displayNotif();
+                                    Log.d(TAG, "Job finished!");
+                                    jobFinished(params, false);
+                                }
+                            }
+                        }
+
+
+                    }
+
+                    /*findTask.getAsync(task -> {
+                        if (task.isSuccess()) {
+                            MongoCursor<Document> results = task.get();
+                            while (results.hasNext()) {
+                                //Log.v("EXAMPLE", results.next().toString());
+                                Document currentDoc = results.next();
+                                Log.v("User", currentDoc.getString("userid"));
+                                myCourses = (ArrayList<String>) currentDoc.get("myCourses");
+                            }
+                        } else {
+                            Log.v("User", "Failed to complete search");
+                        }
+                    });*/
+
+                    /*findTask2.getAsync(task -> {
+                        if (task.isSuccess()) {
+                            MongoCursor<Document> results = task.get();
+                            while (results.hasNext()) {
+                                //Log.v("EXAMPLE", results.next().toString());
+                                Document currentDoc = results.next();
+                                //Log.v("User",currentDoc.getString("userid"));
+                                //myCourses = (ArrayList<String>) currentDoc.get("myCourses");
+                                if (currentDoc.getString("courseId").equals(user.getId()) && currentDoc.getString("nextLectureOn") != null) {
+                                    Log.v("Current", String.valueOf(System.currentTimeMillis()));
+                                    Log.v("LectureTime", String.valueOf(Long.parseLong(currentDoc.getString("nextLectureOn"))));
+                                    if (System.currentTimeMillis() * 1000 == Long.parseLong(currentDoc.getString("nextLectureOn"))) {
+                                        createNotificationChannel();
+                                        displayNotif();
+                                        Log.d(TAG, "Job finished!");
+                                        jobFinished(params, false);
+                                    }
+                                }
+                            }
+                        }
+                    });*/
+
+
                 }
+
             }
         }).start();
     }
@@ -81,7 +178,6 @@ public class UpsilonJobService extends JobService {
 
         Notification incomingCallNotification = notificationBuilder.build();
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(UpsilonJobService.this);
-
 // notificationId is a unique int for each notification that you must define
         notificationManager.notify(123, notificationBuilder.build());
     }
