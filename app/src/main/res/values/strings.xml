@@ -117,4 +117,6 @@
     <string name="Forum">Forum</string>
     <string name="type_a_message">Type a message</string>
     <string name="refresh">Refresh</string>
+    <string name="view_your_profile">View Your Profile</string>
+    <string name="teach_a_new_course">Teach a new course</string>
 </resources>

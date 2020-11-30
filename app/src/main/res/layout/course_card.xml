@@ -6,7 +6,8 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_gravity="center_horizontal"
-    android:layout_margin="3dp">
+    android:layout_margin="3dp"
+    android:theme="@style/AppTheme">
     <androidx.cardview.widget.CardView
         android:id="@+id/courseCard"
         android:layout_width="150dp"
@@ -19,7 +20,6 @@
             android:layout_width="150dp"
             android:layout_height="120dp"
             android:scaleType="centerCrop"
-            android:src="@color/colorPrimary"
             tools:ignore="ContentDescription" />
     </androidx.cardview.widget.CardView>
     <TextView
@@ -28,7 +28,6 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/courseCard"
         android:layout_marginTop="5dp"
-        android:textColor="@color/colorPrimaryDark"
         android:text="@string/course_name"
         android:textSize="12sp"
         android:textStyle="bold"

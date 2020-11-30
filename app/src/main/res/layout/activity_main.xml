@@ -8,8 +8,9 @@
     tools:context=".MainActivity"
     android:id="@+id/drawer_layout"
     tools:openDrawer="left"
-    android:background="#cdfffd"
-    android:fitsSystemWindows="true">
+    android:background="@color/colorWhite"
+    android:fitsSystemWindows="true"
+    android:theme="@style/AppTheme">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -40,7 +41,7 @@
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="#cdfffd"
+                        android:background="#FAFAFA"
                         android:fitsSystemWindows="true"
                         android:elevation="?attr/actionBarSize"
                         android:paddingBottom="5dp">
@@ -50,7 +51,6 @@
                             android:layout_height="wrap_content"
                             android:gravity="center_vertical"
                             android:text="@string/resume_learning"
-                            android:textColor="@color/colorPrimaryDark"
                             android:layout_marginTop="5dp"
                             android:textSize="@dimen/text_margin"
                             android:textStyle="bold"
@@ -76,7 +76,6 @@
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
                     android:text="@string/recommended_for_you"
-                    android:textColor="@color/colorPrimaryDark"
                     android:textSize="@dimen/text_margin"
                     android:textStyle="bold"
                     android:paddingVertical="5dp"
@@ -98,7 +97,6 @@
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
                     android:text="@string/explore"
-                    android:textColor="@color/colorPrimaryDark"
                     android:textSize="@dimen/text_margin"
                     android:textStyle="bold"
                     android:paddingVertical="5dp"
@@ -133,12 +131,10 @@
         android:id="@+id/nav_view"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:background="@drawable/background_light"
+        android:background="@color/colorWhite"
         android:fitsSystemWindows="false"
         android:layout_gravity="start"
         app:headerLayout="@layout/header_layout"
-        app:itemIconTint="@color/colorPrimaryDark"
-        app:itemTextColor="@color/colorPrimaryDark"
         app:menu="@menu/home_drawer_menu"
         app:elevation="12dp"/>
 </androidx.drawerlayout.widget.DrawerLayout>

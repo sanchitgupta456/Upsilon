@@ -6,7 +6,8 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal"
-    android:id="@+id/rlCourseFullCard">
+    android:id="@+id/rlCourseFullCard"
+    android:theme="@style/AppTheme">
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -20,7 +21,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/course_name"
-            android:textColor="@color/colorPrimaryDark"
             android:textSize="@dimen/text_margin"
             android:textStyle="bold"
             android:typeface="serif"
@@ -29,7 +29,6 @@
             android:id="@+id/courseInstructor"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="#B211042E"
             android:text="Upsilon"
             android:textSize="14sp"
             android:textStyle="italic"
@@ -40,7 +39,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/online"
-            android:textColor="#B211042E"
             android:textSize="14sp"
             android:textStyle="italic"
             android:typeface="serif"
@@ -50,7 +48,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/free"
-            android:textColor="#B211042E"
             android:textSize="14sp"
             android:textStyle="italic"
             android:typeface="serif"
@@ -60,12 +57,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="3.7/5"
-            android:textColor="#B211042E"
             android:textSize="14sp"
             android:textStyle="italic"
             android:typeface="serif"
             android:gravity="center_vertical"
-            android:drawableEnd="@drawable/icon_star_dark"/>
+            android:drawableEnd="@drawable/icon_star_dark"
+            android:drawablePadding="10dp"/>
     </LinearLayout>
     <androidx.cardview.widget.CardView
         android:id="@+id/courseCard"
@@ -80,7 +77,6 @@
             android:layout_width="105dp"
             android:layout_height="84dp"
             android:scaleType="centerCrop"
-            android:src="@color/colorPrimary"
             tools:ignore="ContentDescription"/>
     </androidx.cardview.widget.CardView>
 </RelativeLayout>

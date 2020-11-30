@@ -3,28 +3,22 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
     <item
-        android:title="@string/add_new_course"
-        android:id="@+id/homeDrawerMenuItem1"
-        android:icon="@drawable/add_box_icon"/>
+        android:title="@string/teach_a_new_course"
+        android:id="@+id/homeDrawerMenuItem1"/>
     <item
         android:title="@string/courses_taught"
-        android:id="@+id/homeDrawerMenuItem2"
-        android:icon="@drawable/add_box_icon"/>
+        android:id="@+id/homeDrawerMenuItem2"/>
     <item
-        android:title="View Your Profile"
-        android:id="@+id/homeDrawerMenuItem3"
-        android:icon="@drawable/add_box_icon"/>
+        android:title="@string/view_your_profile"
+        android:id="@+id/homeDrawerMenuItem3"/>
 
     <item
         android:title="Title 4"
-        android:id="@+id/homeDrawerMenuItem4"
-        android:icon="@drawable/add_box_icon"/>
+        android:id="@+id/homeDrawerMenuItem4"/>
     <item
         android:title="Title 5"
-        android:id="@+id/homeDrawerMenuItem5"
-        android:icon="@drawable/add_box_icon"/>
+        android:id="@+id/homeDrawerMenuItem5"/>
     <item
         android:title="Title 6"
-        android:id="@+id/homeDrawerMenuItem6"
-        android:icon="@drawable/add_box_icon"/>
+        android:id="@+id/homeDrawerMenuItem6"/>
 </menu>
