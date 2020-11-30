@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.sanchit.Upsilon.courseData.Course;
+import com.sanchit.Upsilon.courseData.CourseResourcesAdapter;
 import com.sanchit.Upsilon.courseData.IntroductoryContentAdapter;
 
 import java.util.ArrayList;
@@ -22,7 +23,7 @@ import java.util.ArrayList;
 public class RegisteredStudentViewCourseResourcesFragment extends Fragment {
 
     private RecyclerView courseResources;
-    private IntroductoryContentAdapter resourcesAdapter;
+    private CourseResourcesAdapter resourcesAdapter;
     ArrayList<String> introductoryImages = new ArrayList<String>();
     ArrayList<String> introductoryVideos = new ArrayList<String>();
     Course course;
@@ -56,7 +57,7 @@ public class RegisteredStudentViewCourseResourcesFragment extends Fragment {
         introductoryImages = course.getIntroductoryContentImages();
         introductoryVideos = course.getIntroductoryContentVideos();
         courseResources.setAdapter(resourcesAdapter);
-        resourcesAdapter = new IntroductoryContentAdapter(introductoryImages,introductoryVideos);
+        resourcesAdapter = new CourseResourcesAdapter(introductoryImages,introductoryVideos);
         courseResources.setAdapter(resourcesAdapter);
 
         introductoryImages = course.getIntroductoryContentImages();

@@ -89,10 +89,10 @@ public class TeacherViewCourseActivityHomeFragment extends Fragment {
         Picasso.with(getApplicationContext()).load(course.getCourseImage()).into(courseImage);
         rating.setText("Rating "+course.getCourseRating() + "/5");
         enrolled.setText(course.getNumberOfStudentsEnrolled() + " students have enrolled in this course");
-        Calendar cal = Calendar.getInstance(Locale.ENGLISH);
+        /*Calendar cal = Calendar.getInstance(Locale.ENGLISH);
         cal.setTimeInMillis(Long.parseLong(course.getNextLectureOn()));
         String date = DateFormat.format("dd-MM-yyyy HH:mm:ss", cal).toString();
-        nextClass.setText(date);
+        nextClass.setText(date);*/
         meetLink.setText(course.getMeetLink());
 
         ScheduleClass.setOnClickListener(new View.OnClickListener() {

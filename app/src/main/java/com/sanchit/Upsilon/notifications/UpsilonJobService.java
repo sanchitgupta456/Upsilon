@@ -28,7 +28,6 @@ public class UpsilonJobService extends JobService {
         Log.d(TAG, "Job started!");
 
         doBackgroundWork(params);
-
         return true;
     }
 
@@ -42,10 +41,8 @@ public class UpsilonJobService extends JobService {
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-
                     createNotificationChannel();
                     displayNotif();
-
                     Log.d(TAG, "Job finished!");
                     jobFinished(params, false);
                 }
