@@ -26,6 +26,7 @@
         android:layout_weight="10"
         android:padding="10dp"
         android:text="Video recording FUN101 class 6"
+        android:id="@+id/course_resource_name"
         android:layout_gravity="center"
         android:gravity="center_vertical"/>
 </LinearLayout>

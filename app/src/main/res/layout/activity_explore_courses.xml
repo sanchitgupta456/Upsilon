@@ -4,6 +4,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background_light">
+    <ProgressBar
+        android:id="@+id/loadingExplore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="6dp"
+        android:visibility="gone"
+        android:layout_centerHorizontal="true"
+        android:indeterminateTint="@color/colorPrimary"/>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/exploreList"
         android:layout_width="match_parent"

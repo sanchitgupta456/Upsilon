@@ -2,6 +2,8 @@ package com.sanchit.Upsilon;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.ProgressBar;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -27,6 +29,8 @@ import io.realm.mongodb.mongo.MongoCollection;
 import io.realm.mongodb.mongo.MongoDatabase;
 import io.realm.mongodb.mongo.iterable.MongoCursor;
 
+import static android.view.View.GONE;
+
 public class ExploreActivity extends AppCompatActivity {
     //vars
     private RecyclerView recyclerView;
@@ -41,8 +45,7 @@ public class ExploreActivity extends AppCompatActivity {
     private User user;
     private Gson gson;
     private GsonBuilder gsonBuilder;
-
-
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -56,6 +59,7 @@ public class ExploreActivity extends AppCompatActivity {
         linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(courseAdapter);
+        progressBar = findViewById(R.id.loadingExplore);
         user = app.currentUser();
 
         mongoClient = user.getMongoClient("mongodb-atlas");
@@ -72,6 +76,7 @@ public class ExploreActivity extends AppCompatActivity {
                 MongoCursor<Document> results = task.get();
                 Log.v("COURSEHandler", "successfully found all courses:");
                 while (results.hasNext()) {
+                    progressBar.setVisibility(View.VISIBLE);
                     //Log.v("EXAMPLE", results.next().toString());
                     Document currentDoc = results.next();
 
@@ -89,6 +94,10 @@ public class ExploreActivity extends AppCompatActivity {
 
                     courseArrayList.add(course);
                     courseAdapter.notifyDataSetChanged();
+                    if(!results.hasNext())
+                    {
+                        progressBar.setVisibility(GONE);
+                    }
                 }
             } else {
                 Log.e("COURSEHandler", "failed to find courses with: ", task.getError());
