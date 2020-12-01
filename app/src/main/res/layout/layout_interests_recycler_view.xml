@@ -9,7 +9,7 @@
         android:layout_height="wrap_content"
         android:textSize="@dimen/text_margin"
         android:id="@+id/textdata"
-        android:textColor="@color/colorPrimaryDark"
+        android:textColor="@color/colorWhite"
         android:textStyle="bold"
         android:padding="5dp"/>
 </LinearLayout>

@@ -35,7 +35,7 @@
     <SearchView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/text_view_login"
+        android:background="@drawable/text_view_add_course"
         android:layout_below="@id/textSetupTitle2"
         android:layout_margin="@dimen/activity_vertical_margin"
         android:id="@+id/searchInterests"/>
