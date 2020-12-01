@@ -128,4 +128,8 @@
     <string name="see_location_of_offline_course">See Location of offline course</string>
     <string name="reviews">Reviews</string>
     <string name="register_now">Register Now!</string>
+    <string name="list_of_registered_students">List of Registered Students</string>
+    <string name="update_link">Update Link</string>
+    <string name="schedule_class">Schedule Class</string>
+    <string name="accept_new_registrations">Accept New Registrations</string>
 </resources>
