@@ -65,11 +65,12 @@ public class TeacherViewCourseActivityHomeFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.teachers_viewof_course_home,null);
         course = (Course) getArguments().get("Course");
-        dialogView = View.inflate(getApplicationContext(), R.layout.date_time_picker, null);
+        dialogView = View.inflate(getActivity(), R.layout.date_time_picker, null);
         TimePicker tp = dialogView.findViewById(R.id.time_picker);
         tp.setIs24HourView(true);
 
-        alertDialog = new AlertDialog.Builder(Objects.requireNonNull(getApplicationContext())).create();
+        //alertDialog = new AlertDialog.Builder(Objects.requireNonNull(getApplicationContext())).create();
+        alertDialog = new AlertDialog.Builder(getActivity()).create();
 
         app = new App(new AppConfiguration.Builder(appID)
                 .build());
@@ -89,10 +90,10 @@ public class TeacherViewCourseActivityHomeFragment extends Fragment {
         Picasso.with(getApplicationContext()).load(course.getCourseImage()).into(courseImage);
         rating.setText("Rating "+course.getCourseRating() + "/5");
         enrolled.setText(course.getNumberOfStudentsEnrolled() + " students have enrolled in this course");
-        /*Calendar cal = Calendar.getInstance(Locale.ENGLISH);
+        Calendar cal = Calendar.getInstance(Locale.ENGLISH);
         cal.setTimeInMillis(Long.parseLong(course.getNextLectureOn()));
         String date = DateFormat.format("dd-MM-yyyy HH:mm:ss", cal).toString();
-        nextClass.setText(date);*/
+        nextClass.setText(date);
         meetLink.setText(course.getMeetLink());
 
         ScheduleClass.setOnClickListener(new View.OnClickListener() {

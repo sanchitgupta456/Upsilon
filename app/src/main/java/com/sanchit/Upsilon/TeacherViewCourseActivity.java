@@ -93,7 +93,7 @@ public class TeacherViewCourseActivity extends AppCompatActivity implements Bott
         imageButtonBack = (ImageButton) findViewById(R.id.imgBtnBackTeachersViewCourse);
         imageButtonUpdate = (ImageButton) findViewById(R.id.imgBtnUpdateTeachersViewCourse);
 
-        loadFragment(new RegisteredStudentViewCourseHomeFragment());
+        loadFragment(new TeacherViewCourseActivityHomeFragment());
 
         bottomNavigationView = findViewById(R.id.bottom_navigation_teacher);
         bottomNavigationView.setOnNavigationItemSelectedListener(TeacherViewCourseActivity.this);
@@ -120,7 +120,7 @@ public class TeacherViewCourseActivity extends AppCompatActivity implements Bott
         Bundle bundle = new Bundle();
         bundle.putSerializable("Course",course);
 
-        Fragment fragment = new RegisteredStudentViewCourseHomeFragment();
+        Fragment fragment = new TeacherViewCourseActivityHomeFragment();
         fragment.setArguments(bundle);
 
         switch (item.getItemId()) {

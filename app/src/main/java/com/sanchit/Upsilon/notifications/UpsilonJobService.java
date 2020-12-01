@@ -53,13 +53,17 @@ public class UpsilonJobService extends JobService {
             public void run(){
                 while(true) {
                     try {
-                        Thread.sleep(30000);
+                        Thread.sleep(500000);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
 
                     App app = new App(new AppConfiguration.Builder(appID).build());
                     User user = app.currentUser();
+                    if(user!=null)
+                    {
+                        app.getSync();
+                    }
                     mongoClient = user.getMongoClient("mongodb-atlas");
                     mongoDatabase = mongoClient.getDatabase("Upsilon");
                     MongoCollection<Document> mongoCollection = mongoDatabase.getCollection("UserData");
@@ -90,7 +94,7 @@ public class UpsilonJobService extends JobService {
                                 Log.v("System Time", String.valueOf(System.currentTimeMillis()));
                                 Long a = Long.parseLong(result1.getString("nextLectureOn"));
                                 Long b = System.currentTimeMillis();
-                                if(a>=b & a<=(b+3600000))
+                                if(a>=(b+2800000) & a<=(b+3600000))
                                 {
                                     Log.v("Hello","Notif");
                                     createNotificationChannel();

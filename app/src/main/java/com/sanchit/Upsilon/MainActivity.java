@@ -156,6 +156,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (user == null){
             startActivity(new Intent(MainActivity.this, LoginActivity.class));
         }
+        else
+        {
+            app.getSync();
+        }
         //imageView = (ImageView) findViewById(R.id.profilePhotoTest);
         //Toolbar toolbar = findViewById(R.id.toolbar);
  //        setSupportActionBar(toolbar);
