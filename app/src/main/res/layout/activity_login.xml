@@ -116,7 +116,6 @@
             android:layout_height="1dp"
             android:layout_marginStart="12dp"
             android:background="?android:attr/listDivider"
-            android:layout_above="@id/linearLayout"
             app:layout_constraintHorizontal_bias="1.0"
             android:backgroundTint="@color/colorWhite"
             android:layout_weight="9"/>

@@ -1,12 +1,16 @@
 package com.sanchit.Upsilon;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -51,14 +55,27 @@ public class ExploreActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_explore_courses);
-
+        getSupportActionBar().setDisplayShowCustomEnabled(true);
+        getSupportActionBar().setCustomView(R.layout.action_bar_explore_courses);
+        getSupportActionBar().setElevation(0);
+        View bar = getSupportActionBar().getCustomView();
+        ImageButton imageButton = (ImageButton) bar.findViewById(R.id.imgBtnBackExploreCourses);
+        imageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ExploreActivity.this, MainActivity.class);
+                startActivity(intent);
+            }
+        });
         recyclerView = findViewById(R.id.exploreList);
         courseArrayList = new ArrayList<>();
         app = new App(new AppConfiguration.Builder(appID).build());
         courseAdapter = new CoursesAdapter1(courseArrayList);
         linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getApplicationContext(), linearLayoutManager.getOrientation());
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(courseAdapter);
+        recyclerView.addItemDecoration(dividerItemDecoration);
         progressBar = findViewById(R.id.loadingExplore);
         user = app.currentUser();
 
@@ -103,8 +120,6 @@ public class ExploreActivity extends AppCompatActivity {
                 Log.e("COURSEHandler", "failed to find courses with: ", task.getError());
             }
         });
-
-
 
 
 

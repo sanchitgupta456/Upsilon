@@ -70,6 +70,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import io.realm.Realm;
 import io.realm.mongodb.App;
 import io.realm.mongodb.AppConfiguration;
@@ -108,7 +109,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     App app;
     MongoClient mongoClient;
     MongoDatabase mongoDatabase;
-    ImageView imageView;
+    CircleImageView imageView;
     ActionBarDrawerToggle toggle;
 
     private ProgressBar progressBar;
@@ -160,7 +161,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         {
             app.getSync();
         }
-        //imageView = (ImageView) findViewById(R.id.profilePhotoTest);
         //Toolbar toolbar = findViewById(R.id.toolbar);
  //        setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -173,6 +173,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(MainActivity.this);
         drawer.closeDrawer(GravityCompat.START);
+        View hView =  navigationView.getHeaderView(0);
+        imageView = (CircleImageView) hView.findViewById(R.id.profilePhotoHeader);
         if(user==null)
         {
             Intent intent = new Intent(MainActivity.this, LoginActivity.class);
@@ -216,6 +218,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         //Log.v("EXAMPLE", results.next().toString());
                         Document currentDoc = results.next();
                         Log.v("User",currentDoc.getString("userid"));
+                        Picasso.with(getApplicationContext()).load(currentDoc.getString("profilePicUrl")).error(R.drawable.default_person_image).into(imageView);
+                        Log.v("ProfilePic",currentDoc.getString("profilePicUrl"));
                     }
                 } else {
                    Log.v("User","Failed to complete search");

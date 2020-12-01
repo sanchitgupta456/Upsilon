@@ -58,7 +58,7 @@ public class RegisterCourseActivity extends AppCompatActivity implements Payment
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_course_register);
-
+        getSupportActionBar().hide();
         Checkout.preload(getApplicationContext());
        // checkout.setKeyID("rzp_test_mVNL5hJS3jvkHP");
 

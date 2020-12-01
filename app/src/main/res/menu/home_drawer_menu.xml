@@ -19,6 +19,18 @@
         android:title="Title 5"
         android:id="@+id/homeDrawerMenuItem5"/>
     <item
-        android:title="Title 6"
-        android:id="@+id/homeDrawerMenuItem6"/>
+        android:title="More"
+        android:id="@+id/more">
+        <menu>
+            <item
+                android:title="About us"
+                android:id="@+id/about"/>
+            <item
+                android:title="Terms and Conditions"
+                android:id="@+id/tc"/>
+            <item
+                android:title="Contact us"
+                android:id="@+id/contactUs"/>
+        </menu>
+    </item>
 </menu>

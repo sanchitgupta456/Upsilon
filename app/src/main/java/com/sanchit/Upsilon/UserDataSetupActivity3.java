@@ -78,10 +78,7 @@ public class UserDataSetupActivity3 extends AppCompatActivity implements Adapter
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setup_3);
-        Objects.requireNonNull(this.getSupportActionBar()).setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-        getSupportActionBar().setDisplayShowCustomEnabled(true);
-        getSupportActionBar().setCustomView(R.layout.action_bar_setup_3);
-        getSupportActionBar().setElevation(10);
+        Objects.requireNonNull(this.getSupportActionBar()).hide();
 
         actionBarView = getSupportActionBar().getCustomView(); //to be implemented
         nextButton = (Button) findViewById(R.id.selectLaterNext3);

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="?attr/actionBarSize"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="horizontal"
     android:background="@color/colorPrimary">
@@ -9,7 +9,7 @@
         android:id="@+id/imgBtnBackProfile"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:src="@drawable/back_icon"
+        android:src="@drawable/back_arrow"
         android:backgroundTint="#0000"
         android:layout_weight="45"
         android:clickable="true"
@@ -18,19 +18,19 @@
         android:tint="@color/colorWhite"/>
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:padding="5dp"
         android:textSize="20sp"
         android:textColor="@color/colorWhite"
         android:textStyle="bold"
         android:text="@string/your_profile"
-        android:gravity="center"
+        android:gravity="center_vertical"
         android:layout_weight="10"/>
     <ImageButton
         android:id="@+id/imgBtnEditProfile"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:src="@drawable/edit_icon"
+        android:src="@drawable/edit_icon_light"
         android:backgroundTint="#0000"
         android:layout_weight="45"
         android:clickable="true"

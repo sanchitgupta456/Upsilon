@@ -1,8 +1,12 @@
 package com.sanchit.Upsilon;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -31,18 +35,39 @@ public class ProfileViewActivity extends AppCompatActivity {
 
     MongoClient mongoClient;
     MongoDatabase mongoDatabase;
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.user_profile);
+        getSupportActionBar().setDisplayShowCustomEnabled(true);
+        getSupportActionBar().setCustomView(R.layout.action_bar_user_profile);
+        getSupportActionBar().setElevation(0);
+        View bar = getSupportActionBar().getCustomView();
+        ImageButton imageButton = (ImageButton) bar.findViewById(R.id.imgBtnBackProfile);
+        ImageButton imageButton1 = (ImageButton) bar.findViewById(R.id.imgBtnEditProfile);
         UserName = (TextView) findViewById(R.id.profileName);
         PhoneNumber = (TextView) findViewById(R.id.profilePhone);
         Email = (TextView) findViewById(R.id.profileEmail);
         NumberOfCoursesTaken = (TextView) findViewById(R.id.profileNumCoursesTaken);
         NumberOfCoursesTaught = (TextView) findViewById(R.id.profileNumCoursesTaught);
         profileImage = (CircleImageView) findViewById(R.id.imgProfileImage);
-
+        progressBar = (ProgressBar) findViewById(R.id.loadingUserProfile);
+        imageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ProfileViewActivity.this, MainActivity.class);
+                startActivity(intent);
+            }
+        });
+        imageButton1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ProfileViewActivity.this, UserDataSetupActivity1.class);
+                startActivity(intent);
+            }
+        });
         app = new App(new AppConfiguration.Builder(appID)
                 .build());
 
@@ -60,6 +85,7 @@ public class ProfileViewActivity extends AppCompatActivity {
         RealmResultTask<MongoCursor<Document>> findTask = mongoCollection.find(queryFilter).iterator();
 
         findTask.getAsync(task -> {
+            progressBar.setVisibility(View.VISIBLE);
             if (task.isSuccess()) {
                 MongoCursor<Document> results = task.get();
                 if(!results.hasNext())
@@ -86,16 +112,16 @@ public class ProfileViewActivity extends AppCompatActivity {
                     Document currentDoc = results.next();
                     UserName.setText(currentDoc.getString("name"));
                     PhoneNumber.setText(currentDoc.getString("phonenumber"));
-                    //Email.setText(user.getProfile().getEmail()+user.getProfile());
+                    Email.setText(user.getProfile().getEmail());
                     Log.v("Email","Hello" + user.getProfile().toString());
                     Picasso.with(getApplicationContext()).load(currentDoc.getString("profilePicUrl")).into(profileImage);
-
                     Log.v("ProfilePic",currentDoc.getString("profilePicUrl"));
                     Log.v("User",currentDoc.getString("userid"));
                 }
             } else {
                 Log.v("User","Failed to complete search");
             }
+            progressBar.setVisibility(View.GONE);
         });
 
     }

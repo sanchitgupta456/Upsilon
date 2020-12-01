@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -16,21 +17,16 @@
         android:layout_marginBottom="64dp"
         android:layout_marginTop="12dp"
         android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
         android:indeterminateTint="@color/colorYellow"/>
 
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
         android:layout_marginLeft="@dimen/text_margin"
         android:layout_marginRight="@dimen/text_margin"
-        android:layout_marginTop="64dp"
+        android:layout_marginTop="10dp"
+        android:layout_below="@id/loadingSignUp"
         android:id="@+id/scroll">
         <LinearLayout
             android:id="@+id/linearLayout2"
@@ -49,8 +45,8 @@
                 android:hint="@string/username"
                 android:inputType="textPersonName"
                 android:padding="10dp"
-                android:textColorHint="@color/colorWhite"
-                android:textColor="@color/colorPrimaryDark"/>
+                android:textColorHint="@color/colorLiteGrey"
+                android:textColor="@color/colorWhite"/>
 
             <EditText
                 android:id="@+id/email"
@@ -62,8 +58,8 @@
                 android:hint="@string/prompt_email"
                 android:inputType="textEmailAddress"
                 android:padding="10dp"
-                android:textColorHint="@color/colorWhite"
-                android:textColor="@color/colorPrimaryDark"/>
+                android:textColorHint="@color/colorLiteGrey"
+                android:textColor="@color/colorWhite"/>
 
             <EditText
                 android:id="@+id/password"
@@ -75,8 +71,8 @@
                 android:hint="@string/prompt_password"
                 android:inputType="textPassword"
                 android:padding="10dp"
-                android:textColorHint="@color/colorWhite"
-                android:textColor="@color/colorPrimaryDark"/>
+                android:textColorHint="@color/colorLiteGrey"
+                android:textColor="@color/colorWhite"/>
 
             <EditText
                 android:id="@+id/confirmPassword"
@@ -88,8 +84,8 @@
                 android:hint="@string/confirm_password"
                 android:inputType="textPassword"
                 android:padding="10dp"
-                android:textColorHint="@color/colorWhite"
-                android:textColor="@color/colorPrimaryDark"/>
+                android:textColorHint="@color/colorLiteGrey"
+                android:textColor="@color/colorWhite"/>
 
         </LinearLayout>
     </ScrollView>
@@ -104,55 +100,55 @@
         android:background="@drawable/btn_rounded_rect"
         android:enabled="true"
         android:text="@string/sign_up_text"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/scroll" />
+        android:layout_below="@id/scroll"/>
 
-    <View
-        android:id="@+id/divider"
-        android:layout_width="0dp"
-        android:layout_height="1dp"
-        android:layout_marginEnd="12dp"
-        android:background="?android:attr/listDivider"
-        app:layout_constraintBottom_toTopOf="@id/linearLayout3"
-        app:layout_constraintEnd_toStartOf="@id/textView4"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/signupBtn"
-        android:backgroundTint="@color/colorWhite"/>
-
-    <TextView
-        android:id="@+id/textView4"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/or"
-        android:textAlignment="center"
-        app:layout_constraintBottom_toTopOf="@id/linearLayout3"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/signupBtn"
-        android:textColor="@color/colorWhite"/>
+        android:orientation="horizontal"
+        android:id="@id/linearLayout2"
+        android:layout_below="@id/signupBtn"
+        android:layout_marginTop="24dp"
+        android:gravity="center">
+        <View
+            android:id="@+id/divider"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginEnd="12dp"
+            android:background="?android:attr/listDivider"
+            android:backgroundTint="@color/colorWhite"
+            android:layout_weight="9"/>
 
-    <View
-        android:id="@+id/divider2"
-        android:layout_width="0dp"
-        android:layout_height="1dp"
-        android:layout_marginStart="12dp"
-        android:background="?android:attr/listDivider"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout3"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/textView4"
-        app:layout_constraintTop_toBottomOf="@id/signupBtn"
-        android:backgroundTint="@color/colorWhite"/>
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/or"
+            android:gravity="center"
+            android:textSize="@dimen/text_margin"
+            android:textColor="@color/colorWhite"
+            android:layout_weight="2"/>
+
+        <View
+            android:id="@+id/divider2"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginStart="12dp"
+            android:background="?android:attr/listDivider"
+            app:layout_constraintHorizontal_bias="1.0"
+            android:backgroundTint="@color/colorWhite"
+            android:layout_weight="9"/>
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/linearLayout3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="12dp"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/signupBtn"
+        android:layout_below="@id/linearLayout2"
         android:gravity="center">
         <ImageView
             android:id="@+id/googleSignUp"
@@ -196,13 +192,12 @@
         android:id="@+id/alreadyAMember"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="24dp"
+        android:layout_marginTop="24dp"
+        android:layout_centerHorizontal="true"
         android:text="@string/already_a_member"
         android:textColor="@color/colorYellow"
         android:textSize="@dimen/text_margin"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:layout_below="@id/linearLayout3"/>
 
 
 
@@ -210,4 +205,4 @@
 
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</RelativeLayout>
