@@ -132,4 +132,5 @@
     <string name="update_link">Update Link</string>
     <string name="schedule_class">Schedule Class</string>
     <string name="accept_new_registrations">Accept New Registrations</string>
+    <string name="schedule">Schedule</string>
 </resources>
