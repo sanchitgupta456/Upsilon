@@ -133,4 +133,22 @@
     <string name="schedule_class">Schedule Class</string>
     <string name="accept_new_registrations">Accept New Registrations</string>
     <string name="schedule">Schedule</string>
+    <string name="terms_and_conditions">Terms and Conditions</string>
+    <string name="tc">
+        <b><u>Terms and Conditions:</u></b>
+<i>\n\nEducators and Students are not allowed to share personal details such as contact or payment details with each other. All messages shall be scrutinized, and upon discovering such malpractices, the course fee shall not be refunded to the student, and any pending payments shall not be done to the educator. Upon multiple such complaints, dismissal of the concerned party might be initiated.
+\nAny certificates, or acknowledgements needed shall be the responsibility of the tutor of that particular course, and such requests should be made directly to the concerned tutor.
+\nThe courses offered are not under the control of Upsilon. Independent tutors and educators provide courses and the material for the same. Quality, quantity and efficiency of the courses offered are not supervised by Upsilon, and we cannot be held responsible if the courses offered are inadequate or fail to meet the expectations of the students. A formal complaint can be made to Upsilon, and an independent investigation into the matter might be conducted by us to assess the situation.
+\nAll courses are subject to supervision by the Upsilon team. Questionable content shall lead to removal of the course, and suspension of any pending payment. Repeated behavior shall lead to dismissal of the account and all courses taught by the educator.
+\nRating for every course shall be given by the student taking that course, only after being registered.
+\nThe educator must quote the price s(he) wishes to receive from the student, while creating a course. The quoted price is what s(he) shall receive after a student joins the course. However, the price visible to the student could be different from the one quoted by the educator.
+\nThe data collected by Upsilon is securely stored on our systems, and is not sold to any external agency. However, Upsilon cannot be held responsible for any breaches or leakages, and Upsilon cannot be blamed for any mishaps regarding the same.</i>
+        <b><u>\n\n\nPayments and Refund Policy:</u></b>
+<i>\n\nThe payment, for any course which is chargeable must be made up front, before the course starts. The payment to the educator will be made 7 days after the payment is received by Upsilon.
+\nDuring this period of 7 days, the student can request a refund in case he is not satisfied with the quality of the course offered.
+\nOnce the payment is successful, the student will be able to access 10% of the course for the first week, till the time the payment is not delivered to the tutor. This is done to prevent misuse of the refund policy.
+\nAfter the 7-day period, the full course will be made available. Any request for refunds after this time shall not be accepted and exists outside the purview of Upsilon.
+</i>
+    </string>
+    <string name="faq">FAQ</string>
 </resources>

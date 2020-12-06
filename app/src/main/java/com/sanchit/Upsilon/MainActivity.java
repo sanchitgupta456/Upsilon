@@ -32,6 +32,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.facebook.login.LoginManager;
 import com.google.android.material.navigation.NavigationView;
@@ -485,6 +486,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         else if(id==R.id.homeDrawerMenuItem3)
         {
             Intent intent = new Intent(MainActivity.this,ProfileViewActivity.class);
+            startActivity(intent);
+        }
+        else if(id==R.id.tc)
+        {
+            Intent intent = new Intent(MainActivity.this,Terms.class);
+            //Toast toast = Toast.makeText(getApplicationContext(), "TC Clicked", Toast.LENGTH_LONG);
+            //toast.show();
             startActivity(intent);
         }
         DrawerLayout drawer = findViewById(R.id.drawer_layout);

@@ -31,6 +31,9 @@
             <item
                 android:title="Contact us"
                 android:id="@+id/contactUs"/>
+            <item
+                android:title="@string/faq"
+                android:id="@+id/faq"/>
         </menu>
     </item>
 </menu>
