@@ -13,6 +13,7 @@
         android:layout_marginStart="5dp"
         android:id="@+id/message_profile_image"
         /> -->
+    <!-- Receiver Message Encapsulation -->
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -26,7 +27,8 @@
         android:paddingTop="5dp"
         android:paddingEnd="10dp"
         android:paddingBottom="5dp"
-        tools:ignore="RelativeOverlap">
+        tools:ignore="RelativeOverlap"
+        android:visibility="gone">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -91,6 +93,7 @@
         android:paddingEnd="40dp"
         android:paddingBottom="5dp"
         tools:ignore="RelativeOverlap" /> -->
+    <!-- Sender Message Encapsulation -->
     <RelativeLayout
         android:id="@+id/sender_message"
         android:layout_width="wrap_content"
@@ -109,7 +112,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/sender_message_rl"
-            tools:ignore="RelativeOverlap">
+            tools:ignore="RelativeOverlap"
+            android:elevation="0dp">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -117,25 +121,27 @@
                 android:typeface="monospace"
                 android:textSize="14sp"
                 android:textColor="@color/colorBlack"
-                android:lineSpacingExtra="1dp"/>
+                android:lineSpacingExtra="1dp"
+                android:text="test this message out"/>
             <ImageView
                 android:id="@+id/message_sender_image_view"
                 android:layout_width="150dp"
                 android:layout_height="150dp"
                 android:scaleType="centerCrop"
                 android:layout_margin="5dp"
-                tools:ignore="ContentDescription"/>
+                tools:ignore="ContentDescription"
+                android:visibility="gone"/>
         </RelativeLayout>
         <TextView
             android:id="@+id/sender_message_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/sender_message_rl"
-            android:padding="2dp"
+            android:padding="1dp"
             android:typeface="sans"
             android:textSize="12sp"
             android:textColor="#B3000000"
-            android:lineSpacingExtra="1dp"/>
+            android:text="11:00 am"/>
     </RelativeLayout>
 
 

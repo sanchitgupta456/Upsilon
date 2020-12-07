@@ -3,10 +3,12 @@ package com.sanchit.Upsilon;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -50,23 +52,23 @@ public class ExploreActivity extends AppCompatActivity {
     private Gson gson;
     private GsonBuilder gsonBuilder;
     private ProgressBar progressBar;
+    private View bar;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_explore_courses);
-        getSupportActionBar().setDisplayShowCustomEnabled(true);
-        getSupportActionBar().setCustomView(R.layout.action_bar_explore_courses);
-        getSupportActionBar().setElevation(0);
-        View bar = getSupportActionBar().getCustomView();
-        ImageButton imageButton = (ImageButton) bar.findViewById(R.id.imgBtnBackExploreCourses);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle(R.string.explore);
+        bar = getSupportActionBar().getCustomView();
+        /*ImageButton imageButton = (ImageButton) bar.findViewById(R.id.imgBtnBackExploreCourses);
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(ExploreActivity.this, MainActivity.class);
                 startActivity(intent);
             }
-        });
+        });*/
         recyclerView = findViewById(R.id.exploreList);
         courseArrayList = new ArrayList<>();
         app = new App(new AppConfiguration.Builder(appID).build());
@@ -121,7 +123,15 @@ public class ExploreActivity extends AppCompatActivity {
             }
         });
 
+    }
 
-
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if(item.getActionView()==bar){
+            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+            startActivity(intent);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

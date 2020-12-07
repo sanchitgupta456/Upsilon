@@ -3,10 +3,12 @@ package com.sanchit.Upsilon;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -46,6 +48,7 @@ public class CoursesTaughtActivity extends AppCompatActivity {
     private Gson gson;
     private GsonBuilder gsonBuilder;
     private Button addCourseButton;
+    private View bar;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -53,10 +56,9 @@ public class CoursesTaughtActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_courses_taught);
 
-        this.getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-        getSupportActionBar().setDisplayShowCustomEnabled(true);
-        getSupportActionBar().setCustomView(R.layout.action_bar_courses_taught);
-        getSupportActionBar().setElevation(10);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle(R.string.teach_at_upsilon);
+        bar = getSupportActionBar().getCustomView();
 
         addCourseButton = (Button) findViewById(R.id.addCourseButton_coursesTaught);
 
@@ -177,6 +179,16 @@ public class CoursesTaughtActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(coursesAdapter);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if(item.getActionView()==bar){
+            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+            startActivity(intent);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
 }

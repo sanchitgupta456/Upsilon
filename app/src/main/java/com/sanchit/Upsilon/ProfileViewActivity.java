@@ -3,12 +3,15 @@ package com.sanchit.Upsilon;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -36,15 +39,15 @@ public class ProfileViewActivity extends AppCompatActivity {
     MongoClient mongoClient;
     MongoDatabase mongoDatabase;
     private ProgressBar progressBar;
+    private View bar;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.user_profile);
-        getSupportActionBar().setDisplayShowCustomEnabled(true);
-        getSupportActionBar().setCustomView(R.layout.action_bar_user_profile);
-        getSupportActionBar().setElevation(0);
-        View bar = getSupportActionBar().getCustomView();
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle(R.string.your_profile);
+        bar = getSupportActionBar().getCustomView();
         ImageButton imageButton = (ImageButton) bar.findViewById(R.id.imgBtnBackProfile);
         ImageButton imageButton1 = (ImageButton) bar.findViewById(R.id.imgBtnEditProfile);
         UserName = (TextView) findViewById(R.id.profileName);
@@ -124,5 +127,22 @@ public class ProfileViewActivity extends AppCompatActivity {
             progressBar.setVisibility(View.GONE);
         });
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        menu.add(0);
+        menu.getItem(0).setIcon(getDrawable(R.drawable.edit_icon_light));
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if(item.getActionView()==bar){
+            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+            startActivity(intent);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
