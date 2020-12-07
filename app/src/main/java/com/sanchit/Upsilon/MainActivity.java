@@ -495,6 +495,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             //toast.show();
             startActivity(intent);
         }
+        else if(id==R.id.faq)
+        {
+            Intent intent = new Intent(MainActivity.this,FAQ.class);
+            //Toast toast = Toast.makeText(getApplicationContext(), "TC Clicked", Toast.LENGTH_LONG);
+            //toast.show();
+            startActivity(intent);
+        }
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
