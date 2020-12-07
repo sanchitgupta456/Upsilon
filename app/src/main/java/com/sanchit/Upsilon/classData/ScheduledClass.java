@@ -6,6 +6,13 @@ public class ScheduledClass {
     String month;
     String time;
 
+    public ScheduledClass(String className, String day, String month, String time) {
+        this.className = className;
+        this.day = day;
+        this.month = month;
+        this.time = time;
+    }
+
     public String getClassName() {
         return className;
     }

@@ -90,15 +90,15 @@ public class TeacherViewCourseActivity extends AppCompatActivity implements Bott
         getSupportActionBar().setElevation(12);
 
         courseName = (TextView) findViewById(R.id.courseNameTeachersView);
-        imageButtonBack = (ImageButton) findViewById(R.id.imgBtnBackTeachersViewCourse);
-        imageButtonUpdate = (ImageButton) findViewById(R.id.imgBtnUpdateTeachersViewCourse);
-
-        loadFragment(new TeacherViewCourseActivityHomeFragment());
+        //imageButtonBack = (ImageButton) findViewById(R.id.imgBtnBackTeachersViewCourse);
+        //imageButtonUpdate = (ImageButton) findViewById(R.id.imgBtnUpdateTeachersViewCourse);
+        courseName.setText(course.getCourseName());
+        loadFragment(new TeacherViewCourseActivityScheduling());
 
         bottomNavigationView = findViewById(R.id.bottom_navigation_teacher);
         bottomNavigationView.setOnNavigationItemSelectedListener(TeacherViewCourseActivity.this);
 
-        courseName.setText(course.getCourseName());
+        /*
         imageButtonBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -111,7 +111,7 @@ public class TeacherViewCourseActivity extends AppCompatActivity implements Bott
             public void onClick(View view) {
 
             }
-        });
+        });*/
     }
 
     @Override
@@ -120,32 +120,33 @@ public class TeacherViewCourseActivity extends AppCompatActivity implements Bott
         Bundle bundle = new Bundle();
         bundle.putSerializable("Course",course);
 
-        Fragment fragment = new TeacherViewCourseActivityHomeFragment();
+        Fragment fragment = new TeacherViewCourseActivityScheduling();
         fragment.setArguments(bundle);
 
         switch (item.getItemId()) {
             case R.id.bottomNavMenuHomeTeacher:
-                fragment = new TeacherViewCourseActivityHomeFragment();
-                fragment.setArguments(bundle);
+                //fragment = new TeacherViewCourseActivityHomeFragment();
+                //fragment.setArguments(bundle);
                 break;
 
             case R.id.bottomNavMenuNotificationsTeacher:
                 //fragment = new TeacherViewCourseActivityHomeFragment();
                 //fragment.setArguments(bundle);
                 break;
-
-            case R.id.bottomNavMenuResources:
-                fragment = new TeacherViewCourseActivityResourcesFragment();
-                fragment.setArguments(bundle);
-                break;
-
             case R.id.bottomNavMenuForumTeacher:
                 fragment = new TeacherViewCourseActivityForumFragment();
+                fragment.setArguments(bundle);
+                break;
+            case R.id.bottomNavMenuScheduleTeacher:
+                fragment = new TeacherViewCourseActivityScheduling();
                 fragment.setArguments(bundle);
                 break;
             case R.id.bottomNavMenuSettingsTeacher:
                 //fragment = new TeacherViewCourseActivityHomeFragment();
                 //fragment.setArguments(bundle);
+                break;
+            default:
+                break;
         }
 
         return loadFragment(fragment);

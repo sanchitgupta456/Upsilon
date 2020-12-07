@@ -27,9 +27,9 @@ public class RegisteredStudentViewCourse extends AppCompatActivity implements Bo
     private FrameLayout fragmentContainer;
     private BottomNavigationView bottomNavigationView;
     private Course course;
-    private TextView courseName;
-    private ImageButton btnBack;
-    View actionBar;
+    //private TextView courseName;
+    //private ImageButton btnBack;
+    //View actionBar;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -41,26 +41,26 @@ public class RegisteredStudentViewCourse extends AppCompatActivity implements Bo
 
         fragmentContainer = (FrameLayout) findViewById(R.id.student_registered_frame);
 
-        Objects.requireNonNull(this.getSupportActionBar()).setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-        getSupportActionBar().setDisplayShowCustomEnabled(true);
-        getSupportActionBar().setCustomView(R.layout.action_bar_active_course);
-        actionBar = getSupportActionBar().getCustomView();
-        courseName = (TextView) actionBar.findViewById(R.id.textCourseNameActiveCourse);
-        btnBack = (ImageButton) actionBar.findViewById(R.id.imgBtnBackActiveCourse);
-        courseName.setText(course.getCourseName());
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle(course.getCourseName());
+        //actionBar = getSupportActionBar().getCustomView();
+        //courseName = (TextView) actionBar.findViewById(R.id.textCourseNameActiveCourse);
+        //btnBack = (ImageButton) actionBar.findViewById(R.id.imgBtnBackActiveCourse);
+        //courseName.setText(course.getCourseName());
 
         loadFragment(new RegisteredStudentViewCourseHomeFragment());
 
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(RegisteredStudentViewCourse.this);
 
+        /*
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(RegisteredStudentViewCourse.this, MainActivity.class);
                 startActivity(intent);
             }
-        });
+        });*/
     }
 
     private boolean loadFragment(Fragment fragment) {
@@ -129,7 +129,11 @@ public class RegisteredStudentViewCourse extends AppCompatActivity implements Bo
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if(item.getItemId()==R.id.menuItemReview)
+        if(item.getActionView()==getSupportActionBar().getCustomView())
+        {
+            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+            startActivity(intent);
+        }else if(item.getItemId()==R.id.menuItemReview)
         {
             loadFragment(new RegisteredStudentViewCourseReviewFragment());
         }

@@ -14,6 +14,7 @@
             android:title="Settings"
             android:icon="@drawable/icon_settings_holo_dark"
             app:showAsAction="ifRoom"
+            android:visible="false"
             />
         <item
             android:id="@+id/menuItemReview"
