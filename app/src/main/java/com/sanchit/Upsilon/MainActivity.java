@@ -112,21 +112,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        ctx = this;
-        setContentView(R.layout.activity_main);
-        startService(upsilonJobService);
+
+        /*ctx = this;
+        //startService(upsilonJobService);
         mSensorService = new NotifService(getCtx());
         mServiceIntent = new Intent(getCtx(), mSensorService.getClass());
         if (!isMyServiceRunning(mSensorService.getClass())) {
             startService(mServiceIntent);
-        }
+        }*/
 
-        Intent i = new Intent(this, UpsilonJobService.class);
-        startService(i);
+       // Intent i = new Intent(this, UpsilonJobService.class);
+       // startService(i);
 
         //displayNotif();
 
-        scheduleJob();
+        //scheduleJob();
         //createNotificationChannel();
         //displayNotif();
 
@@ -278,89 +278,97 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 final int[] flag = {0};
                 findTask.getAsync(task -> {
                     if (task.isSuccess()) {
-                        MongoCursor<Document> results = task.get();
-                        Log.v("COURSEHandler", "successfully found all courses:");
-                        while (results.hasNext()) {
-                            //Log.v("EXAMPLE", results.next().toString());
-                            try {
-                                Document currentDoc = results.next();
+                        try {
+                            MongoCursor<Document> results = task.get();
+                            Log.v("COURSEHandler", "successfully found all courses:");
+                            while (results.hasNext()) {
+                                //Log.v("EXAMPLE", results.next().toString());
+                                try {
+                                    Document currentDoc = results.next();
 
-                                //Log.v("IMPORTANT","Error:"+currentDoc.getString("nextLectureOn"));
+                                    //Log.v("IMPORTANT","Error:"+currentDoc.getString("nextLectureOn"));
 
-                                if(currentDoc.getString("nextLectureOn")==null)
-                                {
-                                    currentDoc.append("nextLectureOn","0");
-                                }
-                                currentDoc.toJson();
-                                gsonBuilder = new GsonBuilder();
-                                gson = gsonBuilder.create();
-
-                                Course course = gson.fromJson(currentDoc.toJson(),Course.class);
-
-                                //course = currentDoc;
-                                //course.setCourseName(currentDoc.getString("courseName"));
-                                //TODO : implement card image fetching via database
-                                //course.setCardImgID(TvShowImgs[0]);
-                                flag[0] =0;
-                                //Log.v("MyCourses", String.valueOf(myCourses));
-                                for(int i=0;i<myCourses.size();i++)
-                                {
-                                    Log.v("currentCourse", course.getCourseId() + myCourses.get(i));
-                                    if(myCourses.get(i).equals(course.getCourseId()))
+                                    if(currentDoc.getString("nextLectureOn")==null)
                                     {
-                                        Log.v("CourseAdded","Added");
-                                        courseArrayList1.add(course);
-                                        coursesAdapter1.notifyDataSetChanged();
-                                        flag[0] =1;
-                                        break;
+                                        currentDoc.append("nextLectureOn","0");
                                     }
-                                }
-                                if(flag[0] ==1)
-                                {
-                                    continue;
-                                }
-                                if(!course.getTutorId().equals(user.getId())) {
-                                    courseArrayList.add(course);
-                                    coursesAdapter.notifyDataSetChanged();
-                                    //courseArrayList2.add(course);
-                                    Document queryFilter1 = new Document("userid", course.getTutorId());
+                                    currentDoc.toJson();
+                                    gsonBuilder = new GsonBuilder();
+                                    gson = gsonBuilder.create();
 
-                                    RealmResultTask<MongoCursor<Document>> findTask1 = mongoCollection2.find(queryFilter1).iterator();
+                                    Course course = gson.fromJson(currentDoc.toJson(),Course.class);
 
-                                    findTask1.getAsync(task1 -> {
-                                        if (task1.isSuccess()) {
-                                            MongoCursor<Document> results1 = task1.get();
-                                            if (!results1.hasNext()) {
-                                                Log.v("ViewCourse", "Couldnt Find The Tutor");
-                                            } else {
-                                                Log.v("User", "successfully found the Tutor");
+                                    //course = currentDoc;
+                                    //course.setCourseName(currentDoc.getString("courseName"));
+                                    //TODO : implement card image fetching via database
+                                    //course.setCardImgID(TvShowImgs[0]);
+                                    flag[0] =0;
+                                    //Log.v("MyCourses", String.valueOf(myCourses));
+                                    for(int i=0;i<myCourses.size();i++)
+                                    {
+                                        try {
+                                            Log.v("currentCourse", course.getCourseId() + myCourses.get(i));
+                                            if(myCourses.get(i).equals(course.getCourseId()))
+                                            {
+                                                Log.v("CourseAdded","Added");
+                                                courseArrayList1.add(course);
+                                                coursesAdapter1.notifyDataSetChanged();
+                                                flag[0] =1;
+                                                break;
                                             }
-                                            while (results1.hasNext()) {
-                                                //Log.v("EXAMPLE", results.next().toString());
-                                                Document currentDoc1 = results1.next();
-                                                Log.v("CourseBySenior", (String) currentDoc1.get("college"));
-                                                Log.v("CourseBySenior", (String)  college);
-
-                                                if (currentDoc1.getString("college").equals(college)) {
-                                                    Log.v("CourseBy","Hello");
-                                                    courseArrayList2.add(course);
-                                                    coursesAdapter2.notifyDataSetChanged();
-                                                    Log.v("CoursesySeniors", String.valueOf(courseArrayList2));
-                                                }
-                                                Log.v("User", currentDoc1.getString("userid"));
-                                            }
-                                        } else {
-                                            Log.v("User", "Failed to complete search");
+                                        } catch (Exception e) {
+                                            e.printStackTrace();
                                         }
-                                    });
+                                    }
+                                    if(flag[0] ==1)
+                                    {
+                                        continue;
+                                    }
+                                    if(!course.getTutorId().equals(user.getId())) {
+                                        courseArrayList.add(course);
+                                        coursesAdapter.notifyDataSetChanged();
+                                        //courseArrayList2.add(course);
+                                        Document queryFilter1 = new Document("userid", course.getTutorId());
+
+                                        RealmResultTask<MongoCursor<Document>> findTask1 = mongoCollection2.find(queryFilter1).iterator();
+
+                                        findTask1.getAsync(task1 -> {
+                                            if (task1.isSuccess()) {
+                                                MongoCursor<Document> results1 = task1.get();
+                                                if (!results1.hasNext()) {
+                                                    Log.v("ViewCourse", "Couldnt Find The Tutor");
+                                                } else {
+                                                    Log.v("User", "successfully found the Tutor");
+                                                }
+                                                while (results1.hasNext()) {
+                                                    //Log.v("EXAMPLE", results.next().toString());
+                                                    Document currentDoc1 = results1.next();
+                                                    Log.v("CourseBySenior", (String) currentDoc1.get("college"));
+                                                    Log.v("CourseBySenior", (String)  college);
+
+                                                    if (currentDoc1.getString("college").equals(college)) {
+                                                        Log.v("CourseBy","Hello");
+                                                        courseArrayList2.add(course);
+                                                        coursesAdapter2.notifyDataSetChanged();
+                                                        Log.v("CoursesySeniors", String.valueOf(courseArrayList2));
+                                                    }
+                                                    Log.v("User", currentDoc1.getString("userid"));
+                                                }
+                                            } else {
+                                                Log.v("User", "Failed to complete search");
+                                            }
+                                        });
+                                    }
+                                } catch (JsonSyntaxException e) {
+                                    e.printStackTrace();
                                 }
-                            } catch (JsonSyntaxException e) {
-                                e.printStackTrace();
+                                if(!results.hasNext())
+                                {
+                                    progressBar.setVisibility(View.GONE);
+                                }
                             }
-                            if(!results.hasNext())
-                            {
-                                progressBar.setVisibility(View.GONE);
-                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
                     } else {
                         Log.e("COURSEHandler", "failed to find courses with: ", task.getError());

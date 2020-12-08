@@ -245,6 +245,7 @@ public class AddCourseActivity extends AppCompatActivity implements AdapterView.
                                         });
 
                                         courseDetails.append("courseImage",resultData.get("url").toString());
+                                        courseDetails.append("courseId",result.get().getInsertedId());
                                         mongoCollection.updateOne(new Document("_id",result.get().getInsertedId()),courseDetails).getAsync(result1 -> {
                                             if(result1.isSuccess())
                                             {
