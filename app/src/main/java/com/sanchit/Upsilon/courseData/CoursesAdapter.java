@@ -111,12 +111,16 @@ public class CoursesAdapter extends RecyclerView.Adapter<CoursesAdapter.ViewHold
                                 int i=0;
                                 for(i=0;i<myCourses.size();i++)
                                 {
-                                    if(((String)myCourses.get(i)).equals((String)course.getCourseId()))
-                                    {
-                                        Intent intent = new Intent(holder.itemView.getContext(), RegisteredStudentViewCourse.class);
-                                        intent.putExtra("Course", course);
-                                        holder.itemView.getContext().startActivity(intent);
-                                        break;
+                                    try {
+                                        if(((String)myCourses.get(i)).equals((String)course.getCourseId()))
+                                        {
+                                            Intent intent = new Intent(holder.itemView.getContext(), RegisteredStudentViewCourse.class);
+                                            intent.putExtra("Course", course);
+                                            holder.itemView.getContext().startActivity(intent);
+                                            break;
+                                        }
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
                                     }
                                 }
                                 if(i==myCourses.size())

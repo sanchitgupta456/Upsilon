@@ -33,7 +33,7 @@ public class CourseReview extends Object {
         this.reviewRating = reviewRating;
     }
 
-    public String getRatingAuthorId() {
+    public String getReviewAuthorId() {
         return reviewAuthorId;
     }
 
