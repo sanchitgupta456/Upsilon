@@ -3,6 +3,7 @@ package com.sanchit.Upsilon;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -11,6 +12,7 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -33,6 +35,7 @@ import org.bson.types.ObjectId;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.Objects;
 
 import io.realm.mongodb.App;
 import io.realm.mongodb.AppConfiguration;
@@ -49,7 +52,7 @@ public class ViewCourseActivity extends AppCompatActivity {
     private RatingBar CourseRating;
     private String courseName;
     private View ActionBarView;
-    private ImageView BackButton,CourseImage;
+    private ImageView CourseImage;
     private TextView ActionBarCourseName,CourseDescription,CourseDuration,CourseMode,CourseCost,CourseTutorName;
     private ImageButton CourseLocation;
     private Button RegisterButton;
@@ -70,12 +73,9 @@ public class ViewCourseActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_course);
-        this.getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-        getSupportActionBar().setDisplayShowCustomEnabled(true);
-        getSupportActionBar().setCustomView(R.layout.layout_custom_action_bar_view_course);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setElevation(0);
         ActionBarView = getSupportActionBar().getCustomView();
-        BackButton = findViewById(R.id.action_bar_back_button);
-        ActionBarCourseName = findViewById(R.id.action_bar_course_name);
         CourseName = (TextView) findViewById(R.id.textCourseCoverCard);
         CourseImage = (ImageView) findViewById(R.id.imageCourseCoverCard);
         CourseRating = (RatingBar) findViewById(R.id.courseRatings);
@@ -167,16 +167,16 @@ public class ViewCourseActivity extends AppCompatActivity {
             }
         });
 
-        BackButton.setOnClickListener(new View.OnClickListener() {
+        /*BackButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 releaseExoPlayer(courseIntroductoryMaterialAdapter.exoPlayer);
                 finish();
             }
-        });
+        });*/
 
         CourseName.setText(course.getCourseName());
-        ActionBarCourseName.setText(course.getCourseName());
+        Objects.requireNonNull(getSupportActionBar()).setTitle(course.getCourseName());
         CourseRating.setStepSize(0.01f);
         CourseRating.setRating((float) course.getCourseRating());
         CourseDescription.setText(course.getCourseDescription());
@@ -256,5 +256,14 @@ public class ViewCourseActivity extends AppCompatActivity {
             exoPlayer.release();
         }
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (ActionBarView==item.getActionView()){
+            releaseExoPlayer(courseIntroductoryMaterialAdapter.exoPlayer);
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

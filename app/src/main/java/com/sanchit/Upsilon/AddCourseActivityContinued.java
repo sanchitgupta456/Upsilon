@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -18,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -37,6 +39,7 @@ import org.json.JSONObject;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Objects;
 
 import io.realm.mongodb.App;
 import io.realm.mongodb.AppConfiguration;
@@ -68,24 +71,22 @@ public class AddCourseActivityContinued extends AppCompatActivity {
     ArrayList<String> introductoryDocumentUrls;
     RecyclerView recyclerView;
     String id="5fad2a5a9f30789191ea7d15";
-    ImageButton imageButtonBack, imageButtonProceed;
     private static int RESULT_LOAD_IMAGE = 1,RESULT_LOAD_VIDEO = 2,RESULT_LOAD_DOCUMENT=3;
     private static final int WRITE_PERMISSION = 0x01;
+    View bar;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_course_contd);
-        this.getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-        getSupportActionBar().setDisplayShowCustomEnabled(true);
-        getSupportActionBar().setCustomView(R.layout.action_bar_add_course_contd);
-        getSupportActionBar().setElevation(10);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setElevation(0);
+        getSupportActionBar().setTitle(R.string.add_introductory_content);
+        bar = (View) getSupportActionBar().getCustomView();
         addImages = (FloatingActionButton) findViewById(R.id.add_images_introductory);
         addVideos = (FloatingActionButton) findViewById(R.id.add_video_introductory);
         addDocuments = (FloatingActionButton) findViewById(R.id.add_documents_introductory);
         recyclerView =(RecyclerView) findViewById(R.id.listIntroductoryMaterial);
-        imageButtonBack = (ImageButton) findViewById(R.id.imgBtnBackAddCourseContd);
-        imageButtonProceed = (ImageButton) findViewById(R.id.imgBtnProceedAddCourseContd);
         Intent intent = getIntent();
         id = intent.getStringExtra("InsertedDocument");
         ObjectId _id = new ObjectId(id);
@@ -144,373 +145,7 @@ public class AddCourseActivityContinued extends AppCompatActivity {
                 startActivityForResult(Intent.createChooser(intent, "Select Picture"), RESULT_LOAD_DOCUMENT);
             }
         });
-        imageButtonBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(AddCourseActivityContinued.this, AddCourseActivity.class);
-                startActivity(intent);
-            }
-        });
         nextButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                if(picturePaths.size()==0 && videoPaths.size()==0 && documentPaths.size()==0)
-                {
-                    Document queryFilter  = new Document("_id",_id);
-
-                    RealmResultTask<MongoCursor<Document>> findTask = mongoCollection.find(queryFilter).iterator();
-
-                    findTask.getAsync(task -> {
-                        if (task.isSuccess()) {
-                            MongoCursor<Document> results = task.get();
-                            if(!results.hasNext())
-                            {
-                                                    /*mongoCollection.insertOne(
-                                                            new Document("userid", user.getId()).append("profilePicCounter",0).append("favoriteColor", "pink").append("profilePicUrl",resultData.get("url").toString()))
-                                                            .getAsync(result -> {
-                                                                if (result.isSuccess()) {
-                                                                    Log.v("EXAMPLE", "Inserted custom user data document. _id of inserted document: "
-                                                                            + result.get().getInsertedId());
-                                                                    //Intent intent = new Intent(UserDataSetupActivity2.this,UserDataSetupActivity3.class);
-                                                                    //startActivity(intent);
-                                                                } else {
-                                                                    Log.e("EXAMPLE", "Unable to insert custom user data. Error: " + result.getError());
-                                                                }
-                                                            });*/
-                            }
-                            else
-                            {
-                                Document userdata = results.next();
-                                userdata.append("IntroductoryContentImages",introductoryImageUrls);
-                                userdata.append("IntroductoryImageCounter", 0);
-                                userdata.append("courseId",_id.toString());
-                                Log.v("AddedCourseId", String.valueOf(_id));
-
-                                mongoCollection.updateOne(
-                                        new Document("_id",_id),(userdata))
-                                        .getAsync(result -> {
-                                            if (result.isSuccess()) {
-                                                Log.v("EXAMPLE", "Inserted custom user data document. _id of inserted document: "
-                                                        + result.get().getModifiedCount());
-                                                //Intent intent = new Intent(UserDataSetupActivity2.this,UserDataSetupActivity3.class);
-                                                //startActivity(intent);
-                                            } else {
-                                                Log.e("EXAMPLE", "Unable to insert custom user data. Error: " + result.getError());
-                                            }
-                                        });
-                            }
-                            while (results.hasNext()) {
-                                //Log.v("EXAMPLE", results.next().toString());
-                                Document currentDoc = results.next();
-                                Log.v("User",currentDoc.getString("userid"));
-                            }
-                        } else {
-                            Log.v("User","Failed to complete search");
-                        }
-                    });
-                }
-
-                int counter=0;
-                for (counter=0;counter<picturePaths.size();counter++)
-                {
-                    int finalCounter = counter;
-                    String requestId = MediaManager.get().upload(picturePaths.get(counter))
-                            .unsigned("preset1")
-                            .option("resource_type", "image")
-                            .option("folder", "Upsilon/Courses/"+id+"/IntroductoryContent/Images")
-                            .option("public_id", "IntroductoryImage"+counter)
-                            .callback(new UploadCallback() {
-                                @Override
-                                public void onStart(String requestId) {
-
-                                }
-
-                                @Override
-                                public void onProgress(String requestId, long bytes, long totalBytes) {
-
-                                }
-
-                                @Override
-                                public void onSuccess(String requestId, Map resultData) {
-                                    introductoryImageUrls.add(resultData.get("url").toString());
-                                    Log.v("Urls",introductoryImageUrls.toString());
-                                    if(finalCounter ==picturePaths.size()-1)
-                                    {
-                                        Document queryFilter  = new Document("_id",_id);
-
-                                        RealmResultTask<MongoCursor<Document>> findTask = mongoCollection.find(queryFilter).iterator();
-
-                                        findTask.getAsync(task -> {
-                                            if (task.isSuccess()) {
-                                                MongoCursor<Document> results = task.get();
-                                                if(!results.hasNext())
-                                                {
-                                                    /*mongoCollection.insertOne(
-                                                            new Document("userid", user.getId()).append("profilePicCounter",0).append("favoriteColor", "pink").append("profilePicUrl",resultData.get("url").toString()))
-                                                            .getAsync(result -> {
-                                                                if (result.isSuccess()) {
-                                                                    Log.v("EXAMPLE", "Inserted custom user data document. _id of inserted document: "
-                                                                            + result.get().getInsertedId());
-                                                                    //Intent intent = new Intent(UserDataSetupActivity2.this,UserDataSetupActivity3.class);
-                                                                    //startActivity(intent);
-                                                                } else {
-                                                                    Log.e("EXAMPLE", "Unable to insert custom user data. Error: " + result.getError());
-                                                                }
-                                                            });*/
-                                                }
-                                                else
-                                                {
-                                                    Document userdata = results.next();
-                                                    userdata.append("IntroductoryContentImages",introductoryImageUrls);
-                                                    userdata.append("IntroductoryImageCounter", finalCounter +1);
-                                                    userdata.append("courseId",_id.toString());
-                                                    Log.v("AddedCourseId", String.valueOf(_id));
-
-                                                    mongoCollection.updateOne(
-                                                            new Document("_id",_id),(userdata))
-                                                            .getAsync(result -> {
-                                                                if (result.isSuccess()) {
-                                                                    Log.v("EXAMPLE", "Inserted custom user data document. _id of inserted document: "
-                                                                            + result.get().getModifiedCount());
-                                                                    if(videoPaths.size()==0)
-                                                                    {
-                                                                        startActivity(new Intent(AddCourseActivityContinued.this,MainActivity.class));
-                                                                    }
-                                                                    //Intent intent = new Intent(UserDataSetupActivity2.this,UserDataSetupActivity3.class);
-                                                                    //startActivity(intent);
-                                                                } else {
-                                                                    Log.e("EXAMPLE", "Unable to insert custom user data. Error: " + result.getError());
-                                                                }
-                                                            });
-                                                }
-                                                while (results.hasNext()) {
-                                                    //Log.v("EXAMPLE", results.next().toString());
-                                                    Document currentDoc = results.next();
-                                                    Log.v("User",currentDoc.getString("userid"));
-                                                }
-                                            } else {
-                                                Log.v("User","Failed to complete search");
-                                            }
-                                        });
-                                    }
-                                }
-
-                                @Override
-                                public void onError(String requestId, ErrorInfo error) {
-
-                                }
-
-                                @Override
-                                public void onReschedule(String requestId, ErrorInfo error) {
-
-                                }
-                            }).dispatch();
-
-                }
-
-                counter=0;
-                for (counter=0;counter<videoPaths.size();counter++)
-                {
-                    int finalCounter = counter;
-                    String requestId = MediaManager.get().upload(videoPaths.get(counter))
-                            .unsigned("preset1")
-                            .option("resource_type", "video")
-                            .option("folder", "Upsilon/Courses/"+id+"/IntroductoryContent/Videos")
-                            .option("public_id", "IntroductoryVideo"+counter)
-                            .callback(new UploadCallback() {
-                                @Override
-                                public void onStart(String requestId) {
-
-                                }
-
-                                @Override
-                                public void onProgress(String requestId, long bytes, long totalBytes) {
-
-                                }
-
-                                @Override
-                                public void onSuccess(String requestId, Map resultData) {
-                                    introductoryVideoUrls.add(resultData.get("url").toString());
-                                    Log.v("Urls",introductoryVideoUrls.toString());
-                                    if(finalCounter ==videoPaths.size()-1)
-                                    {
-                                        Document queryFilter  = new Document("_id",_id);
-
-                                        RealmResultTask<MongoCursor<Document>> findTask = mongoCollection.find(queryFilter).iterator();
-
-                                        findTask.getAsync(task -> {
-                                            if (task.isSuccess()) {
-                                                MongoCursor<Document> results = task.get();
-                                                if(!results.hasNext())
-                                                {
-                                                    /*mongoCollection.insertOne(
-                                                            new Document("userid", user.getId()).append("profilePicCounter",0).append("favoriteColor", "pink").append("profilePicUrl",resultData.get("url").toString()))
-                                                            .getAsync(result -> {
-                                                                if (result.isSuccess()) {
-                                                                    Log.v("EXAMPLE", "Inserted custom user data document. _id of inserted document: "
-                                                                            + result.get().getInsertedId());
-                                                                    //Intent intent = new Intent(UserDataSetupActivity2.this,UserDataSetupActivity3.class);
-                                                                    //startActivity(intent);
-                                                                } else {
-                                                                    Log.e("EXAMPLE", "Unable to insert custom user data. Error: " + result.getError());
-                                                                }
-                                                            });*/
-                                                }
-                                                else
-                                                {
-                                                    Document userdata = results.next();
-                                                    userdata.append("IntroductoryContentVideos",introductoryVideoUrls);
-                                                    userdata.append("IntroductoryVideoCounter", finalCounter+1);
-
-                                                    mongoCollection.updateOne(
-                                                            new Document("_id",_id),(userdata))
-                                                            .getAsync(result -> {
-                                                                if (result.isSuccess()) {
-                                                                    Log.v("EXAMPLE", "Inserted custom user data document. _id of inserted document: "
-                                                                            + result.get().getModifiedCount());
-                                                                    startActivity(new Intent(AddCourseActivityContinued.this,MainActivity.class));
-                                                                    //Intent intent = new Intent(UserDataSetupActivity2.this,UserDataSetupActivity3.class);
-                                                                    //startActivity(intent);
-                                                                } else {
-                                                                    Log.e("EXAMPLE", "Unable to insert custom user data. Error: " + result.getError());
-                                                                }
-                                                            });
-                                                }
-                                                while (results.hasNext()) {
-                                                    //Log.v("EXAMPLE", results.next().toString());
-                                                    Document currentDoc = results.next();
-                                                    Log.v("User",currentDoc.getString("userid"));
-                                                }
-                                            } else {
-                                                Log.v("User","Failed to complete search");
-                                            }
-                                        });
-                                    }
-                                }
-
-                                @Override
-                                public void onError(String requestId, ErrorInfo error) {
-
-                                }
-
-                                @Override
-                                public void onReschedule(String requestId, ErrorInfo error) {
-
-                                }
-                            }).dispatch();
-
-                }
-
-                counter=0;
-                for (counter=0;counter<documentPaths.size();counter++)
-                {
-                    int finalCounter = counter;
-                    String requestId = MediaManager.get().upload(documentPaths.get(counter))
-                            .unsigned("preset1")
-                            .option("resource_type", "document")
-                            .option("folder", "Upsilon/Courses/"+id+"/IntroductoryContent/Documents")
-                            .option("public_id", "IntroductoryDocument"+counter)
-                            .callback(new UploadCallback() {
-                                @Override
-                                public void onStart(String requestId) {
-
-                                }
-
-                                @Override
-                                public void onProgress(String requestId, long bytes, long totalBytes) {
-
-                                }
-
-                                @Override
-                                public void onSuccess(String requestId, Map resultData) {
-                                    introductoryDocumentUrls.add(resultData.get("url").toString());
-                                    Log.v("Urls",introductoryDocumentUrls.toString());
-                                    if(finalCounter ==documentPaths.size()-1)
-                                    {
-                                        Document queryFilter  = new Document("_id",_id);
-
-                                        RealmResultTask<MongoCursor<Document>> findTask = mongoCollection.find(queryFilter).iterator();
-
-                                        findTask.getAsync(task -> {
-                                            if (task.isSuccess()) {
-                                                MongoCursor<Document> results = task.get();
-                                                if(!results.hasNext())
-                                                {
-                                                    /*mongoCollection.insertOne(
-                                                            new Document("userid", user.getId()).append("profilePicCounter",0).append("favoriteColor", "pink").append("profilePicUrl",resultData.get("url").toString()))
-                                                            .getAsync(result -> {
-                                                                if (result.isSuccess()) {
-                                                                    Log.v("EXAMPLE", "Inserted custom user data document. _id of inserted document: "
-                                                                            + result.get().getInsertedId());
-                                                                    //Intent intent = new Intent(UserDataSetupActivity2.this,UserDataSetupActivity3.class);
-                                                                    //startActivity(intent);
-                                                                } else {
-                                                                    Log.e("EXAMPLE", "Unable to insert custom user data. Error: " + result.getError());
-                                                                }
-                                                            });*/
-                                                }
-                                                else
-                                                {
-                                                    Document userdata = results.next();
-                                                    userdata.append("IntroductoryContentDocuments",introductoryDocumentUrls);
-                                                    userdata.append("IntroductoryDocumentCounter", finalCounter+1);
-
-                                                    mongoCollection.updateOne(
-                                                            new Document("_id",_id),(userdata))
-                                                            .getAsync(result -> {
-                                                                if (result.isSuccess()) {
-                                                                    Log.v("EXAMPLE", "Inserted custom user data document. _id of inserted document: "
-                                                                            + result.get().getModifiedCount());
-                                                                    //Intent intent = new Intent(UserDataSetupActivity2.this,UserDataSetupActivity3.class);
-                                                                    //startActivity(intent);
-                                                                } else {
-                                                                    Log.e("EXAMPLE", "Unable to insert custom user data. Error: " + result.getError());
-                                                                }
-                                                            });
-                                                }
-                                                while (results.hasNext()) {
-                                                    //Log.v("EXAMPLE", results.next().toString());
-                                                    Document currentDoc = results.next();
-                                                    Log.v("User",currentDoc.getString("userid"));
-                                                }
-                                            } else {
-                                                Log.v("User","Failed to complete search");
-                                            }
-                                        });
-                                    }
-                                }
-
-                                @Override
-                                public void onError(String requestId, ErrorInfo error) {
-
-                                }
-
-                                @Override
-                                public void onReschedule(String requestId, ErrorInfo error) {
-
-                                }
-                            }).dispatch();
-
-                }
-
-                /*mongoCollection.updateOne(new Document("_id",insertedId),()).getAsync(result -> {
-                    if(result.isSuccess())
-                    {
-                        App.Result result1 = result;
-                        //Log.v("AddCourse", String.valueOf(result)+ result.get().getInsertedId());
-                        Intent intent = new Intent(AddCourseActivityContinued.this,MainActivity.class);
-                        startActivity(intent);
-                        Toast.makeText(getApplicationContext(),"Successfully Added The Course", Toast.LENGTH_LONG).show();
-                    }
-                    else
-                    {
-                        Log.v("User",result.getError().toString());
-                    }
-                });*/
-            }
-        });
-        imageButtonProceed.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -1028,5 +663,13 @@ public class AddCourseActivityContinued extends AppCompatActivity {
         if(checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)!=PackageManager.PERMISSION_GRANTED){
             ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},WRITE_PERMISSION);
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if(item.getActionView()==bar) {
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

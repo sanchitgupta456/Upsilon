@@ -128,9 +128,7 @@ public class ProfileViewActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if(item.getActionView()==bar){
-            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-            startActivity(intent);
-            return true;
+            finish();
         }
         return super.onOptionsItemSelected(item);
     }
