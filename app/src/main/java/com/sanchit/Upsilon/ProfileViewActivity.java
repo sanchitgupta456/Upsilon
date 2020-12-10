@@ -19,6 +19,8 @@ import com.squareup.picasso.Picasso;
 
 import org.bson.Document;
 
+import java.util.Objects;
+
 import de.hdodenhof.circleimageview.CircleImageView;
 import io.realm.mongodb.App;
 import io.realm.mongodb.AppConfiguration;
@@ -45,11 +47,9 @@ public class ProfileViewActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.user_profile);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(R.string.your_profile);
         bar = getSupportActionBar().getCustomView();
-        ImageButton imageButton = (ImageButton) bar.findViewById(R.id.imgBtnBackProfile);
-        ImageButton imageButton1 = (ImageButton) bar.findViewById(R.id.imgBtnEditProfile);
         UserName = (TextView) findViewById(R.id.profileName);
         PhoneNumber = (TextView) findViewById(R.id.profilePhone);
         Email = (TextView) findViewById(R.id.profileEmail);
@@ -57,20 +57,6 @@ public class ProfileViewActivity extends AppCompatActivity {
         NumberOfCoursesTaught = (TextView) findViewById(R.id.profileNumCoursesTaught);
         profileImage = (CircleImageView) findViewById(R.id.imgProfileImage);
         progressBar = (ProgressBar) findViewById(R.id.loadingUserProfile);
-        imageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(ProfileViewActivity.this, MainActivity.class);
-                startActivity(intent);
-            }
-        });
-        imageButton1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(ProfileViewActivity.this, UserDataSetupActivity1.class);
-                startActivity(intent);
-            }
-        });
         app = new App(new AppConfiguration.Builder(appID)
                 .build());
 
@@ -131,8 +117,11 @@ public class ProfileViewActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        menu.add(0);
+        //menu.add(0);
+        //menu.getItem(0).setIcon(getDrawable(R.drawable.edit_icon_light));
+        menu.add("Edit");
         menu.getItem(0).setIcon(getDrawable(R.drawable.edit_icon_light));
+        menu.getItem(0).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
         return true;
     }
 

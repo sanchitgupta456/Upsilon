@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:showIn="navigation_view">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:title="Refresh"
         android:id="@+id/refresh"
@@ -12,8 +10,10 @@
         android:id="@+id/signOut"
         android:icon="@drawable/icon_close"/>
     <item
+        android:id="@+id/search_home"
         android:title="Search"
         app:showAsAction="always"
-        android:icon="@drawable/icon_search_holo_dark"/>
+        android:icon="@drawable/search"
+        app:actionViewClass="android.widget.SearchView"/>
 
 </menu>
