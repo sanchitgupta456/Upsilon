@@ -29,7 +29,7 @@ public class RegisteredStudentViewCourse extends AppCompatActivity implements Bo
     private Course course;
     //private TextView courseName;
     //private ImageButton btnBack;
-    //View actionBar;
+    View actionBar;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -43,12 +43,12 @@ public class RegisteredStudentViewCourse extends AppCompatActivity implements Bo
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(course.getCourseName());
-        //actionBar = getSupportActionBar().getCustomView();
+        actionBar = getSupportActionBar().getCustomView();
         //courseName = (TextView) actionBar.findViewById(R.id.textCourseNameActiveCourse);
         //btnBack = (ImageButton) actionBar.findViewById(R.id.imgBtnBackActiveCourse);
         //courseName.setText(course.getCourseName());
 
-        loadFragment(new RegisteredStudentViewCourseHomeFragment());
+        loadFragment(new RegisteredStudentViewCourseScheduleFragment());
 
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(RegisteredStudentViewCourse.this);
@@ -83,7 +83,7 @@ public class RegisteredStudentViewCourse extends AppCompatActivity implements Bo
         Bundle bundle = new Bundle();
         bundle.putSerializable("Course",course);
 
-        Fragment fragment = new RegisteredStudentViewCourseHomeFragment();
+        Fragment fragment = new RegisteredStudentViewCourseScheduleFragment();
         fragment.setArguments(bundle);
 
         switch (item.getItemId()) {
@@ -97,8 +97,8 @@ public class RegisteredStudentViewCourse extends AppCompatActivity implements Bo
                 fragment.setArguments(bundle);
                 break;
 
-            case R.id.bottomNavMenuResources:
-                fragment = new RegisteredStudentViewCourseResourcesFragment();
+            case R.id.bottomNavMenuSchedule:
+                fragment = new RegisteredStudentViewCourseScheduleFragment();
                 fragment.setArguments(bundle);
                 break;
 
@@ -129,11 +129,11 @@ public class RegisteredStudentViewCourse extends AppCompatActivity implements Bo
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if(item.getActionView()==getSupportActionBar().getCustomView())
+        if(item.getActionView()==actionBar)
         {
-            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-            startActivity(intent);
-        }else if(item.getItemId()==R.id.menuItemReview)
+            finish();
+        }
+        else if(item.getItemId()==R.id.menuItemReview)
         {
             loadFragment(new RegisteredStudentViewCourseReviewFragment());
         }

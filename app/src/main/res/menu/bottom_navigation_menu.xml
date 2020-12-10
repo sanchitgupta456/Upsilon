@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
+        android:id="@+id/bottomNavMenuSchedule"
+        android:enabled="true"
+        android:icon="@drawable/icon_calendar"
+        android:title="@string/schedule"/>
+    <item
         android:id="@+id/bottomNavMenuHome"
         android:enabled="true"
         android:icon="@drawable/icon_home"
@@ -10,11 +15,6 @@
         android:enabled="true"
         android:icon="@drawable/icon_notifications"
         android:title="@string/notifications"/>
-    <item
-        android:id="@+id/bottomNavMenuResources"
-        android:enabled="true"
-        android:icon="@drawable/icon_files"
-        android:title="@string/resources"/>
     <item
         android:id="@+id/bottomNavMenuForum"
         android:enabled="true"

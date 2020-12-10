@@ -3,6 +3,7 @@ package com.sanchit.Upsilon;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
@@ -13,11 +14,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class FAQ extends AppCompatActivity {
     private RecyclerView recyclerView;
     private ArrayList<String> questions;
     private ArrayList<String> answers;
+    private View bar;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,8 +28,9 @@ public class FAQ extends AppCompatActivity {
         recyclerView = (RecyclerView) findViewById(R.id.faq_recycler);
         questions = new ArrayList<>();
         answers = new ArrayList<>();
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(R.string.faq);
+        bar = (View) getSupportActionBar().getCustomView();
         getFAQList();
     }
     public void getFAQList() {
@@ -54,10 +58,8 @@ public class FAQ extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if(item.getActionView()==getSupportActionBar().getCustomView()){
-            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-            startActivity(intent);
-            return true;
+        if(item.getActionView()==bar){
+            finish();
         }
         return super.onOptionsItemSelected(item);
     }

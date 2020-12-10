@@ -84,15 +84,10 @@ public class TeacherViewCourseActivity extends AppCompatActivity implements Bott
 
         fragmentContainer = (FrameLayout) findViewById(R.id.course_teacher_frame);
 
-        Objects.requireNonNull(this.getSupportActionBar()).setDisplayOptions(androidx.appcompat.app.ActionBar.DISPLAY_SHOW_CUSTOM);
-        getSupportActionBar().setDisplayShowCustomEnabled(true);
-        getSupportActionBar().setCustomView(R.layout.action_bar_teachers_view_of_course);
-        getSupportActionBar().setElevation(12);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle(course.getCourseName());
+        actionBar = (View) getSupportActionBar().getCustomView();
 
-        courseName = (TextView) findViewById(R.id.courseNameTeachersView);
-        //imageButtonBack = (ImageButton) findViewById(R.id.imgBtnBackTeachersViewCourse);
-        //imageButtonUpdate = (ImageButton) findViewById(R.id.imgBtnUpdateTeachersViewCourse);
-        courseName.setText(course.getCourseName());
         loadFragment(new TeacherViewCourseActivityScheduling());
 
         bottomNavigationView = findViewById(R.id.bottom_navigation_teacher);
@@ -172,4 +167,11 @@ public class TeacherViewCourseActivity extends AppCompatActivity implements Bott
         return false;
     }
 
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getActionView()==actionBar){
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }
