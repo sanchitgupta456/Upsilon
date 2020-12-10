@@ -100,26 +100,30 @@ public class CourseAdapter2 extends RecyclerView.Adapter<CourseAdapter2.ViewHold
                             }
                             else
                             {
-                                Document currentDoc = results.next();
-                                myCourses = (ArrayList<String>) currentDoc.get("myCourses");
-                                int i=0;
-                                for(i=0;i<myCourses.size();i++)
-                                {
-                                    if(((String)myCourses.get(i)).equals((String)course.getCourseId()))
+                                try {
+                                    Document currentDoc = results.next();
+                                    myCourses = (ArrayList<String>) currentDoc.get("myCourses");
+                                    int i=0;
+                                    for(i=0;i<myCourses.size();i++)
                                     {
-                                        Intent intent = new Intent(holder.itemView.getContext(), RegisteredStudentViewCourse.class);
+                                        if(((String)myCourses.get(i)).equals((String)course.getCourseId()))
+                                        {
+                                            Intent intent = new Intent(holder.itemView.getContext(), RegisteredStudentViewCourse.class);
+                                            intent.putExtra("Course", course);
+                                            holder.itemView.getContext().startActivity(intent);
+                                            break;
+                                        }
+                                    }
+                                    if(i==myCourses.size())
+                                    {
+                                        Intent intent = new Intent(holder.itemView.getContext(), ViewCourseActivity.class);
                                         intent.putExtra("Course", course);
                                         holder.itemView.getContext().startActivity(intent);
-                                        break;
                                     }
+                                    Log.v("User", "successfully found the user");
+                                } catch (Exception e) {
+                                    e.printStackTrace();
                                 }
-                                if(i==myCourses.size())
-                                {
-                                    Intent intent = new Intent(holder.itemView.getContext(), ViewCourseActivity.class);
-                                    intent.putExtra("Course", course);
-                                    holder.itemView.getContext().startActivity(intent);
-                                }
-                                Log.v("User", "successfully found the user");
                             }
                         } else {
                             Log.v("User","Failed to complete search");

@@ -144,7 +144,7 @@ public class ViewCourseActivity extends AppCompatActivity {
                     //Log.v("EXAMPLE", results.next().toString());
                     Document currentDoc = results.next();
                     CourseTutorName.setText("Course By "+ currentDoc.getString("name"));
-                    myCourses = (ArrayList<String>) currentDoc.get("myCourses");
+                    /*myCourses = (ArrayList<String>) currentDoc.get("myCourses");
                     if(myCourses==null)
                     {
 
@@ -158,7 +158,7 @@ public class ViewCourseActivity extends AppCompatActivity {
                                 RegisterButton.setVisibility(View.INVISIBLE);
                             }
                         }
-                    }
+                    }*/
 
                     Log.v("User",currentDoc.getString("userid"));
                 }
