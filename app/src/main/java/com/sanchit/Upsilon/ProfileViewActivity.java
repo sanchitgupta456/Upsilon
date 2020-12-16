@@ -120,7 +120,7 @@ public class ProfileViewActivity extends AppCompatActivity {
         //menu.add(0);
         //menu.getItem(0).setIcon(getDrawable(R.drawable.edit_icon_light));
         menu.add("Edit");
-        menu.getItem(0).setIcon(getDrawable(R.drawable.edit_icon_light));
+        menu.getItem(0).setIcon(getDrawable(R.drawable.edit_icon));
         menu.getItem(0).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
         return true;
     }

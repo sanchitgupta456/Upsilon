@@ -260,6 +260,6 @@
         android:typeface="sans"
         android:textStyle="bold"
         android:textSize="@dimen/text_margin"
-        android:drawableStart="@drawable/add_icon"
+        android:drawableStart="@drawable/add_icon_24"
         android:drawableTint="@color/colorWhite"/>
 </RelativeLayout>

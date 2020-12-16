@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".AboutActivity"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/background">
+    android:layout_height="match_parent">
 
     <ImageView
         android:id="@+id/logo"
@@ -41,8 +40,8 @@
         android:layout_marginTop="47dp"
         android:layout_marginBottom="67dp"
         android:text="@string/app_name"
-        android:textColor="@color/colorWhite"
-        android:textSize="@android:dimen/app_icon_size"
+        android:textColor="@color/colorPrimary"
+        android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/aboutTitle"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

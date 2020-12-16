@@ -23,9 +23,9 @@ public class TeachActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_course);
-        this.getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-        getSupportActionBar().setDisplayShowCustomEnabled(true);
-        getSupportActionBar().setCustomView(R.layout.layout_custom_action_bar_view_course);
+        this.getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_HOME_AS_UP);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("Course Name");
 
 
         //getCoursesTaught();

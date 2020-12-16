@@ -6,7 +6,7 @@
         <item
             android:id="@+id/menuItemRefresh"
             android:title="@string/refresh"
-            android:icon="@drawable/icon_refresh"
+            android:icon="@drawable/icon_refresh_24"
             app:showAsAction="never"
             />
         <item

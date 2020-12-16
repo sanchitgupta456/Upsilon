@@ -42,7 +42,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/textSelectYourCollege"
-                android:dropDownSelector="@drawable/add_icon"
+                android:dropDownSelector="@drawable/add_icon_24"
                 android:background="@drawable/text_view_add_course"
                 android:backgroundTint="@color/colorAccent"
                 tools:listitem="@layout/support_simple_spinner_dropdown_item"/>
