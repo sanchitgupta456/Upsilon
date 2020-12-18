@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonSyntaxException;
 import com.sanchit.Upsilon.courseData.Course;
 import com.sanchit.Upsilon.courseData.CoursesAdapter;
 import com.sanchit.Upsilon.ui.login.LoginActivity;
@@ -121,10 +122,14 @@ public class CoursesTaughtActivity extends AppCompatActivity {
                         gsonBuilder = new GsonBuilder();
                         gson = gsonBuilder.create();
 
-                        Course course = gson.fromJson(currentDoc.toJson(),Course.class);
-                        if(course.getTutorId().toString().equals(user.getId().toString()))
-                        {
-                            courseArrayList.add(course);
+                        try {
+                            Course course = gson.fromJson(currentDoc.toJson(),Course.class);
+                            if(course.getTutorId().toString().equals(user.getId().toString()))
+                            {
+                                courseArrayList.add(course);
+                            }
+                        } catch (JsonSyntaxException e) {
+                            e.printStackTrace();
                         }
 
                         //course = currentDoc;

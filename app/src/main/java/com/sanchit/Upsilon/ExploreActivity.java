@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonSyntaxException;
 import com.sanchit.Upsilon.courseData.Course;
 import com.sanchit.Upsilon.courseData.CourseAdapter2;
 import com.sanchit.Upsilon.courseData.CoursesAdapter1;
@@ -109,10 +110,14 @@ public class ExploreActivity extends AppCompatActivity {
                     gsonBuilder = new GsonBuilder();
                     gson = gsonBuilder.create();
 
-                    Course course = gson.fromJson(currentDoc.toJson(),Course.class);
+                    try {
+                        Course course = gson.fromJson(currentDoc.toJson(),Course.class);
 
-                    courseArrayList.add(course);
-                    courseAdapter.notifyDataSetChanged();
+                        courseArrayList.add(course);
+                        courseAdapter.notifyDataSetChanged();
+                    } catch (JsonSyntaxException e) {
+                        e.printStackTrace();
+                    }
                     if(!results.hasNext())
                     {
                         progressBar.setVisibility(GONE);
