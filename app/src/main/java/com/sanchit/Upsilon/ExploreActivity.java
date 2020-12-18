@@ -1,8 +1,12 @@
 package com.sanchit.Upsilon;
 
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
@@ -12,6 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -26,6 +31,8 @@ import com.sanchit.Upsilon.courseData.CoursesAdapter1;
 import org.bson.Document;
 
 import java.util.ArrayList;
+import java.util.Objects;
+import java.util.regex.Pattern;
 
 import io.realm.mongodb.App;
 import io.realm.mongodb.AppConfiguration;
@@ -59,8 +66,8 @@ public class ExploreActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_explore_courses);
+        Objects.requireNonNull(getSupportActionBar()).setTitle(R.string.explore);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle(R.string.explore);
         bar = getSupportActionBar().getCustomView();
         /*ImageButton imageButton = (ImageButton) bar.findViewById(R.id.imgBtnBackExploreCourses);
         imageButton.setOnClickListener(new View.OnClickListener() {
@@ -131,12 +138,87 @@ public class ExploreActivity extends AppCompatActivity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.explore_menu, menu);
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView = (SearchView) menu.findItem(R.id.search_explore).getActionView();
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                //Log.e("onQueryTextChange", "called");
+                searchForCourse(newText.toString());
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+
+
+                searchForCourse(query.toString());
+
+                return false;
+            }
+
+        });
+        return true;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if(item.getActionView()==bar){
-            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-            startActivity(intent);
+            finish();
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    //search
+
+    void searchForCourse(String query){
+        if (app.currentUser()!=null) {
+            Log.v("courseSearch", query);
+            final User user = app.currentUser();
+            assert user != null;
+            MongoCollection<Document> mongoCollection = mongoDatabase.getCollection("CourseData");
+
+            //Blank query to find every single course in db
+            Document regQuery = new Document();
+            regQuery.append("$regex", "^(?)" + Pattern.quote(query));
+            regQuery.append("$options", "i");
+
+            Document queryFilter  = new Document();
+            queryFilter.append("courseName", regQuery);
+
+            RealmResultTask<MongoCursor<Document>> findCourses = mongoCollection.find(queryFilter).iterator();
+
+            findCourses.getAsync(task -> {
+                if (task.isSuccess()) {
+                    MongoCursor<Document> results = task.get();
+                    Log.v("COURSEHandler", "successfully found all courses:");
+                    while (results.hasNext()) {
+                        Document document = results.next();
+                        String name = document.getString("courseName");
+                        Log.v("CourseSearch",name);
+                    }
+                    //Toast.makeText(MainActivity.this,url,Toast.LENGTH_LONG).show();
+
+                    //Picasso.with(getApplicationContext()).load(url).into(imageView);
+                } else {
+                    Log.e("COURSESearch", "failed to find courses with: ", task.getError());
+                }
+            });
+
+            /*
+            String partitionValue = "myPartition";
+            SyncConfiguration config =
+                    new SyncConfiguration.Builder(user, partitionValue).build();
+            Realm realm = Realm.getInstance(config);
+
+            RealmQuery<String> tasksQuery = realm.where();
+            */
+        }
     }
 }
