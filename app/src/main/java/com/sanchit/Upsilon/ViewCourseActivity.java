@@ -1,3 +1,5 @@
+
+
 package com.sanchit.Upsilon;
 
 import android.content.Intent;
@@ -251,11 +253,9 @@ public class ViewCourseActivity extends AppCompatActivity {
     }
 
     public static void releaseExoPlayer(SimpleExoPlayer exoPlayer) {
-
         if (exoPlayer != null) {
             exoPlayer.release();
         }
-
     }
 
     @Override
