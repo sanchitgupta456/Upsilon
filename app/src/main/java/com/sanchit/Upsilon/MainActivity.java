@@ -27,6 +27,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -53,8 +54,11 @@ import org.bson.Document;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import io.realm.Realm;
+import io.realm.RealmQuery;
 import io.realm.mongodb.App;
 import io.realm.mongodb.AppConfiguration;
 import io.realm.mongodb.RealmResultTask;
@@ -63,6 +67,7 @@ import io.realm.mongodb.mongo.MongoClient;
 import io.realm.mongodb.mongo.MongoCollection;
 import io.realm.mongodb.mongo.MongoDatabase;
 import io.realm.mongodb.mongo.iterable.MongoCursor;
+import io.realm.mongodb.sync.SyncConfiguration;
 
 import static com.sanchit.Upsilon.notifications.NotifChannel.CHANNEL_ID;
 
@@ -144,7 +149,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             app.getSync();
         }
         //Toolbar toolbar = findViewById(R.id.toolbar);
- //        setSupportActionBar(toolbar);
+ //     setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(R.string.home);
         drawer = findViewById(R.id.drawer_layout);
@@ -216,6 +221,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 startActivity(intent);
             }
         });
+        searchForCourse("Learn");
     }
 
     private void goToSetupActivity() {
@@ -442,6 +448,24 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         SearchView searchView = (SearchView) menu.findItem(R.id.search_home).getActionView();
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
         //searchView.getQuery() method should give you the query
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                //Log.e("onQueryTextChange", "called");
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+
+
+                searchForCourse(searchView.getQuery().toString());
+
+                return false;
+            }
+
+        });
         return true;
     }
 
@@ -655,13 +679,18 @@ since the dispatchTouchEvent might dispatch your touch event to this function ag
 
     void searchForCourse(String query){
         if (app.currentUser()!=null) {
+            Log.v("courseSearch", query);
             final User user = app.currentUser();
             assert user != null;
             MongoCollection<Document> mongoCollection = mongoDatabase.getCollection("CourseData");
 
             //Blank query to find every single course in db
+            Document regQuery = new Document();
+            regQuery.append("$regex", "^(?)" + Pattern.quote(query));
+            regQuery.append("$options", "i");
+
             Document queryFilter  = new Document();
-            queryFilter.append("courseName", query);
+            queryFilter.append("courseName", regQuery);
 
             RealmResultTask<MongoCursor<Document>> findCourses = mongoCollection.find(queryFilter).iterator();
 
@@ -669,15 +698,27 @@ since the dispatchTouchEvent might dispatch your touch event to this function ag
                 if (task.isSuccess()) {
                     MongoCursor<Document> results = task.get();
                     Log.v("COURSEHandler", "successfully found all courses:");
-                    Document document = results.next();
-                    String name = document.getString("courseName");
+                    while (results.hasNext()) {
+                        Document document = results.next();
+                        String name = document.getString("courseName");
+                        Log.v("CourseSearch",name);
+                    }
                     //Toast.makeText(MainActivity.this,url,Toast.LENGTH_LONG).show();
-                    Log.v("CourseSearch",name);
+
                     //Picasso.with(getApplicationContext()).load(url).into(imageView);
                 } else {
                     Log.e("COURSESearch", "failed to find courses with: ", task.getError());
                 }
             });
+
+            /*
+            String partitionValue = "myPartition";
+            SyncConfiguration config =
+                    new SyncConfiguration.Builder(user, partitionValue).build();
+            Realm realm = Realm.getInstance(config);
+
+            RealmQuery<String> tasksQuery = realm.where();
+            */
         }
     }
 }
