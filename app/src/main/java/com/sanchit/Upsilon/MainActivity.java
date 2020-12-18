@@ -300,10 +300,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                                     Course course = gson.fromJson(currentDoc.toJson(),Course.class);
 
-                                    //course = currentDoc;
-                                    //course.setCourseName(currentDoc.getString("courseName"));
-                                    //TODO : implement card image fetching via database
-                                    //course.setCardImgID(TvShowImgs[0]);
                                     flag[0] =0;
                                     //Log.v("MyCourses", String.valueOf(myCourses));
                                     for(int i=0;i<myCourses.size();i++)
@@ -381,7 +377,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 MongoCollection<Document> mongoCollection1  = mongoDatabase.getCollection("UserData");
 
                 //Blank query to find every single course in db
-                //TODO: Modify query to look for user preferred course IDs
                 Document queryFilter1  = new Document();
                 queryFilter1.append("userid",user.getId());
 
@@ -650,5 +645,35 @@ since the dispatchTouchEvent might dispatch your touch event to this function ag
         }
         Log.i ("isMyServiceRunning?", false+"");
         return false;
+    }
+
+    //Search
+
+    void searchForCourse(String query){
+        if (app.currentUser()!=null) {
+            final User user = app.currentUser();
+            assert user != null;
+            MongoCollection<Document> mongoCollection = mongoDatabase.getCollection("CourseData");
+
+            //Blank query to find every single course in db
+            Document queryFilter  = new Document();
+            queryFilter.append("courseName", query);
+
+            RealmResultTask<MongoCursor<Document>> findCourses = mongoCollection.find(queryFilter).iterator();
+
+            findCourses.getAsync(task -> {
+                if (task.isSuccess()) {
+                    MongoCursor<Document> results = task.get();
+                    Log.v("COURSEHandler", "successfully found all courses:");
+                    Document document = results.next();
+                    String name = document.getString("courseName");
+                    //Toast.makeText(MainActivity.this,url,Toast.LENGTH_LONG).show();
+                    Log.v("CourseSearch",name);
+                    //Picasso.with(getApplicationContext()).load(url).into(imageView);
+                } else {
+                    Log.e("COURSESearch", "failed to find courses with: ", task.getError());
+                }
+            });
+        }
     }
 }
