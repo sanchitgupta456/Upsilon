@@ -153,4 +153,6 @@
     <string name="faq">FAQ</string>
     <string name="course_location">Course Location</string>
     <string name="course_fee">Course Fee</string>
+    <string name="course_duration_hrs">Course Duration (hrs)</string>
+    <string name="settings">Settings</string>
 </resources>

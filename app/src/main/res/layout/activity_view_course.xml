@@ -105,7 +105,7 @@
                 android:stepSize="1"
                 android:layout_margin="@dimen/text_margin"
                 android:isIndicator="true"
-                android:progressTint="@color/colorYellow"
+                android:progressTint="@color/colorBlue"
                 android:progressBackgroundTint="@color/colorGrey"/>
 
             <FrameLayout

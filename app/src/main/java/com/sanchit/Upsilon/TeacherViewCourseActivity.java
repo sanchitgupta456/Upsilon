@@ -137,8 +137,8 @@ public class TeacherViewCourseActivity extends AppCompatActivity implements Bott
                 fragment.setArguments(bundle);
                 break;
             case R.id.bottomNavMenuSettingsTeacher:
-                //fragment = new TeacherViewCourseActivityHomeFragment();
-                //fragment.setArguments(bundle);
+                fragment = new TeacherViewCourseActivitySettingsFragment();
+                fragment.setArguments(bundle);
                 break;
             default:
                 break;

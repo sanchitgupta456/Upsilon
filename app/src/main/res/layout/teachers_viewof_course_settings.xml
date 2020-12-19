@@ -8,6 +8,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:layout_alignParentEnd="true"
+            android:src="@drawable/icon_tick"
+            android:id="@+id/updateChange"/>
+
         <LinearLayout
             android:id="@+id/linearLayoutCourseInfo"
             android:layout_width="match_parent"
@@ -61,6 +69,7 @@
                 android:textStyle="italic"
                 android:typeface="normal" />
             <TextView
+                android:id="@+id/teacher_view_course_start_date"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="10dp"
@@ -71,6 +80,7 @@
                 android:typeface="normal"
                 android:gravity="center_vertical" />
             <TextView
+                android:id="@+id/teacher_view_course_completed"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="10dp"
@@ -81,7 +91,7 @@
                 android:typeface="normal"
                 android:gravity="center_vertical" />
 
-            <Switch
+            <com.google.android.material.switchmaterial.SwitchMaterial
                 android:id="@+id/toggleRegistrationAcceptance"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -90,11 +100,10 @@
                 android:text="@string/accept_new_registrations"
                 android:textSize="@dimen/text_margin"
                 android:textStyle="bold"
-                android:padding="5dp"
-                android:theme="@style/TextAppearance.AppCompat.Widget.Switch"/>
+                android:padding="5dp"/>
         </LinearLayout>
 
-        <view
+        <View
             android:id="@+id/divider1"
             android:layout_width="match_parent"
             android:layout_height="1dp"
@@ -123,7 +132,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:layout_marginBottom="10dp">
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -142,13 +152,13 @@
                     android:textSize="18sp"
                     android:textColor="@color/colorPrimary"
                     android:textColorHint="#323232"
-                    android:hint="@string/course_name"
-                    android:background="@color/colorWhite"/>
+                    android:background="@drawable/text_view_add_course"/>
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:layout_marginBottom="10dp">
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -167,24 +177,24 @@
                     android:textSize="18sp"
                     android:textColor="@color/colorPrimary"
                     android:textColorHint="#323232"
-                    android:hint="@string/course_description"
-                    android:background="@color/colorWhite"/>
+                    android:background="@drawable/text_view_add_course"/>
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:layout_marginBottom="10dp">
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="12dp"
-                    android:text="@string/course_duration"
+                    android:text="@string/course_duration_hrs"
                     android:textSize="14sp"
                     android:textColor="@color/colorBlack"
                     android:padding="3dp"/>
                 <EditText
                     android:id="@+id/editTextCourseDuration"
-                    android:inputType="text"
+                    android:inputType="number"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="12dp"
@@ -192,13 +202,13 @@
                     android:textSize="18sp"
                     android:textColor="@color/colorPrimary"
                     android:textColorHint="#323232"
-                    android:hint="@string/course_duration"
-                    android:background="@color/colorWhite"/>
+                    android:background="@drawable/text_view_add_course"/>
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:layout_marginBottom="10dp">
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -207,6 +217,27 @@
                     android:textSize="14sp"
                     android:textColor="@color/colorBlack"
                     android:padding="3dp"/>
+                <RadioGroup
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="100"
+                    android:layout_marginHorizontal="12dp">
+                    <RadioButton
+                        android:id="@+id/online"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/online"
+                        android:layout_weight="50">
+                    </RadioButton>
+                    <RadioButton
+                        android:id="@+id/offline"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/offline"
+                        android:layout_weight="50"/>
+
+                </RadioGroup>
                 <EditText
                     android:id="@+id/editTextCourseLocation"
                     android:inputType="text"
@@ -217,13 +248,13 @@
                     android:textSize="18sp"
                     android:textColor="@color/colorPrimary"
                     android:textColorHint="#323232"
-                    android:hint="@string/course_location"
-                    android:background="@color/colorWhite"/>
+                    android:background="@drawable/text_view_add_course"/>
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:layout_marginBottom="10dp">
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -232,6 +263,16 @@
                     android:textSize="14sp"
                     android:textColor="@color/colorBlack"
                     android:padding="3dp"/>
+                <com.google.android.material.switchmaterial.SwitchMaterial
+                    android:id="@+id/isCourseFree"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/free"
+                    android:layout_marginHorizontal="12dp"
+                    android:textSize="@dimen/text_margin"
+                    android:textColor="@color/colorPrimary"
+                    android:checked="false"
+                    android:padding="5dp"/>
                 <EditText
                     android:id="@+id/editTextCourseFees"
                     android:inputType="text"
@@ -242,8 +283,7 @@
                     android:textSize="18sp"
                     android:textColor="@color/colorPrimary"
                     android:textColorHint="#323232"
-                    android:hint="@string/course_fee"
-                    android:background="@color/colorWhite"/>
+                    android:background="@drawable/text_view_add_course"/>
             </LinearLayout>
         </LinearLayout>
     </RelativeLayout>
