@@ -45,6 +45,8 @@ import com.google.gson.JsonSyntaxException;
 import com.sanchit.Upsilon.courseData.Course;
 import com.sanchit.Upsilon.courseData.CoursesAdapter;
 import com.sanchit.Upsilon.courseData.CoursesAdapter1;
+import com.sanchit.Upsilon.courseSearching.SearchQuery;
+import com.sanchit.Upsilon.courseSearching.rankBy;
 import com.sanchit.Upsilon.notifications.NotifService;
 import com.sanchit.Upsilon.notifications.UpsilonJobService;
 import com.sanchit.Upsilon.ui.login.LoginActivity;
@@ -59,6 +61,7 @@ import java.util.regex.Pattern;
 import de.hdodenhof.circleimageview.CircleImageView;
 import io.realm.Realm;
 import io.realm.RealmQuery;
+import io.realm.Sort;
 import io.realm.mongodb.App;
 import io.realm.mongodb.AppConfiguration;
 import io.realm.mongodb.RealmResultTask;
@@ -66,6 +69,7 @@ import io.realm.mongodb.User;
 import io.realm.mongodb.mongo.MongoClient;
 import io.realm.mongodb.mongo.MongoCollection;
 import io.realm.mongodb.mongo.MongoDatabase;
+import io.realm.mongodb.mongo.iterable.FindIterable;
 import io.realm.mongodb.mongo.iterable.MongoCursor;
 import io.realm.mongodb.sync.SyncConfiguration;
 
@@ -113,6 +117,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public Context getCtx() {
         return ctx;
     }
+
+    //SearchQuery Ranking method
+    SearchQuery searchQuery = new SearchQuery();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -221,7 +228,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 startActivity(intent);
             }
         });
-        searchForCourse("Learn");
     }
 
     private void goToSetupActivity() {
@@ -458,9 +464,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             @Override
             public boolean onQueryTextSubmit(String query) {
+                searchQuery.setQuery(query);
+                searchQuery.setRankMethod(rankBy.PRICE);
 
-
-                searchForCourse(searchView.getQuery().toString());
+                searchForCourse(searchQuery);
 
                 return false;
             }
@@ -677,22 +684,40 @@ since the dispatchTouchEvent might dispatch your touch event to this function ag
 
     //Search
 
-    void searchForCourse(String query){
+    void searchForCourse(SearchQuery query){
         if (app.currentUser()!=null) {
-            Log.v("courseSearch", query);
+            Log.v("courseSearch", query.getKeywords());
             final User user = app.currentUser();
             assert user != null;
             MongoCollection<Document> mongoCollection = mongoDatabase.getCollection("CourseData");
 
             //Blank query to find every single course in db
             Document regQuery = new Document();
-            regQuery.append("$regex", "^(?)" + Pattern.quote(query));
+            regQuery.append("$regex", "(?)" + Pattern.quote(query.getKeywords()));
             regQuery.append("$options", "i");
 
             Document queryFilter  = new Document();
             queryFilter.append("courseName", regQuery);
 
-            RealmResultTask<MongoCursor<Document>> findCourses = mongoCollection.find(queryFilter).iterator();
+            Document sortingMethod = new Document();
+
+
+            if (searchQuery.getRankMethod() == rankBy.LOC){
+                //TODO: add location search
+            }
+            else if (searchQuery.getRankMethod() == rankBy.RATING){
+                sortingMethod.append("courseRating", -1);
+            }
+            else if (searchQuery.getRankMethod() == rankBy.PRICE){
+                sortingMethod.append("courseFees", 1);
+            }
+            else{
+                sortingMethod.append("courseRating", -1);
+            }
+
+            FindIterable<Document> queryResultIterable = mongoCollection.find(queryFilter);
+            queryResultIterable.sort(sortingMethod);
+            RealmResultTask<MongoCursor<Document>> findCourses = queryResultIterable.iterator();
 
             findCourses.getAsync(task -> {
                 if (task.isSuccess()) {
@@ -701,7 +726,23 @@ since the dispatchTouchEvent might dispatch your touch event to this function ag
                     while (results.hasNext()) {
                         Document document = results.next();
                         String name = document.getString("courseName");
+                        String info = "NULL";
+                        if (searchQuery.getRankMethod() == rankBy.LOC){
+                            //TODO: add location search
+                        }
+                        else if (searchQuery.getRankMethod() == rankBy.RATING){
+                            info = document.getDouble("courseRating").toString();
+                        }
+                        else if (searchQuery.getRankMethod() == rankBy.PRICE){
+                            info = document.getInteger("courseFees").toString();
+                        }
+                        else{
+                            info = document.getDouble("courseRating").toString();
+                        }
+
+
                         Log.v("CourseSearch",name);
+                        Log.v("CourseSearch", info);
                     }
                     //Toast.makeText(MainActivity.this,url,Toast.LENGTH_LONG).show();
 
@@ -710,15 +751,6 @@ since the dispatchTouchEvent might dispatch your touch event to this function ag
                     Log.e("COURSESearch", "failed to find courses with: ", task.getError());
                 }
             });
-
-            /*
-            String partitionValue = "myPartition";
-            SyncConfiguration config =
-                    new SyncConfiguration.Builder(user, partitionValue).build();
-            Realm realm = Realm.getInstance(config);
-
-            RealmQuery<String> tasksQuery = realm.where();
-            */
         }
     }
 }
