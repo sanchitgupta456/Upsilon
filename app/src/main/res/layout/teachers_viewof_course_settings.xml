@@ -122,7 +122,8 @@
             android:layout_alignParentEnd="true"
             android:src="@drawable/icon_tick"
             android:id="@+id/updateChange"
-            android:layout_alignTop="@id/textEditCourseInfo"/>
+            android:layout_alignTop="@id/textEditCourseInfo"
+            android:tint="@color/colorBlack"/>
 
         <LinearLayout
             android:layout_width="match_parent"

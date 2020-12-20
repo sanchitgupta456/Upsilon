@@ -1,6 +1,7 @@
 package com.sanchit.Upsilon;
 
 import android.app.DatePickerDialog;
+import android.database.DataSetObserver;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.format.DateFormat;
@@ -10,10 +11,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
@@ -22,6 +26,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -30,6 +35,7 @@ import com.squareup.picasso.Picasso;
 
 import org.bson.Document;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Locale;
@@ -48,13 +54,15 @@ import static io.realm.Realm.getApplicationContext;
 public class TeacherViewCourseActivityHomeFragment extends Fragment {
     String appID = "upsilon-ityvn";
     int year,month,day;
-    private TextView rating,enrolled,nextClass, courseName;
-    private ImageView courseImage;
     Button ScheduleClass, UpdateLink;
     private EditText meetLink;
     private Course course;
     View dialogView;
     AlertDialog alertDialog;
+
+    private ListView studentsList;
+    private ArrayList<String> students = new ArrayList<>();
+
     App app;
     MongoClient mongoClient;
     MongoDatabase mongoDatabase;
@@ -65,13 +73,14 @@ public class TeacherViewCourseActivityHomeFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.teachers_viewof_course_home,null);
         course = (Course) getArguments().get("Course");
+        /*
         dialogView = View.inflate(getActivity(), R.layout.date_time_picker, null);
         TimePicker tp = dialogView.findViewById(R.id.time_picker);
         tp.setIs24HourView(true);
 
         //alertDialog = new AlertDialog.Builder(Objects.requireNonNull(getApplicationContext())).create();
         alertDialog = new AlertDialog.Builder(getActivity()).create();
-
+        */
         app = new App(new AppConfiguration.Builder(appID)
                 .build());
         User user = app.currentUser();
@@ -79,23 +88,22 @@ public class TeacherViewCourseActivityHomeFragment extends Fragment {
         mongoClient = user.getMongoClient("mongodb-atlas");
         mongoDatabase = mongoClient.getDatabase("Upsilon");
         MongoCollection<Document> mongoCollection  = mongoDatabase.getCollection("CourseData");
-        courseImage = (ImageView) view.findViewById(R.id.imgCourseImage);
-        rating = (TextView) view.findViewById(R.id.teacher_view_course_rating);
-        enrolled = (TextView) view.findViewById(R.id.teacher_view_course_enrolled);
+        /*
         ScheduleClass = (Button) view.findViewById(R.id.btnScheduleClass);
         UpdateLink = (Button) view.findViewById(R.id.btnUpdateLink); //yet to be set up
         nextClass = (TextView) view.findViewById(R.id.view_course_teacher_schedule_class);
-        meetLink = (EditText) view.findViewById(R.id.teacher_view_course_meet_link);
-
-        Picasso.with(getApplicationContext()).load(course.getCourseImage()).into(courseImage);
-        rating.setText("Rating "+course.getCourseRating() + "/5");
-        enrolled.setText(course.getNumberOfStudentsEnrolled() + " students have enrolled in this course");
+        meetLink = (EditText) view.findViewById(R.id.teacher_view_course_meet_link); */
+        studentsList = (ListView) view.findViewById(R.id.course_students);
+        getStudents();
+        /*
         Calendar cal = Calendar.getInstance(Locale.ENGLISH);
         cal.setTimeInMillis(Long.parseLong(course.getNextLectureOn()));
         String date = DateFormat.format("dd-MM-yyyy HH:mm:ss", cal).toString();
-        nextClass.setText(date);
-        meetLink.setText(course.getMeetLink());
+        */
+        //nextClass.setText(date);
+        //meetLink.setText(course.getMeetLink());
 
+        /*
         ScheduleClass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -103,11 +111,11 @@ public class TeacherViewCourseActivityHomeFragment extends Fragment {
                 year = c.get(Calendar.YEAR);
                 month = c.get(Calendar.MONTH);
                 day = c.get(Calendar.DAY_OF_MONTH);
-                DateDialog();*/
+                DateDialog();*//*
                 alertDialog.setView(dialogView);
                 alertDialog.show();
             }
-        });
+        });*//*
         UpdateLink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -142,8 +150,8 @@ public class TeacherViewCourseActivityHomeFragment extends Fragment {
                 }
                 //update link
             }
-        });
-
+        });*/
+/*
         dialogView.findViewById(R.id.date_time_set).setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
@@ -186,7 +194,7 @@ public class TeacherViewCourseActivityHomeFragment extends Fragment {
                         Log.v("Schedule","Error"+result.getError().toString());
                     }
                 });
-            }});
+            }});*/
         return view;
     }
     public void DateDialog(){
@@ -195,11 +203,20 @@ public class TeacherViewCourseActivityHomeFragment extends Fragment {
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth)
             {
-                nextClass.setText(dayOfMonth + "/" + monthOfYear + "/" + year);
+                //nextClass.setText(dayOfMonth + "/" + monthOfYear + "/" + year);
                 //Date date = new Date()
             }};
         DatePickerDialog dpDialog=new DatePickerDialog(getApplicationContext(), listener, year, month, day);
         dpDialog.show();
+    }
+    public void getStudents() {
+        students.add("Ram");
+        students.add("Ram");
+        students.add("Ram");
+        students.add("Ram");
+        students.add("Ram");
+        ArrayAdapter adapter = new ArrayAdapter<String>(getApplicationContext(),R.layout.course_student, students);
+        studentsList.setAdapter(adapter);
     }
 }
 

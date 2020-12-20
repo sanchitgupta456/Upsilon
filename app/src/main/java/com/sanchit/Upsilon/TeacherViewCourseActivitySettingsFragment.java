@@ -102,12 +102,12 @@ public class TeacherViewCourseActivitySettingsFragment extends Fragment {
         textStartDate.setText("Course not started yet");
         textPercentCompleted.setText("0% completed");
 
-        //TODO: enableRegistrations assignments
+        //TODO: enableRegistrations
         etCourseName.setText(course.getCourseName());
         etDescription.setText(course.getCourseDescription());
         etDuration.setText(""+course.getCourseDuration());
 
-        if(course.getCourseMode().equals("ONLINE")) {
+        if(course.getCourseMode().equals("Online")) {
             online.setChecked(true);
             offline.setChecked(false);
             etLocation.setVisibility(View.GONE);

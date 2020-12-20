@@ -120,8 +120,8 @@ public class TeacherViewCourseActivity extends AppCompatActivity implements Bott
 
         switch (item.getItemId()) {
             case R.id.bottomNavMenuHomeTeacher:
-                //fragment = new TeacherViewCourseActivityHomeFragment();
-                //fragment.setArguments(bundle);
+                fragment = new TeacherViewCourseActivityHomeFragment();
+                fragment.setArguments(bundle);
                 break;
 
             case R.id.bottomNavMenuNotificationsTeacher:
