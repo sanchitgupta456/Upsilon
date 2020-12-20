@@ -125,8 +125,8 @@ public class TeacherViewCourseActivity extends AppCompatActivity implements Bott
                 break;
 
             case R.id.bottomNavMenuNotificationsTeacher:
-                //fragment = new TeacherViewCourseActivityHomeFragment();
-                //fragment.setArguments(bundle);
+                fragment = new TeacherViewCourseActivityNotificationsFragment();
+                fragment.setArguments(bundle);
                 break;
             case R.id.bottomNavMenuForumTeacher:
                 fragment = new TeacherViewCourseActivityForumFragment();

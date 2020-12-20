@@ -330,7 +330,7 @@
         android:layout_height="wrap_content"
         app:menu="@menu/bottom_navigation_teacher_menu"
         android:layout_alignParentBottom="true"
-        app:backgroundTint="@color/colorPrimary"
+        app:backgroundTint="@color/colorPrimaryDark"
         android:background="@drawable/bottom_app_bar"
         app:elevation="20dp"
         app:itemIconTint="@color/colorWhite"
