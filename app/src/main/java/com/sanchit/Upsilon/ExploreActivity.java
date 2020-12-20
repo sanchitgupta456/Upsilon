@@ -47,7 +47,7 @@ import static android.view.View.GONE;
 
 public class ExploreActivity extends AppCompatActivity {
     //vars
-    private RecyclerView recyclerView;
+    private RecyclerView recyclerView, recyclerViewFilterList;
     ArrayList<Course> courseArrayList;
     String appID = "upsilon-ityvn";
     private static final String TAG = "MainActivity";
@@ -61,6 +61,9 @@ public class ExploreActivity extends AppCompatActivity {
     private GsonBuilder gsonBuilder;
     private ProgressBar progressBar;
     private View bar;
+
+    ArrayList<String> tags;
+    ArrayList<Boolean> isChecked;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -78,6 +81,7 @@ public class ExploreActivity extends AppCompatActivity {
             }
         });*/
         recyclerView = findViewById(R.id.exploreList);
+        recyclerViewFilterList = findViewById(R.id.filter_categories_list);
         courseArrayList = new ArrayList<>();
         app = new App(new AppConfiguration.Builder(appID).build());
         courseAdapter = new CoursesAdapter1(courseArrayList);
@@ -172,6 +176,10 @@ public class ExploreActivity extends AppCompatActivity {
             finish();
             return true;
         }
+        if (item.getItemId()==R.id.search_explore) {
+            initFilters();
+            return true;
+        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -220,5 +228,31 @@ public class ExploreActivity extends AppCompatActivity {
             RealmQuery<String> tasksQuery = realm.where();
             */
         }
+    }
+
+    public void initFilters() {
+        getFilters();
+
+        FilterAdapter filterAdapter = new FilterAdapter(tags, isChecked, getApplicationContext());
+        LinearLayoutManager manager = new LinearLayoutManager(getApplicationContext());
+        manager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        recyclerViewFilterList.setAdapter(filterAdapter);
+        recyclerViewFilterList.setLayoutManager(manager);
+
+    }
+
+    public void getFilters() {
+        tags = new ArrayList<>();
+        isChecked = new ArrayList<>();
+        tags.add("Computer Science");
+        tags.add("Arts");
+        tags.add("Languages");
+        tags.add("Co-curricular");
+        tags.add("Music");
+        isChecked.add(false);
+        isChecked.add(false);
+        isChecked.add(false);
+        isChecked.add(false);
+        isChecked.add(false);
     }
 }
