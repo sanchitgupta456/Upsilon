@@ -155,4 +155,8 @@
     <string name="course_fee">Course Fee</string>
     <string name="course_duration_hrs">Course Duration (hrs)</string>
     <string name="settings">Settings</string>
+    <string-array name="categories">
+        <item>Science</item>
+        <item>Arts</item>
+    </string-array>
 </resources>

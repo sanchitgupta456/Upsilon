@@ -100,6 +100,38 @@
                 android:textColor="@color/colorPrimaryDark"
                 android:id="@+id/add_course_description"/>
 
+            <Button
+                android:id="@+id/add_course_category"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Add a category tag"
+                android:layout_margin="@dimen/text_margin"
+                android:background="@drawable/btn_blue"
+                android:elevation="100dp"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/text_margin"
+                android:drawableStart="@drawable/add_icon_48"
+                android:drawableTint="@color/colorWhite"
+                android:layout_gravity="center_horizontal"
+                android:paddingHorizontal="10dp"
+                android:drawablePadding="5dp"/>
+            <!--
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:id="@+id/categories_list_add_course"
+                tools:listitem="@layout/filter_card"/> -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorPrimary"
+                android:padding="3dp"
+                android:layout_margin="18sp"
+                android:textColor="@color/colorWhite"
+                android:id="@+id/textCategoriesSelected"
+                android:visibility="gone"/>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -180,6 +212,7 @@
 
             </RadioGroup>
             -->
+            <!--
             <RadioGroup
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -209,7 +242,7 @@
                     android:text="@string/individual"/>
 
             </RadioGroup>
-
+            -->
 
 
             <!--
@@ -250,6 +283,7 @@
 
             </LinearLayout> -->
 
+            <!--
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -261,7 +295,7 @@
                 android:layout_margin="@dimen/text_margin"
                 android:textColor="@color/colorPrimaryDark"
                 android:id="@+id/add_course_num_batches"/>
-
+-->
 
             <RadioGroup
                 android:layout_width="match_parent"

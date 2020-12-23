@@ -1,6 +1,7 @@
 package com.sanchit.Upsilon;
 
 import android.Manifest;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -13,14 +14,11 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
@@ -28,48 +26,34 @@ import android.widget.ToggleButton;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.ActionBar;
+import android.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-
 import com.cloudinary.android.MediaManager;
 import com.cloudinary.android.callback.ErrorInfo;
 import com.cloudinary.android.callback.UploadCallback;
-import com.sanchit.Upsilon.courseData.Course;
-import com.sanchit.Upsilon.courseData.CourseReview;
-
-import org.bson.BsonArray;
-import org.bson.BsonType;
-import org.bson.BsonValue;
 import org.bson.Document;
-import org.bson.types.BasicBSONList;
-
-import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-
-import io.realm.Realm;
-import io.realm.RealmList;
-import io.realm.RealmObject;
 import io.realm.mongodb.App;
 import io.realm.mongodb.AppConfiguration;
-import io.realm.mongodb.RealmResultTask;
 import io.realm.mongodb.User;
 import io.realm.mongodb.mongo.MongoClient;
 import io.realm.mongodb.mongo.MongoCollection;
 import io.realm.mongodb.mongo.MongoDatabase;
-import io.realm.mongodb.mongo.iterable.MongoCursor;
 
 public class AddCourseActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
+    private static final String TAG = "AddCourseActivity";
 
     String appID = "upsilon-ityvn";
     EditText CourseName,CourseDescription,CourseDuration,NumberOfBatches,CourseFees;
     String courseName,courseDescription,courseDuration,numOfBatches,mode,courseDurationMeasure;
     int fees;
-    Button nextButton;
+    Button nextButton, addCategory;
     RadioButton Group,Individual,Free,Paid;
     ToggleButton offline_online;
     //Spinner spinner;
@@ -80,10 +64,17 @@ public class AddCourseActivity extends AppCompatActivity implements AdapterView.
     ArrayList courseReviews;
     ImageView CourseImage;
     String CourseImageUrl;
+    //RecyclerView courseCategories;
+    TextView tvCourseCategoriesDisplay;
     private static int RESULT_LOAD_IMAGE = 1;
     private static final int WRITE_PERMISSION = 0x01;
     private ProgressBar progressBar;
     View bar;
+
+    private String[] categories;
+    private boolean[] isCheckedCategories;
+    private ArrayList<Integer> selected_categories = new ArrayList<>();
+    private ArrayList<String> categories_chosen = new ArrayList<>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -95,8 +86,11 @@ public class AddCourseActivity extends AppCompatActivity implements AdapterView.
         bar = (View) getSupportActionBar().getCustomView();
         CourseName = (EditText) findViewById(R.id.add_course_name);
         CourseDescription = (EditText) findViewById(R.id.add_course_description);
+        addCategory = (Button) findViewById(R.id.add_course_category);
+        //courseCategories = (RecyclerView) findViewById(R.id.categories_list_add_course);
+        tvCourseCategoriesDisplay = (TextView) findViewById(R.id.textCategoriesSelected);
         CourseDuration = (EditText) findViewById(R.id.add_course_duration);
-        NumberOfBatches = (EditText) findViewById(R.id.add_course_num_batches);
+        //NumberOfBatches = (EditText) findViewById(R.id.add_course_num_batches);
         nextButton = (Button) findViewById(R.id.btnNext);
         offline_online = (ToggleButton) findViewById(R.id.add_course_mode);
         CourseImage = (ImageView) findViewById(R.id.imgAddCourseImage);
@@ -140,6 +134,14 @@ public class AddCourseActivity extends AppCompatActivity implements AdapterView.
             }
         });
 
+        getCategories();
+        addCategory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openDialog();
+            }
+        });
+
         //String[] measureOfTime = {"minutes","hours","days","weeks","months","years"};
 
         //ArrayAdapter adapter = new ArrayAdapter(getApplicationContext(), android.R.layout.simple_expandable_list_item_1,measureOfTime);
@@ -156,7 +158,7 @@ public class AddCourseActivity extends AppCompatActivity implements AdapterView.
                 courseName = CourseName.getText().toString();
                 courseDescription = CourseDescription.getText().toString();
                 courseDuration = CourseDuration.getText().toString();
-                numOfBatches = NumberOfBatches.getText().toString();
+                //numOfBatches = NumberOfBatches.getText().toString();
 
                 if(Paid.isChecked())
                 {
@@ -196,7 +198,7 @@ public class AddCourseActivity extends AppCompatActivity implements AdapterView.
                 //courseDetails.append("courseDurationMeasure","hours");
                 courseDetails.append("numberOfStudentsEnrolled",0);
                 courseDetails.append("courseDuration",courseDuration);
-                courseDetails.append("numberOfBatches",numOfBatches);
+                //courseDetails.append("numberOfBatches",numOfBatches);
                 courseDetails.append("courseReviews",courseReviews);
                 courseDetails.append("courseImageCounter",0);
 
@@ -359,5 +361,62 @@ public class AddCourseActivity extends AppCompatActivity implements AdapterView.
     @Override
     public void onBackPressed() {
 
+    }
+
+    public void openDialog() {
+        Log.d(TAG, "openDialog: started");
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        List<String> categoryList = Arrays.asList(categories);
+        DialogInterface.OnMultiChoiceClickListener listener = (dialogInterface, i, b) -> {
+            if(b){
+                if(!selected_categories.contains(i)){
+                    selected_categories.add(i);
+                }
+                else if(selected_categories.contains(i)){
+                    selected_categories.remove((Integer)i);
+                }
+            }
+            else if(selected_categories.contains(i)){
+                selected_categories.remove((Integer)i);
+            }
+            isCheckedCategories[i] = b;
+        };
+        builder.setTitle("Choose Categories").setMultiChoiceItems(categories, isCheckedCategories, listener).setPositiveButton("OK", (dialogInterface, i) -> {
+            categories_chosen.clear();
+            if (selected_categories.size() > 0) {
+                tvCourseCategoriesDisplay.setVisibility(View.VISIBLE);
+                StringBuilder string = new StringBuilder();
+                for (int i1 = 0; i1 < selected_categories.size(); i1++) {
+                    categories_chosen.add(categoryList.get(selected_categories.get(i1)));
+                    if (i1 != 0) {
+                        string.append("\n");
+                    }
+                    string.append(categoryList.get(selected_categories.get(i1)));
+                }
+                tvCourseCategoriesDisplay.setText(string);
+            } else {
+                tvCourseCategoriesDisplay.setVisibility(View.GONE);
+            }
+
+        }).setNegativeButton("Cancel", (dialogInterface, i) -> dialogInterface.dismiss()).setNeutralButton("Clear", (dialogInterface, i) -> {
+            selected_categories.clear();
+            categories_chosen.clear();
+            tvCourseCategoriesDisplay.setText("");
+            tvCourseCategoriesDisplay.setVisibility(View.GONE);
+            for (int i1 = 0; i1 < categoryList.size(); i1++) {
+                isCheckedCategories[i1] = false;
+            }
+        }).setCancelable(false);
+        Log.d(TAG, "openDialog: builder setup successful");
+        AlertDialog dialog = builder.create();
+        Log.d(TAG, "openDialog: dialog creation successful");
+        dialog.show();
+        Log.d(TAG, "openDialog: Yeepee!");
+    }
+
+    public void getCategories() {
+        //categories = getResources().getStringArray(R.array.categories);
+        categories = new String[]{"Science", "Arts"};
+        isCheckedCategories = new boolean[]{false, false};
     }
 }
