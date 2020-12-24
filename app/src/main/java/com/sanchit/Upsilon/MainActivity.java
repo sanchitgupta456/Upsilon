@@ -45,6 +45,7 @@ import com.google.gson.JsonSyntaxException;
 import com.sanchit.Upsilon.courseData.Course;
 import com.sanchit.Upsilon.courseData.CoursesAdapter;
 import com.sanchit.Upsilon.courseData.CoursesAdapter1;
+import com.sanchit.Upsilon.courseSearching.LocationSorter;
 import com.sanchit.Upsilon.courseSearching.SearchQuery;
 import com.sanchit.Upsilon.courseSearching.rankBy;
 import com.sanchit.Upsilon.notifications.NotifService;
@@ -56,6 +57,7 @@ import org.bson.Document;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.PriorityQueue;
 import java.util.regex.Pattern;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -467,7 +469,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 searchQuery.setQuery(query);
                 searchQuery.setRankMethod(rankBy.PRICE);
 
-                searchForCourse(searchQuery);
+                searchForCourse(searchQuery, 5);
 
                 return false;
             }
@@ -684,7 +686,7 @@ since the dispatchTouchEvent might dispatch your touch event to this function ag
 
     //Search
 
-    void searchForCourse(SearchQuery query){
+    void searchForCourse(SearchQuery query, double radius){
         if (app.currentUser()!=null) {
             Log.v("courseSearch", query.getKeywords());
             final User user = app.currentUser();
@@ -703,7 +705,7 @@ since the dispatchTouchEvent might dispatch your touch event to this function ag
 
 
             if (searchQuery.getRankMethod() == rankBy.LOC){
-                //TODO: add location search
+                sortingMethod.append("courseRating", 1);
             }
             else if (searchQuery.getRankMethod() == rankBy.RATING){
                 sortingMethod.append("courseRating", -1);
@@ -719,16 +721,27 @@ since the dispatchTouchEvent might dispatch your touch event to this function ag
             queryResultIterable.sort(sortingMethod);
             RealmResultTask<MongoCursor<Document>> findCourses = queryResultIterable.iterator();
 
+            PriorityQueue<Document> searchResultsByLocation = new
+                    PriorityQueue<Document>(5, new LocationSorter());
+
             findCourses.getAsync(task -> {
                 if (task.isSuccess()) {
                     MongoCursor<Document> results = task.get();
                     Log.v("COURSEHandler", "successfully found all courses:");
                     while (results.hasNext()) {
                         Document document = results.next();
+
+                        //TODO: implement course distance calculation
+                        double courseDist = calculateDistance(document.get("courseLocation"), user);
+
+                        document.append("courseDistance", courseDist);
+
+                        searchResultsByLocation.add(document);
+
                         String name = document.getString("courseName");
                         String info = "NULL";
                         if (searchQuery.getRankMethod() == rankBy.LOC){
-                            //TODO: add location search
+                            info = document.getDouble("courseDistance").toString();
                         }
                         else if (searchQuery.getRankMethod() == rankBy.RATING){
                             info = document.getDouble("courseRating").toString();
@@ -744,13 +757,63 @@ since the dispatchTouchEvent might dispatch your touch event to this function ag
                         Log.v("CourseSearch",name);
                         Log.v("CourseSearch", info);
                     }
-                    //Toast.makeText(MainActivity.this,url,Toast.LENGTH_LONG).show();
-
-                    //Picasso.with(getApplicationContext()).load(url).into(imageView);
                 } else {
                     Log.e("COURSESearch", "failed to find courses with: ", task.getError());
                 }
             });
+
+            //NOTE: printing by distance:
+            Log.v("CourseSearch","LocationSort");
+            while (!searchResultsByLocation.isEmpty()){
+                Document d = searchResultsByLocation.peek();
+                String name = d.getString("courseName");
+                String info = d.getDouble("courseDistance").toString();
+                Log.v("CourseSearch",name);
+                Log.v("CourseSearch", info);
+            }
+            user.getId();
         }
+    }
+
+    public double calculateDistance(Object courseLoc, User user){
+        /*
+        MongoCollection<Document> mongoCollection2  = mongoDatabase.getCollection("UserData");
+        //Blank query to find every single course in db
+
+        Document queryFilter2 = new Document("userid", user.getId());
+
+        RealmResultTask<MongoCursor<Document>> findTask2 = mongoCollection2.find(queryFilter2).iterator();
+
+        findTask2.getAsync(task2 -> {
+            if (task2.isSuccess()) {
+                MongoCursor<Document> results1 = task2.get();
+                if (!results1.hasNext()) {
+                    Log.v("ViewCourse", "Couldnt Find The Tutor");
+                } else {
+                    Log.v("User", "successfully found the Tutor");
+                }
+                while (results1.hasNext()) {
+                    //Log.v("EXAMPLE", results.next().toString());
+                    Document currentDoc1 = results1.next();
+
+                }
+            } else {
+                Log.v("User", "Failed to complete search");
+            }
+        });
+        */
+        double lat1 = 0,lon1 = 0,lat2 = 0,lon2 = 0;
+        double R = 6371;
+        double dLat = Math.PI*(lat2-lat1)/180;
+        double dLon = Math.PI*(lon2-lon1)/180;
+
+        double a =
+                Math.sin(dLat/2) * Math.sin(dLat/2) +
+                        Math.cos(Math.PI*(lat1)/180) * Math.cos(Math.PI*(lat2)/180) *
+                                Math.sin(dLon/2) * Math.sin(dLon/2)
+                ;
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+         // Distance in km
+        return R * c;
     }
 }
