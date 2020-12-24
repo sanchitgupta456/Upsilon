@@ -135,6 +135,7 @@ public class AddCourseActivity extends AppCompatActivity implements AdapterView.
         });
 
         getCategories();
+        isCheckedCategories = new boolean[categories.length];
         addCategory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -364,9 +365,7 @@ public class AddCourseActivity extends AppCompatActivity implements AdapterView.
     }
 
     public void openDialog() {
-        Log.d(TAG, "openDialog: started");
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        List<String> categoryList = Arrays.asList(categories);
         DialogInterface.OnMultiChoiceClickListener listener = (dialogInterface, i, b) -> {
             if(b){
                 if(!selected_categories.contains(i)){
@@ -387,11 +386,11 @@ public class AddCourseActivity extends AppCompatActivity implements AdapterView.
                 tvCourseCategoriesDisplay.setVisibility(View.VISIBLE);
                 StringBuilder string = new StringBuilder();
                 for (int i1 = 0; i1 < selected_categories.size(); i1++) {
-                    categories_chosen.add(categoryList.get(selected_categories.get(i1)));
+                    categories_chosen.add(categories[(selected_categories.get(i1))]);
                     if (i1 != 0) {
                         string.append("\n");
                     }
-                    string.append(categoryList.get(selected_categories.get(i1)));
+                    string.append(categories[(selected_categories.get(i1))]);
                 }
                 tvCourseCategoriesDisplay.setText(string);
             } else {
@@ -403,20 +402,14 @@ public class AddCourseActivity extends AppCompatActivity implements AdapterView.
             categories_chosen.clear();
             tvCourseCategoriesDisplay.setText("");
             tvCourseCategoriesDisplay.setVisibility(View.GONE);
-            for (int i1 = 0; i1 < categoryList.size(); i1++) {
-                isCheckedCategories[i1] = false;
-            }
+            for (int i1 = 0; i1 < categories.length; i1++) isCheckedCategories[i1] = false;
         }).setCancelable(false);
-        Log.d(TAG, "openDialog: builder setup successful");
         AlertDialog dialog = builder.create();
-        Log.d(TAG, "openDialog: dialog creation successful");
         dialog.show();
-        Log.d(TAG, "openDialog: Yeepee!");
     }
 
     public void getCategories() {
-        //categories = getResources().getStringArray(R.array.categories);
-        categories = new String[]{"Science", "Arts"};
-        isCheckedCategories = new boolean[]{false, false};
+        categories = getResources().getStringArray(R.array.categories);
+        //categories = new String[]{"Science", "Arts"};
     }
 }
