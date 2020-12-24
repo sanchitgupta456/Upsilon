@@ -139,6 +139,8 @@ public class ExploreActivity extends AppCompatActivity {
             }
         });
 
+        initFilters();
+
     }
 
     @Override
@@ -174,10 +176,6 @@ public class ExploreActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if(item.getActionView()==bar){
             finish();
-            return true;
-        }
-        if (item.getItemId()==R.id.search_explore) {
-            initFilters();
             return true;
         }
         return super.onOptionsItemSelected(item);
