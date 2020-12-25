@@ -13,8 +13,10 @@
     android:theme="@style/AppTheme">
 
     <RelativeLayout
+        android:id="@+id/main"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:visibility="visible">
         <ProgressBar
             android:id="@+id/loadingMain"
             android:layout_width="wrap_content"
@@ -117,8 +119,7 @@
                     android:orientation="horizontal"
                     android:scrollbars="horizontal"
                     android:layout_below="@id/textExploreCoursesList"
-                    android:layout_margin="5dp"
-                    tools:itemCount="5"/>
+                    android:layout_margin="5dp"/>
                 <!--<ImageView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -128,6 +129,14 @@
             </RelativeLayout>
         </ScrollView>
     </RelativeLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/search_results_home"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="@dimen/activity_horizontal_margin"
+        android:visibility="gone"
+        tools:listitem="@layout/explore_course_recycler_card"/>
 
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/nav_view"

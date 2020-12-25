@@ -53,7 +53,7 @@ public class AddCourseActivity extends AppCompatActivity implements AdapterView.
     EditText CourseName,CourseDescription,CourseDuration,NumberOfBatches,CourseFees;
     String courseName,courseDescription,courseDuration,numOfBatches,mode,courseDurationMeasure;
     int fees;
-    Button nextButton, addCategory;
+    Button nextButton, addCategory, addLocation;
     RadioButton Group,Individual,Free,Paid;
     ToggleButton offline_online;
     //Spinner spinner;
@@ -87,6 +87,7 @@ public class AddCourseActivity extends AppCompatActivity implements AdapterView.
         CourseName = (EditText) findViewById(R.id.add_course_name);
         CourseDescription = (EditText) findViewById(R.id.add_course_description);
         addCategory = (Button) findViewById(R.id.add_course_category);
+        addLocation = (Button) findViewById(R.id.btnCourseLocation);
         //courseCategories = (RecyclerView) findViewById(R.id.categories_list_add_course);
         tvCourseCategoriesDisplay = (TextView) findViewById(R.id.textCategoriesSelected);
         CourseDuration = (EditText) findViewById(R.id.add_course_duration);
@@ -143,6 +144,7 @@ public class AddCourseActivity extends AppCompatActivity implements AdapterView.
             }
         });
 
+        //TODO: addLocation functionality (addLocation is a button)
         //String[] measureOfTime = {"minutes","hours","days","weeks","months","years"};
 
         //ArrayAdapter adapter = new ArrayAdapter(getApplicationContext(), android.R.layout.simple_expandable_list_item_1,measureOfTime);

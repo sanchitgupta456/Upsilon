@@ -1,6 +1,7 @@
 package com.sanchit.Upsilon;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
@@ -32,8 +33,10 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
+import android.view.SearchEvent;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -92,18 +95,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private GsonBuilder gsonBuilder;
     private ArrayList<String> myCourses;
 
-    RecyclerView recyclerView,recyclerView1,recyclerView2;
+    RelativeLayout main;
+    RecyclerView recyclerView,recyclerView1,recyclerView2,recyclerViewSearchResults;
     CoursesAdapter1 coursesAdapter;
+    CoursesAdapter1 searchResultsAdapter;
     CoursesAdapter coursesAdapter1;
     CoursesAdapter coursesAdapter2;
     ArrayList<Course> courseArrayList = new ArrayList<Course>();
     ArrayList<Course> courseArrayList1 = new ArrayList<>();
     ArrayList<Course> courseArrayList2 = new ArrayList<>();
+    ArrayList<Course> searchResultsList = new ArrayList<>();
     App app;
     MongoClient mongoClient;
     MongoDatabase mongoDatabase;
     CircleImageView imageView;
     ActionBarDrawerToggle toggle;
+
+    SearchView searchView;
 
     private ProgressBar progressBar;
     public static final List<String> TvShows  = new ArrayList<String>();
@@ -146,7 +154,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         //createNotificationChannel();
         //displayNotif();
 
-        progressBar = findViewById(R.id.loadingMain);
+        progressBar = (ProgressBar)findViewById(R.id.loadingMain);
+        recyclerViewSearchResults = (RecyclerView) findViewById(R.id.search_results_home);
+        main = (RelativeLayout) findViewById(R.id.main);
         app = new App(new AppConfiguration.Builder(appID)
                 .build());
         User user = app.currentUser();
@@ -453,7 +463,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.three_dot_menu, menu);
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        SearchView searchView = (SearchView) menu.findItem(R.id.search_home).getActionView();
+        MenuItem menuItem = menu.findItem(R.id.search_home);
+        menuItem.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
+            @Override
+            public boolean onMenuItemActionExpand(MenuItem menuItem) {
+                main.setVisibility(View.GONE);
+                recyclerViewSearchResults.setVisibility(View.VISIBLE);
+                return true;
+            }
+
+            @Override
+            public boolean onMenuItemActionCollapse(MenuItem menuItem) {
+                main.setVisibility(View.VISIBLE);
+                recyclerViewSearchResults.setVisibility(View.GONE);
+                return true;
+            }
+        });
+        searchView = (SearchView) menuItem.getActionView();
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
         //searchView.getQuery() method should give you the query
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -461,6 +487,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public boolean onQueryTextChange(String newText) {
                 //Log.e("onQueryTextChange", "called");
+                /*if(!newText.equals("")) {
+
+                    searchQuery.setQuery(newText);
+                    searchQuery.setRankMethod(rankBy.PRICE);
+
+                    searchForCourse(searchQuery, 5);
+                    return false;
+                }*/
                 return false;
             }
 
@@ -491,8 +525,26 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         {
             getCourseData();
         }
+        /*else if(item.getItemId()==R.id.search_home)
+        {
+            main.setVisibility(View.GONE);
+            recyclerViewSearchResults.setVisibility(View.VISIBLE);
+        }
+        else if(item.getActionView()==searchView)
+        {
+            main.setVisibility(View.VISIBLE);
+            recyclerViewSearchResults.setVisibility(View.GONE);
+        }*/
         return true;
     }
+
+    /*
+    @Override
+    public boolean onSearchRequested() {
+        main.setVisibility(View.GONE);
+        recyclerViewSearchResults.setVisibility(View.VISIBLE);
+        return true;
+    }*/
 
     private void signOut() {
         User user = app.currentUser();
@@ -692,6 +744,7 @@ since the dispatchTouchEvent might dispatch your touch event to this function ag
             final User user = app.currentUser();
             assert user != null;
             MongoCollection<Document> mongoCollection = mongoDatabase.getCollection("CourseData");
+            searchResultsList.clear();
 
             //Blank query to find every single course in db
             Document regQuery = new Document();
@@ -738,6 +791,8 @@ since the dispatchTouchEvent might dispatch your touch event to this function ag
 
                         searchResultsByLocation.add(document);
 
+                        Course course = gson.fromJson(document.toJson(),Course.class);
+                        searchResultsList.add(course);
                         String name = document.getString("courseName");
                         String info = "NULL";
                         if (searchQuery.getRankMethod() == rankBy.LOC){
@@ -757,6 +812,7 @@ since the dispatchTouchEvent might dispatch your touch event to this function ag
                         Log.v("CourseSearch",name);
                         Log.v("CourseSearch", info);
                     }
+                    showSearchResults();
                 } else {
                     Log.e("COURSESearch", "failed to find courses with: ", task.getError());
                 }
@@ -815,5 +871,16 @@ since the dispatchTouchEvent might dispatch your touch event to this function ag
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
          // Distance in km
         return R * c;
+    }
+    public void showSearchResults() {
+        searchResultsAdapter = new CoursesAdapter1(searchResultsList);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        recyclerViewSearchResults.setLayoutManager(layoutManager);
+        recyclerViewSearchResults.setItemAnimator(new DefaultItemAnimator());
+
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(), layoutManager.getOrientation());
+
+        recyclerViewSearchResults.addItemDecoration(dividerItemDecoration);
+        recyclerViewSearchResults.setAdapter(searchResultsAdapter);
     }
 }
