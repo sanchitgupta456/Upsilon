@@ -20,6 +20,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.sanchit.Upsilon.ForumData.MessageAdapter;
@@ -71,6 +72,7 @@ public class TeacherViewCourseActivityForumFragment extends Fragment {
     private GsonBuilder gsonBuilder;
     ArrayList messageList;
     ArrayList<Messages> messageList1 = new ArrayList<>();
+    private FloatingActionButton refreshForum;
 
     @Nullable
     @Override
@@ -79,6 +81,7 @@ public class TeacherViewCourseActivityForumFragment extends Fragment {
 
         MessageInputText = (EditText)view.findViewById(R.id.input_message1);
         userMessageList = (RecyclerView) view.findViewById(R.id.private_messages_list_of_users1);
+        refreshForum = (FloatingActionButton) view.findViewById(R.id.refreshForumTeacher);
 
 
 
@@ -102,6 +105,12 @@ public class TeacherViewCourseActivityForumFragment extends Fragment {
 
         sendMessageButton = (ImageButton) view.findViewById(R.id.send_message_btn1);
 
+        refreshForum.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getMessages();
+            }
+        });
         getMessages();
 
         sendMessageButton.setOnClickListener(new View.OnClickListener() {

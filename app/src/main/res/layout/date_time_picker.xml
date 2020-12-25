@@ -1,22 +1,35 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:padding="8dp"
     android:layout_height="match_parent">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter Class Name"
+        android:layout_weight="1"
+        android:id="@+id/date_time_class_name"/>
+
     <DatePicker
         android:id="@+id/date_picker"
         android:layout_width="match_parent"
         android:calendarViewShown="true"
+        android:layout_weight="2"
         android:spinnersShown="true"
-        android:layout_weight="4"
-        android:layout_height="0dp"/>
+        android:layout_height="wrap_content"/>
 
     <TimePicker
         android:id="@+id/time_picker"
-        android:layout_weight="4"
+        android:layout_weight="2"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         />
 
     <Button
@@ -25,7 +38,7 @@
         android:layout_width="match_parent"
         android:text="Set"
         android:textColor="@color/colorWhite"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:background="@drawable/btn_blue"/>
-
-</LinearLayout>
+    </LinearLayout>
+</ScrollView>

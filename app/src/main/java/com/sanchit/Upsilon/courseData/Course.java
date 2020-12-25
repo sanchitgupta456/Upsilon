@@ -23,6 +23,7 @@ public class Course extends Object implements Serializable {
     private int numberOfStudentsEnrolled;
     private int numberOfBatches;
     private BasicBSONList courseReviews;
+    private BasicBSONList scheduledClasses;
     private String cardImgID;
     private ArrayList<String> myRegisteredCourses;
     private ArrayList<String> IntroductoryContentImages;
@@ -31,6 +32,40 @@ public class Course extends Object implements Serializable {
     private int IntroductoryVideoCounter;
     private String nextLectureOn;
     private String meetLink;
+
+    public Course(String courseId, String courseName, String courseImage, String tutorId, String courseDescription, String coursePreReq, double courseRating, String courseMode, int courseFees, String instructorLocation, int courseDuration, int numberOfStudentsEnrolled, int numberOfBatches, BasicBSONList courseReviews, BasicBSONList scheduledClasses, String cardImgID, ArrayList<String> myRegisteredCourses, ArrayList<String> introductoryContentImages, int introductoryImageCounter, ArrayList<String> introductoryContentVideos, int introductoryVideoCounter, String nextLectureOn, String meetLink) {
+        this.courseId = courseId;
+        this.courseName = courseName;
+        this.courseImage = courseImage;
+        this.tutorId = tutorId;
+        this.courseDescription = courseDescription;
+        this.coursePreReq = coursePreReq;
+        this.courseRating = courseRating;
+        this.courseMode = courseMode;
+        this.courseFees = courseFees;
+        this.instructorLocation = instructorLocation;
+        this.courseDuration = courseDuration;
+        this.numberOfStudentsEnrolled = numberOfStudentsEnrolled;
+        this.numberOfBatches = numberOfBatches;
+        this.courseReviews = courseReviews;
+        this.scheduledClasses = scheduledClasses;
+        this.cardImgID = cardImgID;
+        this.myRegisteredCourses = myRegisteredCourses;
+        IntroductoryContentImages = introductoryContentImages;
+        IntroductoryImageCounter = introductoryImageCounter;
+        IntroductoryContentVideos = introductoryContentVideos;
+        IntroductoryVideoCounter = introductoryVideoCounter;
+        this.nextLectureOn = nextLectureOn;
+        this.meetLink = meetLink;
+    }
+
+    public BasicBSONList getScheduledClasses() {
+        return scheduledClasses;
+    }
+
+    public void setScheduledClasses(BasicBSONList scheduledClasses) {
+        this.scheduledClasses = scheduledClasses;
+    }
 
     public String getMeetLink() {
         return meetLink;

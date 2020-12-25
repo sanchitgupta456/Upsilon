@@ -13,6 +13,8 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -32,6 +34,9 @@ import androidx.core.app.ActivityCompat;
 import com.cloudinary.android.MediaManager;
 import com.cloudinary.android.callback.ErrorInfo;
 import com.cloudinary.android.callback.UploadCallback;
+import com.sanchit.Upsilon.courseData.Course;
+import com.sanchit.Upsilon.ui.login.LoginActivity;
+
 import org.bson.Document;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -161,6 +166,21 @@ public class AddCourseActivity extends AppCompatActivity implements AdapterView.
                 courseName = CourseName.getText().toString();
                 courseDescription = CourseDescription.getText().toString();
                 courseDuration = CourseDuration.getText().toString();
+
+                if(courseName.isEmpty())
+                {
+                    Animation shake = AnimationUtils.loadAnimation(AddCourseActivity.this, R.anim.shake);
+                    CourseName.startAnimation(shake);
+                    CourseName.setError("Please Enter a Valid Course Name");
+                    CourseName.requestFocus();
+                }
+                else if(courseDescription.isEmpty())
+                {
+                    Animation shake = AnimationUtils.loadAnimation(AddCourseActivity.this, R.anim.shake);
+                    CourseDescription.startAnimation(shake);
+                    CourseDescription.setError("Please Enter a Valid Course Description");
+                    CourseDescription.requestFocus();
+                }
                 //numOfBatches = NumberOfBatches.getText().toString();
 
                 if(Paid.isChecked())

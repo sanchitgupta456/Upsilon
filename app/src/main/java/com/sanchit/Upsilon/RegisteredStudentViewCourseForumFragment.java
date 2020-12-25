@@ -37,6 +37,7 @@ import com.cloudinary.android.callback.UploadCallback;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -93,6 +94,8 @@ public class RegisteredStudentViewCourseForumFragment extends Fragment {
     private ProgressDialog loadingBar;
     private ProgressBar progressBar;
 
+    private FloatingActionButton refreshForum;
+
     String appID = "upsilon-ityvn";
     App app;
     MongoClient mongoClient;
@@ -114,6 +117,7 @@ public class RegisteredStudentViewCourseForumFragment extends Fragment {
         SendFilesButton = (ImageButton) view.findViewById(R.id.send_files_btn1);
         loadingBar = new ProgressDialog(getActivity());
         progressBar = (ProgressBar) view.findViewById(R.id.forum_progress_bar);
+        refreshForum = (FloatingActionButton) view.findViewById(R.id.refreshForum);
 
         //userMessageList.setAdapter(messageAdapter);
         //messageAdapter = new MessageAdapter(messageList1);
@@ -134,6 +138,13 @@ public class RegisteredStudentViewCourseForumFragment extends Fragment {
         course = (Course) getArguments().get("Course");
 
         sendMessageButton = (ImageButton) view.findViewById(R.id.send_message_btn1);
+
+        refreshForum.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getMessages();
+            }
+        });
 
         getMessages();
 
