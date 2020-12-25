@@ -86,7 +86,8 @@
                 android:textColor="@color/colorPrimaryDark"
                 android:background="@drawable/text_view_add_course"
                 android:padding="10dp"
-                android:layout_margin="@dimen/text_margin"
+                android:layout_marginHorizontal="@dimen/text_margin"
+                android:layout_marginVertical="4dp"
                 android:id="@+id/add_course_name" />
 
             <EditText
@@ -97,7 +98,8 @@
                 android:inputType="textMultiLine"
                 android:background="@drawable/text_view_add_course"
                 android:padding="10dp"
-                android:layout_margin="@dimen/text_margin"
+                android:layout_marginHorizontal="@dimen/text_margin"
+                android:layout_marginVertical="4dp"
                 android:textColor="@color/colorPrimaryDark"
                 android:id="@+id/add_course_description"/>
 
@@ -106,8 +108,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Add a category tag"
-                android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
-                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:layout_marginHorizontal="@dimen/text_margin"
+                android:layout_marginVertical="4dp"
                 android:background="@drawable/btn_blue"
                 android:elevation="100dp"
                 android:textColor="@color/colorWhite"
@@ -129,8 +131,8 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/btn_blue"
                 android:padding="3dp"
-                android:layout_marginHorizontal="18sp"
-                android:layout_marginBottom="18sp"
+                android:layout_marginHorizontal="@dimen/text_margin"
+                android:layout_marginVertical="4dp"
                 android:textColor="@color/colorWhite"
                 android:id="@+id/textCategoriesSelected"
                 android:visibility="gone"/>
@@ -139,7 +141,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_margin="@dimen/text_margin"
+                android:layout_marginHorizontal="@dimen/text_margin"
+                android:layout_marginVertical="4dp"
                 android:weightSum="100">
 
                 <EditText
@@ -174,7 +177,8 @@
                 android:layout_height="wrap_content"
                 android:textOff="@string/offline"
                 android:textOn="@string/online"
-                android:layout_margin="@dimen/text_margin"
+                android:layout_marginHorizontal="@dimen/text_margin"
+                android:layout_marginVertical="4dp"
                 android:background="@drawable/btn_multi_select"
                 android:elevation="100dp"
                 android:textColor="@color/colorWhite"
@@ -188,13 +192,15 @@
                 android:background="@drawable/btn_blue"
                 android:layout_gravity="center"
                 android:padding="10dp"
-                android:text="Add Course Location"
+                android:text="@string/add_course_location"
                 android:textColor="@color/colorWhite"
                 android:drawableStart="@drawable/icon_location"
                 android:drawableTint="@color/colorWhite"
                 android:gravity="center"
                 android:drawablePadding="10dp"
-                android:visibility="gone"/>
+                android:visibility="gone"
+                android:layout_marginHorizontal="@dimen/text_margin"
+                android:layout_marginVertical="4dp"/>
 
 
             <!--
@@ -319,7 +325,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_margin="@dimen/text_margin"
+                android:layout_marginHorizontal="@dimen/text_margin"
+                android:layout_marginVertical="4dp"
                 android:weightSum="100"
                 android:padding="5dp">
 
@@ -357,7 +364,8 @@
                 android:textColor="@color/colorPrimaryDark"
                 android:background="@drawable/text_view_add_course"
                 android:padding="10dp"
-                android:layout_margin="@dimen/text_margin"
+                android:layout_marginHorizontal="@dimen/text_margin"
+                android:layout_marginVertical="4dp"
                 android:id="@+id/course_fee"
                 android:visibility="gone"/>
 

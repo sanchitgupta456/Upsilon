@@ -6,39 +6,46 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginBottom="@dimen/activity_vertical_margin">
 
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Enter Class Name"
-        android:layout_weight="1"
-        android:id="@+id/date_time_class_name"/>
+        android:hint="@string/enter_class_name"
+        android:textSize="@dimen/text_margin"
+        android:textColor="@color/colorPrimary"
+        android:textStyle="bold"
+        android:textAllCaps="true"
+        android:textColorHint="@color/colorGrey"
+        android:id="@+id/class_name"
+        android:inputType="text"
+        android:importantForAutofill="no"
+        android:imeOptions="actionDone"/>
 
     <DatePicker
+        android:theme="@style/DatePicker"
         android:id="@+id/date_picker"
         android:layout_width="match_parent"
-        android:calendarViewShown="true"
-        android:layout_weight="2"
-        android:spinnersShown="true"
         android:layout_height="wrap_content"/>
 
     <TimePicker
+        android:theme="@style/DatePicker"
         android:id="@+id/time_picker"
-        android:layout_weight="2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        />
+        android:timePickerMode="spinner"/>
 
     <Button
         android:id="@+id/date_time_set"
-        android:layout_weight="1"
-        android:layout_width="match_parent"
-        android:text="Set"
-        android:textColor="@color/colorWhite"
         android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:paddingHorizontal="15dp"
+        android:text="@string/set"
+        android:textColor="@color/colorWhite"
         android:background="@drawable/btn_blue"/>
     </LinearLayout>
 </ScrollView>

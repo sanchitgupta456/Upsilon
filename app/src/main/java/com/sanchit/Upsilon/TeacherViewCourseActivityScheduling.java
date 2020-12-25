@@ -101,7 +101,7 @@ public class TeacherViewCourseActivityScheduling extends Fragment {
 
                 DatePicker datePicker = (DatePicker) dialogView.findViewById(R.id.date_picker);
                 TimePicker timePicker = (TimePicker) dialogView.findViewById(R.id.time_picker);
-                EditText editText = (EditText) dialogView.findViewById(R.id.date_time_class_name);
+                EditText editText = (EditText) dialogView.findViewById(R.id.class_name);
                 String ClassName = editText.getText().toString();
                 timePicker.setIs24HourView(true);
 
