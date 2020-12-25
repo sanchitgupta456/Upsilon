@@ -51,6 +51,7 @@
         <activity android:name=".ExploreActivity"></activity>
         <activity android:name=".Terms"></activity>
         <activity android:name=".ContactUs"></activity>
+        <activity android:name=".AboutActivity"></activity>
         <activity android:name=".FAQ"></activity>
         <meta-data android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id"/>
