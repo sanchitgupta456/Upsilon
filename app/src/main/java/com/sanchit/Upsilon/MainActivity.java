@@ -585,15 +585,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         else if(id==R.id.tc)
         {
             Intent intent = new Intent(MainActivity.this,Terms.class);
-            //Toast toast = Toast.makeText(getApplicationContext(), "TC Clicked", Toast.LENGTH_LONG);
-            //toast.show();
             startActivity(intent);
         }
         else if(id==R.id.faq)
         {
             Intent intent = new Intent(MainActivity.this,FAQ.class);
-            //Toast toast = Toast.makeText(getApplicationContext(), "TC Clicked", Toast.LENGTH_LONG);
-            //toast.show();
+            startActivity(intent);
+        }
+        else if(id==R.id.contactUs)
+        {
+            Intent intent = new Intent(MainActivity.this,ContactUs.class);
+            startActivity(intent);
+        }
+        else if(id==R.id.about)
+        {
+            Intent intent = new Intent(MainActivity.this,AboutActivity.class);
             startActivity(intent);
         }
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
