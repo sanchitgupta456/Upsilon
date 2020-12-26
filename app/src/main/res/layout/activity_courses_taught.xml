@@ -29,7 +29,30 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:textColor="@color/colorPrimary"
+        android:textStyle="bold"
+        android:typeface="sans"
+        android:padding="3dp"
         android:layout_below="@id/loadingCoursesTaught"
+        android:text="@string/your_time_with_us"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        android:id="@+id/textCoursesTaught3"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/listTeachingStats"
+        android:layout_below="@id/textCoursesTaught3"
+        android:layout_margin="10dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/listTeachingStats"
         android:textSize="20sp"
         android:textColor="@color/colorPrimary"
         android:textStyle="bold"
@@ -55,37 +78,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/listCurrentCoursesTaught" />
-
-    </FrameLayout>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="20sp"
-        android:textColor="@color/colorPrimary"
-        android:textStyle="bold"
-        android:typeface="sans"
-        android:padding="3dp"
-        android:layout_below="@id/frameCurrentCoursesTaught"
-        android:text="@string/your_time_with_us"
-        android:layout_marginTop="@dimen/activity_vertical_margin"
-        android:layout_marginStart="24dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginBottom="@dimen/activity_vertical_margin"
-        android:id="@+id/textCoursesTaught3"/>
-
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/text_view_login"
-        android:layout_below="@id/textCoursesTaught3"
-        android:layout_margin="10dp"
-        android:padding="1dp">
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/listTeachingStats" />
 
     </FrameLayout>
 

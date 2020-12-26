@@ -216,7 +216,7 @@ public class CoursesTaughtActivity extends AppCompatActivity {
         statListAdapter = new TeachingStatListAdapter(getApplicationContext(),teachingStatDataArrayList);
 
         recyclerView1 = (RecyclerView)findViewById(R.id.listTeachingStats);
-        recyclerView1.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false));
+        recyclerView1.setLayoutManager(new CenterZoomLayoutManager(this,CenterZoomLayoutManager.HORIZONTAL,false));
         recyclerView1.setItemAnimator(new DefaultItemAnimator());
         recyclerView1.setAdapter(statListAdapter);
     }
