@@ -36,8 +36,7 @@
                 android:maxLines="1"
                 android:typeface="sans"
                 android:textStyle="bold"
-                android:layout_weight="30"
-                android:text="hscvuyw"/>
+                android:layout_weight="30"/>
 
             <View
                 android:layout_width="match_parent"
@@ -55,8 +54,7 @@
                 android:autoSizeMinTextSize="10dp"
                 android:typeface="sans"
                 android:textStyle="bold"
-                android:layout_weight="70"
-                android:text="cbaiwhcwieyh"/>
+                android:layout_weight="70"/>
         </LinearLayout>
 
     </androidx.cardview.widget.CardView>
