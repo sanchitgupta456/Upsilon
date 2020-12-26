@@ -17,6 +17,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
+import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -27,11 +28,15 @@ import com.google.gson.JsonSyntaxException;
 import com.sanchit.Upsilon.courseData.Course;
 import com.sanchit.Upsilon.courseData.CourseAdapter2;
 import com.sanchit.Upsilon.courseData.CoursesAdapter1;
+import com.sanchit.Upsilon.courseSearching.LocationSorter;
+import com.sanchit.Upsilon.courseSearching.SearchQuery;
+import com.sanchit.Upsilon.courseSearching.rankBy;
 
 import org.bson.Document;
 
 import java.util.ArrayList;
 import java.util.Objects;
+import java.util.PriorityQueue;
 import java.util.regex.Pattern;
 
 import io.realm.mongodb.App;
@@ -41,6 +46,7 @@ import io.realm.mongodb.User;
 import io.realm.mongodb.mongo.MongoClient;
 import io.realm.mongodb.mongo.MongoCollection;
 import io.realm.mongodb.mongo.MongoDatabase;
+import io.realm.mongodb.mongo.iterable.FindIterable;
 import io.realm.mongodb.mongo.iterable.MongoCursor;
 
 import static android.view.View.GONE;
@@ -64,6 +70,10 @@ public class ExploreActivity extends AppCompatActivity {
 
     ArrayList<String> tags;
     ArrayList<Boolean> isChecked;
+
+    //SearchQuery Ranking method
+    SearchQuery searchQuery = new SearchQuery();
+    ArrayList<Course> searchResultsList = new ArrayList<>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -91,6 +101,13 @@ public class ExploreActivity extends AppCompatActivity {
         recyclerView.setAdapter(courseAdapter);
         recyclerView.addItemDecoration(dividerItemDecoration);
         progressBar = findViewById(R.id.loadingExplore);
+
+        repopulateAll();
+
+    }
+
+    public void repopulateAll(){
+        courseArrayList.clear();
         user = app.currentUser();
 
         mongoClient = user.getMongoClient("mongodb-atlas");
@@ -138,9 +155,7 @@ public class ExploreActivity extends AppCompatActivity {
                 Log.e("COURSEHandler", "failed to find courses with: ", task.getError());
             }
         });
-
         initFilters();
-
     }
 
     @Override
@@ -154,20 +169,26 @@ public class ExploreActivity extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                //Log.e("onQueryTextChange", "called");
-                searchForCourse(newText.toString());
+
                 return false;
             }
 
             @Override
             public boolean onQueryTextSubmit(String query) {
-
-
-                searchForCourse(query.toString());
-
+                searchQuery.setQuery(query);
+                searchQuery.setRankMethod(rankBy.PRICE);
+                searchQuery.searchForCourse(app, mongoDatabase,ExploreActivity.this, courseAdapter, recyclerView,  10);
                 return false;
             }
 
+        });
+        searchView.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus){
+                    //TODO: get all courses
+                }
+            }
         });
         return true;
     }
@@ -182,51 +203,6 @@ public class ExploreActivity extends AppCompatActivity {
     }
 
     //search
-
-    void searchForCourse(String query){
-        if (app.currentUser()!=null) {
-            Log.v("courseSearch", query);
-            final User user = app.currentUser();
-            assert user != null;
-            MongoCollection<Document> mongoCollection = mongoDatabase.getCollection("CourseData");
-
-            //Blank query to find every single course in db
-            Document regQuery = new Document();
-            regQuery.append("$regex", "^(?)" + Pattern.quote(query));
-            regQuery.append("$options", "i");
-
-            Document queryFilter  = new Document();
-            queryFilter.append("courseName", regQuery);
-
-            RealmResultTask<MongoCursor<Document>> findCourses = mongoCollection.find(queryFilter).iterator();
-
-            findCourses.getAsync(task -> {
-                if (task.isSuccess()) {
-                    MongoCursor<Document> results = task.get();
-                    Log.v("COURSEHandler", "successfully found all courses:");
-                    while (results.hasNext()) {
-                        Document document = results.next();
-                        String name = document.getString("courseName");
-                        Log.v("CourseSearch",name);
-                    }
-                    //Toast.makeText(MainActivity.this,url,Toast.LENGTH_LONG).show();
-
-                    //Picasso.with(getApplicationContext()).load(url).into(imageView);
-                } else {
-                    Log.e("COURSESearch", "failed to find courses with: ", task.getError());
-                }
-            });
-
-            /*
-            String partitionValue = "myPartition";
-            SyncConfiguration config =
-                    new SyncConfiguration.Builder(user, partitionValue).build();
-            Realm realm = Realm.getInstance(config);
-
-            RealmQuery<String> tasksQuery = realm.where();
-            */
-        }
-    }
 
     public void initFilters() {
         getFilters();

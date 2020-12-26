@@ -501,14 +501,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public boolean onQueryTextSubmit(String query) {
                 searchQuery.setQuery(query);
-                searchQuery.setRankMethod(rankBy.PRICE);
+                searchQuery.setRankMethod(rankBy.RATING);
 
-                searchForCourse(searchQuery, 5);
+                searchQuery.searchForCourse(app, mongoDatabase,MainActivity.this, searchResultsAdapter, recyclerViewSearchResults,  10);
 
                 return false;
             }
-
         });
+
         return true;
     }
 
@@ -734,159 +734,11 @@ since the dispatchTouchEvent might dispatch your touch event to this function ag
         ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
         for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
             if (serviceClass.getName().equals(service.service.getClassName())) {
-                Log.i ("isMyServiceRunning?", true+"");
+                Log.i("isMyServiceRunning?", true + "");
                 return true;
             }
         }
-        Log.i ("isMyServiceRunning?", false+"");
+        Log.i("isMyServiceRunning?", false + "");
         return false;
-    }
-
-    //Search
-
-    void searchForCourse(SearchQuery query, double radius){
-        if (app.currentUser()!=null) {
-            Log.v("courseSearch", query.getKeywords());
-            final User user = app.currentUser();
-            assert user != null;
-            MongoCollection<Document> mongoCollection = mongoDatabase.getCollection("CourseData");
-            searchResultsList.clear();
-
-            //Blank query to find every single course in db
-            Document regQuery = new Document();
-            regQuery.append("$regex", "(?)" + Pattern.quote(query.getKeywords()));
-            regQuery.append("$options", "i");
-
-            Document queryFilter  = new Document();
-            queryFilter.append("courseName", regQuery);
-
-            Document sortingMethod = new Document();
-
-
-            if (searchQuery.getRankMethod() == rankBy.LOC){
-                sortingMethod.append("courseRating", 1);
-            }
-            else if (searchQuery.getRankMethod() == rankBy.RATING){
-                sortingMethod.append("courseRating", -1);
-            }
-            else if (searchQuery.getRankMethod() == rankBy.PRICE){
-                sortingMethod.append("courseFees", 1);
-            }
-            else{
-                sortingMethod.append("courseRating", -1);
-            }
-
-            FindIterable<Document> queryResultIterable = mongoCollection.find(queryFilter);
-            queryResultIterable.sort(sortingMethod);
-            RealmResultTask<MongoCursor<Document>> findCourses = queryResultIterable.iterator();
-
-            PriorityQueue<Document> searchResultsByLocation = new
-                    PriorityQueue<Document>(5, new LocationSorter());
-
-            findCourses.getAsync(task -> {
-                if (task.isSuccess()) {
-                    MongoCursor<Document> results = task.get();
-                    Log.v("COURSEHandler", "successfully found all courses:");
-                    while (results.hasNext()) {
-                        Document document = results.next();
-
-                        //TODO: implement course distance calculation
-                        double courseDist = calculateDistance(document.get("courseLocation"), user);
-
-                        document.append("courseDistance", courseDist);
-
-                        searchResultsByLocation.add(document);
-
-                        Course course = gson.fromJson(document.toJson(),Course.class);
-                        searchResultsList.add(course);
-                        String name = document.getString("courseName");
-                        String info = "NULL";
-                        if (searchQuery.getRankMethod() == rankBy.LOC){
-                            info = document.getDouble("courseDistance").toString();
-                        }
-                        else if (searchQuery.getRankMethod() == rankBy.RATING){
-                            info = document.getDouble("courseRating").toString();
-                        }
-                        else if (searchQuery.getRankMethod() == rankBy.PRICE){
-                            info = document.getInteger("courseFees").toString();
-                        }
-                        else{
-                            info = document.getDouble("courseRating").toString();
-                        }
-
-
-                        Log.v("CourseSearch",name);
-                        Log.v("CourseSearch", info);
-                    }
-                    showSearchResults();
-                } else {
-                    Log.e("COURSESearch", "failed to find courses with: ", task.getError());
-                }
-            });
-
-            //NOTE: printing by distance:
-            Log.v("CourseSearch","LocationSort");
-            while (!searchResultsByLocation.isEmpty()){
-                Document d = searchResultsByLocation.peek();
-                String name = d.getString("courseName");
-                String info = d.getDouble("courseDistance").toString();
-                Log.v("CourseSearch",name);
-                Log.v("CourseSearch", info);
-            }
-            user.getId();
-        }
-    }
-
-    public double calculateDistance(Object courseLoc, User user){
-        /*
-        MongoCollection<Document> mongoCollection2  = mongoDatabase.getCollection("UserData");
-        //Blank query to find every single course in db
-
-        Document queryFilter2 = new Document("userid", user.getId());
-
-        RealmResultTask<MongoCursor<Document>> findTask2 = mongoCollection2.find(queryFilter2).iterator();
-
-        findTask2.getAsync(task2 -> {
-            if (task2.isSuccess()) {
-                MongoCursor<Document> results1 = task2.get();
-                if (!results1.hasNext()) {
-                    Log.v("ViewCourse", "Couldnt Find The Tutor");
-                } else {
-                    Log.v("User", "successfully found the Tutor");
-                }
-                while (results1.hasNext()) {
-                    //Log.v("EXAMPLE", results.next().toString());
-                    Document currentDoc1 = results1.next();
-
-                }
-            } else {
-                Log.v("User", "Failed to complete search");
-            }
-        });
-        */
-        double lat1 = 0,lon1 = 0,lat2 = 0,lon2 = 0;
-        double R = 6371;
-        double dLat = Math.PI*(lat2-lat1)/180;
-        double dLon = Math.PI*(lon2-lon1)/180;
-
-        double a =
-                Math.sin(dLat/2) * Math.sin(dLat/2) +
-                        Math.cos(Math.PI*(lat1)/180) * Math.cos(Math.PI*(lat2)/180) *
-                                Math.sin(dLon/2) * Math.sin(dLon/2)
-                ;
-        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-         // Distance in km
-        return R * c;
-    }
-    public void showSearchResults() {
-        searchResultsAdapter = new CoursesAdapter1(searchResultsList);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        recyclerViewSearchResults.setLayoutManager(layoutManager);
-        recyclerViewSearchResults.setItemAnimator(new DefaultItemAnimator());
-
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(), layoutManager.getOrientation());
-
-        recyclerViewSearchResults.addItemDecoration(dividerItemDecoration);
-        recyclerViewSearchResults.setAdapter(searchResultsAdapter);
     }
 }
