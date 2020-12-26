@@ -17,13 +17,11 @@ import java.util.ArrayList;
 public class TeachingStatListAdapter extends RecyclerView.Adapter<TeachingStatListAdapter.ViewHolder> {
 
     //vars
-    private ArrayList<String> mStatDatas = new ArrayList<>();
-    private ArrayList<String> mStatFields = new ArrayList<>();
+    private ArrayList<TeachingStatData> mTeachingStatDataArrayList = new ArrayList<>();
     private Context mContext;
 
-    public TeachingStatListAdapter(Context context, ArrayList<String> statDatas, ArrayList<String> statFields) {
-        mStatDatas = statDatas;
-        mStatFields = statFields;
+    public TeachingStatListAdapter(Context context, ArrayList<TeachingStatData> TeachingStatDataArrayList) {
+        mTeachingStatDataArrayList = TeachingStatDataArrayList;
         mContext = context;
     }
 
@@ -40,16 +38,13 @@ public class TeachingStatListAdapter extends RecyclerView.Adapter<TeachingStatLi
 
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
-
-        holder.statData.setText(mStatDatas.get(position));
-        holder.statField.setText(mStatFields.get(position));
-
-
+        holder.statData.setText(mTeachingStatDataArrayList.get(position).getStatData());
+        holder.statField.setText(mTeachingStatDataArrayList.get(position).getStatField());
     }
 
     @Override
     public int getItemCount() {
-        return mStatFields.size();
+        return mTeachingStatDataArrayList.size();
     }
     //done
     public class ViewHolder extends RecyclerView.ViewHolder{

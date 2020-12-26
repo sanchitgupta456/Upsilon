@@ -7,6 +7,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
@@ -165,6 +167,12 @@ public class TeacherViewCourseActivity extends AppCompatActivity implements Bott
             return true;
         }
         return false;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.teacher_menu,menu);
+        return true;
     }
 
     @Override

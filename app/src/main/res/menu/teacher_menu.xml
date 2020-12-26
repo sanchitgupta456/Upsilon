@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:title="Course Stats"
+        android:id="@+id/course_stats"
+        />
+    <item
+        android:title="Student Performance Stats"
+        android:id="@+id/student_performance_stats"
+        />
+    <item
+        android:title="View Payemnts History"
+        android:id="@+id/payments_history"
+        />
+    <item
+        android:title="View Course Reviews"
+        android:id="@+id/course_review"
+        />
+
+</menu>

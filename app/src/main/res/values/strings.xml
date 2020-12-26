@@ -62,7 +62,7 @@
     <string name="course_name">Course Name</string>
     <string name="course_description">Course Description</string>
     <string name="course_duration">Course Duration</string>
-    <string name="class_hours">Class Hours</string>
+    <string name="class_hours">Class Hours (Approx.)</string>
     <string name="online">ONLINE</string>
     <string name="offline">OFFLINE</string>
     <string name="grouped_classes">Grouped Classes</string>

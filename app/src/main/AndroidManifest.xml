@@ -4,7 +4,9 @@
 
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
     <uses-feature android:name="android.hardware.location.gps" />
+
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -12,75 +14,86 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
     <application
+        android:name=".Upsilon"
         android:allowBackup="true"
-        android:requestLegacyExternalStorage="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:usesCleartextTraffic="true"
-        android:name=".Upsilon"
-        >
-        <meta-data android:name="cloudinary://937567483347128:wQLZU0pYv4hJt1sqF9fHB1uuEs8@upsilon175" android:value="cloudinary://@upsilon175"/>
+        android:usesCleartextTraffic="true">
+        <activity android:name=".AddCoursePayment"></activity>
+
+        <meta-data
+            android:name="cloudinary://937567483347128:wQLZU0pYv4hJt1sqF9fHB1uuEs8@upsilon175"
+            android:value="cloudinary://@upsilon175" />
+
         <activity
-            android:name="com.sanchit.Upsilon.ui.login.LoginActivity"
-            android:label="Upsilon">
-        </activity>
-        <activity android:name=".TeachActivity"></activity>
-        <activity android:name="com.sanchit.Upsilon.MainActivity">
+            android:name=".ui.login.LoginActivity"
+            android:label="Upsilon"></activity>
+        <activity android:name=".TeachActivity" />
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.sanchit.Upsilon.ui.login.SignUpActivity"></activity>
-        <activity android:name="com.sanchit.Upsilon.SearchActivity"></activity>
-        <activity android:name=".UserDataSetupActivity1"></activity>
-        <activity android:name=".UserDataSetupActivity2"></activity>
-        <activity android:name=".UserDataSetupActivity3"></activity>
-        <activity android:name=".AddCourseActivity"></activity>
-        <activity android:name=".AddCourseActivityContinued"></activity>
-        <activity android:name=".ViewCourseActivity"></activity>
-        <activity android:name=".CoursesTaughtActivity"></activity>
-        <activity android:name=".RegisterCourseActivity"></activity>
-        <activity android:name=".ProfileViewActivity"></activity>
-        <activity android:name=".TeacherViewCourseActivity"></activity>
-        <activity android:name=".RegisteredStudentViewCourse"></activity>
-        <activity android:name=".ExploreActivity"></activity>
-        <activity android:name=".Terms"></activity>
-        <activity android:name=".ContactUs"></activity>
-        <activity android:name=".AboutActivity"></activity>
-        <activity android:name=".FAQ"></activity>
-        <meta-data android:name="com.facebook.sdk.ApplicationId"
-            android:value="@string/facebook_app_id"/>
-        <activity android:name="com.facebook.FacebookActivity"
-            android:configChanges=
-                "keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+        <activity android:name=".ui.login.SignUpActivity" />
+        <activity android:name=".SearchActivity" />
+        <activity android:name=".UserDataSetupActivity1" />
+        <activity android:name=".UserDataSetupActivity2" />
+        <activity android:name=".UserDataSetupActivity3" />
+        <activity android:name=".AddCourseActivity" />
+        <activity android:name=".AddCourseActivityContinued" />
+        <activity android:name=".ViewCourseActivity" />
+        <activity android:name=".CoursesTaughtActivity" />
+        <activity android:name=".RegisterCourseActivity" />
+        <activity android:name=".ProfileViewActivity" />
+        <activity android:name=".TeacherViewCourseActivity" />
+        <activity android:name=".RegisteredStudentViewCourse" />
+        <activity android:name=".ExploreActivity" />
+        <activity android:name=".Terms" />
+        <activity android:name=".ContactUs" />
+        <activity android:name=".AboutActivity" />
+        <activity android:name=".FAQ" />
+
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
+
+        <activity
+            android:name="com.facebook.FacebookActivity"
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:label="@string/app_name" />
         <activity
             android:name="com.facebook.CustomTabActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
+
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
 
-        <service android:name=".notifications.UpsilonJobService"
+        <service
+            android:name=".notifications.UpsilonJobService"
             android:enabled="true"
-            android:permission="android.permission.BIND_JOB_SERVICE"/>
-        <service android:name=".notifications.NotifService"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
+        <service
+            android:name=".notifications.NotifService"
             android:enabled="true"
-            android:permission="android.permission.BIND_JOB_SERVICE"/>
-        <receiver android:name=".notifications.UpsilonBroadcastReciever"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
+
+        <receiver
+            android:name=".notifications.UpsilonBroadcastReciever"
             android:enabled="true"
             android:exported="true"
-            android:label="RestartServiceWhenStopped">
-        </receiver>
+            android:label="RestartServiceWhenStopped"></receiver>
     </application>
 
 </manifest>

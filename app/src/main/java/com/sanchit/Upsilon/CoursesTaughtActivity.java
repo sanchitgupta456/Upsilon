@@ -38,9 +38,11 @@ import io.realm.mongodb.mongo.iterable.MongoCursor;
 
 public class CoursesTaughtActivity extends AppCompatActivity {
 
-    RecyclerView recyclerView;
+    RecyclerView recyclerView, recyclerView1;
     CoursesAdapter coursesAdapter;
+    TeachingStatListAdapter statListAdapter;
     ArrayList<Course> courseArrayList = new ArrayList<Course>();
+    ArrayList<TeachingStatData> teachingStatDataArrayList = new ArrayList<TeachingStatData>();
     App app;
     MongoClient mongoClient;
     MongoDatabase mongoDatabase;
@@ -84,6 +86,8 @@ public class CoursesTaughtActivity extends AppCompatActivity {
         else
         {
             getCourseData();
+            getTeacherStatData();
+            initStatRecycler();
         }
 
     }
@@ -194,6 +198,27 @@ public class CoursesTaughtActivity extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void getTeacherStatData() {
+        //TODO: Modify this function to fetch data from backend
+
+        /* for test purposes : begin */
+        teachingStatDataArrayList.add(new TeachingStatData("Number of Courses Taught","14"));
+        teachingStatDataArrayList.add(new TeachingStatData("Number of Students Taught","487"));
+        teachingStatDataArrayList.add(new TeachingStatData("Total earnings with us","Rs. 50,000/-"));
+        teachingStatDataArrayList.add(new TeachingStatData("Total earnings last month","Rs. 1,089/-"));
+        teachingStatDataArrayList.add(new TeachingStatData("Average rating on your courses","4.7"));
+        /* end */
+    }
+
+    public void initStatRecycler() {
+        statListAdapter = new TeachingStatListAdapter(getApplicationContext(),teachingStatDataArrayList);
+
+        recyclerView1 = (RecyclerView)findViewById(R.id.listTeachingStats);
+        recyclerView1.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false));
+        recyclerView1.setItemAnimator(new DefaultItemAnimator());
+        recyclerView1.setAdapter(statListAdapter);
     }
 
 }
