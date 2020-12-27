@@ -252,6 +252,7 @@ public class AddCourseActivity extends AppCompatActivity implements AdapterView.
                 courseDetails.append("courseReviews",courseReviews);
                 courseDetails.append("courseImageCounter",0);
                 courseDetails.append("courseLocation",courseLocation);
+                courseDetails.append("numberOfReviews",0);
 
                 /*Intent intent = new Intent(AddCourseActivity.this,AddCourseActivityContinued.class);
                 intent.putExtra("courseDetails",courseDetails.toJson().toString());

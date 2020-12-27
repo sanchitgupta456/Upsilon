@@ -87,6 +87,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public static final String PREFS_NAME = "MyPrefsFile";
     private static String PREF_USERNAME = "username";
     private static String PREF_PASSWORD = "password";
+    private String Email;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -110,7 +111,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         findViewById(R.id.googleSignIn).setOnClickListener(this);
         findViewById(R.id.facebookSignIn).setOnClickListener(this);
 
-
         SharedPreferences pref = getApplication().getSharedPreferences(PREFS_NAME,MODE_PRIVATE);
         String username = pref.getString("user", null);
         String password = pref.getString("pass", null);
@@ -118,7 +118,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             usernameEditText.setText(username);
             passwordEditText.setText(password);
         }
-
 
         //Realm.init(this); // context, usually an Activity or Application
         App app = new App(new AppConfiguration.Builder(appID)
@@ -171,7 +170,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 loadingProgressBar.setIndeterminate(true);
                 loadingProgressBar.setProgress(0);
                 String email = usernameEditText.getText().toString();
-
+                Email = email;
                 String password = passwordEditText.getText().toString();
 
                 if(email.isEmpty())
@@ -383,6 +382,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     public void goToMainActivity(){
         Intent intent = new Intent(this, MainActivity.class);
+        intent.putExtra("email",Email);
         startActivity(intent);
     }
 }

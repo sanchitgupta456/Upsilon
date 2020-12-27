@@ -118,6 +118,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public static final List<String> TvShows  = new ArrayList<String>();
     public static final int[] TvShowImgs = {R.drawable.google, R.drawable.facebook};
     private String college;
+    private String email;
 
     //NOTIFS
     Intent serviceIntent;
@@ -136,8 +137,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-
+        Intent intent1 = getIntent();
+        email = intent1.getStringExtra("email");
         /*ctx = this;
         //startService(upsilonJobService);
         mSensorService = new NotifService(getCtx());
@@ -205,7 +206,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     if(!results.hasNext())
                     {
                         mongoCollection.insertOne(
-                                new Document("userid", user.getId()).append("favoriteColor", "pink"))
+                                new Document("userid", user.getId()).append("favoriteColor", "pink").append("email",email))
                                 .getAsync(result -> {
                                     if (result.isSuccess()) {
                                         Log.v("EXAMPLE", "Inserted custom user data document. _id of inserted document: "
