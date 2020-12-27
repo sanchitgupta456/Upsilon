@@ -43,10 +43,9 @@ public class CenterZoomLayoutManager extends LinearLayoutManager {
         float d1 = midpoint * 0.9f;
         float s0 = 1.f;
         float mShrinkAmount = 0.25f;
-        //float s1 = 1.f - mShrinkAmount;
-
         for (int i = 0; i < getChildCount(); i++) {
             View child = getChildAt(i);
+            //assert child != null;
             float childMidpoint =
                     (getDecoratedRight(child) + getDecoratedLeft(child)) / 2.f;
             float d = Math.min(d1, Math.abs(midpoint - childMidpoint));

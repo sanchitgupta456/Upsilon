@@ -161,6 +161,12 @@
     <string name="add_course_location">Add Course Location</string>
     <string name="enter_class_name">Enter Class Name</string>
     <string name="set">Set</string>
+    <string name="paid">PAID</string>
+    <string name="unpaid">UNPAID</string>
+    <string name="total_payments_received_till_date">Total Payments Received Till Date</string>
+    <string name="total_students_registered_currently">Total Students Registered Currently</string>
+    <string name="payment_pending">Payment Pending</string>
+    <string name="individual_student_s_payment_history">Individual Student\'s Payment History</string>
     <string name="no_location_data_provided">No Location Data Provided</string>
     <string name="service_not_available">Service Not Available</string>
     <string name="invalid_lat_long_used">Invalid Lat Long Used</string>

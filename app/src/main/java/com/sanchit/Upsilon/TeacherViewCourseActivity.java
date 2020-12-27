@@ -21,10 +21,12 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -56,6 +58,7 @@ import io.realm.mongodb.mongo.options.UpdateOptions;
 import static android.app.ActionBar.DISPLAY_SHOW_CUSTOM;
 
 public class TeacherViewCourseActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
+    private static final String TAG = "TeacherViewCourse";
 
     String appID = "upsilon-ityvn";
     Course course;
@@ -177,8 +180,23 @@ public class TeacherViewCourseActivity extends AppCompatActivity implements Bott
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getActionView()==actionBar){
+        int itemId = item.getItemId();
+        if (itemId == android.R.id.home) {
             finish();
+            return true;
+        } else if (itemId == R.id.course_stats) {
+            return true;
+        } else if (itemId == R.id.student_performance_stats) {
+            return true;
+        } else if (itemId == R.id.payments_history) {
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("Course",course);
+            Fragment fragment = new TeacherViewCourseActivityPaymentsFragment();
+            fragment.setArguments(bundle);
+            loadFragment(fragment);
+            return true;
+        } else if (itemId == R.id.course_review) {
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }
