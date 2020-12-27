@@ -120,6 +120,8 @@ public class RegisteredStudentViewCourseReviewFragment extends Fragment {
 
 
                 course.setCourseReviews(courseReviews);
+                course.setCourseRating((float)((course.getCourseRating()*course.getNumberOfReviews())+Rating)/(course.getNumberOfReviews()+1));
+                course.setNumberOfReviews(course.getNumberOfReviews()+1);
                 BsonDocument courseDoc = new BsonDocument();
                 gsonBuilder = new GsonBuilder();
                 gson = gsonBuilder.create();
