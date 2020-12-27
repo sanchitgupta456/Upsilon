@@ -29,6 +29,10 @@
             android:name="cloudinary://937567483347128:wQLZU0pYv4hJt1sqF9fHB1uuEs8@upsilon175"
             android:value="cloudinary://@upsilon175" />
 
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyAp3s5yvUwCfKcOtBsCZNgXlFbubc1eN9Y" />
+
         <activity
             android:name=".ui.login.LoginActivity"
             android:label="Upsilon"></activity>
@@ -58,6 +62,7 @@
         <activity android:name=".ContactUs" />
         <activity android:name=".AboutActivity" />
         <activity android:name=".FAQ" />
+        <activity android:name=".courseLocationMap.MapsActivity"/>
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
@@ -79,6 +84,10 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
+
+        <service
+            android:name=".courseLocationMap.FetchAddressIntentService"
+            android:exported="false" />
 
         <service
             android:name=".notifications.UpsilonJobService"

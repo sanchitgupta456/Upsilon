@@ -35,6 +35,7 @@ import com.cloudinary.android.MediaManager;
 import com.cloudinary.android.callback.ErrorInfo;
 import com.cloudinary.android.callback.UploadCallback;
 import com.sanchit.Upsilon.courseData.Course;
+import com.sanchit.Upsilon.courseLocationMap.MapsActivity;
 import com.sanchit.Upsilon.ui.login.LoginActivity;
 
 import org.bson.Document;
@@ -73,6 +74,8 @@ public class AddCourseActivity extends AppCompatActivity implements AdapterView.
     TextView tvCourseCategoriesDisplay;
     private static int RESULT_LOAD_IMAGE = 1;
     private static final int WRITE_PERMISSION = 0x01;
+    private static final int SECOND_ACTIVITY_REQUEST_CODE = 0;
+
     private ProgressBar progressBar;
     View bar;
 
@@ -80,6 +83,8 @@ public class AddCourseActivity extends AppCompatActivity implements AdapterView.
     private boolean[] isCheckedCategories;
     private ArrayList<Integer> selected_categories = new ArrayList<>();
     private ArrayList<String> categories_chosen = new ArrayList<>();
+    Double latitude,longitude;
+    private Document courseLocation = new Document();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -130,6 +135,14 @@ public class AddCourseActivity extends AppCompatActivity implements AdapterView.
             public void onClick(View v) {
                 CourseFees.setVisibility(View.INVISIBLE);
                 fees=0;
+            }
+        });
+
+        addLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(AddCourseActivity.this, MapsActivity.class);
+                startActivityForResult(intent, SECOND_ACTIVITY_REQUEST_CODE);
             }
         });
 
@@ -238,6 +251,7 @@ public class AddCourseActivity extends AppCompatActivity implements AdapterView.
                 //courseDetails.append("numberOfBatches",numOfBatches);
                 courseDetails.append("courseReviews",courseReviews);
                 courseDetails.append("courseImageCounter",0);
+                courseDetails.append("courseLocation",courseLocation);
 
                 /*Intent intent = new Intent(AddCourseActivity.this,AddCourseActivityContinued.class);
                 intent.putExtra("courseDetails",courseDetails.toJson().toString());
@@ -375,7 +389,16 @@ public class AddCourseActivity extends AppCompatActivity implements AdapterView.
                 ImageView imageView = (ImageView) findViewById(R.id.imgAddCourseImage);
                 imageView.setImageBitmap(BitmapFactory.decodeFile(CourseImageUrl));
             }
+            else if (requestCode == SECOND_ACTIVITY_REQUEST_CODE) {
+                // Get String data from Intent
+                latitude = data.getDoubleExtra("latitude",0);
+                longitude = data.getDoubleExtra("longitude",0);
+                Log.v("CourseLocationSet", String.valueOf(latitude+longitude));
+                courseLocation.append("latitude",latitude);
+                courseLocation.append("longitude",longitude);
+            }
         }
+
     }
 
     @Override
@@ -448,4 +471,5 @@ public class AddCourseActivity extends AppCompatActivity implements AdapterView.
         categories = getResources().getStringArray(R.array.categories);
         //categories = new String[]{"Science", "Arts"};
     }
+
 }
