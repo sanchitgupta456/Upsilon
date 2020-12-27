@@ -81,6 +81,7 @@ public class ExploreActivity extends AppCompatActivity {
         setContentView(R.layout.activity_explore_courses);
         Objects.requireNonNull(getSupportActionBar()).setTitle(R.string.explore);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setElevation(10);
         bar = getSupportActionBar().getCustomView();
         /*ImageButton imageButton = (ImageButton) bar.findViewById(R.id.imgBtnBackExploreCourses);
         imageButton.setOnClickListener(new View.OnClickListener() {

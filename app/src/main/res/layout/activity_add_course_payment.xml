@@ -73,4 +73,20 @@
         android:background="@drawable/text_view_add_course"
         android:padding="10dp"
         />
+
+    <Button
+        android:id="@+id/btnSubmitPaymentInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="30dp"
+        android:background="@drawable/btn_blue"
+        android:textSize="@dimen/text_margin"
+        android:textColor="@color/colorWhite"
+        android:textStyle="bold"
+        android:padding="@dimen/activity_horizontal_margin"
+        android:text="@string/submit"
+        android:clickable="true"
+        android:focusable="true"
+        android:elevation="10dp"/>
 </LinearLayout>

@@ -171,6 +171,7 @@
     <string name="service_not_available">Service Not Available</string>
     <string name="invalid_lat_long_used">Invalid Lat Long Used</string>
     <string name="no_address_found">No Address Found</string>
+    <string name="submit">Submit</string>
     <string-array name="categories">
         <item>Science</item>
         <item>Arts</item>
