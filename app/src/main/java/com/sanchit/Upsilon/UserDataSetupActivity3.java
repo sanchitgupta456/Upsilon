@@ -73,6 +73,7 @@ public class UserDataSetupActivity3 extends AppCompatActivity implements Adapter
     FusedLocationProviderClient fusedLocationProviderClient;
     private Spinner selectYourCollege;
     private String College;
+    private Document userLocation = new Document();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -165,7 +166,7 @@ public class UserDataSetupActivity3 extends AppCompatActivity implements Adapter
                         MongoCursor<Document> results = task.get();
                         if (!results.hasNext()) {
                             mongoCollection.insertOne(
-                                    new Document("userid", user.getId()).append("favoriteColor", "pink").append("city", city).append("pincode", pincode).append("phonenumber", phonenumber).append("college",College))
+                                    new Document("userid", user.getId()).append("favoriteColor", "pink").append("city", city).append("pincode", pincode).append("phonenumber", phonenumber).append("college",College).append("userLocation",userLocation))
                                     .getAsync(result -> {
                                         if (result.isSuccess()) {
                                             Log.v("EXAMPLE", "Inserted custom user data document. _id of inserted document: "
@@ -176,7 +177,7 @@ public class UserDataSetupActivity3 extends AppCompatActivity implements Adapter
                                     });
                         } else {
                             Document userdata = results.next();
-                            userdata.append("city", city).append("pincode", pincode).append("phonenumber", phonenumber).append("college",College);
+                            userdata.append("city", city).append("pincode", pincode).append("phonenumber", phonenumber).append("college",College).append("userLocation",userLocation);
 
                             mongoCollection.updateOne(
                                     new Document("userid", user.getId()), (userdata))
@@ -239,6 +240,8 @@ public class UserDataSetupActivity3 extends AppCompatActivity implements Adapter
                         List<Address> addresses = geocoder.getFromLocation(location.getLatitude(),location.getLongitude(),1);
                         City.setText(addresses.get(0).getLocality());
                         Pincode.setText(addresses.get(0).getPostalCode());
+                        userLocation.append("lattitude",location.getLatitude());
+                        userLocation.append("longitude",location.getLongitude());
                         Log.v("Location",addresses.get(0).getPostalCode()+" "+addresses.get(0).getLocality()+" "+addresses.get(0).getSubLocality());
                     } catch (IOException e) {
                         e.printStackTrace();

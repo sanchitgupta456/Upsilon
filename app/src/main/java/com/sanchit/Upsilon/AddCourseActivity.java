@@ -140,6 +140,20 @@ public class AddCourseActivity extends AppCompatActivity implements AdapterView.
             }
         });
 
+        offline_online.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(addLocation.getVisibility()== View.VISIBLE)
+                {
+                    addLocation.setVisibility(View.GONE);
+                }
+                else
+                {
+                    addLocation.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+
         getCategories();
         isCheckedCategories = new boolean[categories.length];
         addCategory.setOnClickListener(new View.OnClickListener() {

@@ -113,6 +113,7 @@ public class RegisterCourseActivity extends AppCompatActivity implements Payment
 
     public void RegisterStudent()
     {
+        startActivity(new Intent(RegisterCourseActivity.this,MainActivity.class));
         mongoClient = user.getMongoClient("mongodb-atlas");
         mongoDatabase = mongoClient.getDatabase("Upsilon");
         MongoCollection<Document> mongoCollection  = mongoDatabase.getCollection("UserData");
@@ -157,7 +158,7 @@ public class RegisterCourseActivity extends AppCompatActivity implements Payment
                                 if(result1.isSuccess())
                                 {
                                     Toast.makeText(getApplicationContext(),"Successfully Registered for the Course",Toast.LENGTH_LONG).show();
-                                    startActivity(new Intent(RegisterCourseActivity.this,MainActivity.class));
+                                    //startActivity(new Intent(RegisterCourseActivity.this,MainActivity.class));
                                 }
                             });
 
