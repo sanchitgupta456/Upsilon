@@ -190,6 +190,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
         else
         {
+            operationPURGE(user);
             mongoClient = user.getMongoClient("mongodb-atlas");
             mongoDatabase = mongoClient.getDatabase("Upsilon");
             MongoCollection<Document> mongoCollection  = mongoDatabase.getCollection("UserData");
@@ -753,5 +754,40 @@ since the dispatchTouchEvent might dispatch your touch event to this function ag
         }
         Log.i("isMyServiceRunning?", false + "");
         return false;
+    }
+
+    public void operationPURGE(User user){
+        Log.v("PURGE", "THE PURGE BEGINS!");
+
+        mongoClient = user.getMongoClient("mongodb-atlas");
+        mongoDatabase = mongoClient.getDatabase("Upsilon");
+        MongoCollection<Document> mongoCollection  = mongoDatabase.getCollection("UserData");
+
+        //Blank query to find every single user in db
+        Document queryFilter  = new Document();
+
+        RealmResultTask<MongoCursor<Document>> findTask = mongoCollection.find(queryFilter).iterator();
+
+        findTask.getAsync(task -> {
+            if (task.isSuccess()) {
+                MongoCursor<Document> results = task.get();
+                int i = 0;
+                while (results.hasNext()) {
+                    i++;
+                    //Log.v("EXAMPLE", results.next().toString());
+                    Document currentDoc = results.next();
+                    Document loc = new Document();
+                    loc.append("latitude", 19.84);
+                    loc.append("longitude", 75.26);
+                    currentDoc.append("userLocation", loc);
+                    mongoCollection.updateOne(new Document("userid", currentDoc.getString("userid")), currentDoc);
+                    Log.v("PURGE", "Purged!");
+                    Log.v("PURGE", Integer.toString(i));
+                }
+                Log.v("PURGE", "THE PURGE WAS A SUCCESS!");
+            } else {
+                Log.v("User","Failed to complete search");
+            }
+        });
     }
 }

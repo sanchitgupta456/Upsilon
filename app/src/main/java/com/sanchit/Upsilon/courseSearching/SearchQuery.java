@@ -102,15 +102,14 @@ public class SearchQuery {
                         Document document = results.next();
 
                         //TODO: implement course distance calculation
-                        double courseDist = calculateDistance(document.get("courseLocation"), user);
-
-                        document.append("courseDistance", courseDist);
 
                         Course course = gson.fromJson(document.toJson(),Course.class);
                         searchResultsList.add(course);
                         String name = document.getString("courseName");
                         String info = "NULL";
                         if (rank == rankBy.LOC){
+                            double courseDist = calculateDistance((Document) document.get("courseLocation"), user);
+                            document.append("courseDistance", courseDist);
                             info = document.getDouble("courseDistance").toString();
                             searchResultsByLocation.add(document);
                         }
@@ -150,7 +149,8 @@ public class SearchQuery {
         return searchResultsList;
     }
 
-    public double calculateDistance(Object courseLoc, User user){
+    public double calculateDistance(Document courseLoc, User user){
+
         /*
         MongoCollection<Document> mongoCollection2  = mongoDatabase.getCollection("UserData");
         //Blank query to find every single course in db
