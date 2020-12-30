@@ -178,7 +178,30 @@ public class ExploreActivity extends AppCompatActivity {
             public boolean onQueryTextSubmit(String query) {
                 searchQuery.setQuery(query);
                 searchQuery.setRankMethod(rankBy.PRICE);
-                searchQuery.searchForCourse(app, mongoDatabase,ExploreActivity.this, courseAdapter, recyclerView,  10);
+                mongoClient = user.getMongoClient("mongodb-atlas");
+                mongoDatabase = mongoClient.getDatabase("Upsilon");
+                MongoCollection<Document> mongoCollection  = mongoDatabase.getCollection("UserData");
+
+                //Blank query to find every single user in db
+                Document queryFilter  = new Document("userid", user.getId());
+
+                RealmResultTask<MongoCursor<Document>> findTask = mongoCollection.find(queryFilter).iterator();
+
+                findTask.getAsync(task -> {
+                    if (task.isSuccess()) {
+                        MongoCursor<Document> results = task.get();
+                        int i = 0;
+                        while (results.hasNext()) {
+                            //Log.v("EXAMPLE", results.next().toString());
+                            Document currentDoc = results.next();
+                            Document userLoc = (Document) currentDoc.get("userLocation");
+                            searchQuery.searchForCourse(app, mongoDatabase,ExploreActivity.this, courseAdapter, recyclerView,  10, userLoc);
+                        }
+                        Log.v("PURGE", "THE PURGE WAS A SUCCESS!");
+                    } else {
+                        Log.v("User","Failed to complete search");
+                    }
+                });
                 return false;
             }
 

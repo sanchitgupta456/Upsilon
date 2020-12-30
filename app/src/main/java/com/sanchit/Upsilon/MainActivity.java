@@ -132,6 +132,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     //SearchQuery Ranking method
     SearchQuery searchQuery = new SearchQuery();
+    //User location
+    Document userLoc;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -226,6 +228,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     while (results.hasNext()) {
                         //Log.v("EXAMPLE", results.next().toString());
                         Document currentDoc = results.next();
+                        userLoc = (Document) currentDoc.get("userLocation");
                         Log.v("User",currentDoc.getString("userid"));
                         Picasso.with(getApplicationContext()).load(currentDoc.getString("profilePicUrl")).error(R.drawable.default_person_image).into(imageView);
                         Log.v("ProfilePic",currentDoc.getString("profilePicUrl"));
@@ -506,7 +509,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 searchQuery.setQuery(query);
                 searchQuery.setRankMethod(rankBy.RATING);
 
-                searchQuery.searchForCourse(app, mongoDatabase,MainActivity.this, searchResultsAdapter, recyclerViewSearchResults,  10);
+                searchQuery.searchForCourse(app, mongoDatabase,MainActivity.this, searchResultsAdapter, recyclerViewSearchResults,  10, userLoc);
 
                 return false;
             }

@@ -55,7 +55,7 @@ public class SearchQuery {
 
     public void setQuery(String query) {keywords = query;}
 
-    public ArrayList<Course> searchForCourse(App app, MongoDatabase mongoDatabase, Context context, CoursesAdapter1 courseAdapter, RecyclerView recyclerView, double radius){
+    public ArrayList<Course> searchForCourse(App app, MongoDatabase mongoDatabase, Context context, CoursesAdapter1 courseAdapter, RecyclerView recyclerView, double radius, Document userLoc){
         if (app.currentUser()!=null) {
             Log.v("courseSearch", keywords);
             final User user = app.currentUser();
@@ -108,10 +108,13 @@ public class SearchQuery {
                         String name = document.getString("courseName");
                         String info = "NULL";
                         if (rank == rankBy.LOC){
-                            double courseDist = calculateDistance((Document) document.get("courseLocation"), user);
-                            document.append("courseDistance", courseDist);
-                            info = document.getDouble("courseDistance").toString();
-                            searchResultsByLocation.add(document);
+                            if (!document.getString("courseMode").equals("Online")) {
+                                double courseDist = calculateDistance((Document) document.get("courseLocation"), userLoc);
+                                Log.v("LocationSearch", document.getString("courseName").concat(" ").concat(Double.toString(courseDist)));
+                                document.append("courseDistance", courseDist);
+                                info = document.getDouble("courseDistance").toString();
+                                searchResultsByLocation.add(document);
+                            }
                         }
                         else if (rank == rankBy.RATING){
                             info = document.getDouble("courseRating").toString();
@@ -122,66 +125,39 @@ public class SearchQuery {
                         else{
                             info = document.getDouble("courseRating").toString();
                         }
-
-                        showSearchResults(context, courseAdapter, recyclerView);
                         Log.v("CourseSearch",name);
                         Log.v("CourseSearch", info);
                     }
+                    if (rank == rankBy.LOC) {
+                        //NOTE: printing by distance:
+                        Log.v("CourseSearch", "LocationSort");
+                        while (!searchResultsByLocation.isEmpty()) {
+                            Document d = searchResultsByLocation.poll();
+                            Course course = gson.fromJson(d.toJson(), Course.class);
+                            searchResultsList.add(course);
+                            String name = d.getString("courseName");
+                            String info = d.getDouble("courseDistance").toString();
+                            Log.v("CourseSearch", name);
+                            Log.v("CourseSearch", info);
+                        }
+                    }
+                    showSearchResults(context, courseAdapter, recyclerView);
 
                 } else {
                     Log.e("COURSESearch", "failed to find courses with: ", task.getError());
                 }
             });
-
-            //NOTE: printing by distance:
-            /*
-            Log.v("CourseSearch","LocationSort");
-            while (!searchResultsByLocation.isEmpty()){
-                Document d = searchResultsByLocation.peek();
-                String name = d.getString("courseName");
-                String info = d.getDouble("courseDistance").toString();
-                Log.v("CourseSearch",name);
-                Log.v("CourseSearch", info);
-            }
-            user.getId();
-            */
         }
         return searchResultsList;
     }
 
-    public double calculateDistance(Document courseLoc, User user){
+    public double calculateDistance(Document courseLoc, Document userLoc){
+        double lat1 = courseLoc.getDouble("latitude"),lon1 = courseLoc.getDouble("longitude"),lat2 = userLoc.getDouble("latitude"),lon2 = userLoc.getDouble("longitude");
 
-        /*
-        MongoCollection<Document> mongoCollection2  = mongoDatabase.getCollection("UserData");
-        //Blank query to find every single course in db
-
-        Document queryFilter2 = new Document("userid", user.getId());
-
-        RealmResultTask<MongoCursor<Document>> findTask2 = mongoCollection2.find(queryFilter2).iterator();
-
-        findTask2.getAsync(task2 -> {
-            if (task2.isSuccess()) {
-                MongoCursor<Document> results1 = task2.get();
-                if (!results1.hasNext()) {
-                    Log.v("ViewCourse", "Couldnt Find The Tutor");
-                } else {
-                    Log.v("User", "successfully found the Tutor");
-                }
-                while (results1.hasNext()) {
-                    //Log.v("EXAMPLE", results.next().toString());
-                    Document currentDoc1 = results1.next();
-
-                }
-            } else {
-                Log.v("User", "Failed to complete search");
-            }
-        });
-        */
-        double lat1 = 0,lon1 = 0,lat2 = 0,lon2 = 0;
-        double R = 6371;
-        double dLat = Math.PI*(lat2-lat1)/180;
-        double dLon = Math.PI*(lon2-lon1)/180;
-
+        double R = 6378;
+        double dLat = Math.PI*Math.abs(lat2-lat1)/180;
+        double dLon = Math.PI*Math.abs(lon2-lon1)/180;
+        Log.v("calcDist", Double.toString(lat1).concat(" ").concat(Double.toString(lon1)).concat(" ").concat(Double.toString(lat2)).concat(" ").concat(Double.toString(lon2)));
         double a =
                 Math.sin(dLat/2) * Math.sin(dLat/2) +
                         Math.cos(Math.PI*(lat1)/180) * Math.cos(Math.PI*(lat2)/180) *
