@@ -4,8 +4,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@drawable/background"
     android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorPrimary"
+        android:layout_alignBottom="@id/linearLayout2"
+        android:layout_marginBottom="8dp"/>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorPrimaryDark"
+        android:layout_alignTop="@id/linearLayout2"
+        android:layout_marginTop="12dp"/>
 
     <ProgressBar
         android:id="@+id/loadingSignUp"
@@ -195,7 +207,7 @@
         android:layout_marginTop="24dp"
         android:layout_centerHorizontal="true"
         android:text="@string/already_a_member"
-        android:textColor="@color/colorYellow"
+        android:textColor="@color/colorAccent"
         android:textSize="@dimen/text_margin"
         android:layout_below="@id/linearLayout3"/>
 

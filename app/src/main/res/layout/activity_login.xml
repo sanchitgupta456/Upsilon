@@ -6,14 +6,20 @@
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context=".ui.login.LoginActivity"
-    android:background="@drawable/background"
-    android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-
+    android:background="@drawable/gradient_dark"
+    tools:context=".ui.login.LoginActivity">
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorPrimary"
+        android:layout_alignBottom="@id/linearLayout2"
+        android:layout_marginBottom="8dp"/>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorPrimaryDark"
+        android:layout_alignTop="@id/linearLayout2"
+        android:layout_marginTop="12dp"/>
     <EditText
         android:id="@+id/username"
         android:layout_width="match_parent"
@@ -78,7 +84,10 @@
         android:layout_height="wrap_content"
         android:layout_gravity="start"
         android:layout_marginTop="12dp"
+        android:layout_marginBottom="48dp"
+        android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
         android:background="@drawable/btn_rounded_rect"
+        android:backgroundTint="@color/colorAccent"
         android:enabled="true"
         android:text="@string/action_sign_in"
         android:layout_below="@id/textView3"/>
@@ -89,7 +98,6 @@
         android:orientation="horizontal"
         android:id="@id/linearLayout2"
         android:layout_below="@id/login"
-        android:layout_marginTop="48dp"
         android:gravity="center">
         <View
             android:id="@+id/divider"
@@ -223,7 +231,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
+        android:layout_marginBottom="24dp"
+        android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
         android:background="@drawable/btn_rounded_rect"
+        android:backgroundTint="@color/colorAccent"
         android:text="@string/signup_text"
         android:layout_alignParentBottom="true"
         android:textColor="@color/colorBlack"/>
