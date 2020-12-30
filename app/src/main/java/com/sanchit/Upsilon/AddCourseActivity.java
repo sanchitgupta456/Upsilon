@@ -303,6 +303,7 @@ public class AddCourseActivity extends AppCompatActivity implements AdapterView.
                                         Log.v("AddCourse","Updated Image Successfully");
                                         Intent intent = new Intent(AddCourseActivity.this,AddCourseActivityContinued.class);
                                         intent.putExtra("InsertedDocument", result.get().getInsertedId().asObjectId().getValue().toString());
+                                        intent.putExtra("mode",mode);
                                         startActivity(intent);
                                     }
                                     else

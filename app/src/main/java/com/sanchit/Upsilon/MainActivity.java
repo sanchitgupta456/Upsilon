@@ -190,7 +190,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
         else
         {
-            operationPURGE(user);
+            //operationPURGE(user);
             mongoClient = user.getMongoClient("mongodb-atlas");
             mongoDatabase = mongoClient.getDatabase("Upsilon");
             MongoCollection<Document> mongoCollection  = mongoDatabase.getCollection("UserData");
@@ -757,7 +757,13 @@ since the dispatchTouchEvent might dispatch your touch event to this function ag
     }
 
     public void operationPURGE(User user){
-        Log.v("PURGE", "THE PURGE BEGINS!");
+        int j=0;
+        while(j<100)
+        {
+            Log.v("PURGE", "THE PURGE BEGINS!");
+            j++;
+        }
+
 
         mongoClient = user.getMongoClient("mongodb-atlas");
         mongoDatabase = mongoClient.getDatabase("Upsilon");
@@ -780,7 +786,18 @@ since the dispatchTouchEvent might dispatch your touch event to this function ag
                     loc.append("latitude", 19.84);
                     loc.append("longitude", 75.26);
                     currentDoc.append("userLocation", loc);
-                    mongoCollection.updateOne(new Document("userid", currentDoc.getString("userid")), currentDoc);
+                    Log.v("Purging",currentDoc.getString("userid"));
+                    mongoCollection.updateOne(new Document("userid", currentDoc.getString("userid")), currentDoc).getAsync(result ->
+                    {
+                        if(result.isSuccess())
+                        {
+                            Log.v("Success","success");
+                        }
+                        else
+                        {
+                            Log.v("Error",result.getError().toString());
+                        }
+                    });
                     Log.v("PURGE", "Purged!");
                     Log.v("PURGE", Integer.toString(i));
                 }
