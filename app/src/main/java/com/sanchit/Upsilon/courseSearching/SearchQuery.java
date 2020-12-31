@@ -49,7 +49,7 @@ import org.json.simple.parser.ParseException;
 public class SearchQuery {
     String keywords = "";
 
-    rankBy rank = rankBy.RATING;
+    rankBy rank = rankBy.LOC;
 
     ArrayList<Course> searchResultsList = new ArrayList<>();
 
@@ -169,7 +169,7 @@ public class SearchQuery {
     public double calculateDistance(Document courseLoc, Document userLoc){
         double lat1 = courseLoc.getDouble("latitude"),lon1 = courseLoc.getDouble("longitude"),lat2 = userLoc.getDouble("latitude"),lon2 = userLoc.getDouble("longitude");
         Log.v("Distance","calculating");
-        /*double R = 6378;
+        double R = 6378;
         double dLat = Math.PI*Math.abs(lat2-lat1)/180;
         double dLon = Math.PI*Math.abs(lon2-lon1)/180;
         Log.v("calcDist", Double.toString(lat1).concat(" ").concat(Double.toString(lon1)).concat(" ").concat(Double.toString(lat2)).concat(" ").concat(Double.toString(lon2)));
@@ -180,51 +180,7 @@ public class SearchQuery {
                 ;
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
         // Distance in km
-        return R * c;*/
-        final String[] parsedDistance = new String[1];
-        final String[] response = new String[1];
-            Thread thread=new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-
-                        URL url = new URL("http://maps.googleapis.com/maps/api/directions/json?origin=" + lat1 + "," + lon1 + "&destination=" + lat2 + "," + lon2 + "&sensor=false&units=metric&mode=driving");
-                        final HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-                        conn.setRequestMethod("POST");
-                        InputStream in = new BufferedInputStream(conn.getInputStream());
-                        //response = org.apache.commons.io.IOUtils.toString(in, "UTF-8");
-                        JSONParser jsonParser = new JSONParser();
-                        JSONObject jsonObject = (JSONObject)jsonParser.parse(
-                                new InputStreamReader(in, "UTF-8"));
-
-                        //JSONObject jsonObject = new JSONObject(response);
-                        JSONArray array = jsonObject.getJSONArray("routes");
-                        JSONObject routes = array.getJSONObject(0);
-                        JSONArray legs = routes.getJSONArray("legs");
-                        JSONObject steps = legs.getJSONObject(0);
-                        JSONObject distance = steps.getJSONObject("distance");
-                        parsedDistance[0] =distance.getString("text");
-                        Log.v("Distance",parsedDistance[0]);
-                    } catch (ProtocolException e) {
-                        e.printStackTrace();
-                    } catch (MalformedURLException e) {
-                        e.printStackTrace();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
-                }
-            });
-            thread.start();
-            try {
-                thread.join();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            return Double.parseDouble(parsedDistance[0]);
+        return R * c;
     }
 
     public void showSearchResults(Context context, CoursesAdapter1 courseAdapter, RecyclerView recyclerView) {

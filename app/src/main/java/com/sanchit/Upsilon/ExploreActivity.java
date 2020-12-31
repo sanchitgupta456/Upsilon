@@ -177,7 +177,7 @@ public class ExploreActivity extends AppCompatActivity {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 searchQuery.setQuery(query);
-                searchQuery.setRankMethod(rankBy.PRICE);
+                searchQuery.setRankMethod(rankBy.LOC);
                 mongoClient = user.getMongoClient("mongodb-atlas");
                 mongoDatabase = mongoClient.getDatabase("Upsilon");
                 MongoCollection<Document> mongoCollection  = mongoDatabase.getCollection("UserData");
