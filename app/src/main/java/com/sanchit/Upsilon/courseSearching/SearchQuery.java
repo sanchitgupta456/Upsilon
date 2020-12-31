@@ -17,7 +17,18 @@ import com.sanchit.Upsilon.courseData.Course;
 import com.sanchit.Upsilon.courseData.CoursesAdapter1;
 
 import org.bson.Document;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
+import java.io.BufferedInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.PriorityQueue;
 import java.util.regex.Pattern;
@@ -31,6 +42,9 @@ import io.realm.mongodb.mongo.iterable.FindIterable;
 import io.realm.mongodb.mongo.iterable.MongoCursor;
 
 import static android.view.View.GONE;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
 
 public class SearchQuery {
     String keywords = "";
@@ -109,6 +123,7 @@ public class SearchQuery {
                         String info = "NULL";
                         if (rank == rankBy.LOC){
                             if (!document.getString("courseMode").equals("Online")) {
+                                Log.v("Distance","Calling Function");
                                 double courseDist = calculateDistance((Document) document.get("courseLocation"), userLoc);
                                 Log.v("LocationSearch", document.getString("courseName").concat(" ").concat(Double.toString(courseDist)));
                                 document.append("courseDistance", courseDist);
@@ -153,8 +168,8 @@ public class SearchQuery {
 
     public double calculateDistance(Document courseLoc, Document userLoc){
         double lat1 = courseLoc.getDouble("latitude"),lon1 = courseLoc.getDouble("longitude"),lat2 = userLoc.getDouble("latitude"),lon2 = userLoc.getDouble("longitude");
-
-        double R = 6378;
+        Log.v("Distance","calculating");
+        /*double R = 6378;
         double dLat = Math.PI*Math.abs(lat2-lat1)/180;
         double dLon = Math.PI*Math.abs(lon2-lon1)/180;
         Log.v("calcDist", Double.toString(lat1).concat(" ").concat(Double.toString(lon1)).concat(" ").concat(Double.toString(lat2)).concat(" ").concat(Double.toString(lon2)));
@@ -165,7 +180,51 @@ public class SearchQuery {
                 ;
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
         // Distance in km
-        return R * c;
+        return R * c;*/
+        final String[] parsedDistance = new String[1];
+        final String[] response = new String[1];
+            Thread thread=new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+
+                        URL url = new URL("http://maps.googleapis.com/maps/api/directions/json?origin=" + lat1 + "," + lon1 + "&destination=" + lat2 + "," + lon2 + "&sensor=false&units=metric&mode=driving");
+                        final HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                        conn.setRequestMethod("POST");
+                        InputStream in = new BufferedInputStream(conn.getInputStream());
+                        //response = org.apache.commons.io.IOUtils.toString(in, "UTF-8");
+                        JSONParser jsonParser = new JSONParser();
+                        JSONObject jsonObject = (JSONObject)jsonParser.parse(
+                                new InputStreamReader(in, "UTF-8"));
+
+                        //JSONObject jsonObject = new JSONObject(response);
+                        JSONArray array = jsonObject.getJSONArray("routes");
+                        JSONObject routes = array.getJSONObject(0);
+                        JSONArray legs = routes.getJSONArray("legs");
+                        JSONObject steps = legs.getJSONObject(0);
+                        JSONObject distance = steps.getJSONObject("distance");
+                        parsedDistance[0] =distance.getString("text");
+                        Log.v("Distance",parsedDistance[0]);
+                    } catch (ProtocolException e) {
+                        e.printStackTrace();
+                    } catch (MalformedURLException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+            thread.start();
+            try {
+                thread.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            return Double.parseDouble(parsedDistance[0]);
     }
 
     public void showSearchResults(Context context, CoursesAdapter1 courseAdapter, RecyclerView recyclerView) {
