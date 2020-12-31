@@ -41,9 +41,6 @@ import io.realm.mongodb.mongo.MongoDatabase;
 import io.realm.mongodb.mongo.iterable.FindIterable;
 import io.realm.mongodb.mongo.iterable.MongoCursor;
 
-import static android.view.View.GONE;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
 
 public class SearchQuery {
@@ -80,11 +77,16 @@ public class SearchQuery {
             //Blank query to find every single course in db
             Document regQuery = new Document();
 
-            regQuery.append("$regex", "(?)" + Pattern.quote(keywords));
-            regQuery.append("$options", "i");
+            if (!keywords.equals("")){
+                regQuery.append("$regex", "(?)" + Pattern.quote(keywords));
+                regQuery.append("$options", "i");
+            }
 
             Document queryFilter  = new Document();
-            queryFilter.append("courseName", regQuery);
+
+            if (!keywords.equals("")) {
+                queryFilter.append("courseName", regQuery);
+            }
 
             Document sortingMethod = new Document();
 
@@ -96,6 +98,10 @@ public class SearchQuery {
             }
             else if (rank == rankBy.PRICE){
                 sortingMethod.append("courseFees", 1);
+            }
+            else if (rank == rankBy.ONLINE_ONLY_RATING){
+                queryFilter.append("courseMode", "Online");
+                sortingMethod.append("courseRating", -1);
             }
             else{
                 sortingMethod.append("courseRating", -1);
@@ -134,13 +140,13 @@ public class SearchQuery {
                             searchResultsList.add(course);
                         }
                         if (rank == rankBy.RATING){
-                            info = document.getDouble("courseRating").toString();
+                            //info = document.getDouble("courseRating").toString();
                         }
                         else if (rank == rankBy.PRICE){
                             info = document.getInteger("courseFees").toString();
                         }
                         else{
-                            info = document.getDouble("courseRating").toString();
+                            //info = document.getDouble("courseRating").toString();
                         }
                         Log.v("CourseSearch",name);
                         Log.v("CourseSearch", info);

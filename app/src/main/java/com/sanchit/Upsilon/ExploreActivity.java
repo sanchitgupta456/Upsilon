@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.tabs.TabLayout;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
@@ -71,6 +72,9 @@ public class ExploreActivity extends AppCompatActivity {
     ArrayList<String> tags;
     ArrayList<Boolean> isChecked;
 
+    //tablayout
+    TabLayout tabLayout;
+
     //SearchView
     SearchView searchView;
     //SearchQuery Ranking method
@@ -96,6 +100,10 @@ public class ExploreActivity extends AppCompatActivity {
             }
         });*/
 
+        tabLayout = (TabLayout) findViewById(R.id.tabLayout);
+
+        searchQuery.setRankMethod(rankBy.LOC);
+
         recyclerView = findViewById(R.id.exploreList);
         recyclerViewFilterList = findViewById(R.id.filter_categories_list);
         courseArrayList = new ArrayList<>();
@@ -108,8 +116,47 @@ public class ExploreActivity extends AppCompatActivity {
         recyclerView.addItemDecoration(dividerItemDecoration);
         progressBar = findViewById(R.id.loadingExplore);
 
-        repopulateAll();
 
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                String selectedTab = tab.getText().toString();
+                Log.v("Menu", selectedTab);
+                if (selectedTab.equals("TOP RATED")){
+                    searchQuery.setRankMethod(rankBy.RATING);
+                    Log.v("Menu", "RATINGSORT");
+                    searchForCourses(searchView.getQuery().toString());
+                }
+                else if (selectedTab.equals("TOP FREE")){
+                    searchQuery.setRankMethod(rankBy.PRICE);
+                    Log.v("Menu", "PRICESORT");
+                    searchForCourses(searchView.getQuery().toString());
+                }
+                else if (selectedTab.equals("NEAR YOU")){
+                    searchQuery.setRankMethod(rankBy.LOC);
+                    Log.v("Menu", "LOCSORT");
+                    searchForCourses(searchView.getQuery().toString());
+                }
+                else if (selectedTab.equals("TOP ONLINE")){
+                    searchQuery.setRankMethod(rankBy.ONLINE_ONLY_RATING);
+                    Log.v("Menu", "ONLINESORT");
+                    searchForCourses(searchView.getQuery().toString());
+                }
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+
+
+        repopulateAll();
     }
 
     public void repopulateAll(){
@@ -231,18 +278,10 @@ public class ExploreActivity extends AppCompatActivity {
         Log.v("Menu", item.getTitle().toString());
         switch(item.getItemId()){
             case R.id.topFree:
-                searchQuery.setRankMethod(rankBy.PRICE);
-                Log.v("Menu", "PRICESORT");
-                searchForCourses(searchView.getQuery().toString());
                 break;
             case R.id.topRated:
-                searchQuery.setRankMethod(rankBy.RATING);
-                Log.v("Menu", "RATINGSORT");
-                searchForCourses(searchView.getQuery().toString());
                 break;
             case R.id.nearYou:
-                searchQuery.setRankMethod(rankBy.LOC);
-                searchForCourses(searchView.getQuery().toString());
                 break;
             case R.id.topOnline:
                 searchQuery.setRankMethod(rankBy.ONLINE_ONLY_RATING);
