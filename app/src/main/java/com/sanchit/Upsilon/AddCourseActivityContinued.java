@@ -74,7 +74,7 @@ public class AddCourseActivityContinued extends AppCompatActivity {
     private static int RESULT_LOAD_IMAGE = 1,RESULT_LOAD_VIDEO = 2,RESULT_LOAD_DOCUMENT=3;
     private static final int WRITE_PERMISSION = 0x01;
     View bar;
-    private String mode;
+    private int fees;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -90,7 +90,7 @@ public class AddCourseActivityContinued extends AppCompatActivity {
         recyclerView =(RecyclerView) findViewById(R.id.listIntroductoryMaterial);
         Intent intent = getIntent();
         id = intent.getStringExtra("InsertedDocument");
-        mode = intent.getStringExtra("mode");
+        fees = intent.getIntExtra("fees",0);
         ObjectId _id = new ObjectId(id);
         Log.v("Continued", String.valueOf(_id));
         picturePaths = new ArrayList<>();
@@ -157,7 +157,7 @@ public class AddCourseActivityContinued extends AppCompatActivity {
                     Document queryFilter  = new Document("_id",_id);
 
                     RealmResultTask<MongoCursor<Document>> findTask = mongoCollection.find(queryFilter).iterator();
-                    RealmResultTask<MongoCursor<Document>> findTask1 = mongoCollection1.find(queryFilter).iterator();
+                    RealmResultTask<MongoCursor<Document>> findTask1 = mongoCollection1.find(new Document("userid",user.getId())).iterator();
 
                     findTask.getAsync(task -> {
                         if (task.isSuccess()) {
@@ -191,17 +191,24 @@ public class AddCourseActivityContinued extends AppCompatActivity {
                                             if (result.isSuccess()) {
                                                 Log.v("EXAMPLE", "Inserted custom user data document. _id of inserted document: "
                                                         + result.get().getModifiedCount());
-                                                if(mode=="offline") {
+                                                if(fees>0) {
                                                     findTask1.getAsync(task1 -> {
                                                         if (task1.isSuccess()) {
                                                             MongoCursor<Document> results1 = task1.get();
                                                             if (!results1.hasNext()) {
                                                                 Intent intent1 = new Intent(AddCourseActivityContinued.this, AddCoursePayment.class);
                                                                 intent1.putExtra("id", _id);
-                                                                startActivity(intent);
+                                                                startActivity(intent1);
                                                             } else {
                                                                 startActivity(new Intent(AddCourseActivityContinued.this, MainActivity.class));
                                                             }
+                                                        }
+                                                        else
+                                                        {
+                                                            Log.v("Error",task1.getError().toString());
+                                                            Intent intent1 = new Intent(AddCourseActivityContinued.this, AddCoursePayment.class);
+                                                            intent1.putExtra("id", _id);
+                                                            startActivity(intent1);
                                                         }
                                                     });
                                                 }
@@ -256,7 +263,7 @@ public class AddCourseActivityContinued extends AppCompatActivity {
                                         Document queryFilter  = new Document("_id",_id);
 
                                         RealmResultTask<MongoCursor<Document>> findTask = mongoCollection.find(queryFilter).iterator();
-                                        RealmResultTask<MongoCursor<Document>> findTask1 = mongoCollection1.find(queryFilter).iterator();
+                                        RealmResultTask<MongoCursor<Document>> findTask1 = mongoCollection1.find(new Document("userid",user.getId())).iterator();
 
 
                                         findTask.getAsync(task -> {
@@ -293,14 +300,14 @@ public class AddCourseActivityContinued extends AppCompatActivity {
                                                                             + result.get().getModifiedCount());
                                                                     if(videoPaths.size()==0)
                                                                     {
-                                                                        if(mode=="offline") {
+                                                                        if(fees>0) {
                                                                             findTask1.getAsync(task1 -> {
                                                                                 if (task1.isSuccess()) {
                                                                                     MongoCursor<Document> results1 = task1.get();
                                                                                     if (!results1.hasNext()) {
                                                                                         Intent intent1 = new Intent(AddCourseActivityContinued.this, AddCoursePayment.class);
                                                                                         intent1.putExtra("id", _id);
-                                                                                        startActivity(intent);
+                                                                                        startActivity(intent1);
                                                                                     } else {
                                                                                         startActivity(new Intent(AddCourseActivityContinued.this, MainActivity.class));
                                                                                     }
@@ -373,7 +380,7 @@ public class AddCourseActivityContinued extends AppCompatActivity {
                                         Document queryFilter  = new Document("_id",_id);
 
                                         RealmResultTask<MongoCursor<Document>> findTask = mongoCollection.find(queryFilter).iterator();
-                                        RealmResultTask<MongoCursor<Document>> findTask1 = mongoCollection1.find(queryFilter).iterator();
+                                        RealmResultTask<MongoCursor<Document>> findTask1 = mongoCollection1.find(new Document("userid",user.getId())).iterator();
 
 
                                         findTask.getAsync(task -> {
@@ -406,14 +413,14 @@ public class AddCourseActivityContinued extends AppCompatActivity {
                                                                 if (result.isSuccess()) {
                                                                     Log.v("EXAMPLE", "Inserted custom user data document. _id of inserted document: "
                                                                             + result.get().getModifiedCount());
-                                                                    if(mode=="offline") {
+                                                                    if(fees>0) {
                                                                         findTask1.getAsync(task1 -> {
                                                                             if (task1.isSuccess()) {
                                                                                 MongoCursor<Document> results1 = task1.get();
                                                                                 if (!results1.hasNext()) {
                                                                                     Intent intent1 = new Intent(AddCourseActivityContinued.this, AddCoursePayment.class);
                                                                                     intent1.putExtra("id", _id);
-                                                                                    startActivity(intent);
+                                                                                    startActivity(intent1);
                                                                                 } else {
                                                                                     startActivity(new Intent(AddCourseActivityContinued.this, MainActivity.class));
                                                                                 }

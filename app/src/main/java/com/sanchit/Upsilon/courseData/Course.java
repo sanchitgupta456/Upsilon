@@ -30,11 +30,41 @@ public class Course extends Object implements Serializable {
     private ArrayList<String> IntroductoryContentImages;
     private int IntroductoryImageCounter;
     private ArrayList<String> IntroductoryContentVideos;
+    private ArrayList<String> courseCategories;
     private int IntroductoryVideoCounter;
     private String nextLectureOn;
     private String meetLink;
     private Document courseLocation;
     private int numberOfReviews;
+
+    public Course(String courseId, String courseName, String courseImage, String tutorId, String courseDescription, String coursePreReq, double courseRating, String courseMode, int courseFees, String instructorLocation, int courseDuration, int numberOfStudentsEnrolled, int numberOfBatches, BasicBSONList courseReviews, BasicBSONList scheduledClasses, String cardImgID, ArrayList<String> myRegisteredCourses, ArrayList<String> introductoryContentImages, int introductoryImageCounter, ArrayList<String> introductoryContentVideos, ArrayList<String> courseCategories, int introductoryVideoCounter, String nextLectureOn, String meetLink, Document courseLocation, int numberOfReviews) {
+        this.courseId = courseId;
+        this.courseName = courseName;
+        this.courseImage = courseImage;
+        this.tutorId = tutorId;
+        this.courseDescription = courseDescription;
+        this.coursePreReq = coursePreReq;
+        this.courseRating = courseRating;
+        this.courseMode = courseMode;
+        this.courseFees = courseFees;
+        this.instructorLocation = instructorLocation;
+        this.courseDuration = courseDuration;
+        this.numberOfStudentsEnrolled = numberOfStudentsEnrolled;
+        this.numberOfBatches = numberOfBatches;
+        this.courseReviews = courseReviews;
+        this.scheduledClasses = scheduledClasses;
+        this.cardImgID = cardImgID;
+        this.myRegisteredCourses = myRegisteredCourses;
+        IntroductoryContentImages = introductoryContentImages;
+        IntroductoryImageCounter = introductoryImageCounter;
+        IntroductoryContentVideos = introductoryContentVideos;
+        this.courseCategories = courseCategories;
+        IntroductoryVideoCounter = introductoryVideoCounter;
+        this.nextLectureOn = nextLectureOn;
+        this.meetLink = meetLink;
+        this.courseLocation = courseLocation;
+        this.numberOfReviews = numberOfReviews;
+    }
 
     public Course(String courseId, String courseName, String courseImage, String tutorId, String courseDescription, String coursePreReq, double courseRating, String courseMode, int courseFees, String instructorLocation, int courseDuration, int numberOfStudentsEnrolled, int numberOfBatches, BasicBSONList courseReviews, BasicBSONList scheduledClasses, String cardImgID, ArrayList<String> myRegisteredCourses, ArrayList<String> introductoryContentImages, int introductoryImageCounter, ArrayList<String> introductoryContentVideos, int introductoryVideoCounter, String nextLectureOn, String meetLink, Document courseLocation, int numberOfReviews) {
         this.courseId = courseId;
@@ -171,6 +201,14 @@ public class Course extends Object implements Serializable {
     }
 
     public Course() {
+    }
+
+    public ArrayList<String> getCourseCategories() {
+        return courseCategories;
+    }
+
+    public void setCourseCategories(ArrayList<String> courseCategories) {
+        this.courseCategories = courseCategories;
     }
 
     public Document getCourseLocation() {

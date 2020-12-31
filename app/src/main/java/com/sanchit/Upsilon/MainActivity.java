@@ -40,6 +40,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.toolbox.HttpResponse;
 import com.facebook.login.LoginManager;
 import com.google.android.material.navigation.NavigationView;
 import com.google.gson.Gson;
@@ -58,11 +59,29 @@ import com.sanchit.Upsilon.ui.login.LoginActivity;
 import com.squareup.picasso.Picasso;
 
 import org.bson.Document;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
+import java.io.BufferedInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.PriorityQueue;
 import java.util.regex.Pattern;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import io.realm.Realm;
@@ -193,6 +212,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         else
         {
             //operationPURGE(user);
+            operationCalulateDistance();
             mongoClient = user.getMongoClient("mongodb-atlas");
             mongoDatabase = mongoClient.getDatabase("Upsilon");
             MongoCollection<Document> mongoCollection  = mongoDatabase.getCollection("UserData");
@@ -246,6 +266,53 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 startActivity(intent);
             }
         });
+    }
+
+    private void operationCalulateDistance() {
+        final String[] parsedDistance = new String[1];
+        final String[] response = new String[1];
+        double lat1=19.0317,lon1=72.9049,lat2=19.8,lon2=75.26;
+        Thread thread=new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    String key="AIzaSyAp3s5yvUwCfKcOtBsCZNgXlFbubc1eN9Y";
+                    URL url = new URL("https://maps.googleapis.com/maps/api/directions/json?origin=" + lat1 + "," + lon1 + "&destination=" + lat2 + "," + lon2 + "&sensor=false&units=metric&mode=driving&key="+key);
+                    final HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                    conn.setRequestMethod("POST");
+                    InputStream in = new BufferedInputStream(conn.getInputStream());
+                    JSONParser jsonParser = new JSONParser();
+                    JSONObject jsonObject = (JSONObject)jsonParser.parse(
+                            new InputStreamReader(in, "UTF-8"));
+                    Log.v("Response", String.valueOf(jsonObject));
+                    //JSONObject jsonObject = new JSONObject(response[0]);
+                    /*JSONArray array = jsonObject.getJSONArray("routes");
+                    JSONObject routes = array.getJSONObject(0);
+                    JSONArray legs = routes.getJSONArray("legs");
+                    JSONObject steps = legs.getJSONObject(0);
+                    JSONObject distance = steps.getJSONObject("distance");
+                    parsedDistance[0] =distance.getString("text");*/
+                    //Log.v("Distance", parsedDistance[0]);
+                } catch (ProtocolException e) {
+                    e.printStackTrace();
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        thread.start();
+
+        try {
+            thread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
     }
 
     private void goToSetupActivity() {

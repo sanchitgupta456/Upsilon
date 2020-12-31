@@ -17,7 +17,18 @@ import com.sanchit.Upsilon.courseData.Course;
 import com.sanchit.Upsilon.courseData.CoursesAdapter1;
 
 import org.bson.Document;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
+import java.io.BufferedInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.PriorityQueue;
 import java.util.regex.Pattern;
@@ -31,11 +42,14 @@ import io.realm.mongodb.mongo.iterable.FindIterable;
 import io.realm.mongodb.mongo.iterable.MongoCursor;
 
 import static android.view.View.GONE;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
 
 public class SearchQuery {
     String keywords = "";
 
-    rankBy rank = rankBy.RATING;
+    rankBy rank = rankBy.LOC;
 
     ArrayList<Course> searchResultsList = new ArrayList<>();
 
@@ -109,6 +123,7 @@ public class SearchQuery {
                         String info = "NULL";
                         if (rank == rankBy.LOC){
                             if (!document.getString("courseMode").equals("Online")) {
+                                Log.v("Distance","Calling Function");
                                 double courseDist = calculateDistance((Document) document.get("courseLocation"), userLoc);
                                 Log.v("LocationSearch", document.getString("courseName").concat(" ").concat(Double.toString(courseDist)));
                                 document.append("courseDistance", courseDist);
@@ -155,7 +170,7 @@ public class SearchQuery {
 
     public double calculateDistance(Document courseLoc, Document userLoc){
         double lat1 = courseLoc.getDouble("latitude"),lon1 = courseLoc.getDouble("longitude"),lat2 = userLoc.getDouble("latitude"),lon2 = userLoc.getDouble("longitude");
-
+        Log.v("Distance","calculating");
         double R = 6378;
         double dLat = Math.PI*Math.abs(lat2-lat1)/180;
         double dLon = Math.PI*Math.abs(lon2-lon1)/180;
