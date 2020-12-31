@@ -71,9 +71,13 @@ public class ExploreActivity extends AppCompatActivity {
     ArrayList<String> tags;
     ArrayList<Boolean> isChecked;
 
+    //SearchView
+    SearchView searchView;
     //SearchQuery Ranking method
     SearchQuery searchQuery = new SearchQuery();
     ArrayList<Course> searchResultsList = new ArrayList<>();
+    //User location
+    Document userLoc = new Document();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -91,6 +95,7 @@ public class ExploreActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });*/
+
         recyclerView = findViewById(R.id.exploreList);
         recyclerViewFilterList = findViewById(R.id.filter_categories_list);
         courseArrayList = new ArrayList<>();
@@ -164,7 +169,7 @@ public class ExploreActivity extends AppCompatActivity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.explore_menu, menu);
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        SearchView searchView = (SearchView) menu.findItem(R.id.search_explore).getActionView();
+        searchView = (SearchView) menu.findItem(R.id.search_explore).getActionView();
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 
@@ -176,32 +181,7 @@ public class ExploreActivity extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextSubmit(String query) {
-                searchQuery.setQuery(query);
-                searchQuery.setRankMethod(rankBy.PRICE);
-                mongoClient = user.getMongoClient("mongodb-atlas");
-                mongoDatabase = mongoClient.getDatabase("Upsilon");
-                MongoCollection<Document> mongoCollection  = mongoDatabase.getCollection("UserData");
-
-                //Blank query to find every single user in db
-                Document queryFilter  = new Document("userid", user.getId());
-
-                RealmResultTask<MongoCursor<Document>> findTask = mongoCollection.find(queryFilter).iterator();
-
-                findTask.getAsync(task -> {
-                    if (task.isSuccess()) {
-                        MongoCursor<Document> results = task.get();
-                        int i = 0;
-                        while (results.hasNext()) {
-                            //Log.v("EXAMPLE", results.next().toString());
-                            Document currentDoc = results.next();
-                            Document userLoc = (Document) currentDoc.get("userLocation");
-                            searchQuery.searchForCourse(app, mongoDatabase,ExploreActivity.this, courseAdapter, recyclerView,  10, userLoc);
-                        }
-                        Log.v("PURGE", "THE PURGE WAS A SUCCESS!");
-                    } else {
-                        Log.v("User","Failed to complete search");
-                    }
-                });
+                searchForCourses(query);
                 return false;
             }
 
@@ -214,11 +194,61 @@ public class ExploreActivity extends AppCompatActivity {
                 }
             }
         });
+        searchQuery.setRankMethod(rankBy.PRICE);
         return true;
+    }
+
+    public void searchForCourses(String query){
+        searchQuery.setQuery(query);
+        mongoClient = user.getMongoClient("mongodb-atlas");
+        mongoDatabase = mongoClient.getDatabase("Upsilon");
+        MongoCollection<Document> mongoCollection  = mongoDatabase.getCollection("UserData");
+
+        //Blank query to find every single user in db
+        Document queryFilter  = new Document("userid", user.getId());
+
+        RealmResultTask<MongoCursor<Document>> findTask = mongoCollection.find(queryFilter).iterator();
+
+        findTask.getAsync(task -> {
+            if (task.isSuccess()) {
+                MongoCursor<Document> results = task.get();
+                int i = 0;
+                while (results.hasNext()) {
+                    //Log.v("EXAMPLE", results.next().toString());
+                    Document currentDoc = results.next();
+                    Document userLoc = (Document) currentDoc.get("userLocation");
+                    searchQuery.searchForCourse(app, mongoDatabase,ExploreActivity.this, courseAdapter, recyclerView,  10, userLoc);
+                }
+                Log.v("PURGE", "THE PURGE WAS A SUCCESS!");
+            } else {
+                Log.v("User","Failed to complete search");
+            }
+        });
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        Log.v("Menu", item.getTitle().toString());
+        switch(item.getItemId()){
+            case R.id.topFree:
+                searchQuery.setRankMethod(rankBy.PRICE);
+                Log.v("Menu", "PRICESORT");
+                searchForCourses(searchView.getQuery().toString());
+                break;
+            case R.id.topRated:
+                searchQuery.setRankMethod(rankBy.RATING);
+                Log.v("Menu", "RATINGSORT");
+                searchForCourses(searchView.getQuery().toString());
+                break;
+            case R.id.nearYou:
+                searchQuery.setRankMethod(rankBy.LOC);
+                searchForCourses(searchView.getQuery().toString());
+                break;
+            case R.id.topOnline:
+                searchQuery.setRankMethod(rankBy.ONLINE_ONLY_RATING);
+                break;
+        }
+
         if(item.getActionView()==bar){
             finish();
             return true;

@@ -65,6 +65,7 @@ public class SearchQuery {
 
             //Blank query to find every single course in db
             Document regQuery = new Document();
+
             regQuery.append("$regex", "(?)" + Pattern.quote(keywords));
             regQuery.append("$options", "i");
 
@@ -75,7 +76,6 @@ public class SearchQuery {
 
 
             if (rank == rankBy.LOC){
-                sortingMethod.append("courseRating", 1);
             }
             else if (rank == rankBy.RATING){
                 sortingMethod.append("courseRating", -1);
@@ -104,7 +104,7 @@ public class SearchQuery {
                         //TODO: implement course distance calculation
 
                         Course course = gson.fromJson(document.toJson(),Course.class);
-                        searchResultsList.add(course);
+
                         String name = document.getString("courseName");
                         String info = "NULL";
                         if (rank == rankBy.LOC){
@@ -115,8 +115,10 @@ public class SearchQuery {
                                 info = document.getDouble("courseDistance").toString();
                                 searchResultsByLocation.add(document);
                             }
+                        }else{
+                            searchResultsList.add(course);
                         }
-                        else if (rank == rankBy.RATING){
+                        if (rank == rankBy.RATING){
                             info = document.getDouble("courseRating").toString();
                         }
                         else if (rank == rankBy.PRICE){
