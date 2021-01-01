@@ -61,9 +61,6 @@ import com.squareup.picasso.Picasso;
 import org.bson.Document;
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
@@ -212,7 +209,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         else
         {
             //operationPURGE(user);
-            operationCalulateDistance();
+            //operationCalulateDistance();
             mongoClient = user.getMongoClient("mongodb-atlas");
             mongoDatabase = mongoClient.getDatabase("Upsilon");
             MongoCollection<Document> mongoCollection  = mongoDatabase.getCollection("UserData");
@@ -267,7 +264,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         });
     }
-
+/*
     private void operationCalulateDistance() {
         final String[] parsedDistance = new String[1];
         final String[] response = new String[1];
@@ -286,12 +283,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                             new InputStreamReader(in, "UTF-8"));
                     Log.v("Response", String.valueOf(jsonObject));
                     //JSONObject jsonObject = new JSONObject(response[0]);
-                    /*JSONArray array = jsonObject.getJSONArray("routes");
+                    JSONArray array = jsonObject.getJSONArray("routes");
                     JSONObject routes = array.getJSONObject(0);
                     JSONArray legs = routes.getJSONArray("legs");
                     JSONObject steps = legs.getJSONObject(0);
                     JSONObject distance = steps.getJSONObject("distance");
-                    parsedDistance[0] =distance.getString("text");*/
+                    parsedDistance[0] =distance.getString("text");
                     //Log.v("Distance", parsedDistance[0]);
                 } catch (ProtocolException e) {
                     e.printStackTrace();
@@ -314,7 +311,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
 
     }
-
+*/
     private void goToSetupActivity() {
         Intent intent = new Intent(MainActivity.this,UserDataSetupActivity1.class);
         startActivity(intent);

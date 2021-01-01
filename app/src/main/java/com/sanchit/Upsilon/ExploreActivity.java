@@ -157,6 +157,8 @@ public class ExploreActivity extends AppCompatActivity {
 
 
         repopulateAll();
+
+        searchForCourses("");
     }
 
     public void repopulateAll(){
@@ -168,6 +170,8 @@ public class ExploreActivity extends AppCompatActivity {
         MongoCollection<Document> mongoCollection  = mongoDatabase.getCollection("CourseData");
 
         Document queryFilter  = new Document();
+
+
 
         RealmResultTask<MongoCursor<Document>> findTask = mongoCollection.find(queryFilter).iterator();
 
@@ -237,11 +241,11 @@ public class ExploreActivity extends AppCompatActivity {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (!hasFocus){
-                    //TODO: get all courses
+                    Log.v("SearchView", "Blank search initiated!");
+                    searchForCourses("");
                 }
             }
         });
-        searchQuery.setRankMethod(rankBy.PRICE);
         return true;
     }
 
@@ -275,18 +279,6 @@ public class ExploreActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        Log.v("Menu", item.getTitle().toString());
-        switch(item.getItemId()){
-            case R.id.topFree:
-                break;
-            case R.id.topRated:
-                break;
-            case R.id.nearYou:
-                break;
-            case R.id.topOnline:
-                searchQuery.setRankMethod(rankBy.ONLINE_ONLY_RATING);
-                break;
-        }
 
         if(item.getActionView()==bar){
             finish();
