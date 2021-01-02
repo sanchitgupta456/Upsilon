@@ -81,6 +81,7 @@ public class ExploreFragment0 extends Fragment {
     }
 
     public void searchForCourses(String query){
+        this.query = query;
         searchQuery.setQuery(query);
         mongoClient = user.getMongoClient("mongodb-atlas");
         mongoDatabase = mongoClient.getDatabase("Upsilon");
