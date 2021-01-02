@@ -38,7 +38,9 @@
         android:background="@drawable/text_view_add_course"
         android:layout_below="@id/textSetupTitle2"
         android:layout_margin="@dimen/activity_vertical_margin"
-        android:id="@+id/searchInterests"/>
+        android:id="@+id/searchInterests"
+        android:backgroundTint="@color/colorWhite"
+        app:searchIcon="@drawable/search"/>
     <Button
         android:id="@+id/addInterest"
         android:layout_width="wrap_content"

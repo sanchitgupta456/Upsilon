@@ -17,10 +17,13 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
-import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
 import com.google.gson.Gson;
@@ -35,10 +38,11 @@ import com.sanchit.Upsilon.courseSearching.rankBy;
 
 import org.bson.Document;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
-import java.util.PriorityQueue;
-import java.util.regex.Pattern;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import io.realm.mongodb.App;
 import io.realm.mongodb.AppConfiguration;
@@ -53,12 +57,10 @@ import io.realm.mongodb.mongo.iterable.MongoCursor;
 import static android.view.View.GONE;
 
 public class ExploreActivity extends AppCompatActivity {
+    private static final String TAG = "ExploreActivity";
     //vars
-    private RecyclerView recyclerView, recyclerViewFilterList;
-    ArrayList<Course> courseArrayList;
+    private RecyclerView recyclerViewFilterList;
     String appID = "upsilon-ityvn";
-    private static final String TAG = "MainActivity";
-    private CoursesAdapter1 courseAdapter;
     private App app;
     private LinearLayoutManager linearLayoutManager;
     MongoClient mongoClient;
@@ -72,14 +74,25 @@ public class ExploreActivity extends AppCompatActivity {
     ArrayList<String> tags;
     ArrayList<Boolean> isChecked;
 
-    //tablayout
+    //tabLayout
     TabLayout tabLayout;
+    ViewPager viewPager;
+    ViewPagerAdapter adapter;
+
+    //fragments
+    ExploreFragment0 fragment0;
+    ExploreFragment1 fragment1;
+    ExploreFragment2 fragment2;
+    ExploreFragment3 fragment3;
 
     //SearchView
     SearchView searchView;
     //SearchQuery Ranking method
     SearchQuery searchQuery = new SearchQuery();
-    ArrayList<Course> searchResultsList = new ArrayList<>();
+    ArrayList<Course> searchResultsList0 = new ArrayList<>();
+    ArrayList<Course> searchResultsList1 = new ArrayList<>();
+    ArrayList<Course> searchResultsList2 = new ArrayList<>();
+    ArrayList<Course> searchResultsList3 = new ArrayList<>();
     //User location
     Document userLoc = new Document();
 
@@ -89,7 +102,7 @@ public class ExploreActivity extends AppCompatActivity {
         setContentView(R.layout.activity_explore_courses);
         Objects.requireNonNull(getSupportActionBar()).setTitle(R.string.explore);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setElevation(10);
+        getSupportActionBar().setElevation(0);
         bar = getSupportActionBar().getCustomView();
         /*ImageButton imageButton = (ImageButton) bar.findViewById(R.id.imgBtnBackExploreCourses);
         imageButton.setOnClickListener(new View.OnClickListener() {
@@ -101,22 +114,41 @@ public class ExploreActivity extends AppCompatActivity {
         });*/
 
         tabLayout = (TabLayout) findViewById(R.id.tabLayout);
+        adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        fragment0 = new ExploreFragment0();
+        fragment1 = new ExploreFragment1();
+        fragment2 = new ExploreFragment2();
+        fragment3 = new ExploreFragment3();
 
-        searchQuery.setRankMethod(rankBy.LOC);
-
-        recyclerView = findViewById(R.id.exploreList);
         recyclerViewFilterList = findViewById(R.id.filter_categories_list);
-        courseArrayList = new ArrayList<>();
         app = new App(new AppConfiguration.Builder(appID).build());
-        courseAdapter = new CoursesAdapter1(courseArrayList);
-        linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getApplicationContext(), linearLayoutManager.getOrientation());
-        recyclerView.setLayoutManager(linearLayoutManager);
-        recyclerView.setAdapter(courseAdapter);
-        recyclerView.addItemDecoration(dividerItemDecoration);
         progressBar = findViewById(R.id.loadingExplore);
 
+        user = app.currentUser();
+        mongoClient = user.getMongoClient("mongodb-atlas");
+        mongoDatabase = mongoClient.getDatabase("Upsilon");
+        MongoCollection<Document> mongoCollection  = mongoDatabase.getCollection("CourseData");
+        initFilters();
 
+        viewPager = (ViewPager)(findViewById(R.id.viewPager));
+        setupViewPager(viewPager);
+        tabLayout.setupWithViewPager(viewPager);
+
+        Log.d(TAG, "onCreate: Starting the process...");
+
+        //initialise "near you" first :
+        //searchQuery.setRankMethod(rankBy.LOC);
+        //Log.v("Menu", "Loc Sort");
+        //searchForCourses("");
+        //searchResultsList0 = searchQuery.getSearchResultsList();
+        //Log.d(TAG, "onCreate: Search success!");
+        //Log.d(TAG, "onCreate: Found " + searchResultsList0.size() + " courses!");
+        //Log.d(TAG, "onCreate: calling initRecyclerView");
+
+
+
+
+        /*
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
@@ -153,14 +185,12 @@ public class ExploreActivity extends AppCompatActivity {
             public void onTabReselected(TabLayout.Tab tab) {
 
             }
-        });
+        });*/
 
 
-        repopulateAll();
-
-        searchForCourses("");
     }
 
+    /*
     public void repopulateAll(){
         courseArrayList.clear();
         user = app.currentUser();
@@ -170,8 +200,6 @@ public class ExploreActivity extends AppCompatActivity {
         MongoCollection<Document> mongoCollection  = mongoDatabase.getCollection("CourseData");
 
         Document queryFilter  = new Document();
-
-
 
         RealmResultTask<MongoCursor<Document>> findTask = mongoCollection.find(queryFilter).iterator();
 
@@ -213,7 +241,7 @@ public class ExploreActivity extends AppCompatActivity {
             }
         });
         initFilters();
-    }
+    }*/
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -226,12 +254,13 @@ public class ExploreActivity extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-
+                //searchForCourses(newText);
                 return false;
             }
 
             @Override
             public boolean onQueryTextSubmit(String query) {
+                Log.d(TAG, "onQueryTextSubmit: called");
                 searchForCourses(query);
                 return false;
             }
@@ -241,15 +270,32 @@ public class ExploreActivity extends AppCompatActivity {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (!hasFocus){
-                    Log.v("SearchView", "Blank search initiated!");
-                    searchForCourses("");
+                    //TODO: get all courses
                 }
             }
         });
+        searchQuery.setRankMethod(rankBy.PRICE);
         return true;
     }
 
     public void searchForCourses(String query){
+        switch (tabLayout.getSelectedTabPosition()) {
+            case 0:
+                fragment0.searchForCourses(query);
+                break;
+            case 1:
+                fragment1.searchForCourses(query);
+                break;
+            case 2:
+                fragment2.searchForCourses(query);
+                break;
+            case 3:
+                fragment3.searchForCourses(query);
+                break;
+            default:
+                break;
+        }
+        /*
         searchQuery.setQuery(query);
         mongoClient = user.getMongoClient("mongodb-atlas");
         mongoDatabase = mongoClient.getDatabase("Upsilon");
@@ -268,21 +314,30 @@ public class ExploreActivity extends AppCompatActivity {
                     //Log.v("EXAMPLE", results.next().toString());
                     Document currentDoc = results.next();
                     Document userLoc = (Document) currentDoc.get("userLocation");
-                    searchQuery.searchForCourse(app, mongoDatabase,ExploreActivity.this, courseAdapter, recyclerView,  10, userLoc);
+                    searchQuery.searchForCourse(app, mongoDatabase,ExploreActivity.this,  10, userLoc);
+                    //init Recycler
                 }
                 Log.v("PURGE", "THE PURGE WAS A SUCCESS!");
             } else {
                 Log.v("User","Failed to complete search");
             }
-        });
+        });*/
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-
-        if(item.getActionView()==bar){
-            finish();
-            return true;
+        switch(item.getItemId()){
+            case android.R.id.home:
+                finish();
+                break;
+            case R.id.topFree:
+                break;
+            case R.id.topRated:
+                break;
+            case R.id.nearYou:
+                break;
+            case R.id.topOnline:
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -313,5 +368,62 @@ public class ExploreActivity extends AppCompatActivity {
         isChecked.add(false);
         isChecked.add(false);
         isChecked.add(false);
+    }
+
+    public void initRecyclerView(RecyclerView recyclerView, ArrayList<Course> list) {
+        Log.d(TAG, "initRecyclerView: now displaying " + recyclerView.getId());
+        CoursesAdapter1 coursesAdapter1 = new CoursesAdapter1(list);
+        linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getApplicationContext(), linearLayoutManager.getOrientation());
+        recyclerView.setLayoutManager(linearLayoutManager);
+        recyclerView.setAdapter(coursesAdapter1);
+        recyclerView.addItemDecoration(dividerItemDecoration);
+        Log.d(TAG, "initRecyclerView: display success! Displayed " + list.size() + " items");
+    }
+
+    /* to be incorporated later on */
+    private void setupViewPager(ViewPager viewPager) {
+        adapter.clearFragments();
+        adapter.addFragment(fragment0, "Near me");
+        adapter.addFragment(fragment1, "Top Rated");
+        adapter.addFragment(fragment2, "Top Free");
+        adapter.addFragment(fragment3, "Top Online");
+        viewPager.setAdapter(adapter);
+    }
+
+    class ViewPagerAdapter extends FragmentPagerAdapter {
+        private final List<Fragment> mFragmentList = new ArrayList<>();
+        private final List<String> mFragmentTitleList = new ArrayList<>();
+
+        public ViewPagerAdapter(FragmentManager manager) {
+            super(manager);
+        }
+
+        @NonNull
+        @Override
+        public Fragment getItem(int position) {
+            return mFragmentList.get(position);
+        }
+
+        @Override
+        public int getCount() {
+            return mFragmentList.size();
+        }
+
+        public void addFragment(Fragment fragment, String title) {
+            mFragmentList.add(fragment);
+            mFragmentTitleList.add(title);
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return mFragmentTitleList.get(position);
+        }
+
+        public void clearFragments() {
+            mFragmentList.clear();
+            mFragmentTitleList.clear();
+        }
+
     }
 }

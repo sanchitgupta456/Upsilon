@@ -573,7 +573,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 searchQuery.setQuery(query);
                 searchQuery.setRankMethod(rankBy.RATING);
 
-                searchQuery.searchForCourse(app, mongoDatabase,MainActivity.this, searchResultsAdapter, recyclerViewSearchResults,  10, userLoc);
+                searchQuery.searchForCourse(app, mongoDatabase,MainActivity.this,  10, userLoc);
+                searchResultsList = searchQuery.getSearchResultsList();
+                initRecyclerView(recyclerViewSearchResults, searchResultsList);
 
                 return false;
             }
@@ -873,5 +875,14 @@ since the dispatchTouchEvent might dispatch your touch event to this function ag
                 Log.v("User","Failed to complete search");
             }
         });
+    }
+
+    public void initRecyclerView(RecyclerView recyclerView, ArrayList<Course> list) {
+        CoursesAdapter1 coursesAdapter1 = new CoursesAdapter1(list);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getApplicationContext(), linearLayoutManager.getOrientation());
+        recyclerView.setLayoutManager(linearLayoutManager);
+        recyclerView.setAdapter(coursesAdapter1);
+        recyclerView.addItemDecoration(dividerItemDecoration);
     }
 }

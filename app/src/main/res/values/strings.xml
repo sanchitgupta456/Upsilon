@@ -57,7 +57,7 @@
     <string name="we_never_share_these_details_without_your_permission">We never share these details without your permission.</string>
     <string name="next">Next</string>
 
-    
+
     <string name="add_course_details">Add Course Details</string>
     <string name="course_name">Course Name</string>
     <string name="course_description">Course Description</string>
@@ -182,4 +182,6 @@
         <item>Dance</item>
         <item>Commerce</item>
     </string-array>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

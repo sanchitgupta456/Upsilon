@@ -23,7 +23,8 @@
         android:background="@color/colorPrimary"
         app:tabTextColor="@color/colorWhite"
         app:tabIndicatorHeight="5dp"
-        app:tabIndicatorColor="@color/colorLiteGrey">
+        app:tabIndicatorColor="@color/colorLiteGrey"
+        android:isScrollContainer="true">
         <com.google.android.material.tabs.TabItem
             android:id="@+id/topFree"
             android:layout_width="wrap_content"
@@ -52,25 +53,18 @@
         android:orientation="horizontal"
         android:id="@+id/filter_categories_list"
         android:layout_below="@id/tabLayout"
-        android:layout_marginTop="12dp"/>
+        android:layout_marginTop="12dp"
+        tools:listitem="@layout/filter_card"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
-    <FrameLayout
-        android:id="@+id/exploreFrame"
+
+    <androidx.viewpager.widget.ViewPager
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/text_view_login"
-        android:visibility="gone"
-        android:layout_below="@id/filter_categories_list"/>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/exploreList"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:layout_margin="@dimen/activity_horizontal_margin"
-        android:background="@drawable/text_view_login"
-        android:layout_above="@id/linearLayoutPageNumber"
-        android:layout_below="@id/exploreFrame"/>
+        android:id="@+id/viewPager"
+        android:layout_below="@id/filter_categories_list"
+        android:isScrollContainer="true"/>
+    <!-- this one was a page index : may be needed later on ====
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="30dp"
@@ -104,5 +98,5 @@
             android:background="@color/transparent"
             android:tint="@color/colorPrimary"
             tools:ignore="ContentDescription" />
-    </LinearLayout>
+    </LinearLayout> -->
 </RelativeLayout>
