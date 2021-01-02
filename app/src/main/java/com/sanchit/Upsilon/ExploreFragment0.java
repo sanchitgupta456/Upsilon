@@ -80,12 +80,6 @@ public class ExploreFragment0 extends Fragment {
         return view;
     }
 
-    @Override
-    public void onResume() {
-        searchForCourses(query);
-        super.onResume();
-    }
-
     public void searchForCourses(String query){
         searchQuery.setQuery(query);
         mongoClient = user.getMongoClient("mongodb-atlas");
