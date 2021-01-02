@@ -60,8 +60,8 @@ public class AddCourseActivity extends AppCompatActivity implements AdapterView.
     private static final String TAG = "AddCourseActivity";
 
     String appID = "upsilon-ityvn";
-    EditText CourseName,CourseDescription,CourseDuration,NumberOfBatches,CourseFees;
-    String courseName,courseDescription,courseDuration,numOfBatches,mode,courseDurationMeasure;
+    EditText CourseName,CourseDescription,CourseDuration,CourseFees;
+    String courseName,courseDescription,courseDuration,mode,courseDurationMeasure;
     ChipGroup group;
     int fees;
     Button nextButton, addCategory, addLocation;
@@ -76,20 +76,18 @@ public class AddCourseActivity extends AppCompatActivity implements AdapterView.
     ImageView CourseImage;
     String CourseImageUrl;
     //RecyclerView courseCategories;
-    TextView tvCourseCategoriesDisplay;
-    private static int RESULT_LOAD_IMAGE = 1;
+    private static final int RESULT_LOAD_IMAGE = 1;
     private static final int WRITE_PERMISSION = 0x01;
     private static final int SECOND_ACTIVITY_REQUEST_CODE = 0;
 
     private ProgressBar progressBar;
     View bar;
 
-    private String[] categories;
-    private boolean[] isCheckedCategories;
-    private ArrayList<Integer> selected_categories = new ArrayList<>();
-    private ArrayList<String> categories_chosen = new ArrayList<>();
+    String[] categories;
+    boolean[] isCheckedCategories;
+    ArrayList<String> categories_chosen = new ArrayList<>();
     Double latitude,longitude;
-    private Document courseLocation = new Document();
+    private final Document courseLocation = new Document();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -104,7 +102,6 @@ public class AddCourseActivity extends AppCompatActivity implements AdapterView.
         addCategory = (Button) findViewById(R.id.add_course_category);
         addLocation = (Button) findViewById(R.id.btnCourseLocation);
         //courseCategories = (RecyclerView) findViewById(R.id.categories_list_add_course);
-        tvCourseCategoriesDisplay = (TextView) findViewById(R.id.textCategoriesSelected);
         group = (ChipGroup) findViewById(R.id.selectedCategoriesDisplayGroup);
         group.removeAllViews();
         CourseDuration = (EditText) findViewById(R.id.add_course_duration);
@@ -262,7 +259,7 @@ public class AddCourseActivity extends AppCompatActivity implements AdapterView.
 
                     courseDetails.append("_partitionkey", "_partitionKey");
                     courseDetails.append("courseName", courseName);
-                    courseDetails.append("tutorId", user.getId().toString());
+                    courseDetails.append("tutorId", user.getId());
                     courseDetails.append("courseDescription", courseDescription);
                     courseDetails.append("coursePreReq", "");
                     courseDetails.append("courseRating", 5);
@@ -422,7 +419,7 @@ public class AddCourseActivity extends AppCompatActivity implements AdapterView.
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         if(requestCode == WRITE_PERMISSION){
             if (grantResults[0] == PackageManager.PERMISSION_DENIED) {
                 Log.d("Hello", "Write Permission Failed");
