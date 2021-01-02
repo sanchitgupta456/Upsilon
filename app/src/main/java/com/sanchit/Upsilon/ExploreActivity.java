@@ -254,7 +254,7 @@ public class ExploreActivity extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                //searchForCourses(newText);
+                searchForCourses(newText);
                 return false;
             }
 
