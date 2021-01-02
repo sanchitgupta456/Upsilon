@@ -6,9 +6,9 @@
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/gradient_dark"
+    android:background="@drawable/background"
     tools:context=".ui.login.LoginActivity">
-    <FrameLayout
+    <!--<FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/colorPrimary"
@@ -19,7 +19,7 @@
         android:layout_height="match_parent"
         android:background="@color/colorPrimaryDark"
         android:layout_alignTop="@id/linearLayout2"
-        android:layout_marginTop="12dp"/>
+        android:layout_marginTop="12dp"/>-->
     <EditText
         android:id="@+id/username"
         android:layout_width="match_parent"

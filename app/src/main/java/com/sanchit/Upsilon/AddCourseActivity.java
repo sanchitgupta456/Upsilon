@@ -11,6 +11,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
@@ -34,6 +35,8 @@ import androidx.core.app.ActivityCompat;
 import com.cloudinary.android.MediaManager;
 import com.cloudinary.android.callback.ErrorInfo;
 import com.cloudinary.android.callback.UploadCallback;
+import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.snackbar.Snackbar;
 import com.sanchit.Upsilon.courseData.Course;
 import com.sanchit.Upsilon.courseLocationMap.MapsActivity;
@@ -59,6 +62,7 @@ public class AddCourseActivity extends AppCompatActivity implements AdapterView.
     String appID = "upsilon-ityvn";
     EditText CourseName,CourseDescription,CourseDuration,NumberOfBatches,CourseFees;
     String courseName,courseDescription,courseDuration,numOfBatches,mode,courseDurationMeasure;
+    ChipGroup group;
     int fees;
     Button nextButton, addCategory, addLocation;
     RadioButton Group,Individual,Free,Paid;
@@ -101,6 +105,8 @@ public class AddCourseActivity extends AppCompatActivity implements AdapterView.
         addLocation = (Button) findViewById(R.id.btnCourseLocation);
         //courseCategories = (RecyclerView) findViewById(R.id.categories_list_add_course);
         tvCourseCategoriesDisplay = (TextView) findViewById(R.id.textCategoriesSelected);
+        group = (ChipGroup) findViewById(R.id.selectedCategoriesDisplayGroup);
+        group.removeAllViews();
         CourseDuration = (EditText) findViewById(R.id.add_course_duration);
         //NumberOfBatches = (EditText) findViewById(R.id.add_course_num_batches);
         nextButton = (Button) findViewById(R.id.btnNext);
@@ -440,7 +446,7 @@ public class AddCourseActivity extends AppCompatActivity implements AdapterView.
     public void openDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         DialogInterface.OnMultiChoiceClickListener listener = (dialogInterface, i, b) -> {
-            if(b){
+            /*if(b){
                 if(!selected_categories.contains(i)){
                     selected_categories.add(i);
                 }
@@ -450,33 +456,35 @@ public class AddCourseActivity extends AppCompatActivity implements AdapterView.
             }
             else if(selected_categories.contains(i)){
                 selected_categories.remove((Integer)i);
-            }
+            }*/
             isCheckedCategories[i] = b;
         };
         builder.setTitle("Choose Categories").setMultiChoiceItems(categories, isCheckedCategories, listener).setPositiveButton("OK", (dialogInterface, i) -> {
             categories_chosen.clear();
-            if (selected_categories.size() > 0) {
-                tvCourseCategoriesDisplay.setVisibility(View.VISIBLE);
-                StringBuilder string = new StringBuilder();
-                for (int i1 = 0; i1 < selected_categories.size(); i1++) {
-                    categories_chosen.add(categories[(selected_categories.get(i1))]);
-                    if (i1 != 0) {
-                        string.append("\n");
-                    }
-                    string.append(categories[(selected_categories.get(i1))]);
+            group.removeAllViews();
+            LayoutInflater inflater = LayoutInflater.from(getApplicationContext());
+            for (int i1 = 0; i1 < categories.length; i1++) {
+                if (isCheckedCategories[i1]) {
+                    categories_chosen.add(categories[i1]);
+                    Chip chip = (Chip) inflater.inflate(R.layout.chip_entry, group, false);
+                    chip.setText(categories[i1]);
+                    chip.setOnCloseIconClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            categories_chosen.remove(group.indexOfChild(view));
+                            group.removeView(view);
+                        }
+                    });
+                    group.addView(chip);
                 }
-                tvCourseCategoriesDisplay.setText(string);
-            } else {
-                tvCourseCategoriesDisplay.setVisibility(View.GONE);
             }
-
-        }).setNegativeButton("Cancel", (dialogInterface, i) -> dialogInterface.dismiss()).setNeutralButton("Clear", (dialogInterface, i) -> {
-            selected_categories.clear();
-            categories_chosen.clear();
-            tvCourseCategoriesDisplay.setText("");
-            tvCourseCategoriesDisplay.setVisibility(View.GONE);
             for (int i1 = 0; i1 < categories.length; i1++) isCheckedCategories[i1] = false;
-        }).setCancelable(false);
+        }).setNegativeButton("Cancel", (dialogInterface, i) -> dialogInterface.dismiss()).setNeutralButton("Clear", (dialogInterface, i) -> {
+            categories_chosen.clear();
+            for (int i1 = 0; i1 < categories.length; i1++) isCheckedCategories[i1] = false;
+            group.removeAllViews();
+        });
+        builder.setCancelable(false);
         AlertDialog dialog = builder.create();
         dialog.show();
     }

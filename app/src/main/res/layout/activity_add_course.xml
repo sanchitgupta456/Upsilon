@@ -114,6 +114,45 @@
                 android:id="@+id/add_course_description"
                 android:imeOptions="actionDone|actionNext"/>
 
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="10dp">
+                <com.google.android.material.chip.ChipGroup
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/MaterialTheme"
+                    app:singleLine="true">
+                    <com.google.android.material.chip.Chip
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        style="@style/Widget.MaterialComponents.Chip.Entry"
+                        android:text="@string/app_name"
+                        android:textSize="@dimen/text_margin"
+                        app:chipIconEnabled="false"
+                        app:checkedIconEnabled="false"
+                        app:chipIcon="@color/colorRed"/>
+                    <com.google.android.material.chip.Chip
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        style="@style/Widget.MaterialComponents.Chip.Entry"
+                        android:text="@string/app_name"
+                        android:textSize="@dimen/text_margin"/>
+                    <com.google.android.material.chip.Chip
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        style="@style/Widget.MaterialComponents.Chip.Entry"
+                        android:text="@string/app_name"
+                        android:textSize="@dimen/text_margin"/>
+                    <com.google.android.material.chip.Chip
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        style="@style/Widget.MaterialComponents.Chip.Entry"
+                        android:text="@string/app_name"
+                        android:textSize="@dimen/text_margin"/>
+                </com.google.android.material.chip.ChipGroup>
+            </HorizontalScrollView>
+
             <Button
                 android:id="@+id/add_course_category"
                 android:layout_width="wrap_content"
@@ -148,39 +187,46 @@
                 android:id="@+id/textCategoriesSelected"
                 android:visibility="gone"/>
 
-            <!--
-            <com.google.android.material.chip.ChipGroup
+            <HorizontalScrollView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/selectedCategoriesDisplayGroup">
-                <com.google.android.material.chip.Chip
+                android:layout_marginHorizontal="10dp">
+                <com.google.android.material.chip.ChipGroup
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    style="@style/Widget.MaterialComponents.Chip.Action"
-                    android:text="@string/app_name"
-                    android:textSize="@dimen/text_margin"
-                    app:chipIconEnabled="false"
-                    app:checkedIconEnabled="false"
-                    app:chipIcon="@color/colorRed"/>
-                <com.google.android.material.chip.Chip
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    style="@style/Widget.MaterialComponents.Chip.Entry"
-                    android:text="@string/app_name"
-                    android:textSize="@dimen/text_margin"/>
-                <com.google.android.material.chip.Chip
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    style="@style/Widget.MaterialComponents.Chip.Entry"
-                    android:text="@string/app_name"
-                    android:textSize="@dimen/text_margin"/>
-                <com.google.android.material.chip.Chip
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    style="@style/Widget.MaterialComponents.Chip.Entry"
-                    android:text="@string/app_name"
-                    android:textSize="@dimen/text_margin"/>
-            </com.google.android.material.chip.ChipGroup> -->
+                    android:id="@+id/selectedCategoriesDisplayGroup"
+                    style="@style/MaterialTheme"
+                    app:singleLine="true">
+                    <com.google.android.material.chip.Chip
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        style="@style/Widget.MaterialComponents.Chip.Entry"
+                        android:text="@string/app_name"
+                        android:textSize="@dimen/text_margin"
+                        app:chipIconEnabled="false"
+                        app:checkedIconEnabled="false"
+                        app:chipIcon="@color/colorRed"/>
+                    <com.google.android.material.chip.Chip
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        style="@style/Widget.MaterialComponents.Chip.Entry"
+                        android:text="@string/app_name"
+                        android:textSize="@dimen/text_margin"/>
+                    <com.google.android.material.chip.Chip
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        style="@style/Widget.MaterialComponents.Chip.Entry"
+                        android:text="@string/app_name"
+                        android:textSize="@dimen/text_margin"/>
+                    <com.google.android.material.chip.Chip
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        style="@style/Widget.MaterialComponents.Chip.Entry"
+                        android:text="@string/app_name"
+                        android:textSize="@dimen/text_margin"/>
+                </com.google.android.material.chip.ChipGroup>
+            </HorizontalScrollView>
+
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -214,7 +260,8 @@
                     android:layout_weight="50"
                     android:textAlignment="textEnd"
                     android:paddingEnd="@dimen/activity_horizontal_margin"
-                    tools:ignore="RtlCompat,RtlSymmetry" />
+                    tools:ignore="RtlCompat,RtlSymmetry"
+                    android:paddingStart="@dimen/text_margin"/>
 
             </LinearLayout>
 
