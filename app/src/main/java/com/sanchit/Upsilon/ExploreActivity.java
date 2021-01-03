@@ -5,12 +5,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -25,6 +28,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
+import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.tabs.TabLayout;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -59,7 +64,7 @@ import static android.view.View.GONE;
 public class ExploreActivity extends AppCompatActivity {
     private static final String TAG = "ExploreActivity";
     //vars
-    private RecyclerView recyclerViewFilterList;
+    //private RecyclerView recyclerViewFilterList;
     String appID = "upsilon-ityvn";
     private App app;
     private LinearLayoutManager linearLayoutManager;
@@ -71,8 +76,12 @@ public class ExploreActivity extends AppCompatActivity {
     private ProgressBar progressBar;
     private View bar;
 
-    ArrayList<String> tags;
+    ArrayList<String> all_tags;
     ArrayList<Boolean> isChecked;
+
+    //selected tags
+    ArrayList<String> selected_tags = new ArrayList<>();
+    ChipGroup chipGroup;
 
     //tabLayout
     TabLayout tabLayout;
@@ -89,10 +98,6 @@ public class ExploreActivity extends AppCompatActivity {
     SearchView searchView;
     //SearchQuery Ranking method
     SearchQuery searchQuery = new SearchQuery();
-    ArrayList<Course> searchResultsList0 = new ArrayList<>();
-    ArrayList<Course> searchResultsList1 = new ArrayList<>();
-    ArrayList<Course> searchResultsList2 = new ArrayList<>();
-    ArrayList<Course> searchResultsList3 = new ArrayList<>();
     //User location
     Document userLoc = new Document();
 
@@ -120,7 +125,8 @@ public class ExploreActivity extends AppCompatActivity {
         fragment2 = new ExploreFragment2();
         fragment3 = new ExploreFragment3();
 
-        recyclerViewFilterList = findViewById(R.id.filter_categories_list);
+        //recyclerViewFilterList = findViewById(R.id.filter_categories_list);
+        chipGroup = (ChipGroup) findViewById(R.id.search_tags_group);
         app = new App(new AppConfiguration.Builder(appID).build());
         progressBar = findViewById(R.id.loadingExplore);
 
@@ -128,7 +134,21 @@ public class ExploreActivity extends AppCompatActivity {
         mongoClient = user.getMongoClient("mongodb-atlas");
         mongoDatabase = mongoClient.getDatabase("Upsilon");
         MongoCollection<Document> mongoCollection  = mongoDatabase.getCollection("CourseData");
-        initFilters();
+        initFiltersGroup();
+
+        chipGroup.setOnCheckedChangeListener(new ChipGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(ChipGroup group, int checkedId) {
+                Log.d(TAG, "onCheckedChanged: checked " + checkedId);
+                Toast toast;
+                StringBuilder string = new StringBuilder();
+                for (String text : selected_tags) {
+                    string.append(text).append(" ");
+                }
+                toast = Toast.makeText(getApplicationContext(), string.toString(), Toast.LENGTH_LONG);
+                toast.show();
+            }
+        });
 
         viewPager = (ViewPager)(findViewById(R.id.viewPager));
         setupViewPager(viewPager);
@@ -344,30 +364,49 @@ public class ExploreActivity extends AppCompatActivity {
 
     //search
 
+    /*
     public void initFilters() {
         getFilters();
 
-        FilterAdapter filterAdapter = new FilterAdapter(tags, isChecked, getApplicationContext());
+        FilterAdapter filterAdapter = new FilterAdapter(all_tags, isChecked, getApplicationContext());
         LinearLayoutManager manager = new LinearLayoutManager(getApplicationContext());
         manager.setOrientation(LinearLayoutManager.HORIZONTAL);
         recyclerViewFilterList.setAdapter(filterAdapter);
         recyclerViewFilterList.setLayoutManager(manager);
 
+    }*/
+
+    public void initFiltersGroup() {
+        getFilters();
+
+        LayoutInflater inflater = getLayoutInflater();
+        for (int i = 0; i < all_tags.size(); i++) {
+            Chip chip = (Chip) inflater.inflate(R.layout.chip_filter, chipGroup, false);
+            chip.setText(all_tags.get(i));
+            chip.setChecked(isChecked.get(i));
+            chip.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                    if(b) {
+                        selected_tags.add(compoundButton.getText().toString());
+                    } else {
+                        selected_tags.remove(compoundButton.getText().toString());
+                    }
+                    //TODO: Implement Tag Search Here
+                }
+            });
+            chipGroup.addView(chip);
+        }
     }
 
     public void getFilters() {
-        tags = new ArrayList<>();
+        all_tags = new ArrayList<>();
         isChecked = new ArrayList<>();
-        tags.add("Computer Science");
-        tags.add("Arts");
-        tags.add("Languages");
-        tags.add("Co-curricular");
-        tags.add("Music");
-        isChecked.add(false);
-        isChecked.add(false);
-        isChecked.add(false);
-        isChecked.add(false);
-        isChecked.add(false);
+        String[] categories = getResources().getStringArray(R.array.categories);
+        for (String tag : categories) {
+            all_tags.add(tag);
+            isChecked.add(false);
+        }
     }
 
     public void initRecyclerView(RecyclerView recyclerView, ArrayList<Course> list) {
