@@ -136,20 +136,6 @@ public class ExploreActivity extends AppCompatActivity {
         MongoCollection<Document> mongoCollection  = mongoDatabase.getCollection("CourseData");
         initFiltersGroup();
 
-        chipGroup.setOnCheckedChangeListener(new ChipGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(ChipGroup group, int checkedId) {
-                Log.d(TAG, "onCheckedChanged: checked " + checkedId);
-                Toast toast;
-                StringBuilder string = new StringBuilder();
-                for (String text : selected_tags) {
-                    string.append(text).append(" ");
-                }
-                toast = Toast.makeText(getApplicationContext(), string.toString(), Toast.LENGTH_LONG);
-                toast.show();
-            }
-        });
-
         viewPager = (ViewPager)(findViewById(R.id.viewPager));
         setupViewPager(viewPager);
         tabLayout.setupWithViewPager(viewPager);
