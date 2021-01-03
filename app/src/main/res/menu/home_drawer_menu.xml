@@ -19,6 +19,9 @@
         android:title="Title 5"
         android:id="@+id/homeDrawerMenuItem5"/>
     <item
+        android:title="Upsilon Wallet"
+        android:id="@+id/homeDrawerMenuItem6"/>
+    <item
         android:title="@string/more"
         android:id="@+id/more">
         <menu>

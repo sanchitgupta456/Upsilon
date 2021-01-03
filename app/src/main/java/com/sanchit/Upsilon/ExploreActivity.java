@@ -140,7 +140,7 @@ public class ExploreActivity extends AppCompatActivity {
         setupViewPager(viewPager);
         tabLayout.setupWithViewPager(viewPager);
 
-        Log.d(TAG, "onCreate: Starting the process...");
+        //Log.d(TAG, "onCreate: Starting the process...");
 
         //initialise "near you" first :
         //searchQuery.setRankMethod(rankBy.LOC);

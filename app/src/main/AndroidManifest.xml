@@ -23,19 +23,19 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".AddCoursePayment"></activity>
+        <activity android:name=".WalletActivity"></activity>
+        <activity android:name=".AddCoursePayment" />
 
         <meta-data
             android:name="cloudinary://937567483347128:wQLZU0pYv4hJt1sqF9fHB1uuEs8@upsilon175"
             android:value="cloudinary://@upsilon175" />
-
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyAp3s5yvUwCfKcOtBsCZNgXlFbubc1eN9Y" />
 
         <activity
             android:name=".ui.login.LoginActivity"
-            android:label="Upsilon"></activity>
+            android:label="Upsilon" />
         <activity android:name=".TeachActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
@@ -62,7 +62,7 @@
         <activity android:name=".ContactUs" />
         <activity android:name=".AboutActivity" />
         <activity android:name=".FAQ" />
-        <activity android:name=".courseLocationMap.MapsActivity"/>
+        <activity android:name=".courseLocationMap.MapsActivity" />
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
@@ -88,7 +88,6 @@
         <service
             android:name=".courseLocationMap.FetchAddressIntentService"
             android:exported="false" />
-
         <service
             android:name=".notifications.UpsilonJobService"
             android:enabled="true"
@@ -102,7 +101,7 @@
             android:name=".notifications.UpsilonBroadcastReciever"
             android:enabled="true"
             android:exported="true"
-            android:label="RestartServiceWhenStopped"></receiver>
+            android:label="RestartServiceWhenStopped" />
     </application>
 
 </manifest>
