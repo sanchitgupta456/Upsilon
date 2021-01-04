@@ -116,6 +116,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     RecyclerView recyclerView,recyclerView1,recyclerView2,recyclerViewSearchResults;
     CoursesAdapter1 coursesAdapter;
     CoursesAdapter1 searchResultsAdapter;
+    CoursesAdapter1 coursesAdapter1_1;
     CoursesAdapter coursesAdapter1;
     CoursesAdapter coursesAdapter2;
     ArrayList<Course> courseArrayList = new ArrayList<Course>();
@@ -572,11 +573,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             public boolean onQueryTextSubmit(String query) {
                 searchQuery.setQuery(query);
                 searchQuery.setRankMethod(rankBy.RATING);
-
-                searchQuery.searchForCourse(app, mongoDatabase,MainActivity.this,  10, userLoc);
-                searchResultsList = searchQuery.getSearchResultsList();
                 initRecyclerView(recyclerViewSearchResults, searchResultsList);
-
+                searchQuery.searchForCourse(app, mongoDatabase,MainActivity.this,  coursesAdapter1_1, recyclerViewSearchResults, 10, userLoc);
                 return false;
             }
         });
@@ -883,11 +881,11 @@ since the dispatchTouchEvent might dispatch your touch event to this function ag
     }
 
     public void initRecyclerView(RecyclerView recyclerView, ArrayList<Course> list) {
-        CoursesAdapter1 coursesAdapter1 = new CoursesAdapter1(list);
+        coursesAdapter1_1 = new CoursesAdapter1(list);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getApplicationContext(), linearLayoutManager.getOrientation());
         recyclerView.setLayoutManager(linearLayoutManager);
-        recyclerView.setAdapter(coursesAdapter1);
+        recyclerView.setAdapter(coursesAdapter1_1);
         recyclerView.addItemDecoration(dividerItemDecoration);
     }
 }

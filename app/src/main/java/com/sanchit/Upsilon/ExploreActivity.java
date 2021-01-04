@@ -45,6 +45,7 @@ import org.bson.Document;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -80,7 +81,7 @@ public class ExploreActivity extends AppCompatActivity {
     ArrayList<Boolean> isChecked;
 
     //selected tags
-    ArrayList<String> selected_tags = new ArrayList<>();
+    //tags are now a part of the searchQuery class
     ChipGroup chipGroup;
 
     //tabLayout
@@ -276,7 +277,7 @@ public class ExploreActivity extends AppCompatActivity {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (!hasFocus){
-                    //TODO: get all courses
+
                 }
             }
         });
@@ -285,6 +286,10 @@ public class ExploreActivity extends AppCompatActivity {
     }
 
     public void searchForCourses(String query){
+        //No need to update if query is same
+        if (searchQuery.getKeywords().equals(query)){
+            return;
+        }
         switch (tabLayout.getSelectedTabPosition()) {
             case 0:
                 fragment0.searchForCourses(query);
@@ -370,15 +375,22 @@ public class ExploreActivity extends AppCompatActivity {
             Chip chip = (Chip) inflater.inflate(R.layout.chip_filter, chipGroup, false);
             chip.setText(all_tags.get(i));
             chip.setChecked(isChecked.get(i));
+
+            //Callback for change in the selected tags.
             chip.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                     if(b) {
-                        selected_tags.add(compoundButton.getText().toString());
+                        searchQuery.selectedTags.put(compoundButton.getText().toString(), true);
+                        //Tags have changed. Search for them, update the results
+                        Log.v("TAGS", compoundButton.getText().toString());
+                        searchForCourses(searchQuery.getKeywords());
                     } else {
-                        selected_tags.remove(compoundButton.getText().toString());
+                        searchQuery.selectedTags.remove(compoundButton.getText().toString());
+                        //Tags have changed. Search for them, update the results
+                        Log.v("TAGS", compoundButton.getText().toString());
+                        searchForCourses(searchQuery.getKeywords());
                     }
-                    //TODO: Implement Tag Search Here
                 }
             });
             chipGroup.addView(chip);
