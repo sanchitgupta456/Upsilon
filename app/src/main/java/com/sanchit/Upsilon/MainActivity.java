@@ -86,6 +86,7 @@ import io.realm.RealmQuery;
 import io.realm.Sort;
 import io.realm.mongodb.App;
 import io.realm.mongodb.AppConfiguration;
+import io.realm.mongodb.Credentials;
 import io.realm.mongodb.RealmResultTask;
 import io.realm.mongodb.User;
 import io.realm.mongodb.mongo.MongoClient;
@@ -186,6 +187,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         else
         {
             app.getSync();
+            app.currentUser().getRefreshToken();
+            app.currentUser().getAccessToken();
         }
         //Toolbar toolbar = findViewById(R.id.toolbar);
  //     setSupportActionBar(toolbar);
@@ -208,6 +211,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
         else
         {
+            Log.v("RefreshToken",app.currentUser().getRefreshToken().toString());
             //operationPURGE(user);
             //operationCalulateDistance();
             mongoClient = user.getMongoClient("mongodb-atlas");
@@ -447,7 +451,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                                                     Log.v("User", currentDoc1.getString("userid"));
                                                 }
                                             } else {
-                                                Log.v("User", "Failed to complete search");
+                                                Log.v("User", "Failed to complete search"+task1.getError().toString());
+                                                Credentials credentials = Credentials.jwt(app.currentUser().getRefreshToken());
+                                                Log.v("RefreshToken","eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJiYWFzX2RhdGEiOm51bGwsImJhYXNfZGV2aWNlX2lkIjoiNWZmMWMzOGFmZmRjZmJmNjRiOWU5YWFmIiwiYmFhc19kb21haW5faWQiOiI1Zjg0NmU3M2Y4MzM3YmYyMmI5NjI4YTYiLCJiYWFzX2lkIjoiNWZmMWMzOGFmZmRjZmJmNjRiOWU5YjFkIiwiYmFhc19pZGVudGl0eSI6eyJpZCI6IjVmOGQ3NDNjZWQ3M2VkMTZlYWZiZmFmNyIsInByb3ZpZGVyX3R5cGUiOiJsb2NhbC11c2VycGFzcyIsInByb3ZpZGVyX2lkIjoiNWY4ODg5MjlmNjlmZDllMjQxZjBiZjAxIn0sImV4cCI6MTYxNDg2Mzc1NCwiaWF0IjoxNjA5Njc5NzU0LCJzdGl0Y2hfZGF0YSI6bnVsbCwic3RpdGNoX2RldklkIjoiNWZmMWMzOGFmZmRjZmJmNjRiOWU5YWFmIiwic3RpdGNoX2RvbWFpbklkIjoiNWY4NDZlNzNmODMzN2JmMjJiOTYyOGE2Iiwic3RpdGNoX2lkIjoiNWZmMWMzOGFmZmRjZmJmNjRiOWU5YjFkIiwic3RpdGNoX2lkZW50Ijp7ImlkIjoiNWY4ZDc0M2NlZDczZWQxNmVhZmJmYWY3IiwicHJvdmlkZXJfdHlwZSI6ImxvY2FsLXVzZXJwYXNzIiwicHJvdmlkZXJfaWQiOiI1Zjg4ODkyOWY2OWZkOWUyNDFmMGJmMDEifSwic3ViIjoiNWY4ZDc0NDU1ODNiYjRhYmI3OGJjYzJhIiwidHlwIjoicmVmcmVzaCJ9.pNJzrvq60722wT2zeJlWVIDhEkcmAp_hDcG8g3YQsws");
+                                                app.loginAsync(credentials,it->{
+                                                    if(it.isSuccess())
+                                                    {
+                                                        Log.v("Success","Authenticated");
+                                                    }
+                                                    else
+                                                    {
+                                                        Log.v("Error",it.getError().toString());
+                                                    }
+                                                });
                                             }
                                         });
                                     }
@@ -464,6 +480,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         }
                     } else {
                         Log.e("COURSEHandler", "failed to find courses with: ", task.getError());
+                        Credentials credentials = Credentials.jwt("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJiYWFzX2RhdGEiOm51bGwsImJhYXNfZGV2aWNlX2lkIjoiNWZmMWMzOGFmZmRjZmJmNjRiOWU5YWFmIiwiYmFhc19kb21haW5faWQiOiI1Zjg0NmU3M2Y4MzM3YmYyMmI5NjI4YTYiLCJiYWFzX2lkIjoiNWZmMWMzOGFmZmRjZmJmNjRiOWU5YjFkIiwiYmFhc19pZGVudGl0eSI6eyJpZCI6IjVmOGQ3NDNjZWQ3M2VkMTZlYWZiZmFmNyIsInByb3ZpZGVyX3R5cGUiOiJsb2NhbC11c2VycGFzcyIsInByb3ZpZGVyX2lkIjoiNWY4ODg5MjlmNjlmZDllMjQxZjBiZjAxIn0sImV4cCI6MTYxNDg2Mzc1NCwiaWF0IjoxNjA5Njc5NzU0LCJzdGl0Y2hfZGF0YSI6bnVsbCwic3RpdGNoX2RldklkIjoiNWZmMWMzOGFmZmRjZmJmNjRiOWU5YWFmIiwic3RpdGNoX2RvbWFpbklkIjoiNWY4NDZlNzNmODMzN2JmMjJiOTYyOGE2Iiwic3RpdGNoX2lkIjoiNWZmMWMzOGFmZmRjZmJmNjRiOWU5YjFkIiwic3RpdGNoX2lkZW50Ijp7ImlkIjoiNWY4ZDc0M2NlZDczZWQxNmVhZmJmYWY3IiwicHJvdmlkZXJfdHlwZSI6ImxvY2FsLXVzZXJwYXNzIiwicHJvdmlkZXJfaWQiOiI1Zjg4ODkyOWY2OWZkOWUyNDFmMGJmMDEifSwic3ViIjoiNWY4ZDc0NDU1ODNiYjRhYmI3OGJjYzJhIiwidHlwIjoicmVmcmVzaCJ9.pNJzrvq60722wT2zeJlWVIDhEkcmAp_hDcG8g3YQsws");
+                        app.loginAsync(credentials,it->{
+                            if(it.isSuccess())
+                            {
+                                Log.v("Success","Authenticated");
+                            }
+                            else
+                            {
+                                Log.v("Error",it.getError().toString());
+                            }
+                        });
                     }
                 });
 
