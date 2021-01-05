@@ -138,7 +138,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 forgotpasswordemail = usernameEditText.getText().toString();
                 //app.getEmailPassword().sendResetPasswordEmail(forgotpasswordemail);
                 Log.v("Email",forgotpasswordemail);
-                app.getEmailPassword().sendResetPasswordEmailAsync("sanchitgupta456@gmail.com",result -> {
+                app.getEmailPassword().sendResetPasswordEmailAsync(forgotpasswordemail,result -> {
                     if(result.isSuccess())
                     {
                         Log.v("Result",result.toString());
@@ -150,7 +150,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     }
                 });
 
-                app.getEmailPassword().resendConfirmationEmailAsync("sanchitgupta456@gmail.com",result -> {
+                app.getEmailPassword().resendConfirmationEmailAsync(forgotpasswordemail,result -> {
                     if(result.isSuccess())
                     {
                         Log.v("Result",result.toString());
