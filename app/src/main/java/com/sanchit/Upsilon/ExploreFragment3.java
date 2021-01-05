@@ -113,10 +113,8 @@ public class ExploreFragment3 extends Fragment {
         Log.d(TAG, "initRecyclerView: now displaying " + recyclerView.getId());
         CoursesAdapter1 coursesAdapter1 = new CoursesAdapter1(list);
         linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getContext(), linearLayoutManager.getOrientation());
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(coursesAdapter1);
-        recyclerView.addItemDecoration(dividerItemDecoration);
         Log.d(TAG, "initRecyclerView: display success! Displayed " + list.size() + " items");
     }
     public void searchForCourses(SearchQuery _searchQuery){

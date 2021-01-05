@@ -119,7 +119,8 @@
                     android:orientation="horizontal"
                     android:scrollbars="horizontal"
                     android:layout_below="@id/textExploreCoursesList"
-                    android:layout_margin="5dp"/>
+                    android:layout_margin="5dp"
+                    tools:listitem="@layout/explore_course_recycler_card"/>
                 <!--<ImageView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

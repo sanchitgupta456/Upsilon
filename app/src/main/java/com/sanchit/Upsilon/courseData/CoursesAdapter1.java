@@ -6,7 +6,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -79,10 +81,26 @@ public class CoursesAdapter1 extends RecyclerView.Adapter<CoursesAdapter1.ViewHo
                 else
                 {
                     Document currentDoc = results.next();
-                    holder.textTutorTvShow.setText(currentDoc.getString("name"));
+                    holder.textTutorTvShow.setText("Course By "+currentDoc.getString("name"));
                 }
             } else {
                 Log.v("User","Failed to complete search");
+            }
+        });
+        holder.ll.setVisibility(View.GONE);
+
+        holder.toggle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(holder.ll.getVisibility() == View.VISIBLE) {
+                    holder.ll.setVisibility(View.GONE);
+                    //holder.toggle.setImageResource(R.drawable.icon_down);
+                }
+                else {
+                    holder.ll.setVisibility(View.VISIBLE);
+                    //holder.toggle.setImageResource(R.drawable.icon_up);
+                }
+                holder.toggle.animate().rotationBy(180).start();
             }
         });
 
@@ -95,17 +113,22 @@ public class CoursesAdapter1 extends RecyclerView.Adapter<CoursesAdapter1.ViewHo
         //holder.imgTvShow.setImageResource(course.getCardImgID());
         //holder.textTutorTvShow.setText(course.getTutorId());
         holder.textModeTvShow.setText(course.getCourseMode());
+        if(course.getCourseMode().equals("Online")) {
+            holder.textDistanceTvShow.setVisibility(View.GONE);
+        } else {
+            holder.textDistanceTvShow.setVisibility(View.VISIBLE);
+        }
         if(course.getCourseFees()==0)
         {
-            holder.textFeeTvShow.setText("Free");
+            holder.textFeeTvShow.setText(R.string.free);
         }
         else
         {
             holder.textFeeTvShow.setText("Rs."+course.getCourseFees());
         }
-        holder.textRatingTvShow.setText(String.format("%s/5", course.getCourseRating()));
+        holder.textRatingTvShow.setText(String.format("%.1s/5", course.getCourseRating()));
 
-        holder.rl.setOnClickListener(new View.OnClickListener() {
+        holder.cv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //Toast.makeText(context,"The position is:"+position,Toast.LENGTH_SHORT).show();
@@ -184,12 +207,14 @@ public class CoursesAdapter1 extends RecyclerView.Adapter<CoursesAdapter1.ViewHo
     {
         ImageView imgTvShow;
         TextView textTvShow;
-        CardView cv;
         TextView textTutorTvShow;
         TextView textModeTvShow;
         TextView textFeeTvShow;
         TextView textRatingTvShow;
-        RelativeLayout rl;
+        TextView textDistanceTvShow;
+        CardView cv;
+        ImageButton toggle;
+        LinearLayout ll;
 
         public ViewHolder(View itemView)
         {
@@ -200,8 +225,10 @@ public class CoursesAdapter1 extends RecyclerView.Adapter<CoursesAdapter1.ViewHo
             textModeTvShow = (TextView)itemView.findViewById(R.id.courseMode);
             textFeeTvShow = (TextView)itemView.findViewById(R.id.courseFee);
             textRatingTvShow = (TextView)itemView.findViewById(R.id.courseRating);
-            cv = (CardView)itemView.findViewById(R.id.courseCard);
-            rl = (RelativeLayout)itemView.findViewById(R.id.rlCourseFullCard);
+            textDistanceTvShow = (TextView) itemView.findViewById(R.id.courseDistance);
+            toggle = (ImageButton) itemView.findViewById(R.id.toggle);
+            cv = (CardView) itemView.findViewById(R.id.cvCourseCard);
+            ll = (LinearLayout) itemView.findViewById(R.id.cardInfo);
         }
     }
 }

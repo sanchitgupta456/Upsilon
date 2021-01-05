@@ -544,11 +544,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         recyclerView1.setItemAnimator(new DefaultItemAnimator());
         recyclerView2.setItemAnimator(new DefaultItemAnimator());
 
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(), layoutManager.getOrientation());
-        DividerItemDecoration dividerItemDecoration1 = new DividerItemDecoration(recyclerView.getContext(), layoutManager1.getOrientation());
-        DividerItemDecoration dividerItemDecoration2 = new DividerItemDecoration(recyclerView.getContext(), layoutManager2.getOrientation());
+        DividerItemDecoration dividerItemDecoration1 = new DividerItemDecoration(recyclerView1.getContext(), layoutManager1.getOrientation());
+        DividerItemDecoration dividerItemDecoration2 = new DividerItemDecoration(recyclerView2.getContext(), layoutManager2.getOrientation());
 
-        recyclerView.addItemDecoration(dividerItemDecoration);
         recyclerView1.addItemDecoration(dividerItemDecoration1);
         recyclerView2.addItemDecoration(dividerItemDecoration2);
         recyclerView.setAdapter(coursesAdapter);

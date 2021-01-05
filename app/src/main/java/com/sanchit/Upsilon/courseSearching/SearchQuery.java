@@ -330,9 +330,6 @@ public class SearchQuery {
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(), layoutManager.getOrientation());
-
-        recyclerView.addItemDecoration(dividerItemDecoration);
         recyclerView.setAdapter(courseAdapter);
     }
 
