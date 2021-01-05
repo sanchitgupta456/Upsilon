@@ -51,6 +51,7 @@ public class ExploreFragment1 extends Fragment {
     public rankBy sortCriteria = rankBy.RATING;
 
     String query = "";
+
     public ExploreFragment1(String string) {
         query = string;
     }
@@ -64,13 +65,13 @@ public class ExploreFragment1 extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_explore1, container, false);
-        recyclerView = (RecyclerView)  view.findViewById(R.id.exploreList1);
+        recyclerView = (RecyclerView) view.findViewById(R.id.exploreList1);
 
         app = new App(new AppConfiguration.Builder(appID).build());
         user = app.currentUser();
         mongoClient = user.getMongoClient("mongodb-atlas");
         mongoDatabase = mongoClient.getDatabase("Upsilon");
-        MongoCollection<Document> mongoCollection  = mongoDatabase.getCollection("CourseData");
+        MongoCollection<Document> mongoCollection = mongoDatabase.getCollection("CourseData");
 
         searchQuery.setRankMethod(sortCriteria);
         searchForCourses(query);
@@ -78,15 +79,27 @@ public class ExploreFragment1 extends Fragment {
         return view;
 
     }
-    public void searchForCourses(String query){
+
+    public void searchForCourses(SearchQuery _searchQuery) {
+        this.query = _searchQuery.getKeywords();
+        searchQuery.setQuery(query);
+        searchQuery.setSelectedTags(_searchQuery.getSelectedTags());
+        performSearch();
+    }
+
+    public void searchForCourses(String query) {
         this.query = query;
         searchQuery.setQuery(query);
+        performSearch();
+    }
+
+    public void performSearch() {
         mongoClient = user.getMongoClient("mongodb-atlas");
         mongoDatabase = mongoClient.getDatabase("Upsilon");
-        MongoCollection<Document> mongoCollection  = mongoDatabase.getCollection("UserData");
+        MongoCollection<Document> mongoCollection = mongoDatabase.getCollection("UserData");
 
         //Blank query to find every single user in db
-        Document queryFilter  = new Document("userid", user.getId());
+        Document queryFilter = new Document("userid", user.getId());
 
         RealmResultTask<MongoCursor<Document>> findTask = mongoCollection.find(queryFilter).iterator();
 
@@ -98,15 +111,15 @@ public class ExploreFragment1 extends Fragment {
                     //Log.v("EXAMPLE", results.next().toString());
                     Document currentDoc = results.next();
                     Document userLoc = (Document) currentDoc.get("userLocation");
-                    searchQuery.searchForCourse(app, mongoDatabase,getContext(), adapter, recyclerView, 10, userLoc);
+                    searchQuery.searchForCourse(app, mongoDatabase, getContext(), adapter, recyclerView, 10, userLoc);
                 }
                 Log.v("PURGE", "THE PURGE WAS A SUCCESS!");
             } else {
-                Log.v("User","Failed to complete search");
+                Log.v("User", "Failed to complete search");
             }
         });
         list = searchQuery.getSearchResultsList();
-        initRecyclerView(recyclerView,list);
+        initRecyclerView(recyclerView, list);
     }
 
     public void initRecyclerView(RecyclerView recyclerView, ArrayList<Course> list) {

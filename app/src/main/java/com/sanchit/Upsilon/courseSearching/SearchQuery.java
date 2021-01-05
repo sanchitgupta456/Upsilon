@@ -49,6 +49,14 @@ public class SearchQuery {
     private static final String TAG = "SearchQuery debugger";
     String keywords = "";
 
+    public HashMap<String, Boolean> getSelectedTags() {
+        return selectedTags;
+    }
+
+    public void setSelectedTags(HashMap<String, Boolean> selectedTags) {
+        this.selectedTags = selectedTags;
+    }
+
     public HashMap<String, Boolean> selectedTags = new HashMap<String, Boolean>();
 
     rankBy rank = rankBy.LOC;
@@ -74,7 +82,7 @@ public class SearchQuery {
     public void setRankMethod(rankBy method) {rank = method;}
 
     public void setQuery(String query) {keywords = query;}
-/*
+
     public ArrayList<Course> searchForCourse(App app, MongoDatabase mongoDatabase, Context context, double radius, Document userLoc){
         if (app.currentUser()!=null) {
             Log.v("courseSearch", keywords);
@@ -182,7 +190,7 @@ public class SearchQuery {
         }
         return null;
     }
-*/
+
     public double calculateDistance(Document courseLoc, Document userLoc){
         double lat1 = courseLoc.getDouble("latitude"),lon1 = courseLoc.getDouble("longitude"),lat2 = userLoc.getDouble("latitude"),lon2 = userLoc.getDouble("longitude");
         Log.v("Distance","calculating");
@@ -281,7 +289,7 @@ public class SearchQuery {
                                 }
                             }
                         }else{
-                            //else, it doesnt matter if its online or offline
+                            //else, it doesn't matter if its online or offline
                             if (categoryCheck(course.getCourseCategories())) {
                                 searchResultsList.add(course);
                             }
@@ -305,6 +313,8 @@ public class SearchQuery {
                     }
 
                     //Shows the results in recyclerview
+                    //assert coursesAdapter1 != null;
+                    //assert recyclerView != null;
                     showSearchResults(context, coursesAdapter1, recyclerView);
 
                 } else {
@@ -330,9 +340,17 @@ public class SearchQuery {
     //If there are no selected categories, every course
     //will appear in the results
     public boolean categoryCheck(ArrayList<String> categories) {
-        if (selectedTags.size() == 0){
-            Log.v("CategoryCheck", "No tags selected!");
+        if(selectedTags == null) {
+            Log.d(TAG, "categoryCheck: selectedTags is now null!");
             return true;
+        }
+        if (selectedTags.size() == 0){
+            Log.d(TAG, "categoryCheck: No Tags Attached!");
+            return true;
+        }
+        if (categories == null) {
+            Log.d(TAG, "categoryCheck: Tag mismatch: Course Categories Are NULL!");
+            return false;
         }
         for (int i = 0; i < categories.size(); i++){
             if (selectedTags.containsKey(categories.get(i))){

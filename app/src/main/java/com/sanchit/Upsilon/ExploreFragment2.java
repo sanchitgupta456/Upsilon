@@ -78,9 +78,29 @@ public class ExploreFragment2 extends Fragment {
         return view;
 
     }
+
+    public void initRecyclerView(RecyclerView recyclerView, ArrayList<Course> list) {
+        Log.d(TAG, "initRecyclerView: now displaying " + recyclerView.getId());
+        CoursesAdapter1 coursesAdapter1 = new CoursesAdapter1(list);
+        linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getContext(), linearLayoutManager.getOrientation());
+        recyclerView.setLayoutManager(linearLayoutManager);
+        recyclerView.setAdapter(coursesAdapter1);
+        recyclerView.addItemDecoration(dividerItemDecoration);
+        Log.d(TAG, "initRecyclerView: display success! Displayed " + list.size() + " items");
+    }
+    public void searchForCourses(SearchQuery _searchQuery){
+        this.query = _searchQuery.getKeywords();
+        searchQuery.setQuery(query);
+        searchQuery.setSelectedTags(_searchQuery.getSelectedTags());
+        performSearch();
+    }
     public void searchForCourses(String query){
         this.query = query;
         searchQuery.setQuery(query);
+        performSearch();
+    }
+    public void performSearch() {
         mongoClient = user.getMongoClient("mongodb-atlas");
         mongoDatabase = mongoClient.getDatabase("Upsilon");
         MongoCollection<Document> mongoCollection  = mongoDatabase.getCollection("UserData");
@@ -107,16 +127,5 @@ public class ExploreFragment2 extends Fragment {
         });
         list = searchQuery.getSearchResultsList();
         initRecyclerView(recyclerView,list);
-    }
-
-    public void initRecyclerView(RecyclerView recyclerView, ArrayList<Course> list) {
-        Log.d(TAG, "initRecyclerView: now displaying " + recyclerView.getId());
-        CoursesAdapter1 coursesAdapter1 = new CoursesAdapter1(list);
-        linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getContext(), linearLayoutManager.getOrientation());
-        recyclerView.setLayoutManager(linearLayoutManager);
-        recyclerView.setAdapter(coursesAdapter1);
-        recyclerView.addItemDecoration(dividerItemDecoration);
-        Log.d(TAG, "initRecyclerView: display success! Displayed " + list.size() + " items");
     }
 }

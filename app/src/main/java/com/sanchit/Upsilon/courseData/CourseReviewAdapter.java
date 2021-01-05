@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -52,7 +53,7 @@ public class CourseReviewAdapter extends RecyclerView.Adapter<CourseReviewAdapte
         holder.courseReview.setText(courseReviews.getReview());
         Log.v("Adapter",courseReviews.getReview());
         //holder.imgTvShow.setImageResource(course.getCardImgID());
-        holder.cv.setOnClickListener(new View.OnClickListener() {
+        holder.ll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Toast.makeText(context,"The position is:"+position,Toast.LENGTH_SHORT).show();
@@ -69,13 +70,13 @@ public class CourseReviewAdapter extends RecyclerView.Adapter<CourseReviewAdapte
     public class CourseReviewsViewHolder extends RecyclerView.ViewHolder
     {
         TextView courseReview;
-        CardView cv;
+        LinearLayout ll;
 
         public CourseReviewsViewHolder(View itemView)
         {
             super(itemView);
             courseReview = (TextView) itemView.findViewById(R.id.course_review_view) ;
-            cv = (CardView)itemView.findViewById(R.id.courseReviewCard);
+            ll = (LinearLayout) itemView.findViewById(R.id.courseReviewCard);
         }
 
     }

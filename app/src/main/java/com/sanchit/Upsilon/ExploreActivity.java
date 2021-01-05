@@ -261,14 +261,15 @@ public class ExploreActivity extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                searchForCourses(newText);
+                searchQuery.setQuery(newText);
+                searchForCourses(searchQuery);
                 return false;
             }
 
             @Override
             public boolean onQueryTextSubmit(String query) {
-                Log.d(TAG, "onQueryTextSubmit: called");
-                searchForCourses(query);
+                searchQuery.setQuery(query);
+                searchForCourses(searchQuery);
                 return false;
             }
 
@@ -281,27 +282,27 @@ public class ExploreActivity extends AppCompatActivity {
                 }
             }
         });
-        searchQuery.setRankMethod(rankBy.PRICE);
+        //searchQuery.setRankMethod(rankBy.PRICE);
         return true;
     }
 
-    public void searchForCourses(String query){
+    public void searchForCourses(SearchQuery searchQuery){
         //No need to update if query is same
-        if (searchQuery.getKeywords().equals(query)){
+        /*if (searchQuery.getKeywords().equals(query)){
             return;
-        }
+        }*/
         switch (tabLayout.getSelectedTabPosition()) {
             case 0:
-                fragment0.searchForCourses(query);
+                fragment0.searchForCourses(searchQuery);
                 break;
             case 1:
-                fragment1.searchForCourses(query);
+                fragment1.searchForCourses(searchQuery);
                 break;
             case 2:
-                fragment2.searchForCourses(query);
+                fragment2.searchForCourses(searchQuery);
                 break;
             case 3:
-                fragment3.searchForCourses(query);
+                fragment3.searchForCourses(searchQuery);
                 break;
             default:
                 break;
@@ -384,12 +385,12 @@ public class ExploreActivity extends AppCompatActivity {
                         searchQuery.selectedTags.put(compoundButton.getText().toString(), true);
                         //Tags have changed. Search for them, update the results
                         Log.v("TAGS", compoundButton.getText().toString());
-                        searchForCourses(searchQuery.getKeywords());
+                        searchForCourses(searchQuery);
                     } else {
                         searchQuery.selectedTags.remove(compoundButton.getText().toString());
                         //Tags have changed. Search for them, update the results
                         Log.v("TAGS", compoundButton.getText().toString());
-                        searchForCourses(searchQuery.getKeywords());
+                        searchForCourses(searchQuery);
                     }
                 }
             });

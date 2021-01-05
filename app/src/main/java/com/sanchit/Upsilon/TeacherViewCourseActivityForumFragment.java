@@ -131,7 +131,7 @@ public class TeacherViewCourseActivityForumFragment extends Fragment {
         MessageInputText.setText("");
         if(TextUtils.isEmpty(messageText))
         {
-            Toast.makeText(getActivity(),"Enter your message",Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(),R.string.type_a_message,Toast.LENGTH_SHORT).show();
         }
         else
         {

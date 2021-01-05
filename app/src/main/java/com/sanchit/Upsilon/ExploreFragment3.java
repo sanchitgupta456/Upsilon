@@ -119,4 +119,35 @@ public class ExploreFragment3 extends Fragment {
         recyclerView.addItemDecoration(dividerItemDecoration);
         Log.d(TAG, "initRecyclerView: display success! Displayed " + list.size() + " items");
     }
+    public void searchForCourses(SearchQuery _searchQuery){
+        this.query = _searchQuery.getKeywords();
+        searchQuery.setQuery(query);
+        searchQuery.setSelectedTags(_searchQuery.getSelectedTags());
+        mongoClient = user.getMongoClient("mongodb-atlas");
+        mongoDatabase = mongoClient.getDatabase("Upsilon");
+        MongoCollection<Document> mongoCollection  = mongoDatabase.getCollection("UserData");
+
+        //Blank query to find every single user in db
+        Document queryFilter  = new Document("userid", user.getId());
+
+        RealmResultTask<MongoCursor<Document>> findTask = mongoCollection.find(queryFilter).iterator();
+
+        findTask.getAsync(task -> {
+            if (task.isSuccess()) {
+                MongoCursor<Document> results = task.get();
+                int i = 0;
+                while (results.hasNext()) {
+                    //Log.v("EXAMPLE", results.next().toString());
+                    Document currentDoc = results.next();
+                    Document userLoc = (Document) currentDoc.get("userLocation");
+                    searchQuery.searchForCourse(app, mongoDatabase,getContext(), adapter, recyclerView, 10, userLoc);
+                }
+                Log.v("PURGE", "THE PURGE WAS A SUCCESS!");
+            } else {
+                Log.v("User","Failed to complete search");
+            }
+        });
+        list = searchQuery.getSearchResultsList();
+        initRecyclerView(recyclerView,list);
+    }
 }

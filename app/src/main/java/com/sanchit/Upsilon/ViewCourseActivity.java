@@ -222,6 +222,13 @@ public class ViewCourseActivity extends AppCompatActivity {
             //Log.v("introductoryImages", String.valueOf(introductoryImages));
 
         courseIntroductoryMaterialAdapter = new IntroductoryContentAdapter(introductoryImages,introductoryVideos);
+        if(introductoryVideos == null || introductoryImages == null) {
+            introductoryRecyclerView.setVisibility(View.GONE);
+        } else if(introductoryImages.size()+introductoryVideos.size()==0) {
+            introductoryRecyclerView.setVisibility(View.GONE);
+        } else {
+            introductoryRecyclerView.setVisibility(View.VISIBLE);
+        }
         introductoryRecyclerView.setAdapter(courseIntroductoryMaterialAdapter);
         courseIntroductoryMaterialAdapter.notifyDataSetChanged();
     }

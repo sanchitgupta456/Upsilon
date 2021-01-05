@@ -80,9 +80,18 @@ public class ExploreFragment0 extends Fragment {
         return view;
     }
 
+    public void searchForCourses(SearchQuery _searchQuery){
+        this.query = _searchQuery.getKeywords();
+        searchQuery.setQuery(query);
+        searchQuery.setSelectedTags(_searchQuery.getSelectedTags());
+        performSearch();
+    }
     public void searchForCourses(String query){
         this.query = query;
         searchQuery.setQuery(query);
+        performSearch();
+    }
+    public void performSearch() {
         mongoClient = user.getMongoClient("mongodb-atlas");
         mongoDatabase = mongoClient.getDatabase("Upsilon");
         MongoCollection<Document> mongoCollection  = mongoDatabase.getCollection("UserData");
