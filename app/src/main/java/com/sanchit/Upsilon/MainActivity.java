@@ -159,6 +159,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setContentView(R.layout.activity_main);
         Intent intent1 = getIntent();
         email = intent1.getStringExtra("email");
+
+
         /*ctx = this;
         //startService(upsilonJobService);
         mSensorService = new NotifService(getCtx());
@@ -250,10 +252,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     while (results.hasNext()) {
                         //Log.v("EXAMPLE", results.next().toString());
                         Document currentDoc = results.next();
+                        if(currentDoc.get("profilePicture") ==null)
+                        {
+                            goToSetupActivity();
+                        }
+                        if(currentDoc.get("username") == null)
+                        {
+                            goToSetupActivity();
+                        }
                         userLoc = (Document) currentDoc.get("userLocation");
                         Log.v("User",currentDoc.getString("userid"));
                         Picasso.with(getApplicationContext()).load(currentDoc.getString("profilePicUrl")).error(R.drawable.default_person_image).into(imageView);
-                        Log.v("ProfilePic",currentDoc.getString("profilePicUrl"));
+                        //Log.v("ProfilePic",currentDoc.getString("profilePicUrl"));
                     }
                 } else {
                    Log.v("User","Failed to complete search");

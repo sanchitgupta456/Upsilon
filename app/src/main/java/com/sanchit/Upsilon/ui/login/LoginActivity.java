@@ -20,6 +20,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.os.StrictMode;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -88,6 +89,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private static String PREF_USERNAME = "username";
     private static String PREF_PASSWORD = "password";
     private String Email;
+    private TextView ForgotPassword;
+    private String forgotpasswordemail;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -106,6 +109,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         loadingProgressBar = findViewById(R.id.loading);
         final ImageView GoogleSignInImage = findViewById(R.id.googleSignIn);
         final ImageView FacebookSignInImage = findViewById(R.id.facebookSignIn);
+        ForgotPassword = (TextView) findViewById(R.id.textView3);
         rememberMe = (CheckBox) findViewById(R.id.checkRememberMe);
 
         findViewById(R.id.googleSignIn).setOnClickListener(this);
@@ -118,10 +122,47 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             usernameEditText.setText(username);
             passwordEditText.setText(password);
         }
+        if (android.os.Build.VERSION.SDK_INT > 9) {
+            StrictMode.ThreadPolicy policy =
+                    new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+        }
 
         //Realm.init(this); // context, usually an Activity or Application
         App app = new App(new AppConfiguration.Builder(appID)
                 .build());
+
+        ForgotPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                forgotpasswordemail = usernameEditText.getText().toString();
+                //app.getEmailPassword().sendResetPasswordEmail(forgotpasswordemail);
+                Log.v("Email",forgotpasswordemail);
+                app.getEmailPassword().sendResetPasswordEmailAsync("sanchitgupta456@gmail.com",result -> {
+                    if(result.isSuccess())
+                    {
+                        Log.v("Result",result.toString());
+                        Log.v("Success","Success");
+                    }
+                    else
+                    {
+                        Log.v("Error",result.getError().toString());
+                    }
+                });
+
+                app.getEmailPassword().resendConfirmationEmailAsync("sanchitgupta456@gmail.com",result -> {
+                    if(result.isSuccess())
+                    {
+                        Log.v("Result",result.toString());
+                        Log.v("Success","Success");
+                    }
+                    else
+                    {
+                        Log.v("Error",result.getError().toString());
+                    }
+                });
+            }
+        });
 
         callbackManager = CallbackManager.Factory.create();
         fbloginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
