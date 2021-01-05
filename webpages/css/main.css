@@ -138,11 +138,6 @@ iframe {
   background: -o-linear-gradient(top, #8f00b3, #000000);
   background: -moz-linear-gradient(top, #8f00b3, #000000);
   background: linear-gradient(top, #8f00b3, #000000);
-
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -moz-box;
-  display: -ms-flexbox;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -154,11 +149,6 @@ iframe {
   background: #fff;
   border-radius: 10px;
   overflow: hidden;
-
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -moz-box;
-  display: -ms-flexbox;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
@@ -264,10 +254,6 @@ textarea.input1 + .shadow-input1 {
 
 /*---------------------------------------------*/
 .container-contact1-form-btn {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -moz-box;
-  display: -ms-flexbox;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -282,40 +268,20 @@ textarea.input1 + .shadow-input1 {
   font-size: 15px;
   line-height: 1.5;
   color: #fff;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -moz-box;
-  display: -ms-flexbox;
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 0 25px;
-
-  -webkit-transition: all 0.4s;
-  -o-transition: all 0.4s;
-  -moz-transition: all 0.4s;
   transition: all 0.4s;
 }
 
 .contact1-form-btn i {
   margin-left: 7px;
-
-  -webkit-transition: all 0.4s;
-  -o-transition: all 0.4s;
-  -moz-transition: all 0.4s;
   transition: all 0.4s;
 }
 
 .contact1-form-btn:hover {
   background: #333333;
-}
-
-.contact1-form-btn:hover i {
-  -webkit-transform: translateX(10px);
-  -moz-transform: translateX(10px);
-  -ms-transform: translateX(10px);
-  -o-transform: translateX(10px);
-  transform: translateX(10px);
 }
 
 
