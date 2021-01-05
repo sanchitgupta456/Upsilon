@@ -126,7 +126,7 @@ public class CoursesAdapter1 extends RecyclerView.Adapter<CoursesAdapter1.ViewHo
         {
             holder.textFeeTvShow.setText("Rs."+course.getCourseFees());
         }
-        holder.textRatingTvShow.setText(String.format("%.1s/5", course.getCourseRating()));
+        holder.textRatingTvShow.setText(String.format("%.2s/5", course.getCourseRating()));
 
         holder.cv.setOnClickListener(new View.OnClickListener() {
             @Override
