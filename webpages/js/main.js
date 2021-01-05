@@ -16,5 +16,7 @@ function changePassword(){
     console.log(token);
     console.log(tokenId);
 
+    window.location = "Upsilon://";
+
     return false;
 }

@@ -8,14 +8,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Adapter;
 import android.widget.Button;
-import android.widget.SearchView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
+import androidx.appcompat.widget.SearchView;
 import org.bson.Document;
 
 import java.lang.reflect.Array;
@@ -57,7 +56,7 @@ public class UserDataSetupActivity1 extends AppCompatActivity {
         actionBarView = getSupportActionBar().getCustomView(); //to be implemented
         nextButton = (Button) findViewById(R.id.selectLaterNext1);
         addInterests = (Button) findViewById(R.id.addInterest);
-        searchView = (SearchView) findViewById(R.id.searchInterests);
+        searchView = findViewById(R.id.searchInterests);
         showInterests = (RecyclerView) findViewById(R.id.listInterests);
         layoutManager = new LinearLayoutManager(this);
         showInterests.setLayoutManager(layoutManager);
