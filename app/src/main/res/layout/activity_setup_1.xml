@@ -17,7 +17,7 @@
         android:layout_marginTop="12dp"
         android:visibility="gone"
         android:layout_centerHorizontal="true"
-        android:indeterminateTint="@color/colorYellow"/>
+        android:indeterminateTint="@color/colorAccent"/>
 
     <TextView
         android:layout_width="match_parent"

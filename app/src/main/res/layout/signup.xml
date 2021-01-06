@@ -31,7 +31,7 @@
         android:layout_marginBottom="64dp"
         android:layout_marginTop="12dp"
         android:visibility="gone"
-        android:indeterminateTint="@color/colorYellow"/>
+        android:indeterminateTint="@color/colorAccent"/>
 
 
     <ScrollView
