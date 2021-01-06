@@ -1,15 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<com.google.android.material.chip.Chip
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+    android:theme="@style/MaterialTheme"
+    style="@style/Widget.MaterialComponents.Chip.Entry"
+    android:checkable="false"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="@dimen/text_margin"
-        android:id="@+id/textdata"
-        android:textColor="@color/colorWhite"
-        android:textStyle="bold"
-        android:padding="5dp"/>
-</LinearLayout>
+    android:textSize="@dimen/text_margin"
+    android:id="@+id/textdata"
+    android:textStyle="bold"
+    android:padding="15dp"/>

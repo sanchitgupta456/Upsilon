@@ -94,11 +94,9 @@ public class CoursesAdapter1 extends RecyclerView.Adapter<CoursesAdapter1.ViewHo
             public void onClick(View view) {
                 if(holder.ll.getVisibility() == View.VISIBLE) {
                     holder.ll.setVisibility(View.GONE);
-                    //holder.toggle.setImageResource(R.drawable.icon_down);
                 }
                 else {
                     holder.ll.setVisibility(View.VISIBLE);
-                    //holder.toggle.setImageResource(R.drawable.icon_up);
                 }
                 holder.toggle.animate().rotationBy(180).start();
             }
@@ -126,7 +124,7 @@ public class CoursesAdapter1 extends RecyclerView.Adapter<CoursesAdapter1.ViewHo
         {
             holder.textFeeTvShow.setText("Rs."+course.getCourseFees());
         }
-        holder.textRatingTvShow.setText(String.format("%.2s/5", course.getCourseRating()));
+        holder.textRatingTvShow.setText(String.format("%.3s/5", course.getCourseRating()));
 
         holder.cv.setOnClickListener(new View.OnClickListener() {
             @Override
