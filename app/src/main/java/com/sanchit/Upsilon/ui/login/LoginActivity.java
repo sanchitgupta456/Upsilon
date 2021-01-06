@@ -135,18 +135,22 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         ForgotPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                loadingProgressBar.setVisibility(View.VISIBLE);
                 forgotpasswordemail = usernameEditText.getText().toString();
                 //app.getEmailPassword().sendResetPasswordEmail(forgotpasswordemail);
                 Log.v("Email",forgotpasswordemail);
                 app.getEmailPassword().sendResetPasswordEmailAsync(forgotpasswordemail,result -> {
                     if(result.isSuccess())
                     {
+                        loadingProgressBar.setVisibility(View.GONE);
+                        Toast.makeText(getApplicationContext(), "An email has been sent to you. Please go through it for further instructions.", Toast.LENGTH_LONG).show();
                         Log.v("Result",result.toString());
                         Log.v("Success","Success");
                     }
                     else
                     {
                         Log.v("Error",result.getError().toString());
+                        loadingProgressBar.setVisibility(View.GONE);
                     }
                 });
 
@@ -238,7 +242,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                 .edit()
                                 .putString("user", email)
                                 .putString("pass", password)
-                                .commit();
+                                .apply();
 
                     }
                     Credentials emailPasswordCredentials = Credentials.emailPassword(email, password);
