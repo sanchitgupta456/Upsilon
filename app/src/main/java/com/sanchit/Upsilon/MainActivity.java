@@ -252,14 +252,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     while (results.hasNext()) {
                         //Log.v("EXAMPLE", results.next().toString());
                         Document currentDoc = results.next();
-                        if(currentDoc.get("profilePicture") ==null)
+                        /*if(currentDoc.get("profilePicture") ==null)
                         {
                             goToSetupActivity();
                         }
                         if(currentDoc.get("username") == null)
                         {
                             goToSetupActivity();
-                        }
+                        }*/
                         userLoc = (Document) currentDoc.get("userLocation");
                         Log.v("User",currentDoc.getString("userid"));
                         Picasso.with(getApplicationContext()).load(currentDoc.getString("profilePicUrl")).error(R.drawable.default_person_image).into(imageView);
