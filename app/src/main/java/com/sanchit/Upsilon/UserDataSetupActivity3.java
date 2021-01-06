@@ -92,7 +92,7 @@ public class UserDataSetupActivity3 extends AppCompatActivity implements Adapter
         String[] Colleges = {"None", "IIT Madras"};
         College = "None";
 
-        ArrayAdapter adapter = new ArrayAdapter(getApplicationContext(), android.R.layout.simple_expandable_list_item_1,Colleges);
+        ArrayAdapter adapter = new ArrayAdapter(getApplicationContext(), R.layout.simple_expandable_list_item_custom,Colleges);
         selectYourCollege.setAdapter(adapter);
         selectYourCollege.setOnItemSelectedListener(UserDataSetupActivity3.this);
 

@@ -8,6 +8,8 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.chip.Chip;
+
 import java.util.ArrayList;
 
 public class InterestsAdapter extends RecyclerView.Adapter<InterestsAdapter.MyHolder> {
@@ -40,6 +42,12 @@ public class InterestsAdapter extends RecyclerView.Adapter<InterestsAdapter.MyHo
     public void onBindViewHolder(MyHolder holder, int position) {
 
         holder.textData.setText(mylist.get(position).toString());
+        holder.textData.setOnCloseIconClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mylist.remove(position);
+            }
+        });
 
     }
 
@@ -50,13 +58,13 @@ public class InterestsAdapter extends RecyclerView.Adapter<InterestsAdapter.MyHo
 
     class MyHolder extends RecyclerView.ViewHolder {
 
-        TextView textData;
+        Chip textData;
 
         //contructor for getting reference to the widget
         public MyHolder(View itemView) {
             super(itemView);
 
-            textData = (TextView) itemView.findViewById(R.id.textdata);
+            textData = (Chip) itemView.findViewById(R.id.textdata);
 
         }
 

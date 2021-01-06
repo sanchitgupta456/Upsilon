@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -84,7 +85,11 @@ public class ExploreFragment0 extends Fragment {
         this.query = _searchQuery.getKeywords();
         searchQuery.setQuery(query);
         searchQuery.setSelectedTags(_searchQuery.getSelectedTags());
+        ProgressBar progressBar = new ProgressBar(getContext());
+        progressBar.setIndeterminate(true);
+        progressBar.setVisibility(View.VISIBLE);
         performSearch();
+        progressBar.setVisibility(View.GONE);
     }
     public void searchForCourses(String query){
         this.query = query;

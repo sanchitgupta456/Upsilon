@@ -79,7 +79,6 @@ public class ExploreActivity extends AppCompatActivity {
 
     ArrayList<String> all_tags;
     ArrayList<Boolean> isChecked;
-
     //selected tags
     //tags are now a part of the searchQuery class
     ChipGroup chipGroup;
@@ -119,6 +118,8 @@ public class ExploreActivity extends AppCompatActivity {
             }
         });*/
 
+        progressBar = (ProgressBar) findViewById(R.id.loadingExplore);
+
         tabLayout = (TabLayout) findViewById(R.id.tabLayout);
         adapter = new ViewPagerAdapter(getSupportFragmentManager());
         fragment0 = new ExploreFragment0();
@@ -141,114 +142,8 @@ public class ExploreActivity extends AppCompatActivity {
         setupViewPager(viewPager);
         tabLayout.setupWithViewPager(viewPager);
 
-        //Log.d(TAG, "onCreate: Starting the process...");
-
-        //initialise "near you" first :
-        //searchQuery.setRankMethod(rankBy.LOC);
-        //Log.v("Menu", "Loc Sort");
-        //searchForCourses("");
-        //searchResultsList0 = searchQuery.getSearchResultsList();
-        //Log.d(TAG, "onCreate: Search success!");
-        //Log.d(TAG, "onCreate: Found " + searchResultsList0.size() + " courses!");
-        //Log.d(TAG, "onCreate: calling initRecyclerView");
-
-
-
-
-        /*
-        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                String selectedTab = tab.getText().toString();
-                Log.v("Menu", selectedTab);
-                if (selectedTab.equals("TOP RATED")){
-                    searchQuery.setRankMethod(rankBy.RATING);
-                    Log.v("Menu", "RATINGSORT");
-                    searchForCourses(searchView.getQuery().toString());
-                }
-                else if (selectedTab.equals("TOP FREE")){
-                    searchQuery.setRankMethod(rankBy.PRICE);
-                    Log.v("Menu", "PRICESORT");
-                    searchForCourses(searchView.getQuery().toString());
-                }
-                else if (selectedTab.equals("NEAR YOU")){
-                    searchQuery.setRankMethod(rankBy.LOC);
-                    Log.v("Menu", "LOCSORT");
-                    searchForCourses(searchView.getQuery().toString());
-                }
-                else if (selectedTab.equals("TOP ONLINE")){
-                    searchQuery.setRankMethod(rankBy.ONLINE_ONLY_RATING);
-                    Log.v("Menu", "ONLINESORT");
-                    searchForCourses(searchView.getQuery().toString());
-                }
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
-        });*/
-
-
     }
 
-    /*
-    public void repopulateAll(){
-        courseArrayList.clear();
-        user = app.currentUser();
-
-        mongoClient = user.getMongoClient("mongodb-atlas");
-        mongoDatabase = mongoClient.getDatabase("Upsilon");
-        MongoCollection<Document> mongoCollection  = mongoDatabase.getCollection("CourseData");
-
-        Document queryFilter  = new Document();
-
-        RealmResultTask<MongoCursor<Document>> findTask = mongoCollection.find(queryFilter).iterator();
-
-        //final int[] flag = {0};
-        findTask.getAsync(task -> {
-            if (task.isSuccess()) {
-                MongoCursor<Document> results = task.get();
-                Log.v("COURSEHandler", "successfully found all courses:");
-                while (results.hasNext()) {
-                    progressBar.setVisibility(View.VISIBLE);
-                    //Log.v("EXAMPLE", results.next().toString());
-                    Document currentDoc = results.next();
-
-                    //Log.v("IMPORTANT","Error:"+currentDoc.getString("nextLectureOn"));
-
-                    if(currentDoc.getString("nextLectureOn")==null)
-                    {
-                        currentDoc.append("nextLectureOn","0");
-                    }
-                    currentDoc.toJson();
-                    gsonBuilder = new GsonBuilder();
-                    gson = gsonBuilder.create();
-
-                    try {
-                        Course course = gson.fromJson(currentDoc.toJson(),Course.class);
-
-                        courseArrayList.add(course);
-                        courseAdapter.notifyDataSetChanged();
-                    } catch (JsonSyntaxException e) {
-                        e.printStackTrace();
-                    }
-                    if(!results.hasNext())
-                    {
-                        progressBar.setVisibility(GONE);
-                    }
-                }
-            } else {
-                Log.e("COURSEHandler", "failed to find courses with: ", task.getError());
-            }
-        });
-        initFilters();
-    }*/
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -282,7 +177,6 @@ public class ExploreActivity extends AppCompatActivity {
                 }
             }
         });
-        //searchQuery.setRankMethod(rankBy.PRICE);
         return true;
     }
 
@@ -417,7 +311,6 @@ public class ExploreActivity extends AppCompatActivity {
         Log.d(TAG, "initRecyclerView: display success! Displayed " + list.size() + " items");
     }
 
-    /* to be incorporated later on */
     private void setupViewPager(ViewPager viewPager) {
         adapter.clearFragments();
         adapter.addFragment(fragment0, "Near me");
