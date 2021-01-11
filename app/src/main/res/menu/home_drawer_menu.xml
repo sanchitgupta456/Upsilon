@@ -22,6 +22,9 @@
         android:title="Upsilon Wallet"
         android:id="@+id/homeDrawerMenuItem6"/>
     <item
+        android:title="Title 7"
+        android:id="@+id/homeDrawerMenuItem7"/>
+    <item
         android:title="@string/more"
         android:id="@+id/more">
         <menu>

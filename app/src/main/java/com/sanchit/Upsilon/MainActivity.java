@@ -328,7 +328,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 */
     private void goToSetupActivity() {
-        Intent intent = new Intent(MainActivity.this,UserDataSetupActivity1.class);
+        Intent intent = new Intent(MainActivity.this,UserDataSetupActivity.class);
         startActivity(intent);
     }
 
@@ -720,6 +720,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         else if(id==R.id.homeDrawerMenuItem6)
         {
             Intent intent = new Intent(MainActivity.this, WalletActivity.class);
+            startActivity(intent);
+        }
+        else if(id==R.id.homeDrawerMenuItem7)
+        {
+            Intent intent = new Intent(MainActivity.this, UserDataSetupActivity.class);
             startActivity(intent);
         }
 

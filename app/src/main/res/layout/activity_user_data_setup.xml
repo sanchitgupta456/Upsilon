@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".UserDataSetupActivity">
+
+    <androidx.viewpager.widget.ViewPager
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/dot_progress"
+        android:id="@+id/view_pager"/>
+
+    <com.sanchit.Upsilon.HorizontalDotProgress
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/layout_buttons"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="@dimen/activity_horizontal_margin"
+        android:scaleX="4"
+        android:scaleY="4"
+        android:id="@+id/dot_progress"
+        android:backgroundTint="@color/colorAccent"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="50"
+        android:padding="16dp"
+        android:id="@+id/layout_buttons"
+        android:layout_alignParentBottom="true">
+        <Button
+            android:id="@+id/skipSetup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/skip_setup"
+            android:textSize="@dimen/text_margin"
+            android:textAllCaps="true"
+            android:textColor="@color/colorWhite"
+            android:textStyle="bold"
+            android:background="@drawable/btn_blue"
+            android:padding="10dp"
+            android:elevation="5dp"
+            android:layout_weight="25"
+            android:layout_marginEnd="36dp"
+            style="@style/Theme.AppCompat.DayNight"/>
+        <Button
+            android:id="@+id/selectLaterNext"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/next"
+            android:textSize="@dimen/text_margin"
+            android:textAllCaps="true"
+            android:textColor="@color/colorWhite"
+            android:textStyle="bold"
+            android:background="@drawable/btn_blue"
+            android:padding="10dp"
+            android:elevation="5dp"
+            android:layout_weight="25"
+            android:layout_marginStart="36dp"
+            style="@style/Theme.AppCompat.DayNight"/>
+    </LinearLayout>
+
+</RelativeLayout>

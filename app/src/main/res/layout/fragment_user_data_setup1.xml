@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:theme="@style/AppTheme"
+    tools:context=".UserDataSetupFragment1">
+
+    <ProgressBar
+        android:id="@+id/loadingSetUp1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="64dp"
+        android:layout_marginTop="12dp"
+        android:visibility="gone"
+        android:layout_centerHorizontal="true"
+        android:indeterminateTint="@color/colorAccent"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/tell_us_about_your_interests"
+        android:gravity="start"
+        android:textSize="@dimen/text_margin"
+        android:layout_marginStart="@dimen/activity_vertical_margin"
+        android:layout_below="@id/loadingSetUp1"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="10dp"
+        android:id="@+id/textSetupTitle2"
+        android:textColor="@color/colorBlack"/>
+
+    <!--
+
+    <androidx.appcompat.widget.SearchView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textSetupTitle2"
+        android:background="@color/colorWhite"
+        android:layout_margin="@dimen/activity_vertical_margin"
+        android:id="@+id/searchInterests"
+        app:queryHint="Search something..."
+        android:theme="@style/MaterialTheme"
+        app:iconifiedByDefault="false"/> -->
+<!--
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/outlinedTextField"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textSetupTitle2"
+        android:layout_margin="@dimen/activity_vertical_margin"
+        android:layout_marginStart="@dimen/activity_vertical_margin"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="@dimen/activity_vertical_margin"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        android:hint="Enter your interests here"
+        android:padding="15dp"
+        android:theme="@style/MaterialTheme"
+        app:errorEnabled="true"
+        app:errorTextColor="@color/colorError">
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/textEnterInterests"
+            android:theme="@style/MaterialTheme"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:imeOptions="actionDone"
+            android:inputType="text"/>
+    </com.google.android.material.textfield.TextInputLayout> -->
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textSetupTitle2"
+        android:id="@+id/textEnterInterests"
+        android:inputType="text"
+        android:layout_marginTop="36dp"
+        android:layout_marginStart="72dp"
+        android:layout_marginEnd="72dp"
+        android:hint="Enter your Interests here"
+        android:textColor="@color/colorBlack"
+        android:gravity="center"
+        android:layout_centerInParent="true"
+        android:background="@drawable/text_view_login"
+        android:backgroundTint="@color/colorBlack"
+        android:padding="10dp"
+        android:autofillHints="@string/username"
+        android:focusedByDefault="true"
+        android:selectAllOnFocus="true"/>
+
+
+    <Button
+        android:id="@+id/addInterest"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/textEnterInterests"
+        android:layout_marginTop="27dp"
+        android:gravity="center"
+        android:background="@drawable/btn_blue"
+        android:padding="20dp"
+        android:text="@string/add_interest"
+        android:textColor="@color/colorWhite"/>
+
+    <com.google.android.material.chip.ChipGroup
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/addInterest"
+        android:layout_margin="@dimen/text_margin"
+        android:id="@+id/groupInterests"/>
+
+
+
+</RelativeLayout>

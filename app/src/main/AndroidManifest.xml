@@ -23,16 +23,18 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
+        <activity android:name=".UserDataSetupActivity"></activity>
         <activity android:name=".ResetPasswordActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data
-                    android:scheme="https"
-                    android:host="stitch-statichosting-prod.s3.amazonaws.com" />
-            </intent-filter>
 
+                <data
+                    android:host="stitch-statichosting-prod.s3.amazonaws.com"
+                    android:scheme="https" />
+            </intent-filter>
         </activity>
         <activity android:name=".WalletActivity" />
         <activity android:name=".AddCoursePayment" />
