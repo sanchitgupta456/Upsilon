@@ -4,8 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-    android:background="@drawable/background">
+    android:theme="@style/Theme.AppCompat.Light.NoActionBar">
 
     <!--
     <FrameLayout
@@ -56,11 +55,12 @@
                 android:layout_marginTop="16dp"
                 android:autofillHints="@string/username"
                 android:background="@drawable/text_view_login"
+                android:backgroundTint="@color/colorBlack"
+                android:textColorHint="@color/GreyDark"
+                android:textColor="@color/colorBlack"
                 android:hint="@string/username"
                 android:inputType="textPersonName"
-                android:padding="10dp"
-                android:textColorHint="@color/colorLiteGrey"
-                android:textColor="@color/colorWhite"/>
+                android:padding="10dp"/>
 
             <EditText
                 android:id="@+id/email"
@@ -69,11 +69,12 @@
                 android:layout_marginTop="16dp"
                 android:autofillHints="@string/prompt_email"
                 android:background="@drawable/text_view_login"
+                android:backgroundTint="@color/colorBlack"
+                android:textColorHint="@color/GreyDark"
+                android:textColor="@color/colorBlack"
                 android:hint="@string/prompt_email"
                 android:inputType="textEmailAddress"
-                android:padding="10dp"
-                android:textColorHint="@color/colorLiteGrey"
-                android:textColor="@color/colorWhite"/>
+                android:padding="10dp"/>
 
             <EditText
                 android:id="@+id/password"
@@ -82,11 +83,12 @@
                 android:layout_marginTop="16dp"
                 android:autofillHints="@string/prompt_password"
                 android:background="@drawable/text_view_login"
+                android:backgroundTint="@color/colorBlack"
+                android:textColorHint="@color/GreyDark"
+                android:textColor="@color/colorBlack"
                 android:hint="@string/prompt_password"
                 android:inputType="textPassword"
-                android:padding="10dp"
-                android:textColorHint="@color/colorLiteGrey"
-                android:textColor="@color/colorWhite"/>
+                android:padding="10dp"/>
 
             <EditText
                 android:id="@+id/confirmPassword"
@@ -95,11 +97,12 @@
                 android:layout_marginTop="16dp"
                 android:autofillHints="@string/confirm_password"
                 android:background="@drawable/text_view_login"
+                android:backgroundTint="@color/colorBlack"
+                android:textColorHint="@color/GreyDark"
+                android:textColor="@color/colorBlack"
                 android:hint="@string/confirm_password"
                 android:inputType="textPassword"
-                android:padding="10dp"
-                android:textColorHint="@color/colorLiteGrey"
-                android:textColor="@color/colorWhite"/>
+                android:padding="10dp"/>
 
         </LinearLayout>
     </ScrollView>
@@ -111,7 +114,9 @@
         android:layout_marginLeft="12dp"
         android:layout_marginTop="24dp"
         android:layout_marginRight="12dp"
-        android:background="@drawable/btn_rounded_rect"
+        android:background="@drawable/btn_blue"
+        android:textColor="@color/colorWhite"
+        android:letterSpacing="0.1"
         android:enabled="true"
         android:text="@string/sign_up_text"
         android:layout_below="@id/scroll"/>
@@ -129,8 +134,7 @@
             android:layout_width="0dp"
             android:layout_height="1dp"
             android:layout_marginEnd="12dp"
-            android:background="?android:attr/listDivider"
-            android:backgroundTint="@color/colorWhite"
+            android:background="@color/GreyDark"
             android:layout_weight="9"/>
 
         <TextView
@@ -140,7 +144,8 @@
             android:text="@string/or"
             android:gravity="center"
             android:textSize="@dimen/text_margin"
-            android:textColor="@color/colorWhite"
+            android:textColor="@color/colorBlack"
+            android:textStyle="bold"
             android:layout_weight="2"/>
 
         <View
@@ -148,9 +153,7 @@
             android:layout_width="0dp"
             android:layout_height="1dp"
             android:layout_marginStart="12dp"
-            android:background="?android:attr/listDivider"
-            app:layout_constraintHorizontal_bias="1.0"
-            android:backgroundTint="@color/colorWhite"
+            android:background="@color/GreyDark"
             android:layout_weight="9"/>
     </LinearLayout>
 
@@ -209,9 +212,10 @@
         android:layout_marginTop="24dp"
         android:layout_centerHorizontal="true"
         android:text="@string/already_a_member"
-        android:textColor="@color/colorAccent"
+        android:textColor="@color/colorPrimary"
         android:textSize="@dimen/text_margin"
-        android:layout_below="@id/linearLayout3"/>
+        android:layout_below="@id/linearLayout3"
+        android:padding="10dp"/>
 
 
 

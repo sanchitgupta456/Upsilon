@@ -15,4 +15,5 @@
     <color name="colorGrey">#AAAAAA</color>
     <color name="colorError">@color/colorRed</color>
     <color name="transparent">#00000000</color>
+    <color name="GreyDark">#555555</color>
 </resources>

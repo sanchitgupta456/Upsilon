@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/colorLiteGrey">
+    android:background="@color/colorWhite">
 
     <ProgressBar
         android:id="@+id/loadingViewCourse"
@@ -88,7 +88,7 @@
                 android:layout_below="@id/courseCoverCard"
                 android:layout_marginStart="@dimen/activity_horizontal_margin"
                 android:layout_marginEnd="@dimen/activity_horizontal_margin"
-                app:cardBackgroundColor="@color/colorWhite"
+                app:cardBackgroundColor="@color/colorLiteGrey"
                 app:cardCornerRadius="5dp"
                 app:cardElevation="10dp">
                 <TextView
@@ -99,6 +99,7 @@
                     android:textSize="@dimen/text_margin"
                     android:typeface="sans"
                     android:textStyle="italic"
+                    android:background="@drawable/text_view_add_course"
                     android:id="@+id/textCourseDescription"
                     android:padding="5dp"/>
             </androidx.cardview.widget.CardView>
@@ -114,7 +115,7 @@
                 android:stepSize="1"
                 android:layout_margin="@dimen/text_margin"
                 android:isIndicator="true"
-                android:progressTint="@color/colorBlue"
+                android:progressTint="@color/colorPrimary"
                 android:progressBackgroundTint="@color/colorGrey"/>
 
             <androidx.cardview.widget.CardView
@@ -124,13 +125,14 @@
                 android:layout_below="@id/courseRatings"
                 android:layout_marginStart="@dimen/activity_horizontal_margin"
                 android:layout_marginEnd="@dimen/activity_horizontal_margin"
-                app:cardBackgroundColor="@color/colorWhite"
+                app:cardBackgroundColor="@color/colorLiteGrey"
                 app:cardElevation="10dp"
                 app:cardCornerRadius="5dp"
                 android:id="@+id/frameCourseDetails">
                 <FrameLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/text_view_add_course">
 
                     <LinearLayout
                         android:orientation="vertical"
@@ -245,19 +247,20 @@
                 android:orientation="horizontal"
                 android:layout_margin="@dimen/activity_vertical_margin"
                 tools:listitem="@layout/course_introductory_content_card"
-                tools:itemCount="1"/>
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/listIntroductoryMaterial"
                 android:layout_margin="@dimen/activity_horizontal_margin"
-                app:cardBackgroundColor="@color/colorWhite"
+                app:cardBackgroundColor="@color/colorLiteGrey"
                 app:cardElevation="10dp"
                 app:cardCornerRadius="5dp">
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/text_view_add_course">
                     <TextView
                         android:id="@+id/textReviews"
                         android:layout_width="match_parent"
