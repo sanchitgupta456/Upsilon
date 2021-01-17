@@ -369,6 +369,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                             Document currentDoc1 = results1.next();
                             myCourses = (ArrayList<String>) currentDoc1.get("myCourses");
                             college = currentDoc1.getString("college");
+
                         }
                     } else {
                         Log.v("User", "Failed to complete search");
@@ -443,32 +444,36 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                                             if (task1.isSuccess()) {
                                                 MongoCursor<Document> results1 = task1.get();
                                                 if (!results1.hasNext()) {
-                                                    Log.v("ViewCourse", "Couldnt Find The Tutor");
+                                                    //Log.v("ViewCourse", "Couldnt Find The Tutor");
                                                 } else {
-                                                    Log.v("User", "successfully found the Tutor");
+                                                    //Log.v("User", "successfully found the Tutor");
                                                 }
                                                 while (results1.hasNext()) {
                                                     //Log.v("EXAMPLE", results.next().toString());
                                                     Document currentDoc1 = results1.next();
-                                                    Log.v("CourseBySenior", (String) currentDoc1.get("college"));
-                                                    Log.v("CourseBySenior", (String)  college);
+                                                    //Log.v("CourseBySenior", (String) currentDoc1.get("college"));
+                                                    //Log.v("CourseBySenior", (String)  college);
 
-                                                    if (currentDoc1.getString("college").equals(college)) {
-                                                        Log.v("CourseBy","Hello");
-                                                        courseArrayList2.add(course);
-                                                        coursesAdapter2.notifyDataSetChanged();
-                                                        Log.v("CoursesySeniors", String.valueOf(courseArrayList2));
+                                                    try {
+                                                        if (currentDoc1.getString("college").equals(college)) {
+                                                            //Log.v("CourseBy","Hello");
+                                                            courseArrayList2.add(course);
+                                                            coursesAdapter2.notifyDataSetChanged();
+                                                            //Log.v("CoursesySeniors", String.valueOf(courseArrayList2));
+                                                        }
+                                                    } catch (Exception e) {
+                                                        e.printStackTrace();
                                                     }
-                                                    Log.v("User", currentDoc1.getString("userid"));
+                                                    //Log.v("User", currentDoc1.getString("userid"));
                                                 }
                                             } else {
-                                                Log.v("User", "Failed to complete search"+task1.getError().toString());
+                                                //Log.v("User", "Failed to complete search"+task1.getError().toString());
                                                 Credentials credentials = Credentials.jwt(app.currentUser().getRefreshToken());
-                                                Log.v("RefreshToken","eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJiYWFzX2RhdGEiOm51bGwsImJhYXNfZGV2aWNlX2lkIjoiNWZmMWMzOGFmZmRjZmJmNjRiOWU5YWFmIiwiYmFhc19kb21haW5faWQiOiI1Zjg0NmU3M2Y4MzM3YmYyMmI5NjI4YTYiLCJiYWFzX2lkIjoiNWZmMWMzOGFmZmRjZmJmNjRiOWU5YjFkIiwiYmFhc19pZGVudGl0eSI6eyJpZCI6IjVmOGQ3NDNjZWQ3M2VkMTZlYWZiZmFmNyIsInByb3ZpZGVyX3R5cGUiOiJsb2NhbC11c2VycGFzcyIsInByb3ZpZGVyX2lkIjoiNWY4ODg5MjlmNjlmZDllMjQxZjBiZjAxIn0sImV4cCI6MTYxNDg2Mzc1NCwiaWF0IjoxNjA5Njc5NzU0LCJzdGl0Y2hfZGF0YSI6bnVsbCwic3RpdGNoX2RldklkIjoiNWZmMWMzOGFmZmRjZmJmNjRiOWU5YWFmIiwic3RpdGNoX2RvbWFpbklkIjoiNWY4NDZlNzNmODMzN2JmMjJiOTYyOGE2Iiwic3RpdGNoX2lkIjoiNWZmMWMzOGFmZmRjZmJmNjRiOWU5YjFkIiwic3RpdGNoX2lkZW50Ijp7ImlkIjoiNWY4ZDc0M2NlZDczZWQxNmVhZmJmYWY3IiwicHJvdmlkZXJfdHlwZSI6ImxvY2FsLXVzZXJwYXNzIiwicHJvdmlkZXJfaWQiOiI1Zjg4ODkyOWY2OWZkOWUyNDFmMGJmMDEifSwic3ViIjoiNWY4ZDc0NDU1ODNiYjRhYmI3OGJjYzJhIiwidHlwIjoicmVmcmVzaCJ9.pNJzrvq60722wT2zeJlWVIDhEkcmAp_hDcG8g3YQsws");
+                                                //Log.v("RefreshToken","eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJiYWFzX2RhdGEiOm51bGwsImJhYXNfZGV2aWNlX2lkIjoiNWZmMWMzOGFmZmRjZmJmNjRiOWU5YWFmIiwiYmFhc19kb21haW5faWQiOiI1Zjg0NmU3M2Y4MzM3YmYyMmI5NjI4YTYiLCJiYWFzX2lkIjoiNWZmMWMzOGFmZmRjZmJmNjRiOWU5YjFkIiwiYmFhc19pZGVudGl0eSI6eyJpZCI6IjVmOGQ3NDNjZWQ3M2VkMTZlYWZiZmFmNyIsInByb3ZpZGVyX3R5cGUiOiJsb2NhbC11c2VycGFzcyIsInByb3ZpZGVyX2lkIjoiNWY4ODg5MjlmNjlmZDllMjQxZjBiZjAxIn0sImV4cCI6MTYxNDg2Mzc1NCwiaWF0IjoxNjA5Njc5NzU0LCJzdGl0Y2hfZGF0YSI6bnVsbCwic3RpdGNoX2RldklkIjoiNWZmMWMzOGFmZmRjZmJmNjRiOWU5YWFmIiwic3RpdGNoX2RvbWFpbklkIjoiNWY4NDZlNzNmODMzN2JmMjJiOTYyOGE2Iiwic3RpdGNoX2lkIjoiNWZmMWMzOGFmZmRjZmJmNjRiOWU5YjFkIiwic3RpdGNoX2lkZW50Ijp7ImlkIjoiNWY4ZDc0M2NlZDczZWQxNmVhZmJmYWY3IiwicHJvdmlkZXJfdHlwZSI6ImxvY2FsLXVzZXJwYXNzIiwicHJvdmlkZXJfaWQiOiI1Zjg4ODkyOWY2OWZkOWUyNDFmMGJmMDEifSwic3ViIjoiNWY4ZDc0NDU1ODNiYjRhYmI3OGJjYzJhIiwidHlwIjoicmVmcmVzaCJ9.pNJzrvq60722wT2zeJlWVIDhEkcmAp_hDcG8g3YQsws");
                                                 app.loginAsync(credentials,it->{
                                                     if(it.isSuccess())
                                                     {
-                                                        Log.v("Success","Authenticated");
+                                                        //Log.v("Success","Authenticated");
                                                     }
                                                     else
                                                     {
