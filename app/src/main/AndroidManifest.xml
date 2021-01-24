@@ -23,7 +23,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".UserDataSetupActivity"></activity>
+        <activity android:name=".TeacherInfoActivity"></activity>
+        <activity android:name=".UserDataSetupActivity" />
         <activity android:name=".ResetPasswordActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
