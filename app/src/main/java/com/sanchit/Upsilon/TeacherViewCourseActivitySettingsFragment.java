@@ -21,6 +21,7 @@ import androidx.fragment.app.Fragment;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.switchmaterial.SwitchMaterial;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.sanchit.Upsilon.courseData.Course;
@@ -43,13 +44,20 @@ import static io.realm.Realm.getApplicationContext;
 
 public class TeacherViewCourseActivitySettingsFragment extends Fragment {
 
-    private TextView textRatings, textEnrolled, textStartDate, textPercentCompleted;
-    private SwitchMaterial enableRegistrations, isCourseFree;
-    private RadioButton online, offline;
-    private EditText etCourseName, etDescription, etDuration, etFee, etLocation;
+    //private TextView textRatings, textEnrolled, textStartDate, textPercentCompleted;
+    private SwitchMaterial enableRegistrations;
+    //private SwitchMaterial isCourseFree;
+    //private RadioButton online, offline;
+    private TextInputEditText etCourseName, etDescription, etDuration, etFee;
+    //private EditText etLocation;
+    private TextView textIsOnline;
+    private Button editLocation;
     private ImageView courseImage;
-    private FloatingActionButton update;
-    private Boolean name, des, dur, fee, loc;
+    private Button update;
+    private Boolean name;
+    private Boolean des;
+    private Boolean dur;
+    private Boolean fee;
 
     App app;
     String appID = "upsilon-ityvn";
@@ -65,7 +73,7 @@ public class TeacherViewCourseActivitySettingsFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         Log.d(TAG, "onCreateView: started");
-        View view = inflater.inflate(R.layout.teachers_viewof_course_settings, null);
+        View view = inflater.inflate(R.layout.teachers_viewof_course_settings, container, false);
         course = (Course) getArguments().get("Course");
 
         app = new App(new AppConfiguration.Builder(appID)
@@ -77,30 +85,32 @@ public class TeacherViewCourseActivitySettingsFragment extends Fragment {
         MongoCollection<Document> mongoCollection  = mongoDatabase.getCollection("CourseData");
 
         courseImage = (ImageView) view.findViewById(R.id.imgCourseImage);
-        textRatings = (TextView) view.findViewById(R.id.teacher_view_course_rating);
-        textEnrolled = (TextView) view.findViewById(R.id.teacher_view_course_enrolled);
-        textStartDate = (TextView) view.findViewById(R.id.teacher_view_course_start_date);
-        textPercentCompleted = (TextView) view.findViewById(R.id.teacher_view_course_completed);
+        //textRatings = (TextView) view.findViewById(R.id.teacher_view_course_rating);
+        //textEnrolled = (TextView) view.findViewById(R.id.teacher_view_course_enrolled);
+        //textStartDate = (TextView) view.findViewById(R.id.teacher_view_course_start_date);
+        //textPercentCompleted = (TextView) view.findViewById(R.id.teacher_view_course_completed);
 
         enableRegistrations = (SwitchMaterial) view.findViewById(R.id.toggleRegistrationAcceptance);
-        isCourseFree = (SwitchMaterial) view.findViewById(R.id.isCourseFree);
+        //isCourseFree = (SwitchMaterial) view.findViewById(R.id.isCourseFree);
 
-        online = (RadioButton) view.findViewById(R.id.online);
-        offline = (RadioButton) view.findViewById(R.id.offline);
-        update = (FloatingActionButton) view.findViewById(R.id.updateChange);
-        update.setVisibility(View.GONE);
+        //online = (RadioButton) view.findViewById(R.id.online);
+        //offline = (RadioButton) view.findViewById(R.id.offline);
+        update = (Button) view.findViewById(R.id.updateChange);
+        //update.setVisibility(View.GONE);
 
-        etCourseName = (EditText) view.findViewById(R.id.editTextCourseName);
-        etDescription = (EditText) view.findViewById(R.id.editTextCourseDescription);
-        etDuration = (EditText) view.findViewById(R.id.editTextCourseDuration);
-        etLocation = (EditText) view.findViewById(R.id.editTextCourseLocation);
-        etFee = (EditText) view.findViewById(R.id.editTextCourseFees);
+        etCourseName = (TextInputEditText) view.findViewById(R.id.editTextCourseName);
+        etDescription = (TextInputEditText) view.findViewById(R.id.editTextCourseDescription);
+        etDuration = (TextInputEditText) view.findViewById(R.id.editTextCourseDuration);
+        //etLocation = (EditText) view.findViewById(R.id.editTextCourseLocation);
+        editLocation = (Button) view.findViewById(R.id.btn_loc);
+        textIsOnline = (TextView) view.findViewById(R.id.textIsOnline);
+        etFee = (TextInputEditText) view.findViewById(R.id.editTextCourseFees);
 
         Picasso.with(getApplicationContext()).load(course.getCourseImage()).into(courseImage);
-        textRatings.setText("Rating "+course.getCourseRating() + "/5");
-        textEnrolled.setText(course.getNumberOfStudentsEnrolled() + " students have enrolled in this course");
-        textStartDate.setText("Course not started yet");
-        textPercentCompleted.setText("0% completed");
+        //textRatings.setText("Rating "+course.getCourseRating() + "/5");
+        //textEnrolled.setText(course.getNumberOfStudentsEnrolled() + " students have enrolled in this course");
+        //textStartDate.setText("Course not started yet");
+        //textPercentCompleted.setText("0% completed");
 
         //TODO: enableRegistrations
         etCourseName.setText(course.getCourseName());
@@ -108,41 +118,37 @@ public class TeacherViewCourseActivitySettingsFragment extends Fragment {
         etDuration.setText(""+course.getCourseDuration());
 
         if(course.getCourseMode().equals("Online")) {
-            online.setChecked(true);
-            offline.setChecked(false);
-            etLocation.setVisibility(View.GONE);
+            textIsOnline.setVisibility(View.VISIBLE);
+            editLocation.setVisibility(View.GONE);
         } else {
-            online.setChecked(false);
-            offline.setChecked(true);
-            etLocation.setVisibility(View.VISIBLE);
-            etLocation.setText(course.getInstructorLocation());
+            textIsOnline.setVisibility(View.GONE);
+            editLocation.setVisibility(View.VISIBLE);
+            //TODO: Init course location viewing/editing.
+
         }
         if (course.getCourseFees()==0){
-            isCourseFree.setChecked(true);
-            etFee.setVisibility(View.GONE);
+            //isCourseFree.setChecked(true);
+            etFee.setText("Rs. 0");
         } else {
-            isCourseFree.setChecked(false);
-            etFee.setText(""+course.getCourseFees());
+            //isCourseFree.setChecked(false);
+            etFee.setText("Rs. " + course.getCourseFees());
         }
 
-        name = des = dur = loc = fee = false;
+        name = des = dur = fee = false;
 
         etCourseName.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                update.setVisibility(View.GONE);
                 name=false;
             }
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                update.setVisibility(View.VISIBLE);
                 name=true;
             }
 
             @Override
             public void afterTextChanged(Editable editable) {
-                update.setVisibility(View.VISIBLE);
                 name=true;
             }
         });
@@ -150,19 +156,16 @@ public class TeacherViewCourseActivitySettingsFragment extends Fragment {
         etDescription.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                update.setVisibility(View.GONE);
                 des=false;
             }
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                update.setVisibility(View.VISIBLE);
                 des=true;
             }
 
             @Override
             public void afterTextChanged(Editable editable) {
-                update.setVisibility(View.VISIBLE);
                 des=true;
             }
         });
@@ -170,40 +173,34 @@ public class TeacherViewCourseActivitySettingsFragment extends Fragment {
         etDuration.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                update.setVisibility(View.GONE);
                 dur=false;
             }
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                update.setVisibility(View.VISIBLE);
                 dur=true;
             }
 
             @Override
             public void afterTextChanged(Editable editable) {
-                update.setVisibility(View.VISIBLE);
                 dur=true;
             }
         });
         etDuration.setImeOptions(EditorInfo.IME_ACTION_DONE);
-        etLocation.setImeOptions(EditorInfo.IME_ACTION_DONE);
+        //etLocation.setImeOptions(EditorInfo.IME_ACTION_DONE);
         etFee.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                update.setVisibility(View.GONE);
                 fee=false;
             }
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                update.setVisibility(View.VISIBLE);
                 fee=true;
             }
 
             @Override
             public void afterTextChanged(Editable editable) {
-                update.setVisibility(View.VISIBLE);
                 fee=true;
             }
         });
@@ -225,7 +222,6 @@ public class TeacherViewCourseActivitySettingsFragment extends Fragment {
                     course.setCourseFees(Integer.parseInt(etFee.getText().toString()));
                 }
                 //TODO: Update in backend
-                update.setVisibility(View.GONE);
             }
         });
 
