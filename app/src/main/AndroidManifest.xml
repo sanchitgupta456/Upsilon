@@ -23,7 +23,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".TeacherInfoActivity"></activity>
+        <activity android:name=".GetStartedAsTeacherActivity" />
+        <activity android:name=".TeacherDataSetupActivity" />
+        <activity android:name=".TeacherInfoActivity" />
         <activity android:name=".UserDataSetupActivity" />
         <activity android:name=".ResetPasswordActivity">
             <intent-filter>

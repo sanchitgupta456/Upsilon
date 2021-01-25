@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
+import androidx.cardview.widget.CardView;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
@@ -75,6 +76,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.PriorityQueue;
+import java.util.concurrent.BlockingDeque;
 import java.util.regex.Pattern;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -115,6 +117,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     RelativeLayout main;
     RecyclerView recyclerView,recyclerView1,recyclerView2,recyclerViewSearchResults;
+    CardView frame, frame1, frame2;
     CoursesAdapter1 coursesAdapter;
     CoursesAdapter1 searchResultsAdapter;
     CoursesAdapter1 coursesAdapter1_1;
@@ -181,6 +184,24 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         progressBar = (ProgressBar)findViewById(R.id.loadingMain);
         recyclerViewSearchResults = (RecyclerView) findViewById(R.id.search_results_home);
         main = (RelativeLayout) findViewById(R.id.main);
+        frame = (CardView) findViewById(R.id.ll);
+        frame1 = (CardView) findViewById(R.id.frameCurrentCourseListView);
+        frame2 = (CardView) findViewById(R.id.frameRecommendedCourses);/*
+        if(courseArrayList.size()==0){
+            frame.setVisibility(View.GONE);
+        } else {
+            frame.setVisibility(View.VISIBLE);
+        }
+        if(courseArrayList1.size()==0){
+            frame1.setVisibility(View.GONE);
+        } else {
+            frame1.setVisibility(View.VISIBLE);
+        }
+        if(courseArrayList2.size()==0){
+            frame2.setVisibility(View.GONE);
+        } else {
+            frame2.setVisibility(View.VISIBLE);
+        }*/
         app = new App(new AppConfiguration.Builder(appID)
                 .build());
         User user = app.currentUser();
@@ -421,6 +442,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                                                 Log.v("CourseAdded","Added");
                                                 courseArrayList1.add(course);
                                                 coursesAdapter1.notifyDataSetChanged();
+                                                frame1.setVisibility(View.VISIBLE);
                                                 flag[0] =1;
                                                 break;
                                             }
@@ -435,6 +457,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                                     if(!course.getTutorId().equals(user.getId())) {
                                         courseArrayList.add(course);
                                         coursesAdapter.notifyDataSetChanged();
+                                        frame.setVisibility(View.VISIBLE);
                                         //courseArrayList2.add(course);
                                         Document queryFilter1 = new Document("userid", course.getTutorId());
 
@@ -459,6 +482,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                                                             //Log.v("CourseBy","Hello");
                                                             courseArrayList2.add(course);
                                                             coursesAdapter2.notifyDataSetChanged();
+                                                            frame2.setVisibility(View.VISIBLE);
                                                             //Log.v("CoursesySeniors", String.valueOf(courseArrayList2));
                                                         }
                                                     } catch (Exception e) {
@@ -510,6 +534,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     }
                 });
 
+                if(courseArrayList.size()==0){
+                    frame.setVisibility(View.GONE);
+                } else {
+                    frame.setVisibility(View.VISIBLE);
+                }
+                if(courseArrayList1.size()==0){
+                    frame1.setVisibility(View.GONE);
+                } else {
+                    frame1.setVisibility(View.VISIBLE);
+                }
+                if(courseArrayList2.size()==0){
+                    frame2.setVisibility(View.GONE);
+                } else {
+                    frame2.setVisibility(View.VISIBLE);
+                }
+
 
                 MongoCollection<Document> mongoCollection1  = mongoDatabase.getCollection("UserData");
 
@@ -552,6 +592,32 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         recyclerView = (RecyclerView)findViewById(R.id.exploreCourseListView);
         recyclerView1 = (RecyclerView)findViewById(R.id.currentCourseListView);
         recyclerView2 = (RecyclerView) findViewById(R.id.recommendedCourseListView);
+        frame = (CardView) findViewById(R.id.ll);
+        frame1 = (CardView) findViewById(R.id.frameCurrentCourseListView);
+        frame2 = (CardView) findViewById(R.id.frameRecommendedCourses);
+        Log.d(TAG, "displayCoursesInRecycler: in here; commence debug test");
+        if(courseArrayList.size()==0){
+            frame.setVisibility(View.GONE);
+            Log.d(TAG, "displayCoursesInRecycler: failure 3");
+        } else {
+            frame.setVisibility(View.VISIBLE);
+            Log.d(TAG, "displayCoursesInRecycler: success 3");
+        }
+        if(courseArrayList1.size()==0){
+            frame1.setVisibility(View.GONE);
+            Log.d(TAG, "displayCoursesInRecycler: failure 1");
+        } else {
+            frame1.setVisibility(View.VISIBLE);
+            Log.d(TAG, "displayCoursesInRecycler: success 1");
+        }
+        if(courseArrayList2.size()==0){
+            frame2.setVisibility(View.GONE);
+            Log.d(TAG, "displayCoursesInRecycler: failure 2");
+        } else {
+            frame2.setVisibility(View.VISIBLE);
+            Log.d(TAG, "displayCoursesInRecycler: success 2");
+        }
+        Log.d(TAG, "displayCoursesInRecycler: end test");
         recyclerView.setLayoutManager(layoutManager);
         recyclerView1.setLayoutManager(layoutManager1);
         recyclerView2.setLayoutManager(layoutManager2);
@@ -562,8 +628,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         DividerItemDecoration dividerItemDecoration1 = new DividerItemDecoration(recyclerView1.getContext(), layoutManager1.getOrientation());
         DividerItemDecoration dividerItemDecoration2 = new DividerItemDecoration(recyclerView2.getContext(), layoutManager2.getOrientation());
 
-        recyclerView1.addItemDecoration(dividerItemDecoration1);
-        recyclerView2.addItemDecoration(dividerItemDecoration2);
+        //recyclerView1.addItemDecoration(dividerItemDecoration1);
+        //recyclerView2.addItemDecoration(dividerItemDecoration2);
         recyclerView.setAdapter(coursesAdapter);
         recyclerView1.setAdapter(coursesAdapter1);
         recyclerView2.setAdapter(coursesAdapter2);

@@ -47,7 +47,7 @@
         android:layout_below="@id/username"
         android:hint="@string/prompt_password"
         android:textColorHint="@color/GreyDark"
-        android:textColor="@color/colorWhite"
+        android:textColor="@color/colorBlack"
         android:imeActionLabel="@string/action_sign_in_short"
         android:imeOptions="actionDone"
         android:inputType="textPassword"
@@ -55,7 +55,8 @@
         android:autofillHints="Password"
         android:background="@drawable/text_view_login"
         android:backgroundTint="@color/colorBlack"
-        android:padding="12dp"/>
+        android:padding="12dp"
+        android:textColorHighlight="@color/colorWhite"/>
     <CheckBox
         android:id="@+id/checkRememberMe"
         android:layout_width="match_parent"

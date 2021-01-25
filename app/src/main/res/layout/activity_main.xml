@@ -39,7 +39,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/frameCurrentCourseListView"
-                    app:cardElevation="8dp">
+                    app:cardElevation="4dp">
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -75,9 +75,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/frameRecommendedCourses"
-                    app:cardElevation="8dp"
+                    app:cardElevation="4dp"
                     android:layout_below="@id/frameCurrentCourseListView"
-                    android:layout_marginTop="24dp">
+                    android:layout_marginTop="4dp">
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -129,59 +129,65 @@
                     android:orientation="horizontal"
                     android:scrollbars="horizontal"
                     android:layout_below="@id/textRecommendedCoursesList"/> -->
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                </FrameLayout>
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/ll"
-                    app:cardElevation="8dp"
+                    app:cardElevation="4dp"
                     android:layout_below="@id/frameRecommendedCourses"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginBottom="10dp">
+                    android:layout_marginTop="12dp"
+                    android:layout_marginBottom="2dp">
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-                        <TextView
-                            android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+                        <LinearLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:gravity="center_vertical"
-                            android:text="@string/explore"
-                            android:textSize="@dimen/text_margin"
-                            android:textColor="@color/colorPrimary"
-                            android:paddingVertical="5dp"
-                            android:paddingHorizontal="10dp"
-                            android:typeface="sans"
-                            android:clickable="true"
-                            android:focusable="true"
-                            android:layout_weight="1"/>
-                        <TextView
-                            android:id="@+id/textExploreCoursesList"
-                            android:layout_width="wrap_content"
+                            android:orientation="horizontal">
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_vertical"
+                                android:text="@string/explore"
+                                android:textSize="@dimen/text_margin"
+                                android:textColor="@color/colorPrimary"
+                                android:paddingVertical="5dp"
+                                android:paddingHorizontal="10dp"
+                                android:typeface="sans"
+                                android:clickable="true"
+                                android:focusable="true"
+                                android:layout_weight="1"/>
+                            <TextView
+                                android:id="@+id/textExploreCoursesList"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/see_more"
+                                android:textSize="@dimen/text_margin"
+                                android:textColor="@color/colorPrimary"
+                                android:paddingVertical="5dp"
+                                android:paddingHorizontal="10dp"
+                                android:typeface="sans"
+                                android:clickable="true"
+                                android:focusable="true"
+                                android:drawablePadding="@dimen/activity_horizontal_margin"
+                                app:drawableTint="@color/colorPrimary"
+                                app:drawableEndCompat="@drawable/next"/>
+                        </LinearLayout>
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/exploreCourseListView"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="@string/see_more"
-                            android:textSize="@dimen/text_margin"
-                            android:textColor="@color/colorPrimary"
-                            android:paddingVertical="5dp"
-                            android:paddingHorizontal="10dp"
-                            android:typeface="sans"
-                            android:clickable="true"
-                            android:focusable="true"
-                            android:drawablePadding="@dimen/activity_horizontal_margin"
-                            app:drawableTint="@color/colorPrimary"
-                            app:drawableEndCompat="@drawable/next"/>
+                            android:orientation="vertical"
+                            android:scrollbars="horizontal"/>
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
 
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/exploreCourseListView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:scrollbars="horizontal"
-                    android:layout_below="@id/ll"
-                    android:layout_margin="5dp"
-                    tools:listitem="@layout/explore_course_recycler_card"/>
                 <!--<ImageView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
