@@ -120,6 +120,8 @@ public class RegisterCourseActivity extends AppCompatActivity implements Payment
         MongoCollection<Document> mongoCollection1  = mongoDatabase.getCollection("CourseData");
         MongoCollection<Document> mongoCollection2  = mongoDatabase.getCollection("TeacherPaymentData");
         MongoCollection<Document> mongoCollection3  = mongoDatabase.getCollection("Transactions");
+        MongoCollection<Document> mongoCollection4  = mongoDatabase.getCollection("WalletAmount");
+
 
 
         //Blank query to find every single course in db
@@ -130,6 +132,8 @@ public class RegisterCourseActivity extends AppCompatActivity implements Payment
         RealmResultTask<MongoCursor<Document>> findTask = mongoCollection.find(queryFilter).iterator();
         RealmResultTask<MongoCursor<Document>> findTask1 = mongoCollection.find(queryFilter1).iterator();
         RealmResultTask<MongoCursor<Document>> findTask2 = mongoCollection2.find(queryFilter1).iterator();
+        RealmResultTask<MongoCursor<Document>> findTask3 = mongoCollection4.find(queryFilter1).iterator();
+
 
         Document transaction = new Document();
         transaction.append("date",System.currentTimeMillis());
@@ -146,6 +150,63 @@ public class RegisterCourseActivity extends AppCompatActivity implements Payment
             else
             {
                 Toast.makeText(getApplicationContext(),"Please contact the customer Support as your transaction couldnt be verified",Toast.LENGTH_LONG).show();
+            }
+        });
+
+        findTask3.getAsync(task ->{
+            if(task.isSuccess())
+            {
+                MongoCursor<Document> results = task.get();
+                if(results.hasNext())
+                {
+                    Document wallet = results.next();
+                    ArrayList<Document> tobepaid = (ArrayList<Document>) wallet.get("tobepaid");
+                    Document now = new Document();
+                    now.append("date",System.currentTimeMillis());
+                    now.append("amount",course.getCourseFees());
+                    if(tobepaid==null)
+                    {
+                        tobepaid = new ArrayList<>();
+                    }
+                    tobepaid.add(now);
+                    wallet.append("tobepaid",tobepaid);
+                    mongoCollection4.updateOne(new Document("userid",course.getTutorId()),wallet).getAsync(result -> {
+                        if(result.isSuccess())
+                        {
+
+                        }
+                        else
+                        {
+                            Log.v("ToBePaid","Failed ToBePaid");
+                        }
+                    });
+                }
+                else
+                {
+                    Document wallet = new Document();
+                    ArrayList<Document> tobepaid;
+                    Document now = new Document();
+                    now.append("date",System.currentTimeMillis());
+                    now.append("amount",course.getCourseFees());
+                    tobepaid = new ArrayList<>();
+                    tobepaid.add(now);
+                    wallet.append("tobepaid",tobepaid);
+                    wallet.append("userid",course.getTutorId());
+                    mongoCollection4.insertOne(wallet).getAsync(result -> {
+                        if(result.isSuccess())
+                        {
+
+                        }
+                        else
+                        {
+                            Log.v("ToBePaid","Failed ToBePaid");
+                        }
+                    });
+                }
+            }
+            else
+            {
+                Log.v("User","Failed to complete search");
             }
         });
 

@@ -17,10 +17,12 @@ import org.bson.Document;
 
 import io.realm.mongodb.App;
 import io.realm.mongodb.AppConfiguration;
+import io.realm.mongodb.RealmResultTask;
 import io.realm.mongodb.User;
 import io.realm.mongodb.mongo.MongoClient;
 import io.realm.mongodb.mongo.MongoCollection;
 import io.realm.mongodb.mongo.MongoDatabase;
+import io.realm.mongodb.mongo.iterable.MongoCursor;
 
 public class AddCoursePayment extends AppCompatActivity {
 
@@ -48,8 +50,29 @@ public class AddCoursePayment extends AppCompatActivity {
         mongoClient = user.getMongoClient("mongodb-atlas");
         mongoDatabase = mongoClient.getDatabase("Upsilon");
         MongoCollection<Document> mongoCollection  = mongoDatabase.getCollection("TeacherPaymentData");
+        Document queryFilter  = new Document("userid",user.getId());
+        RealmResultTask<MongoCursor<Document>> findTask = mongoCollection.find(queryFilter).iterator();
 
         submit = findViewById(R.id.btnSubmitPaymentInfo);
+
+        findTask.getAsync(result -> {
+            if(result.isSuccess())
+            {
+                MongoCursor<Document> results = result.get();
+                if(results.hasNext())
+                {
+                    Document payment = results.next();
+                    accountNumber.setText(payment.getString("accountNumber"));
+                    ifscCode.setText(payment.getString("ifscCode"));
+                    mobileNumber.setText(payment.getString("mobileNumber"));
+                    upiId.setText(payment.getString("UpiId"));
+                }
+            }
+            else
+            {
+
+            }
+        });
 
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,20 +96,95 @@ public class AddCoursePayment extends AppCompatActivity {
                     }
                     else
                     {
-                        mongoCollection.insertOne(new Document("userid", user.getId()).append("accountNumber", AccountNumber).append("ifscCode", IfscCode).append("mobileNumber", MobileNumber).append("UpiId", UpiId)).getAsync(result -> {
-                            if (result.isSuccess()) {
-                                startActivity(new Intent(AddCoursePayment.this, MainActivity.class));
-                            } else {
+                        findTask.getAsync(result -> {
+                            if(result.isSuccess())
+                            {
+                                MongoCursor<Document> results = result.get();
+                                if(results.hasNext())
+                                {
+                                    Document payment = results.next();
+                                    accountNumber.setText(payment.getString("accountNumber"));
+                                    ifscCode.setText(payment.getString("ifscCode"));
+                                    mobileNumber.setText(payment.getString("mobileNumber"));
+                                    upiId.setText(payment.getString("UpiId"));
+                                    payment.append("accountNumber",AccountNumber);
+                                    payment.append("ifscCode",IfscCode);
+                                    payment.append("mobileNumber",MobileNumber);
+                                    payment.append("UpiId",UpiId);
+
+                                    mongoCollection.updateOne(new Document("userid",user.getId()),payment).getAsync(result1 -> {
+                                        if(result1.isSuccess())
+                                        {
+                                            startActivity(new Intent(AddCoursePayment.this, MainActivity.class));
+
+                                        }
+                                        else
+                                        {
+
+                                        }
+                                    });
+                                }
+                                else
+                                {
+                                    mongoCollection.insertOne(new Document("userid", user.getId()).append("accountNumber", AccountNumber).append("ifscCode", IfscCode).append("mobileNumber", MobileNumber).append("UpiId", UpiId)).getAsync(result1 -> {
+                                        if (result1.isSuccess()) {
+                                            startActivity(new Intent(AddCoursePayment.this, MainActivity.class));
+                                        } else {
+
+                                        }
+                                    });
+                                }
+                            }
+                            else
+                            {
 
                             }
                         });
+
                     }
                 }
                 else {
-                    mongoCollection.insertOne(new Document("userid", user.getId()).append("accountNumber", AccountNumber).append("ifscCode", IfscCode).append("mobileNumber", MobileNumber).append("UpiId", UpiId)).getAsync(result -> {
-                        if (result.isSuccess()) {
-                            startActivity(new Intent(AddCoursePayment.this, MainActivity.class));
-                        } else {
+                    findTask.getAsync(result -> {
+                        if(result.isSuccess())
+                        {
+                            MongoCursor<Document> results = result.get();
+                            if(results.hasNext())
+                            {
+                                Document payment = results.next();
+                                accountNumber.setText(payment.getString("accountNumber"));
+                                ifscCode.setText(payment.getString("ifscCode"));
+                                mobileNumber.setText(payment.getString("mobileNumber"));
+                                upiId.setText(payment.getString("UpiId"));
+                                payment.append("accountNumber",AccountNumber);
+                                payment.append("ifscCode",IfscCode);
+                                payment.append("mobileNumber",MobileNumber);
+                                payment.append("UpiId",UpiId);
+
+                                mongoCollection.updateOne(new Document("userid",user.getId()),payment).getAsync(result1 -> {
+                                    if(result1.isSuccess())
+                                    {
+                                        startActivity(new Intent(AddCoursePayment.this, MainActivity.class));
+
+                                    }
+                                    else
+                                    {
+
+                                    }
+                                });
+                            }
+                            else
+                            {
+                                mongoCollection.insertOne(new Document("userid", user.getId()).append("accountNumber", AccountNumber).append("ifscCode", IfscCode).append("mobileNumber", MobileNumber).append("UpiId", UpiId)).getAsync(result1 -> {
+                                    if (result1.isSuccess()) {
+                                        startActivity(new Intent(AddCoursePayment.this, MainActivity.class));
+                                    } else {
+
+                                    }
+                                });
+                            }
+                        }
+                        else
+                        {
 
                         }
                     });

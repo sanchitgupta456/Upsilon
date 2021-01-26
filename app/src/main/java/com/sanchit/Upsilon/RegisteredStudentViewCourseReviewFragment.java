@@ -81,17 +81,23 @@ public class RegisteredStudentViewCourseReviewFragment extends Fragment {
                     //Object courseReview = (Object) courseReviews.get(counter);
                     //CourseReview courseReview1 = (CourseReview) courseReviews.get(counter);
                     try {
-                        LinkedHashMap courseReview1 = (LinkedHashMap) courseReviews.get(counter);
-                        if(courseReview1.get("reviewAuthorId").equals(user.getId()))
-                        {
-                            //rating.setText(courseReview1.get("reviewRating").toString());
-                            //TODO
-                            ratingBar.setRating(Float.parseFloat(String.valueOf(courseReview1.get("reviewRating"))));
-                            //rating.setText((int) Double.parseDouble(String.valueOf(4.5)));
-                            review.setText(courseReview1.get("review").toString());
-                            submitReview.setVisibility(View.INVISIBLE);
-                            break;
+                        LinkedHashMap courseReview1 = null;
+                        try {
+                            courseReview1 = (LinkedHashMap) courseReviews.get(counter);
+                            if(courseReview1.get("reviewAuthorId").equals(user.getId()))
+                            {
+                                //rating.setText(courseReview1.get("reviewRating").toString());
+                                //TODO
+                                ratingBar.setRating(Float.parseFloat(String.valueOf(courseReview1.get("reviewRating"))));
+                                //rating.setText((int) Double.parseDouble(String.valueOf(4.5)));
+                                review.setText(courseReview1.get("review").toString());
+                                submitReview.setVisibility(View.INVISIBLE);
+                                break;
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
+
                         //CourseReview courseReview2 = new CourseReview(courseReview1.get("review").toString(), (Double) courseReview1.get("reviewRating"),courseReview1.get("reviewAuthorId").toString());
                         //courseReviewsArrayList.add(courseReview2);
                         //courseReviewAdapter.notifyDataSetChanged();
