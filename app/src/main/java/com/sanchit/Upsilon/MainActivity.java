@@ -953,47 +953,47 @@ since the dispatchTouchEvent might dispatch your touch event to this function ag
         }
 
 
-        mongoClient = user.getMongoClient("mongodb-atlas");
-        mongoDatabase = mongoClient.getDatabase("Upsilon");
-        MongoCollection<Document> mongoCollection  = mongoDatabase.getCollection("UserData");
-
-        //Blank query to find every single user in db
-        Document queryFilter  = new Document();
-
-        RealmResultTask<MongoCursor<Document>> findTask = mongoCollection.find(queryFilter).iterator();
-
-        findTask.getAsync(task -> {
-            if (task.isSuccess()) {
-                MongoCursor<Document> results = task.get();
-                int i = 0;
-                while (results.hasNext()) {
-                    i++;
-                    //Log.v("EXAMPLE", results.next().toString());
-                    Document currentDoc = results.next();
-                    Document loc = new Document();
-                    loc.append("latitude", 19.84);
-                    loc.append("longitude", 75.26);
-                    currentDoc.append("userLocation", loc);
-                    Log.v("Purging",currentDoc.getString("userid"));
-                    mongoCollection.updateOne(new Document("userid", currentDoc.getString("userid")), currentDoc).getAsync(result ->
-                    {
-                        if(result.isSuccess())
-                        {
-                            Log.v("Success","success");
-                        }
-                        else
-                        {
-                            Log.v("Error",result.getError().toString());
-                        }
-                    });
-                    Log.v("PURGE", "Purged!");
-                    Log.v("PURGE", Integer.toString(i));
-                }
-                Log.v("PURGE", "THE PURGE WAS A SUCCESS!");
-            } else {
-                Log.v("User","Failed to complete search");
-            }
-        });
+//        mongoClient = user.getMongoClient("mongodb-atlas");
+//        mongoDatabase = mongoClient.getDatabase("Upsilon");
+//        MongoCollection<Document> mongoCollection  = mongoDatabase.getCollection("UserData");
+//
+//        //Blank query to find every single user in db
+//        Document queryFilter  = new Document();
+//
+//        RealmResultTask<MongoCursor<Document>> findTask = mongoCollection.find(queryFilter).iterator();
+//
+//        findTask.getAsync(task -> {
+//            if (task.isSuccess()) {
+//                MongoCursor<Document> results = task.get();
+//                int i = 0;
+//                while (results.hasNext()) {
+//                    i++;
+//                    //Log.v("EXAMPLE", results.next().toString());
+//                    Document currentDoc = results.next();
+//                    Document loc = new Document();
+//                    loc.append("latitude", 19.84);
+//                    loc.append("longitude", 75.26);
+//                    currentDoc.append("userLocation", loc);
+//                    Log.v("Purging",currentDoc.getString("userid"));
+//                    mongoCollection.updateOne(new Document("userid", currentDoc.getString("userid")), currentDoc).getAsync(result ->
+//                    {
+//                        if(result.isSuccess())
+//                        {
+//                            Log.v("Success","success");
+//                        }
+//                        else
+//                        {
+//                            Log.v("Error",result.getError().toString());
+//                        }
+//                    });
+//                    Log.v("PURGE", "Purged!");
+//                    Log.v("PURGE", Integer.toString(i));
+//                }
+//                Log.v("PURGE", "THE PURGE WAS A SUCCESS!");
+//            } else {
+//                Log.v("User","Failed to complete search");
+//            }
+//        });
     }
 
     public void initRecyclerView(RecyclerView recyclerView, ArrayList<Course> list) {

@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.sanchit.Upsilon.courseData.Course;
@@ -111,9 +112,14 @@ public class ExploreFragment1 extends Fragment {
                     //Log.v("EXAMPLE", results.next().toString());
                     Document currentDoc = results.next();
                     Document userLoc = (Document) currentDoc.get("userLocation");
-                    searchQuery.searchForCourse(app, mongoDatabase, getContext(), adapter, recyclerView, 10, userLoc);
+                    if(userLoc!=null) {
+                        searchQuery.searchForCourse(app, mongoDatabase, getContext(), adapter, recyclerView, 10, userLoc);
+                    }
+                    else
+                    {
+                        Snackbar.make(getView(),"Blah",Snackbar.LENGTH_LONG).show();
+                    }
                 }
-                Log.v("PURGE", "THE PURGE WAS A SUCCESS!");
             } else {
                 Log.v("User", "Failed to complete search");
             }

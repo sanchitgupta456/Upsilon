@@ -192,7 +192,16 @@ public class SearchQuery {
     }
 
     public double calculateDistance(Document courseLoc, Document userLoc){
-        double lat1 = courseLoc.getDouble("latitude"),lon1 = courseLoc.getDouble("longitude"),lat2 = userLoc.getDouble("latitude"),lon2 = userLoc.getDouble("longitude");
+
+        double lat1 = 0,lon1 = 0,lat2 = 0,lon2 = 0;
+        try {
+            lat1 = courseLoc.getDouble("latitude");
+            lon2 = userLoc.getDouble("longitude");
+            lat2 = userLoc.getDouble("latitude");
+            lon1 = courseLoc.getDouble("longitude");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         Log.v("Distance","calculating");
         double R = 6378;
         double dLat = Math.PI*Math.abs(lat2-lat1)/180;
@@ -281,11 +290,16 @@ public class SearchQuery {
                             //Online courses are not considered for distance ranking
                             if (!document.getString("courseMode").equals("Online")) {
                                 if (categoryCheck(course.getCourseCategories())) {
-                                    Log.v("Distance","Calling Function");
-                                    double courseDist = calculateDistance((Document) document.get("courseLocation"), userLoc);
-                                    Log.v("LocationSearch", document.getString("courseName").concat(" ").concat(Double.toString(courseDist)));
-                                    document.append("courseDistance", courseDist);
-                                    searchResultsByLocation.add(document);
+                                    Log.v("Distance", "Calling Function");
+                                    if (document.get("courseLocation") != null) {
+                                        double courseDist = calculateDistance((Document) document.get("courseLocation"), userLoc);
+                                        Log.v("LocationSearch", document.getString("courseName").concat(" ").concat(Double.toString(courseDist)));
+                                        document.append("courseDistance", courseDist);
+                                        searchResultsByLocation.add(document);
+                                    } else
+                                    {
+                                        Log.v("NotFound", String.valueOf(document));
+                                    }
                                 }
                             }
                         }else{

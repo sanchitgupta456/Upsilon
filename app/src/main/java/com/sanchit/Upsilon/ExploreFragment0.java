@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.sanchit.Upsilon.courseData.Course;
@@ -74,9 +75,17 @@ public class ExploreFragment0 extends Fragment {
         mongoClient = user.getMongoClient("mongodb-atlas");
         mongoDatabase = mongoClient.getDatabase("Upsilon");
         MongoCollection<Document> mongoCollection  = mongoDatabase.getCollection("CourseData");
-
-        searchQuery.setRankMethod(sortCriteria);
-        searchForCourses(query);
+        Document userdata = user.getCustomData();
+        if(userdata.get("userLocation")!=null) {
+            Log.v("Searching", String.valueOf(userdata.get("userLocation")));
+            searchQuery.setRankMethod(sortCriteria);
+            searchForCourses(query);
+        }
+        else
+        {
+            recyclerView.setVisibility(View.INVISIBLE);
+            Snackbar.make(getView(),"Blah",Snackbar.LENGTH_LONG).show();
+        }
 
         return view;
     }
@@ -114,9 +123,15 @@ public class ExploreFragment0 extends Fragment {
                     //Log.v("EXAMPLE", results.next().toString());
                     Document currentDoc = results.next();
                     Document userLoc = (Document) currentDoc.get("userLocation");
-                    searchQuery.searchForCourse(app, mongoDatabase,getContext(), adapter, recyclerView, 10, userLoc);
+                    Log.v("UserLocation", String.valueOf(currentDoc.get("userLocation")));
+                    if(currentDoc.get("userLocation")!=null) {
+                        searchQuery.searchForCourse(app, mongoDatabase, getContext(), adapter, recyclerView, 10, userLoc);
+                    }
+                    else
+                    {
+                        Snackbar.make(getView(),"Please add Your Location in UserData to search courses near you",1).show();
+                    }
                 }
-                Log.v("PURGE", "THE PURGE WAS A SUCCESS!");
             } else {
                 Log.v("User","Failed to complete search");
             }

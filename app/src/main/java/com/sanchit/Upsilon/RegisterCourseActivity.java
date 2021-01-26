@@ -117,14 +117,37 @@ public class RegisterCourseActivity extends AppCompatActivity implements Payment
         mongoClient = user.getMongoClient("mongodb-atlas");
         mongoDatabase = mongoClient.getDatabase("Upsilon");
         MongoCollection<Document> mongoCollection  = mongoDatabase.getCollection("UserData");
-
         MongoCollection<Document> mongoCollection1  = mongoDatabase.getCollection("CourseData");
+        MongoCollection<Document> mongoCollection2  = mongoDatabase.getCollection("TeacherPaymentData");
+        MongoCollection<Document> mongoCollection3  = mongoDatabase.getCollection("Transactions");
+
 
         //Blank query to find every single course in db
         //TODO: Modify query to look for user preferred course IDs
         Document queryFilter  = new Document("userid",user.getId());
+        Document queryFilter1  = new Document("userid",course.getTutorId());
 
         RealmResultTask<MongoCursor<Document>> findTask = mongoCollection.find(queryFilter).iterator();
+        RealmResultTask<MongoCursor<Document>> findTask1 = mongoCollection.find(queryFilter1).iterator();
+        RealmResultTask<MongoCursor<Document>> findTask2 = mongoCollection2.find(queryFilter1).iterator();
+
+        Document transaction = new Document();
+        transaction.append("date",System.currentTimeMillis());
+        transaction.append("userid",user.getId());
+        transaction.append("tutorId",course.getTutorId());
+        transaction.append("courseId",course.getCourseId());
+        transaction.append("courseName",course.getCourseName());
+        transaction.append("amount",course.getCourseFees());
+        mongoCollection3.insertOne(transaction).getAsync(result -> {
+            if(result.isSuccess())
+            {
+                Log.v("Transaction","Transaction Sucessful");
+            }
+            else
+            {
+                Toast.makeText(getApplicationContext(),"Please contact the customer Support as your transaction couldnt be verified",Toast.LENGTH_LONG).show();
+            }
+        });
 
         findTask.getAsync(task -> {
             if (task.isSuccess()) {
@@ -168,6 +191,82 @@ public class RegisterCourseActivity extends AppCompatActivity implements Payment
                             Log.e("RegisterError", "Unable to Register. Error: " + result.getError());
                         }
                     });
+
+
+                    // getCourseData();
+                }
+            } else {
+                Log.v("User","Failed to complete search");
+            }
+        });
+
+        findTask1.getAsync(task -> {
+            if (task.isSuccess()) {
+                MongoCursor<Document> results = task.get();
+                if(!results.hasNext())
+                {
+
+                }
+                else
+                {
+                    Log.v("User", "successfully found the user");
+                    Document data = results.next();
+                    int amount = course.getCourseFees();
+                    if(data.getInteger("WalletAmountToBePaid")!=null)
+                    {
+                        amount = amount+data.getInteger("WalletAmountToBePaid");
+                    }
+                    data.append("WalletAmountToBePaid",amount);
+                    //userData.remove("_id");
+                    mongoCollection.updateOne(new Document("userid",course.getTutorId()),data).getAsync(result -> {
+                        if(result.isSuccess())
+                        {
+
+                        }
+                        else
+                        {
+                            Log.e("RegisterError", "Unable to Register. Error: " + result.getError());
+                        }
+                    });
+
+
+                    // getCourseData();
+                }
+            } else {
+                Log.v("User","Failed to complete search");
+            }
+        });
+
+        findTask2.getAsync(task -> {
+            if (task.isSuccess()) {
+                MongoCursor<Document> results = task.get();
+                if(!results.hasNext())
+                {
+
+                }
+                else
+                {
+                    Log.v("User", "successfully found the user");
+                    Document data = results.next();
+                    int amount = course.getCourseFees();
+                    if(data.getInteger("WalletAmountToBePaid")!=null)
+                    {
+                        amount = amount+data.getInteger("WalletAmountToBePaid");
+                    }
+                    data.append("WalletAmountToBePaid",amount);
+                    //userData.remove("_id");
+                    mongoCollection2.updateOne(new Document("userid",course.getTutorId()),data).getAsync(result -> {
+                        if(result.isSuccess())
+                        {
+
+                        }
+                        else
+                        {
+                            Log.e("RegisterError", "Unable to Register. Error: " + result.getError());
+                        }
+                    });
+
+
                     // getCourseData();
                 }
             } else {
@@ -208,7 +307,7 @@ public class RegisterCourseActivity extends AppCompatActivity implements Payment
              *     Invoice Payment
              *     etc.
              */
-            //options.put("description", "Reference No. #123456");
+            options.put("description", "From "+user.getId()+" for "+course.getCourseId());
             //options.put("image", R.drawable.lightlogo1);
             //options.put("order_id", "order_9A33XWu170gUtm");
             options.put("currency", "INR");
