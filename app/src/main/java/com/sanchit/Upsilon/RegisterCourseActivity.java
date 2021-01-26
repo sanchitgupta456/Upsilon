@@ -270,6 +270,24 @@ public class RegisterCourseActivity extends AppCompatActivity implements Payment
                     // getCourseData();
                 }
             } else {
+                Log.v("User", "successfully found the user");
+                Document data = new Document("userid",user.getId());
+                int amount = course.getCourseFees();
+                if(data.getInteger("WalletAmountToBePaid")!=null)
+                {
+                    amount = amount+data.getInteger("WalletAmountToBePaid");
+                }
+                data.append("WalletAmountToBePaid",amount);
+                mongoCollection2.insertOne(data).getAsync(result -> {
+                    if(result.isSuccess())
+                    {
+
+                    }
+                    else
+                    {
+                        Log.e("RegisterError", "Unable to Register. Error: " + result.getError());
+                    }
+                });
                 Log.v("User","Failed to complete search");
             }
         });

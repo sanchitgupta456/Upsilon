@@ -28,8 +28,12 @@ import io.realm.mongodb.mongo.iterable.MongoCursor;
 
 public class WalletActivity extends AppCompatActivity {
 
-    private TextView accountnumber,ifsc,mobile,upi;
-    private String Accountnumber,Ifsc,Mobile,Upi;
+    private TextView accountnumber,ifsc,mobile,upi,amountdue;
+    private String Accountnumber;
+    private String Ifsc;
+    private String Mobile;
+    private String Upi;
+    private Integer AmountDue;
     String appID = "upsilon-ityvn";
     App app;
     MongoClient mongoClient;
@@ -48,12 +52,14 @@ public class WalletActivity extends AppCompatActivity {
         ifsc = (TextView) findViewById(R.id.textIFSCCode);
         mobile = (TextView) findViewById(R.id.textMobileNumber);
         upi = (TextView) findViewById(R.id.textUPIId);
+        amountdue = (TextView) findViewById(R.id.amount_due);
         EditPaymentDetails = (Button) findViewById(R.id.btn_edit_payment_details);
 
-        accountnumber.setText(Accountnumber);
-        ifsc.setText(Ifsc);
-        mobile.setText(Mobile);
-        upi.setText(Upi);
+//        accountnumber.setText(Accountnumber);
+//        ifsc.setText(Ifsc);
+//        mobile.setText(Mobile);
+//        upi.setText(Upi);
+//        amountdue.setText(AmountDue);
 
         EditPaymentDetails.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,10 +92,12 @@ public class WalletActivity extends AppCompatActivity {
                     Ifsc = paymentDetails.getString("ifscCode");
                     Mobile = paymentDetails.getString("mobileNumber");
                     Upi = paymentDetails.getString("UpiId");
+                    AmountDue = paymentDetails.getInteger("WalletAmountToBePaid");
                     accountnumber.setText(Accountnumber);
                     ifsc.setText(Ifsc);
                     mobile.setText(Mobile);
                     upi.setText(Upi);
+                    amountdue.setText(String.valueOf(AmountDue));
                     Log.v("WalletDetails",Accountnumber+Ifsc+Mobile+Upi);
                 }
                 else
