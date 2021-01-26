@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".PaymentDetailsFragment"
+    android:padding="12dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorBlack"
+        android:text="Please add your payment details"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:typeface="sans"
+        android:id="@+id/text1"
+        android:padding="10dp"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/text2"
+        android:layout_below="@id/text1"
+        android:textColor="@color/GreyDark"
+        android:text="Leave blank if you wish to offer only free courses for now. You can anyway add these later."
+        android:textSize="14sp"
+        android:typeface="sans"
+        android:paddingHorizontal="10dp"/>
+    <EditText
+        android:id="@+id/account_number"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:layout_marginTop="48dp"
+        android:textColor="@color/colorPrimary"
+        android:textSize="14sp"
+        android:typeface="sans"
+        android:textColorHint="#464646"
+        android:hint="Enter Account Number"
+        android:background="@drawable/text_view_add_course"
+        android:padding="10dp"
+        android:layout_below="@id/text2"/>
+    <EditText
+        android:id="@+id/ifsc_code"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:inputType="text"
+        android:textColor="@color/colorPrimary"
+        android:textSize="14sp"
+        android:typeface="sans"
+        android:textColorHint="#464646"
+        android:hint="Enter IFSC Code"
+        android:background="@drawable/text_view_add_course"
+        android:padding="10dp"
+        android:layout_below="@id/account_number"/>
+    <EditText
+        android:id="@+id/mobile_number"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:inputType="phone"
+        android:textColor="@color/colorPrimary"
+        android:textSize="14sp"
+        android:typeface="sans"
+        android:textColorHint="#464646"
+        android:hint="Enter Mobile Number"
+        android:background="@drawable/text_view_add_course"
+        android:padding="10dp"
+        android:layout_below="@id/ifsc_code"/>
+    <EditText
+        android:id="@+id/upi_code"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:inputType="text"
+        android:textColor="@color/colorPrimary"
+        android:textSize="14sp"
+        android:typeface="sans"
+        android:textColorHint="#464646"
+        android:hint="Enter UPI ID"
+        android:background="@drawable/text_view_add_course"
+        android:padding="10dp"
+        android:layout_below="@id/mobile_number"/>
+
+</RelativeLayout>

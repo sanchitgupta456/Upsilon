@@ -798,6 +798,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             Intent intent = new Intent(MainActivity.this, UserDataSetupActivity.class);
             startActivity(intent);
         }
+        else if(id==R.id.homeDrawerMenuItem8)
+        {
+            Intent intent = new Intent(MainActivity.this, TeacherDataSetupActivity.class);
+            startActivity(intent);
+        }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

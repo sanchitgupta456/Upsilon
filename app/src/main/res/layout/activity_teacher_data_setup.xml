@@ -49,7 +49,7 @@
             style="@style/Theme.AppCompat.DayNight"
             android:visibility="invisible"/>
         <Button
-            android:id="@+id/selectLaterNext"
+            android:id="@+id/btnNext"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/next"

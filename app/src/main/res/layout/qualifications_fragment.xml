@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".QualificationsFragment"
+    android:padding="12dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:textSize="18sp"
+        android:textColor="@color/colorBlack"
+        android:textStyle="bold"
+        android:text="What do you specialize in? (optional)"
+        android:padding="10dp"
+        android:id="@+id/text1"/>
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/text_margin"
+        android:textColor="@color/colorBlack"
+        android:padding="10dp"
+        android:layout_below="@id/text1"
+        android:layout_margin="10dp"
+        android:background="@drawable/text_view_add_course"
+        android:textColorHint="@color/GreyDark"
+        android:hint="Enter your specialities here (separated by space)"
+        android:inputType="text"
+        android:imeOptions="actionNext"
+        android:id="@+id/etSpecialities"
+        android:autofillHints=" "/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:textSize="18sp"
+        android:textColor="@color/colorBlack"
+        android:textStyle="bold"
+        android:text="Mention optional qualifications (optional)"
+        android:padding="10dp"
+        android:id="@+id/text2"
+        android:layout_below="@id/etSpecialities"
+        android:layout_marginTop="36dp"/>
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/text_margin"
+        android:textColor="@color/colorBlack"
+        android:padding="10dp"
+        android:layout_below="@id/text2"
+        android:layout_margin="10dp"
+        android:background="@drawable/text_view_add_course"
+        android:textColorHint="@color/GreyDark"
+        android:hint="Enter your qualifications here"
+        android:inputType="textMultiLine"
+        android:imeOptions="actionDone"
+        android:id="@+id/etQualification"
+        android:autofillHints=" "/>
+
+</RelativeLayout>

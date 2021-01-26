@@ -25,6 +25,9 @@
         android:title="Title 7"
         android:id="@+id/homeDrawerMenuItem7"/>
     <item
+        android:title="TeacherDataSetupShortcut (temp.)"
+        android:id="@+id/homeDrawerMenuItem8"/>
+    <item
         android:title="@string/more"
         android:id="@+id/more">
         <menu>

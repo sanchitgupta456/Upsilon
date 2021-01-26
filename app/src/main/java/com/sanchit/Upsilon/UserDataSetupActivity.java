@@ -91,7 +91,7 @@ public class UserDataSetupActivity extends AppCompatActivity {
             @Override
             public void onPageSelected(int position) {
                 progress.setDotPosition(position);
-                if(position == 3){
+                if(position == 2){
                     next.setText("Get Started");
                 } else {
                     next.setText(R.string.next);
