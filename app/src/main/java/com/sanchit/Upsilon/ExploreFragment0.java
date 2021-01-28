@@ -1,7 +1,16 @@
 package com.sanchit.Upsilon;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -11,8 +20,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -23,7 +37,11 @@ import com.sanchit.Upsilon.courseSearching.rankBy;
 
 import org.bson.Document;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+import java.util.Objects;
 
 import io.realm.mongodb.App;
 import io.realm.mongodb.AppConfiguration;
@@ -34,8 +52,11 @@ import io.realm.mongodb.mongo.MongoCollection;
 import io.realm.mongodb.mongo.MongoDatabase;
 import io.realm.mongodb.mongo.iterable.MongoCursor;
 
+import static io.realm.Realm.getApplicationContext;
+
 public class ExploreFragment0 extends Fragment {
     private static final String TAG = "Near Me";
+    private static final int REQUEST_FINE_LOCATION = 1234;
     String appID = "upsilon-ityvn";
     private App app;
     private LinearLayoutManager linearLayoutManager;
@@ -45,8 +66,12 @@ public class ExploreFragment0 extends Fragment {
     private User user;
     private Gson gson;
     private GsonBuilder gsonBuilder;
+    Document userdata;
     RecyclerView recyclerView;
+    CardView alter;
+    LinearLayout ll, llLoader;
     SearchQuery searchQuery = new SearchQuery();
+    Document userLocation;
 
     ArrayList<Course> list = new ArrayList<>();
 
@@ -69,22 +94,48 @@ public class ExploreFragment0 extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_explore0, container, false);
         recyclerView = (RecyclerView) view.findViewById(R.id.exploreList0);
+        alter = (CardView) view.findViewById(R.id.alter);
+        ll = (LinearLayout) view.findViewById(R.id.linearLayoutSetupMaps);
+        llLoader = (LinearLayout) view.findViewById(R.id.llLocationSetupProgress);
+        llLoader.setVisibility(View.INVISIBLE);
 
         app = new App(new AppConfiguration.Builder(appID).build());
         user = app.currentUser();
         mongoClient = user.getMongoClient("mongodb-atlas");
         mongoDatabase = mongoClient.getDatabase("Upsilon");
         MongoCollection<Document> mongoCollection  = mongoDatabase.getCollection("CourseData");
-        Document userdata = user.getCustomData();
+        userdata = user.getCustomData();
+
+        ll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "onClick: ok now button is clicked");
+                if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    Log.d(TAG, "onClick: oops i don't have permission yet :(");
+                    ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_FINE_LOCATION);
+                    Log.d(TAG, "onClick: i wonder ;-;");
+                } else {
+                    Log.d(TAG, "onClick: it is here now");
+                    llLoader.setVisibility(View.VISIBLE);
+                    getLocation();
+                    app = new App(new AppConfiguration.Builder(appID).build());
+                    user = app.currentUser();
+                    performSearch();
+                    //llLoader.setVisibility(View.INVISIBLE);
+                }
+            }
+        });
         if(userdata.get("userLocation")!=null) {
             Log.v("Searching", String.valueOf(userdata.get("userLocation")));
             searchQuery.setRankMethod(sortCriteria);
             searchForCourses(query);
+            alter.setVisibility(View.GONE);
+            recyclerView.setVisibility(View.VISIBLE);
         }
         else
         {
-            recyclerView.setVisibility(View.INVISIBLE);
-            Snackbar.make(getView(),"Blah",Snackbar.LENGTH_LONG).show();
+            recyclerView.setVisibility(View.GONE);
+            alter.setVisibility(View.VISIBLE);
         }
 
         return view;
@@ -109,6 +160,21 @@ public class ExploreFragment0 extends Fragment {
         mongoClient = user.getMongoClient("mongodb-atlas");
         mongoDatabase = mongoClient.getDatabase("Upsilon");
         MongoCollection<Document> mongoCollection  = mongoDatabase.getCollection("UserData");
+        userdata = user.getCustomData();
+
+        if(userdata.get("userLocation")!=null) {
+            Log.v("Searching", String.valueOf(userdata.get("userLocation")));
+            searchQuery.setRankMethod(sortCriteria);
+            searchForCourses(query);
+            alter.setVisibility(View.GONE);
+            recyclerView.setVisibility(View.VISIBLE);
+        }
+        else
+        {
+            recyclerView.setVisibility(View.GONE);
+            alter.setVisibility(View.VISIBLE);
+            return;
+        }
 
         //Blank query to find every single user in db
         Document queryFilter  = new Document("userid", user.getId());
@@ -147,5 +213,104 @@ public class ExploreFragment0 extends Fragment {
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(coursesAdapter1);
         Log.d(TAG, "initRecyclerView: display success! Displayed " + list.size() + " items");
+    }
+
+    //location
+    private void getLocation() {
+        Log.d(TAG, "getLocation: I got permissions!");
+        userLocation = new Document();
+        if (ActivityCompat.checkSelfPermission(Objects.requireNonNull(getContext()), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        FusedLocationProviderClient fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(Objects.requireNonNull(getContext()));;
+        fusedLocationProviderClient.getLastLocation().addOnCompleteListener(new OnCompleteListener<Location>() {
+            @Override
+            public void onComplete(@NonNull Task<Location> task) {
+                Location location = task.getResult();
+                if(location!=null)
+                {
+                    Log.v("Location","Location"+location.getLatitude());
+                    Geocoder geocoder = new Geocoder(getApplicationContext(), Locale.getDefault());
+                    try {
+                        List<Address> addresses = geocoder.getFromLocation(location.getLatitude(),location.getLongitude(),1);
+                        /*
+                        City.setText(addresses.get(0).getLocality());
+                        viewModel.setCity(addresses.get(0).getLocality());
+                        Pincode.setText(addresses.get(0).getPostalCode());
+                        viewModel.setPincode(addresses.get(0).getPostalCode());*/
+                        userLocation.append("lattitude",location.getLatitude());
+                        userLocation.append("longitude",location.getLongitude());
+                        //viewModel.setUserLocation(userLocation);
+                        //user.getCustomData().append("userLocation", userLocation);
+                        updateLocation();
+                        //Log.v("Location",addresses.get(0).getPostalCode()+" "+addresses.get(0).getLocality()+" "+addresses.get(0).getSubLocality());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+                else
+                {
+                    Log.v("Location","Error");
+                }
+            }
+        });
+    }
+
+    public void updateLocation(){
+        Document queryFilter = new Document("userid", user.getId());
+        mongoClient = user.getMongoClient("mongodb-atlas");
+        mongoDatabase = mongoClient.getDatabase("Upsilon");
+        MongoCollection<Document> mongoCollection  = mongoDatabase.getCollection("UserData");
+        RealmResultTask<MongoCursor<Document>> findTask = mongoCollection.find(queryFilter).iterator();
+
+        findTask.getAsync(task -> {
+            if (task.isSuccess()) {
+                MongoCursor<Document> results = task.get();
+                if (!results.hasNext()) {
+                    /*
+                    mongoCollection.insertOne(
+                            new Document("userid", user.getId()).append("userLocation",userLocation))
+                            .getAsync(result -> {
+                                if (result.isSuccess()) {
+                                    Log.v("EXAMPLE", "Inserted custom user data document. _id of inserted document: "
+                                            + result.get().getInsertedId());
+                                } else {
+                                    Log.e("EXAMPLE", "Unable to insert custom user data. Error: " + result.getError());
+                                }
+                            });*/
+                    Log.d(TAG, "updateLocation: This is some error?!");
+                } else {
+                    Document userdata = results.next();
+                    userdata.append("userLocation",userLocation);
+
+                    mongoCollection.updateOne(
+                            new Document("userid", user.getId()), (userdata))
+                            .getAsync(result -> {
+                                if (result.isSuccess()) {
+                                    Log.v("EXAMPLE", "Inserted custom user data document. _id of inserted document: "
+                                            + result.get().getModifiedCount());
+                                } else {
+                                    Log.e("EXAMPLE", "Unable to insert custom user data. Error: " + result.getError());
+                                }
+                            });
+                }
+                while (results.hasNext()) {
+                    //Log.v("EXAMPLE", results.next().toString());
+                    Document currentDoc = results.next();
+                    Log.v("User", currentDoc.getString("userid"));
+                }
+            } else {
+                Log.v("User", "Failed to complete search");
+            }
+        });
+        Log.d(TAG, "updateLocation: safe exit here");
     }
 }
