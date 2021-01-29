@@ -326,6 +326,11 @@ public class SearchQuery {
                         }
                     }
 
+                    for (int p = 0; p < searchResultsList.size(); p++){
+                        Log.v("COURSEDISTANCE", searchResultsList.get(p).getCourseName());
+                        Log.v("COURSEDISTANCE", Double.toString(getCourseDistance(searchResultsList.get(p), userLoc)));
+                    }
+
                     //Shows the results in recyclerview
                     //assert coursesAdapter1 != null;
                     //assert recyclerView != null;
@@ -371,5 +376,15 @@ public class SearchQuery {
         }
         Log.v("CategoryCheck", "No tags match!");
         return false;
+    }
+
+    public double getCourseDistance(Course course, Document userLoc){
+        try {
+            return calculateDistance((Document) course.getCourseLocation(), userLoc);
+        }
+        catch(Exception e){
+            Log.v("DISTANCE CALC | ", "Something went wrong! Most probably an invalid course was passed!");
+            return -1;
+        }
     }
 }

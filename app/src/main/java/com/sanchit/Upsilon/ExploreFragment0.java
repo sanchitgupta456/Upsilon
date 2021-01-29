@@ -126,6 +126,12 @@ public class ExploreFragment0 extends Fragment {
                     Log.v("UserLocation", String.valueOf(currentDoc.get("userLocation")));
                     if(currentDoc.get("userLocation")!=null) {
                         searchQuery.searchForCourse(app, mongoDatabase, getContext(), adapter, recyclerView, 10, userLoc);
+                        list = searchQuery.getSearchResultsList();
+                        Log.v("COURSEDISTANCE", "START!");
+                        for (int p = 0; p < list.size(); p++){
+                            Log.v("COURSEDISTANCE", list.get(p).getCourseName());
+                            Log.v("COURSEDISTANCE", Double.toString(searchQuery.getCourseDistance(list.get(p), userLoc)));
+                        }
                     }
                     else
                     {
@@ -137,6 +143,7 @@ public class ExploreFragment0 extends Fragment {
             }
         });
         list = searchQuery.getSearchResultsList();
+
         initRecyclerView(recyclerView,list);
     }
 
