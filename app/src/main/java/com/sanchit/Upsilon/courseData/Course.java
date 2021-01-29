@@ -35,7 +35,16 @@ public class Course extends Object implements Serializable {
     private String nextLectureOn;
     private String meetLink;
     private Document courseLocation;
+    private double courseDistance;
     private int numberOfReviews;
+
+    public void setDistance(double d){
+        this.courseDistance = d;
+    }
+
+    public double getCourseDistanceInKm(){
+        return this.courseDistance;
+    }
 
     public Course(String courseId, String courseName, String courseImage, String tutorId, String courseDescription, String coursePreReq, double courseRating, String courseMode, int courseFees, String instructorLocation, int courseDuration, int numberOfStudentsEnrolled, int numberOfBatches, BasicBSONList courseReviews, BasicBSONList scheduledClasses, String cardImgID, ArrayList<String> myRegisteredCourses, ArrayList<String> introductoryContentImages, int introductoryImageCounter, ArrayList<String> introductoryContentVideos, ArrayList<String> courseCategories, int introductoryVideoCounter, String nextLectureOn, String meetLink, Document courseLocation, int numberOfReviews) {
         this.courseId = courseId;
