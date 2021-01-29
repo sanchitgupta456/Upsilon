@@ -1,6 +1,7 @@
 package com.sanchit.Upsilon.courseData;
 
 import android.text.Editable;
+import android.util.Log;
 
 import org.bson.Document;
 import org.bson.types.BasicBSONList;
@@ -40,6 +41,35 @@ public class Course extends Object implements Serializable {
 
     public void setDistance(double d){
         this.courseDistance = d;
+    }
+    public void setDistanceFromUserLoc(Document userLoc){
+        if(!this.courseMode.equals("Online")){
+            if(userLoc != null) {
+                Document courseLoc = this.courseLocation;
+                double lat1 = 0,lon1 = 0,lat2 = 0,lon2 = 0;
+                try {
+                    lat1 = courseLoc.getDouble("latitude");
+                    lon2 = userLoc.getDouble("longitude");
+                    lat2 = userLoc.getDouble("latitude");
+                    lon1 = courseLoc.getDouble("longitude");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                Log.v("Distance","calculating");
+                double R = 6378;
+                double dLat = Math.PI*Math.abs(lat2-lat1)/180;
+                double dLon = Math.PI*Math.abs(lon2-lon1)/180;
+                Log.v("calcDist", Double.toString(lat1).concat(" ").concat(Double.toString(lon1)).concat(" ").concat(Double.toString(lat2)).concat(" ").concat(Double.toString(lon2)));
+                double a =
+                        Math.sin(dLat/2) * Math.sin(dLat/2) +
+                                Math.cos(Math.PI*(lat1)/180) * Math.cos(Math.PI*(lat2)/180) *
+                                        Math.sin(dLon/2) * Math.sin(dLon/2)
+                        ;
+                double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+                // Distance in km
+                this.courseDistance = R * c;
+            }
+        }
     }
 
     public double getCourseDistanceInKm(){

@@ -113,7 +113,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private Gson gson;
     private GsonBuilder gsonBuilder;
-    private ArrayList<String> myCourses;
+    private ArrayList<String> myCourses = new ArrayList<>();
 
     RelativeLayout main;
     RecyclerView recyclerView,recyclerView1,recyclerView2,recyclerViewSearchResults;

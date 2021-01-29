@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ExperienceFragment"
     android:padding="12dp">
 
@@ -16,18 +17,27 @@
         android:text="Your experience (optional)"
         android:padding="10dp"
         android:id="@+id/text1"/>
+    <com.google.android.material.chip.ChipGroup
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/group_experience"
+        android:layout_below="@id/text1"
+        app:singleLine="false"/>
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="@dimen/text_margin"
         android:textColor="@color/colorBlack"
         android:padding="10dp"
-        android:layout_below="@id/text1"
+        android:layout_below="@id/group_experience"
         android:layout_margin="10dp"
         android:background="@drawable/text_view_add_course"
         android:textColorHint="@color/GreyDark"
-        android:hint="Enter here"
-        android:inputType="textMultiLine"
+        android:hint="Add a new experience"
+        android:drawableStart="@drawable/add_icon_24"
+        android:drawableTint="@color/GreyDark"
+        android:drawablePadding="10dp"
+        android:inputType="text"
         android:id="@+id/etExperience"
         android:autofillHints=" " />
 

@@ -66,6 +66,7 @@ public class CoursesAdapter1 extends RecyclerView.Adapter<CoursesAdapter1.ViewHo
         mongoClient = user.getMongoClient("mongodb-atlas");
         mongoDatabase = mongoClient.getDatabase("Upsilon");
         MongoCollection<Document> mongoCollection  = mongoDatabase.getCollection("UserData");
+        //Document userLoc = new Document();
 
         Document queryFilter1  = new Document("userid",course.getTutorId());
 
@@ -82,6 +83,29 @@ public class CoursesAdapter1 extends RecyclerView.Adapter<CoursesAdapter1.ViewHo
                 {
                     Document currentDoc = results.next();
                     holder.textTutorTvShow.setText("Course By "+currentDoc.getString("name"));
+                }
+            } else {
+                Log.v("User","Failed to complete search");
+            }
+        });
+        queryFilter1  = new Document("userid",user.getId());
+
+        findTask1 = mongoCollection.find(queryFilter1).iterator();
+
+        findTask1.getAsync(task1 -> {
+            if (task1.isSuccess()) {
+                MongoCursor<Document> results = task1.get();
+                if(!results.hasNext())
+                {
+
+                }
+                else
+                {
+                    Document currentDoc = results.next();
+                    Document userLoc = (Document) currentDoc.get("userLocation");
+                    holder.textDistanceTvShow.setText(new StringBuilder().append("About ")
+                            .append(Double.toString(calcDist(course.getCourseLocation(), userLoc)))
+                            .append(" kilometers from your location").toString());
                 }
             } else {
                 Log.v("User","Failed to complete search");
@@ -228,5 +252,30 @@ public class CoursesAdapter1 extends RecyclerView.Adapter<CoursesAdapter1.ViewHo
             cv = (CardView) itemView.findViewById(R.id.cvCourseCard);
             ll = (LinearLayout) itemView.findViewById(R.id.cardInfo);
         }
+    }
+
+    public double calcDist(Document courseLoc, Document userLoc) {
+        double lat1 = 0,lon1 = 0,lat2 = 0,lon2 = 0;
+        try {
+            lat1 = courseLoc.getDouble("latitude");
+            lon2 = userLoc.getDouble("longitude");
+            lat2 = userLoc.getDouble("latitude");
+            lon1 = courseLoc.getDouble("longitude");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        Log.v("Distance","calculating");
+        double R = 6378;
+        double dLat = Math.PI*Math.abs(lat2-lat1)/180;
+        double dLon = Math.PI*Math.abs(lon2-lon1)/180;
+        Log.v("calcDist", Double.toString(lat1).concat(" ").concat(Double.toString(lon1)).concat(" ").concat(Double.toString(lat2)).concat(" ").concat(Double.toString(lon2)));
+        double a =
+                Math.sin(dLat/2) * Math.sin(dLat/2) +
+                        Math.cos(Math.PI*(lat1)/180) * Math.cos(Math.PI*(lat2)/180) *
+                                Math.sin(dLon/2) * Math.sin(dLon/2)
+                ;
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+        // Distance in km
+        return R * c;
     }
 }

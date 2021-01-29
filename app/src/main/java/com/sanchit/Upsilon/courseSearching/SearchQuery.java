@@ -82,6 +82,7 @@ public class SearchQuery {
     public void setRankMethod(rankBy method) {rank = method;}
 
     public void setQuery(String query) {keywords = query;}
+    PriorityQueue<Document> searchResultsByLocation;
 
     public ArrayList<Course> searchForCourse(App app, MongoDatabase mongoDatabase, Context context, double radius, Document userLoc){
         if (app.currentUser()!=null) {
@@ -128,7 +129,7 @@ public class SearchQuery {
             queryResultIterable.sort(sortingMethod);
             RealmResultTask<MongoCursor<Document>> findCourses = queryResultIterable.iterator();
 
-            PriorityQueue<Document> searchResultsByLocation = new
+            searchResultsByLocation = new
                     PriorityQueue<Document>(5, new LocationSorter());
 
             findCourses.getAsync(task -> {
@@ -268,7 +269,7 @@ public class SearchQuery {
             RealmResultTask<MongoCursor<Document>> findCourses = queryResultIterable.iterator();
 
             //Location based uses a custom comparator priority queue to rank the courses
-            PriorityQueue<Document> searchResultsByLocation = new
+            searchResultsByLocation = new
                     PriorityQueue<Document>(5, new LocationSorter());
 
             //Results get async task
@@ -293,6 +294,7 @@ public class SearchQuery {
                                     Log.v("Distance", "Calling Function");
                                     if (document.get("courseLocation") != null) {
                                         double courseDist = calculateDistance((Document) document.get("courseLocation"), userLoc);
+                                        //course.setDistance(courseDist);
                                         Log.v("LocationSearch", document.getString("courseName").concat(" ").concat(Double.toString(courseDist)));
                                         document.append("courseDistance", courseDist);
                                         searchResultsByLocation.add(document);
@@ -328,6 +330,7 @@ public class SearchQuery {
 
                     for (int p = 0; p < searchResultsList.size(); p++){
                         Log.v("COURSEDISTANCE", searchResultsList.get(p).getCourseName());
+                        searchResultsList.get(p).setDistanceFromUserLoc(userLoc);
                         Log.v("COURSEDISTANCE", Double.toString(getCourseDistance(searchResultsList.get(p), userLoc)));
                     }
 
