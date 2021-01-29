@@ -92,19 +92,23 @@ public class ExploreFragment0 extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        Log.d(TAG, "onCreateView: started. 95");
         View view = inflater.inflate(R.layout.fragment_explore0, container, false);
         recyclerView = (RecyclerView) view.findViewById(R.id.exploreList0);
         alter = (CardView) view.findViewById(R.id.alter);
         ll = (LinearLayout) view.findViewById(R.id.linearLayoutSetupMaps);
         llLoader = (LinearLayout) view.findViewById(R.id.llLocationSetupProgress);
         llLoader.setVisibility(View.INVISIBLE);
+        Log.d(TAG, "onCreateView: started. 102");
 
         app = new App(new AppConfiguration.Builder(appID).build());
         user = app.currentUser();
         mongoClient = user.getMongoClient("mongodb-atlas");
         mongoDatabase = mongoClient.getDatabase("Upsilon");
         MongoCollection<Document> mongoCollection  = mongoDatabase.getCollection("CourseData");
+        Log.d(TAG, "onCreateView: 109");
         userdata = user.getCustomData();
+        Log.d(TAG, "onCreateView: 111");
 
         ll.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -118,17 +122,21 @@ public class ExploreFragment0 extends Fragment {
                     Log.d(TAG, "onClick: it is here now");
                     llLoader.setVisibility(View.VISIBLE);
                     getLocation();
+                    Log.d(TAG, "onClick: location updated/set");
                     app = new App(new AppConfiguration.Builder(appID).build());
                     user = app.currentUser();
+                    Log.d(TAG, "onClick: tests...");
                     performSearch();
-                    //llLoader.setVisibility(View.INVISIBLE);
+                    Log.d(TAG, "onClick: ?!");
+                    llLoader.setVisibility(View.INVISIBLE);
                 }
             }
         });
+        /*
         if(userdata.get("userLocation")!=null) {
-            Log.v("Searching", String.valueOf(userdata.get("userLocation")));
-            searchQuery.setRankMethod(sortCriteria);
-            searchForCourses(query);
+            //Log.v("Searching", String.valueOf(userdata.get("userLocation")));
+            //searchQuery.setRankMethod(sortCriteria);
+            //searchForCourses(query);
             alter.setVisibility(View.GONE);
             recyclerView.setVisibility(View.VISIBLE);
         }
@@ -136,7 +144,7 @@ public class ExploreFragment0 extends Fragment {
         {
             recyclerView.setVisibility(View.GONE);
             alter.setVisibility(View.VISIBLE);
-        }
+        }*/
 
         return view;
     }
@@ -145,11 +153,7 @@ public class ExploreFragment0 extends Fragment {
         this.query = _searchQuery.getKeywords();
         searchQuery.setQuery(query);
         searchQuery.setSelectedTags(_searchQuery.getSelectedTags());
-        ProgressBar progressBar = new ProgressBar(getContext());
-        progressBar.setIndeterminate(true);
-        progressBar.setVisibility(View.VISIBLE);
         performSearch();
-        progressBar.setVisibility(View.GONE);
     }
     public void searchForCourses(String query){
         this.query = query;
@@ -161,13 +165,14 @@ public class ExploreFragment0 extends Fragment {
         mongoDatabase = mongoClient.getDatabase("Upsilon");
         MongoCollection<Document> mongoCollection  = mongoDatabase.getCollection("UserData");
         userdata = user.getCustomData();
+        Log.d(TAG, "performSearch: 165");
 
         if(userdata.get("userLocation")!=null) {
+            Log.d(TAG, "performSearch: 168");
             Log.v("Searching", String.valueOf(userdata.get("userLocation")));
-            searchQuery.setRankMethod(sortCriteria);
-            searchForCourses(query);
-            alter.setVisibility(View.GONE);
+            Log.d(TAG, "performSearch: 170");
             recyclerView.setVisibility(View.VISIBLE);
+            alter.setVisibility(View.GONE);
         }
         else
         {
@@ -176,6 +181,7 @@ public class ExploreFragment0 extends Fragment {
             return;
         }
 
+        Log.d(TAG, "performSearch: cleared");
         //Blank query to find every single user in db
         Document queryFilter  = new Document("userid", user.getId());
 
@@ -282,17 +288,18 @@ public class ExploreFragment0 extends Fragment {
             if (task.isSuccess()) {
                 MongoCursor<Document> results = task.get();
                 if (!results.hasNext()) {
-                    /*
+                    
                     mongoCollection.insertOne(
                             new Document("userid", user.getId()).append("userLocation",userLocation))
                             .getAsync(result -> {
                                 if (result.isSuccess()) {
                                     Log.v("EXAMPLE", "Inserted custom user data document. _id of inserted document: "
                                             + result.get().getInsertedId());
+                                    Log.d(TAG, "updateLocation: inserted");
                                 } else {
                                     Log.e("EXAMPLE", "Unable to insert custom user data. Error: " + result.getError());
                                 }
-                            });*/
+                            });
                     Log.d(TAG, "updateLocation: This is some error?!");
                 } else {
                     Document userdata = results.next();
@@ -304,6 +311,7 @@ public class ExploreFragment0 extends Fragment {
                                 if (result.isSuccess()) {
                                     Log.v("EXAMPLE", "Inserted custom user data document. _id of inserted document: "
                                             + result.get().getModifiedCount());
+                                    Log.d(TAG, "updateLocation: updated");
                                 } else {
                                     Log.e("EXAMPLE", "Unable to insert custom user data. Error: " + result.getError());
                                 }
