@@ -193,4 +193,5 @@
     -->
     <string name="hello_world">Hello Square World!</string>
     <string name="see_more">SEE MORE</string>
+    <string name="error_not_enabled_location">You have not enabled location services of the app</string>
 </resources>

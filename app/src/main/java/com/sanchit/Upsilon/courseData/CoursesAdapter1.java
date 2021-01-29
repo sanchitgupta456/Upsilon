@@ -16,6 +16,7 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.google.android.material.snackbar.Snackbar;
 import com.sanchit.Upsilon.R;
 import com.sanchit.Upsilon.RegisteredStudentViewCourse;
 import com.sanchit.Upsilon.TeacherViewCourseActivity;
@@ -69,9 +70,7 @@ public class CoursesAdapter1 extends RecyclerView.Adapter<CoursesAdapter1.ViewHo
         //Document userLoc = new Document();
 
         Document queryFilter1  = new Document("userid",course.getTutorId());
-
         RealmResultTask<MongoCursor<Document>> findTask1 = mongoCollection.find(queryFilter1).iterator();
-
         findTask1.getAsync(task1 -> {
             if (task1.isSuccess()) {
                 MongoCursor<Document> results = task1.get();
@@ -88,24 +87,26 @@ public class CoursesAdapter1 extends RecyclerView.Adapter<CoursesAdapter1.ViewHo
                 Log.v("User","Failed to complete search");
             }
         });
-        queryFilter1  = new Document("userid",user.getId());
-
-        findTask1 = mongoCollection.find(queryFilter1).iterator();
-
-        findTask1.getAsync(task1 -> {
-            if (task1.isSuccess()) {
-                MongoCursor<Document> results = task1.get();
-                if(!results.hasNext())
-                {
-
-                }
-                else
-                {
-                    Document currentDoc = results.next();
-                    Document userLoc = (Document) currentDoc.get("userLocation");
-                    holder.textDistanceTvShow.setText(new StringBuilder().append("About ")
-                            .append(Double.toString(calcDist(course.getCourseLocation(), userLoc)))
-                            .append(" kilometers from your location").toString());
+        Document queryFilter  = new Document("userid",user.getId());
+        RealmResultTask<MongoCursor<Document>> findTask = mongoCollection.find(queryFilter).iterator();
+        findTask.getAsync(task -> {
+            if (task.isSuccess()) {
+                MongoCursor<Document> results = task.get();
+                if (results.hasNext()) {
+                    if(!course.getCourseMode().equals("Online")){
+                        Document currentDoc = results.next();
+                        Document userLoc = (Document) currentDoc.get("userLocation");
+                        if(userLoc != null) {
+                            holder.textDistanceTvShow.setText(new StringBuilder().append("About ")
+                                    .append(Double.toString(calcDist(course.getCourseLocation(), userLoc)))
+                                    .append(" kilometers from your location").toString());
+                        } else {
+                            holder.textDistanceTvShow.setText(R.string.error_not_enabled_location);
+                        }
+                    }
+                    else {
+                        holder.textDistanceTvShow.setText("");
+                    }
                 }
             } else {
                 Log.v("User","Failed to complete search");

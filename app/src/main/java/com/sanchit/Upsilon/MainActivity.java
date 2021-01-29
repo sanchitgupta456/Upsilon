@@ -483,7 +483,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                                                             courseArrayList2.add(course);
                                                             coursesAdapter2.notifyDataSetChanged();
                                                             frame2.setVisibility(View.VISIBLE);
-                                                            //Log.v("CoursesySeniors", String.valueOf(courseArrayList2));
+                                                            //Log.v("CourseBySenior", String.valueOf(courseArrayList2));
                                                         }
                                                     } catch (Exception e) {
                                                         e.printStackTrace();
