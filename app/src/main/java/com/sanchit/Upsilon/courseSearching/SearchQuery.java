@@ -198,7 +198,7 @@ public class SearchQuery {
         try {
             lat1 = courseLoc.getDouble("latitude");
             lon2 = userLoc.getDouble("longitude");
-            lat2 = userLoc.getDouble("latitude");
+            lat2 = userLoc.getDouble("lattitude");
             lon1 = courseLoc.getDouble("longitude");
         } catch (Exception e) {
             e.printStackTrace();

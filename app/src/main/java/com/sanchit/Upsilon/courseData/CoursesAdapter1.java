@@ -96,9 +96,10 @@ public class CoursesAdapter1 extends RecyclerView.Adapter<CoursesAdapter1.ViewHo
                     if(!course.getCourseMode().equals("Online")){
                         Document currentDoc = results.next();
                         Document userLoc = (Document) currentDoc.get("userLocation");
+                        Log.v("Hello", String.valueOf(userLoc));
                         if(userLoc != null) {
                             holder.textDistanceTvShow.setText(new StringBuilder().append("About ")
-                                    .append(Double.toString(calcDist(course.getCourseLocation(), userLoc)))
+                                    .append(String.format("%.2f",calcDist(course.getCourseLocation(), userLoc)))
                                     .append(" kilometers from your location").toString());
                         } else {
                             holder.textDistanceTvShow.setText(R.string.error_not_enabled_location);
@@ -256,11 +257,12 @@ public class CoursesAdapter1 extends RecyclerView.Adapter<CoursesAdapter1.ViewHo
     }
 
     public double calcDist(Document courseLoc, Document userLoc) {
+        Log.v("Hello Again", String.valueOf(userLoc));
         double lat1 = 0,lon1 = 0,lat2 = 0,lon2 = 0;
         try {
             lat1 = courseLoc.getDouble("latitude");
             lon2 = userLoc.getDouble("longitude");
-            lat2 = userLoc.getDouble("latitude");
+            lat2 = userLoc.getDouble("lattitude");
             lon1 = courseLoc.getDouble("longitude");
         } catch (Exception e) {
             e.printStackTrace();

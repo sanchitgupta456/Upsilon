@@ -193,7 +193,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
         Location mLastLocation = LocationServices.FusedLocationApi.getLastLocation(
                 mGoogleApiClient);
-        LatLng latLong = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
+        //LatLng latLong = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
 
 
         mMap.setOnMarkerDragListener(new GoogleMap.OnMarkerDragListener() {

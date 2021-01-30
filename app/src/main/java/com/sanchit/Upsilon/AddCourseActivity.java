@@ -1,8 +1,10 @@
 package com.sanchit.Upsilon;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.BitmapFactory;
@@ -10,6 +12,8 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.provider.Settings;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -32,9 +36,21 @@ import androidx.annotation.RequiresApi;
 import android.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+
 import com.cloudinary.android.MediaManager;
 import com.cloudinary.android.callback.ErrorInfo;
 import com.cloudinary.android.callback.UploadCallback;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.PendingResult;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.LocationSettingsRequest;
+import com.google.android.gms.location.LocationSettingsResult;
+import com.google.android.gms.location.LocationSettingsStatusCodes;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.snackbar.Snackbar;
@@ -67,6 +83,7 @@ public class AddCourseActivity extends AppCompatActivity implements AdapterView.
     Button nextButton, addCategory, addLocation;
     RadioButton Group,Individual,Free,Paid;
     ToggleButton offline_online;
+    private final int REQUEST_FINE_LOCATION = 1234;
     //Spinner spinner;
     App app;
     User user;
@@ -145,8 +162,20 @@ public class AddCourseActivity extends AppCompatActivity implements AdapterView.
         addLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(AddCourseActivity.this, MapsActivity.class);
-                startActivityForResult(intent, SECOND_ACTIVITY_REQUEST_CODE);
+                if (ContextCompat.checkSelfPermission(AddCourseActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(AddCourseActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_FINE_LOCATION);
+                } else {
+                    if(isLocationEnabled(getApplicationContext()))
+                    {
+                        Intent intent = new Intent(AddCourseActivity.this, MapsActivity.class);
+                        startActivityForResult(intent, SECOND_ACTIVITY_REQUEST_CODE);
+                    }
+                    else
+                    {
+                        enableLoc();
+                    }
+
+                }
             }
         });
 
@@ -256,13 +285,13 @@ public class AddCourseActivity extends AppCompatActivity implements AdapterView.
                 course.setReviewRating(1.23);
                 courseReviews.add(course);*/
                     Document courseDetails = new Document();
-
+                    Double rating =5.0;
                     courseDetails.append("_partitionkey", "_partitionKey");
                     courseDetails.append("courseName", courseName);
                     courseDetails.append("tutorId", user.getId());
                     courseDetails.append("courseDescription", courseDescription);
                     courseDetails.append("coursePreReq", "");
-                    courseDetails.append("courseRating", 5);
+                    courseDetails.append("courseRating", rating);
                     courseDetails.append("courseMode", mode);
                     courseDetails.append("courseFees", fees);
                     courseDetails.append("courseImage", "balh");
@@ -414,6 +443,10 @@ public class AddCourseActivity extends AppCompatActivity implements AdapterView.
                 courseLocation.append("latitude",latitude);
                 courseLocation.append("longitude",longitude);
             }
+            else if (requestCode == 1235) {
+                Intent intent = new Intent(AddCourseActivity.this, MapsActivity.class);
+                startActivityForResult(intent, SECOND_ACTIVITY_REQUEST_CODE);
+            }
         }
 
     }
@@ -489,6 +522,91 @@ public class AddCourseActivity extends AppCompatActivity implements AdapterView.
     public void getCategories() {
         categories = getResources().getStringArray(R.array.categories);
         //categories = new String[]{"Science", "Arts"};
+    }
+
+    public static boolean isLocationEnabled(Context context) {
+        int locationMode = 0;
+        String locationProviders;
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){
+            try {
+                locationMode = Settings.Secure.getInt(context.getContentResolver(), Settings.Secure.LOCATION_MODE);
+
+            } catch (Settings.SettingNotFoundException e) {
+                e.printStackTrace();
+                return false;
+            }
+
+            return locationMode != Settings.Secure.LOCATION_MODE_OFF;
+
+        }else{
+            locationProviders = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
+            return !TextUtils.isEmpty(locationProviders);
+        }
+
+
+    }
+
+    private void enableLoc() {
+
+        GoogleApiClient googleApiClient = null;
+        if (googleApiClient == null) {
+            GoogleApiClient finalGoogleApiClient = googleApiClient;
+            googleApiClient = new GoogleApiClient.Builder(AddCourseActivity.this)
+                    .addApi(LocationServices.API)
+                    .addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
+                        @Override
+                        public void onConnected(Bundle bundle) {
+
+                        }
+
+                        @Override
+                        public void onConnectionSuspended(int i) {
+                            finalGoogleApiClient.connect();
+                        }
+                    })
+                    .addOnConnectionFailedListener(new GoogleApiClient.OnConnectionFailedListener() {
+                        @Override
+                        public void onConnectionFailed(ConnectionResult connectionResult) {
+
+                            Log.d("Location error","Location error " + connectionResult.getErrorCode());
+                        }
+                    }).build();
+            googleApiClient.connect();
+
+            LocationRequest locationRequest = LocationRequest.create();
+            locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+            locationRequest.setInterval(30 * 1000);
+            locationRequest.setFastestInterval(5 * 1000);
+            LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder()
+                    .addLocationRequest(locationRequest);
+
+            builder.setAlwaysShow(true);
+
+            PendingResult<LocationSettingsResult> result =
+                    LocationServices.SettingsApi.checkLocationSettings(googleApiClient, builder.build());
+            result.setResultCallback(new ResultCallback<LocationSettingsResult>() {
+                private static final int REQUEST_LOCATION =  1235 ;
+
+                @Override
+                public void onResult(LocationSettingsResult result) {
+                    final Status status = result.getStatus();
+                    switch (status.getStatusCode()) {
+                        case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
+                            try {
+                                // Show the dialog by calling startResolutionForResult(),
+                                // and check the result in onActivityResult().
+                                status.startResolutionForResult(AddCourseActivity.this, REQUEST_LOCATION);
+
+//                                finish();
+                            } catch (IntentSender.SendIntentException e) {
+                                // Ignore the error.
+                            }
+                            break;
+                    }
+                }
+            });
+        }
     }
 
 }
