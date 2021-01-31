@@ -3,23 +3,25 @@ package com.sanchit.Upsilon;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class QualificationsViewModel extends ViewModel {
-    private MutableLiveData<String[]> specialities = new MutableLiveData<>();
-    private MutableLiveData<String> qualification = new MutableLiveData<>();
+import java.util.ArrayList;
 
-    public MutableLiveData<String[]> getSpecialities() {
+public class QualificationsViewModel extends ViewModel {
+    private MutableLiveData<ArrayList<String>> specialities = new MutableLiveData<>();
+    private MutableLiveData<ArrayList<String>> qualifications = new MutableLiveData<>();
+
+    public MutableLiveData<ArrayList<String>> getSpecialities() {
         return specialities;
     }
 
-    public void setSpecialities(String[] specialities) {
+    public void setSpecialities(ArrayList<String> specialities) {
         this.specialities.setValue(specialities);
     }
 
-    public MutableLiveData<String> getQualification() {
-        return qualification;
+    public MutableLiveData<ArrayList<String>> getQualifications() {
+        return qualifications;
     }
 
-    public void setQualification(String qualification) {
-        this.qualification.setValue(qualification);
+    public void setQualifications(ArrayList<String> qualifications) {
+        this.qualifications.setValue(qualifications);
     }
 }

@@ -52,22 +52,6 @@ public class ExperienceFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         EditText editText = (EditText) view.findViewById(R.id.etExperience);
         group = (ChipGroup) view.findViewById(R.id.group_experience);
-        editText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
 
         editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override

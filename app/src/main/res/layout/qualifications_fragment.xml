@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".QualificationsFragment"
     android:padding="12dp">
 
@@ -13,24 +14,44 @@
         android:textSize="18sp"
         android:textColor="@color/colorBlack"
         android:textStyle="bold"
-        android:text="What do you specialize in? (optional)"
+        android:text="What do you specialize in?"
         android:padding="10dp"
         android:id="@+id/text1"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:textSize="14sp"
+        android:textColor="@color/GreyDark"
+        android:textStyle="bold"
+        android:text="You can add your speciality(s) here. This is optional."
+        android:padding="10dp"
+        android:id="@+id/text3"
+        android:layout_below="@id/text1"/>
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="@dimen/text_margin"
         android:textColor="@color/colorBlack"
         android:padding="10dp"
-        android:layout_below="@id/text1"
+        android:layout_below="@id/text3"
         android:layout_margin="10dp"
         android:background="@drawable/text_view_add_course"
         android:textColorHint="@color/GreyDark"
-        android:hint="Enter your specialities here (separated by space)"
+        android:hint="Add a new speciality"
         android:inputType="text"
-        android:imeOptions="actionNext"
+        android:imeOptions="actionDone"
+        android:drawableStart="@drawable/add_icon_24"
+        android:drawableTint="@color/GreyDark"
+        android:drawablePadding="10dp"
         android:id="@+id/etSpecialities"
         android:autofillHints=" "/>
+    <com.google.android.material.chip.ChipGroup
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/group_specialities"
+        android:layout_below="@id/etSpecialities"
+        app:singleLine="false"/>
 
     <TextView
         android:layout_width="match_parent"
@@ -39,25 +60,45 @@
         android:textSize="18sp"
         android:textColor="@color/colorBlack"
         android:textStyle="bold"
-        android:text="Mention optional qualifications (optional)"
+        android:text="Mention your qualifications"
         android:padding="10dp"
         android:id="@+id/text2"
-        android:layout_below="@id/etSpecialities"
+        android:layout_below="@id/group_specialities"
         android:layout_marginTop="36dp"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:textSize="14sp"
+        android:textColor="@color/GreyDark"
+        android:textStyle="bold"
+        android:text="Add a qualification here, for example, educational qualifications. This is optional."
+        android:padding="10dp"
+        android:id="@+id/text4"
+        android:layout_below="@id/text2"/>
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="@dimen/text_margin"
         android:textColor="@color/colorBlack"
         android:padding="10dp"
-        android:layout_below="@id/text2"
+        android:layout_below="@id/text4"
         android:layout_margin="10dp"
         android:background="@drawable/text_view_add_course"
         android:textColorHint="@color/GreyDark"
-        android:hint="Enter your qualifications here"
-        android:inputType="textMultiLine"
+        android:hint="Add a new qualification"
+        android:inputType="text"
         android:imeOptions="actionDone"
+        android:drawableStart="@drawable/add_icon_24"
+        android:drawableTint="@color/GreyDark"
+        android:drawablePadding="10dp"
         android:id="@+id/etQualification"
         android:autofillHints=" "/>
+    <com.google.android.material.chip.ChipGroup
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/group_qualifications"
+        android:layout_below="@id/etQualification"
+        app:singleLine="false"/>
 
 </RelativeLayout>
