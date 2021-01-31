@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+    android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+    android:background="@color/colorPrimaryLight">
 
     <!--
     <FrameLayout
@@ -195,13 +196,19 @@
 
         </FrameLayout>
 
-        <ImageView
+        <FrameLayout
             android:id="@+id/twitterSignUp"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:src="@drawable/twitter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_margin="12dp"
-            android:contentDescription="@string/twitter_icon"/>
+            android:foreground="@color/colorPrimaryLight">
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/twitter"
+                android:contentDescription="@string/twitter_icon"/>
+        </FrameLayout>
+
 
     </LinearLayout>
 

@@ -6,7 +6,8 @@
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.login.LoginActivity">
+    tools:context=".ui.login.LoginActivity"
+    android:background="@color/colorPrimaryLight">
     <!--<FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -56,7 +57,7 @@
         android:background="@drawable/text_view_login"
         android:backgroundTint="@color/colorBlack"
         android:padding="12dp"
-        android:textColorHighlight="@color/colorWhite"/>
+        android:textColorHighlight="@color/colorAccent"/>
     <CheckBox
         android:id="@+id/checkRememberMe"
         android:layout_width="match_parent"
@@ -66,7 +67,8 @@
         android:textSize="@dimen/text_margin"
         android:layout_below="@id/password"
         android:layout_marginHorizontal="24dp"
-        android:paddingHorizontal="12dp"/>
+        android:paddingHorizontal="12dp"
+        android:buttonTintMode="multiply"/>
 
     <TextView
         android:id="@+id/textView3"
@@ -91,7 +93,10 @@
         android:letterSpacing="0.1"
         android:enabled="true"
         android:text="@string/action_sign_in"
-        android:layout_below="@id/textView3"/>
+        android:layout_below="@id/textView3"
+        android:clickable="true"
+        android:focusable="true"
+        android:elevation="4dp"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -140,7 +145,7 @@
         android:layout_marginTop="12dp"
         android:visibility="gone"
         android:layout_centerHorizontal="true"
-        android:indeterminateTint="@color/colorAccent"/>
+        android:indeterminateTint="@color/GreyDark"/>
 
 
 
@@ -194,13 +199,18 @@
                 android:contentDescription="@string/facebook_icon"/>
         </FrameLayout>
 
-        <ImageView
+        <FrameLayout
             android:id="@+id/twitterSignIn"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:src="@drawable/twitter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_margin="12dp"
-            android:contentDescription="@string/twitter_icon"/>
+            android:foreground="@color/colorPrimaryLight">
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/twitter"
+                android:contentDescription="@string/twitter_icon"/>
+        </FrameLayout>
         <!--
         <Button
             android:id="@+id/login3"
@@ -236,7 +246,11 @@
         android:text="@string/signup_text"
         android:layout_below="@id/divider3"
         android:textColor="@color/colorWhite"
-        android:letterSpacing="0.1"/>
+        android:letterSpacing="0.1"
+        android:clickable="true"
+        android:focusable="true"
+        android:elevation="4dp"
+        android:gravity="center"/>
 
 
 

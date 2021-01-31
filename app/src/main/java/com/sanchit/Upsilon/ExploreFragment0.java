@@ -145,6 +145,15 @@ public class ExploreFragment0 extends Fragment {
             recyclerView.setVisibility(View.GONE);
             alter.setVisibility(View.VISIBLE);
         }*/
+        if(userdata.get("userLocation")!=null) {
+            recyclerView.setVisibility(View.VISIBLE);
+            alter.setVisibility(View.GONE);
+        }
+        else
+        {
+            recyclerView.setVisibility(View.GONE);
+            alter.setVisibility(View.VISIBLE);
+        }
 
         return view;
     }
