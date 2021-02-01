@@ -31,22 +31,22 @@ public class PaymentLogsAdapter extends RecyclerView.Adapter<PaymentLogsAdapter.
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         PaymentLog log = logs.get(position);
-        holder.tvId.setText(log.getTransactionId());
+        //holder.tvId.setText(log.getTransactionId());
         switch (log.getType()) {
             case CREDITED:
-                holder.tvMessageCredited.setText(log.getLogMessage());
+                //holder.tvMessageCredited.setText(log.getLogMessage());
                 holder.tvMessageCredited.setVisibility(View.VISIBLE);
                 break;
             case DEBITED:
-                holder.tvMessageDebited.setText(log.getLogMessage());
+                //holder.tvMessageDebited.setText(log.getLogMessage());
                 holder.tvMessageDebited.setVisibility(View.VISIBLE);
                 break;
             case WITHDRAW_PENDING:
-                holder.tvMessagePending.setText(log.getLogMessage());
+                //holder.tvMessagePending.setText(log.getLogMessage());
                 holder.tvMessagePending.setVisibility(View.VISIBLE);
                 break;
             case WITHDRAW_SUCCESS:
-                holder.tvMessageSuccess.setText(log.getLogMessage());
+                //holder.tvMessageSuccess.setText(log.getLogMessage());
                 holder.tvMessageSuccess.setVisibility(View.VISIBLE);
                 break;
             default:

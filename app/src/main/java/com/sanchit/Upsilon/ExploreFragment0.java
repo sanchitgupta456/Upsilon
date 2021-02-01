@@ -214,9 +214,9 @@ public class ExploreFragment0 extends Fragment {
                 Log.v("User","Failed to complete search");
             }
         });
-        //list = searchQuery.getSearchResultsList();
+        list = searchQuery.getSearchResultsList();
 
-        //initRecyclerView(recyclerView,list);
+        initRecyclerView(recyclerView,list);
     }
 
     public void initRecyclerView(RecyclerView recyclerView, ArrayList<Course> list) {
