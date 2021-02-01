@@ -433,22 +433,26 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                                     flag[0] =0;
                                     //Log.v("MyCourses", String.valueOf(myCourses));
-                                    for(int i=0;i<myCourses.size();i++)
-                                    {
-                                        try {
-                                            Log.v("currentCourse", course.getCourseId() + myCourses.get(i));
-                                            if(myCourses.get(i).equals(course.getCourseId()))
-                                            {
-                                                Log.v("CourseAdded","Added");
-                                                courseArrayList1.add(course);
-                                                coursesAdapter1.notifyDataSetChanged();
-                                                frame1.setVisibility(View.VISIBLE);
-                                                flag[0] =1;
-                                                break;
+                                    try {
+                                        for(int i=0;i<myCourses.size();i++)
+                                        {
+                                            try {
+                                                Log.v("currentCourse", course.getCourseId() + myCourses.get(i));
+                                                if(myCourses.get(i).equals(course.getCourseId()))
+                                                {
+                                                    Log.v("CourseAdded","Added");
+                                                    courseArrayList1.add(course);
+                                                    coursesAdapter1.notifyDataSetChanged();
+                                                    frame1.setVisibility(View.VISIBLE);
+                                                    flag[0] =1;
+                                                    break;
+                                                }
+                                            } catch (Exception e) {
+                                                e.printStackTrace();
                                             }
-                                        } catch (Exception e) {
-                                            e.printStackTrace();
                                         }
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
                                     }
                                     if(flag[0] ==1)
                                     {

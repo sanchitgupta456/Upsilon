@@ -104,7 +104,7 @@ public class ExploreFragment3 extends Fragment {
                     }
                     else
                     {
-                        Snackbar.make(getView(),"Blah",Snackbar.LENGTH_LONG).show();
+                        Snackbar.make(getView(),"Please setup your location to view courses near you",Snackbar.LENGTH_LONG).show();
                     }
                 }
             } else {
@@ -148,7 +148,7 @@ public class ExploreFragment3 extends Fragment {
                     }
                     else
                     {
-                        Snackbar.make(getView(),"Blah",Snackbar.LENGTH_LONG).show();
+                        Snackbar.make(getView(),"Please setup your location to view courses near you",Snackbar.LENGTH_LONG).show();
                     }
                 }
             } else {

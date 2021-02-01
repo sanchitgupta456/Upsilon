@@ -125,6 +125,7 @@ public class ExploreFragment0 extends Fragment {
                     Log.d(TAG, "onClick: location updated/set");
                     app = new App(new AppConfiguration.Builder(appID).build());
                     user = app.currentUser();
+                    userdata = user.getCustomData();
                     Log.d(TAG, "onClick: tests...");
                     performSearch();
                     Log.d(TAG, "onClick: ?!");
@@ -146,11 +147,13 @@ public class ExploreFragment0 extends Fragment {
             alter.setVisibility(View.VISIBLE);
         }*/
         if(userdata.get("userLocation")!=null) {
+            Log.v("Location","User Location is present");
             recyclerView.setVisibility(View.VISIBLE);
             alter.setVisibility(View.GONE);
         }
         else
         {
+            Log.v("Location","User Location is null");
             recyclerView.setVisibility(View.GONE);
             alter.setVisibility(View.VISIBLE);
         }
