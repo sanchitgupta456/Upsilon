@@ -1,18 +1,26 @@
 package com.sanchit.Upsilon;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.sanchit.Upsilon.courseData.Course;
 import com.sanchit.Upsilon.courseData.CoursesAdapter1;
+import com.sanchit.Upsilon.paymentLog.PaymentLog;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -30,6 +38,9 @@ public class TeacherInfoActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_teacher_info);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_HOME_AS_UP);
+        //getSupportActionBar().setTitle("View Teacher Details");
         imageView = (CircleImageView) findViewById(R.id.img_tutor);
         name = (TextView) findViewById(R.id.text_tutor_name);
         speciality = (TextView) findViewById(R.id.text_tutor_speciality);
@@ -49,5 +60,22 @@ public class TeacherInfoActivity extends AppCompatActivity {
             recyclerView.setAdapter(adapter);
             recyclerView.setLayoutManager(manager);
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_teacher_info, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if(item.getItemId() == android.R.id.home) {
+            finish();
+        }
+        if(item.getItemId() == R.id.notification) {
+            startActivity(new Intent(getApplicationContext(), PaymentLogActivity.class));
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

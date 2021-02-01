@@ -113,21 +113,14 @@ public class ExploreFragment0 extends Fragment {
         ll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(TAG, "onClick: ok now button is clicked");
                 if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                    Log.d(TAG, "onClick: oops i don't have permission yet :(");
                     ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_FINE_LOCATION);
-                    Log.d(TAG, "onClick: i wonder ;-;");
                 } else {
-                    Log.d(TAG, "onClick: it is here now");
                     llLoader.setVisibility(View.VISIBLE);
                     getLocation();
-                    Log.d(TAG, "onClick: location updated/set");
                     app = new App(new AppConfiguration.Builder(appID).build());
                     user = app.currentUser();
-                    Log.d(TAG, "onClick: tests...");
                     performSearch();
-                    Log.d(TAG, "onClick: ?!");
                     llLoader.setVisibility(View.INVISIBLE);
                 }
             }
@@ -148,6 +141,7 @@ public class ExploreFragment0 extends Fragment {
         if(userdata.get("userLocation")!=null) {
             recyclerView.setVisibility(View.VISIBLE);
             alter.setVisibility(View.GONE);
+            performSearch();
         }
         else
         {
@@ -174,12 +168,8 @@ public class ExploreFragment0 extends Fragment {
         mongoDatabase = mongoClient.getDatabase("Upsilon");
         MongoCollection<Document> mongoCollection  = mongoDatabase.getCollection("UserData");
         userdata = user.getCustomData();
-        Log.d(TAG, "performSearch: 165");
 
         if(userdata.get("userLocation")!=null) {
-            Log.d(TAG, "performSearch: 168");
-            Log.v("Searching", String.valueOf(userdata.get("userLocation")));
-            Log.d(TAG, "performSearch: 170");
             recyclerView.setVisibility(View.VISIBLE);
             alter.setVisibility(View.GONE);
         }
@@ -190,7 +180,6 @@ public class ExploreFragment0 extends Fragment {
             return;
         }
 
-        Log.d(TAG, "performSearch: cleared");
         //Blank query to find every single user in db
         Document queryFilter  = new Document("userid", user.getId());
 
@@ -208,6 +197,7 @@ public class ExploreFragment0 extends Fragment {
                     if(currentDoc.get("userLocation")!=null) {
                         searchQuery.searchForCourse(app, mongoDatabase, getContext(), adapter, recyclerView, 10, userLoc);
                         list = searchQuery.getSearchResultsList();
+                        Log.d(TAG, "performSearch: list after search: size: " + list.size());
                         Log.v("COURSEDISTANCE", "START!");
                         for (int p = 0; p < list.size(); p++){
                             Log.v("COURSEDISTANCE", list.get(p).getCourseName());
@@ -223,9 +213,9 @@ public class ExploreFragment0 extends Fragment {
                 Log.v("User","Failed to complete search");
             }
         });
-        list = searchQuery.getSearchResultsList();
+        //list = searchQuery.getSearchResultsList();
 
-        initRecyclerView(recyclerView,list);
+        //initRecyclerView(recyclerView,list);
     }
 
     public void initRecyclerView(RecyclerView recyclerView, ArrayList<Course> list) {

@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="10dp"
+    app:cardElevation="4dp"
+    app:cardCornerRadius="2dp">
+    <LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:orientation="vertical"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:id="@+id/llTransactionId"
+            android:weightSum="100">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Transaction Id "
+                android:textSize="14sp"
+                android:textColor="@color/GreyDark"
+                android:layout_weight="50"
+                android:padding="2dp"/>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/transaction_id"
+                android:text="1vbj82d8hd28hh8bdb28eub"
+                android:textColor="@color/colorBlack"
+                android:textSize="14sp"
+                android:layout_weight="50"
+                android:padding="2dp"/>
+        </LinearLayout>
+        <TextView
+            android:id="@+id/messageCredited"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:text="Credited Rs. 500"
+            android:textSize="16sp"
+            android:textStyle="italic"
+            android:textColor="@color/colorRed"
+            android:layout_weight="50"
+            android:padding="5dp"
+            android:paddingStart="15dp"
+            android:visibility="gone"/>
+        <TextView
+            android:id="@+id/messageDebited"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:text="Debited Rs. 500"
+            android:textSize="16sp"
+            android:textStyle="italic"
+            android:textColor="#00C853"
+            android:layout_weight="50"
+            android:padding="5dp"
+            android:paddingStart="15dp"
+            android:visibility="gone"/>
+        <TextView
+            android:id="@+id/messageWithdrawalSuccessful"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:text="Withdrawn Rs. 500 to your bank account"
+            android:textSize="16sp"
+            android:textStyle="italic"
+            android:textColor="#00C853"
+            android:layout_weight="50"
+            android:padding="2dp"
+            app:drawableStartCompat="@drawable/icon_tick"
+            app:drawableTint="#00C853"
+            android:drawablePadding="10dp"
+            android:visibility="gone"/>
+        <TextView
+            android:id="@+id/messageWithdrawalPending"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:text="Withdraw Request sent. Pending withdrawal."
+            android:textSize="16sp"
+            android:textStyle="italic"
+            android:textColor="#2962FF"
+            android:layout_weight="50"
+            android:padding="5dp"
+            android:drawablePadding="10dp"
+            app:drawableStartCompat="@drawable/icon_clock"
+            app:drawableTint="#2962FF"
+            android:visibility="gone"/>
+        <!--
+        <TextView
+            android:id="@+id/messageCourseSold"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:text="Your course was bought!"
+            android:textSize="16sp"
+            android:textStyle="italic"
+            android:textColor="#2962FF"
+            android:layout_weight="50"
+            android:padding="5dp"
+            android:paddingStart="15dp"/>
+        <TextView
+            android:id="@+id/messageCourseRegistered"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:text="You bought a new course!"
+            android:textSize="16sp"
+            android:textStyle="italic"
+            android:textColor="#2962FF"
+            android:layout_weight="50"
+            android:padding="5dp"
+            android:paddingStart="15dp"/> -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/date_time"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        android:textColor="@color/GreyDark"
+        android:layout_gravity="end"
+        android:text="18/12/2001 03:12 AM"
+        android:padding="2dp"/>
+</LinearLayout>
+</androidx.cardview.widget.CardView>
+<!--
+ -->
