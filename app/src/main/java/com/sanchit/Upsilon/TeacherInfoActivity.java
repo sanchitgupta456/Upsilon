@@ -63,18 +63,9 @@ public class TeacherInfoActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_teacher_info, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if(item.getItemId() == android.R.id.home) {
+        if(item.getItemId()== android.R.id.home) {
             finish();
-        }
-        if(item.getItemId() == R.id.notification) {
-            startActivity(new Intent(getApplicationContext(), PaymentLogActivity.class));
         }
         return super.onOptionsItemSelected(item);
     }
