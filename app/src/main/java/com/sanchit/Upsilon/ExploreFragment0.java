@@ -120,6 +120,8 @@ public class ExploreFragment0 extends Fragment {
                     getLocation();
                     app = new App(new AppConfiguration.Builder(appID).build());
                     user = app.currentUser();
+                    userdata = user.getCustomData();
+                    Log.d(TAG, "onClick: tests...");
                     performSearch();
                     llLoader.setVisibility(View.INVISIBLE);
                 }

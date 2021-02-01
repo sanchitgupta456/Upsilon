@@ -36,6 +36,7 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.SearchEvent;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -44,6 +45,7 @@ import android.widget.Toast;
 import com.android.volley.toolbox.HttpResponse;
 import com.facebook.login.LoginManager;
 import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
@@ -155,14 +157,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     SearchQuery searchQuery = new SearchQuery();
     //User location
     Document userLoc;
+    DrawerLayout drawerLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        drawerLayout = findViewById(R.id.drawer_layout);
         Intent intent1 = getIntent();
         email = intent1.getStringExtra("email");
-
 
         /*ctx = this;
         //startService(upsilonJobService);
@@ -261,6 +264,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                                                 + result.get().getInsertedId());
                                         goToSetupActivity();
                                     } else {
+                                        Snackbar.make(drawerLayout,"An error occured . Please signIn again",Snackbar.LENGTH_LONG).show();
                                         Log.e("EXAMPLE", "Unable to insert custom user data. Error: " + result.getError());
                                     }
                                 });
@@ -269,6 +273,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     {
                         Log.v("User", "successfully found the user");
                         getCourseData();
+
                     }
                     while (results.hasNext()) {
                         //Log.v("EXAMPLE", results.next().toString());
@@ -287,7 +292,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         //Log.v("ProfilePic",currentDoc.getString("profilePicUrl"));
                     }
                 } else {
-                   Log.v("User","Failed to complete search");
+                    Snackbar.make(drawerLayout,"An error occured . Please signIn again",Snackbar.LENGTH_LONG).show();
+                    Log.v("User","Failed to complete search");
                 }
             });
         }
@@ -433,22 +439,26 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                                     flag[0] =0;
                                     //Log.v("MyCourses", String.valueOf(myCourses));
-                                    for(int i=0;i<myCourses.size();i++)
-                                    {
-                                        try {
-                                            Log.v("currentCourse", course.getCourseId() + myCourses.get(i));
-                                            if(myCourses.get(i).equals(course.getCourseId()))
-                                            {
-                                                Log.v("CourseAdded","Added");
-                                                courseArrayList1.add(course);
-                                                coursesAdapter1.notifyDataSetChanged();
-                                                frame1.setVisibility(View.VISIBLE);
-                                                flag[0] =1;
-                                                break;
+                                    try {
+                                        for(int i=0;i<myCourses.size();i++)
+                                        {
+                                            try {
+                                                Log.v("currentCourse", course.getCourseId() + myCourses.get(i));
+                                                if(myCourses.get(i).equals(course.getCourseId()))
+                                                {
+                                                    Log.v("CourseAdded","Added");
+                                                    courseArrayList1.add(course);
+                                                    coursesAdapter1.notifyDataSetChanged();
+                                                    frame1.setVisibility(View.VISIBLE);
+                                                    flag[0] =1;
+                                                    break;
+                                                }
+                                            } catch (Exception e) {
+                                                e.printStackTrace();
                                             }
-                                        } catch (Exception e) {
-                                            e.printStackTrace();
                                         }
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
                                     }
                                     if(flag[0] ==1)
                                     {
