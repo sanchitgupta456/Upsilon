@@ -123,7 +123,6 @@ public class ExploreFragment0 extends Fragment {
                     userdata = user.getCustomData();
                     Log.d(TAG, "onClick: tests...");
                     performSearch();
-                    llLoader.setVisibility(View.INVISIBLE);
                 }
             }
         });

@@ -790,7 +790,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
         else if(id==R.id.homeDrawerMenuItem4)
         {
-            Intent intent = new Intent(MainActivity.this,UserDataSetupActivity3.class);
+            Intent intent = new Intent(MainActivity.this,TeacherInfoActivity.class);
             startActivity(intent);
         }
         else if(id==R.id.homeDrawerMenuItem5)
