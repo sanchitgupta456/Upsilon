@@ -167,7 +167,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Intent intent1 = getIntent();
         email = intent1.getStringExtra("email");
 
-
         /*ctx = this;
         //startService(upsilonJobService);
         mSensorService = new NotifService(getCtx());
@@ -265,7 +264,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                                                 + result.get().getInsertedId());
                                         goToSetupActivity();
                                     } else {
-                                        getCourseData();
+                                        Snackbar.make(drawerLayout,"An error occured . Please signIn again",Snackbar.LENGTH_LONG).show();
                                         Log.e("EXAMPLE", "Unable to insert custom user data. Error: " + result.getError());
                                     }
                                 });
@@ -273,7 +272,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     else
                     {
                         Log.v("User", "successfully found the user");
-                        Snackbar.make(drawerLayout,"An error occured . Please signIn again",Snackbar.LENGTH_LONG).show();
+                        getCourseData();
+
                     }
                     while (results.hasNext()) {
                         //Log.v("EXAMPLE", results.next().toString());
@@ -292,7 +292,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         //Log.v("ProfilePic",currentDoc.getString("profilePicUrl"));
                     }
                 } else {
-                   Log.v("User","Failed to complete search");
+                    Snackbar.make(drawerLayout,"An error occured . Please signIn again",Snackbar.LENGTH_LONG).show();
+                    Log.v("User","Failed to complete search");
                 }
             });
         }
