@@ -69,50 +69,6 @@ public class CoursesAdapter1 extends RecyclerView.Adapter<CoursesAdapter1.ViewHo
         MongoCollection<Document> mongoCollection  = mongoDatabase.getCollection("UserData");
         //Document userLoc = new Document();
 
-        Document queryFilter1  = new Document("userid",course.getTutorId());
-        RealmResultTask<MongoCursor<Document>> findTask1 = mongoCollection.find(queryFilter1).iterator();
-        findTask1.getAsync(task1 -> {
-            if (task1.isSuccess()) {
-                MongoCursor<Document> results = task1.get();
-                if(!results.hasNext())
-                {
-
-                }
-                else
-                {
-                    Document currentDoc = results.next();
-                    holder.textTutorTvShow.setText("Course By "+currentDoc.getString("name"));
-                }
-            } else {
-                Log.v("User","Failed to complete search");
-            }
-        });
-        Document queryFilter  = new Document("userid",user.getId());
-        RealmResultTask<MongoCursor<Document>> findTask = mongoCollection.find(queryFilter).iterator();
-        findTask.getAsync(task -> {
-            if (task.isSuccess()) {
-                MongoCursor<Document> results = task.get();
-                if (results.hasNext()) {
-                    if(!course.getCourseMode().equals("Online")){
-                        Document currentDoc = results.next();
-                        Document userLoc = (Document) currentDoc.get("userLocation");
-                        Log.v("Hello", String.valueOf(userLoc));
-                        if(userLoc != null) {
-                            holder.textDistanceTvShow.setText(new StringBuilder().append("About ")
-                                    .append(String.format("%.2f",calcDist(course.getCourseLocation(), userLoc)))
-                                    .append(" kilometers from your location").toString());
-                        } else {
-                            holder.textDistanceTvShow.setText(R.string.error_not_enabled_location);
-                        }
-                    }
-                    else {
-                        holder.textDistanceTvShow.setText("");
-                    }
-                }
-            } else {
-                Log.v("User","Failed to complete search");
-            }
-        });
         holder.ll.setVisibility(View.GONE);
 
         holder.toggle.setOnClickListener(new View.OnClickListener() {
@@ -123,6 +79,50 @@ public class CoursesAdapter1 extends RecyclerView.Adapter<CoursesAdapter1.ViewHo
                 }
                 else {
                     holder.ll.setVisibility(View.VISIBLE);
+                    Document queryFilter1  = new Document("userid",course.getTutorId());
+                    RealmResultTask<MongoCursor<Document>> findTask1 = mongoCollection.find(queryFilter1).iterator();
+                    findTask1.getAsync(task1 -> {
+                        if (task1.isSuccess()) {
+                            MongoCursor<Document> results = task1.get();
+                            if(!results.hasNext())
+                            {
+
+                            }
+                            else
+                            {
+                                Document currentDoc = results.next();
+                                holder.textTutorTvShow.setText("Course By "+currentDoc.getString("name"));
+                            }
+                        } else {
+                            Log.v("User","Failed to complete search");
+                        }
+                    });
+                    Document queryFilter  = new Document("userid",user.getId());
+                    RealmResultTask<MongoCursor<Document>> findTask = mongoCollection.find(queryFilter).iterator();
+                    findTask.getAsync(task -> {
+                        if (task.isSuccess()) {
+                            MongoCursor<Document> results = task.get();
+                            if (results.hasNext()) {
+                                if(!course.getCourseMode().equals("Online")){
+                                    Document currentDoc = results.next();
+                                    Document userLoc = (Document) currentDoc.get("userLocation");
+                                    Log.v("Hello", String.valueOf(userLoc));
+                                    if(userLoc != null) {
+                                        holder.textDistanceTvShow.setText(new StringBuilder().append("About ")
+                                                .append(String.format("%.2f",calcDist(course.getCourseLocation(), userLoc)))
+                                                .append(" kilometers from your location").toString());
+                                    } else {
+                                        holder.textDistanceTvShow.setText(R.string.error_not_enabled_location);
+                                    }
+                                }
+                                else {
+                                    holder.textDistanceTvShow.setText("");
+                                }
+                            }
+                        } else {
+                            Log.v("User","Failed to complete search");
+                        }
+                    });
                 }
                 holder.toggle.animate().rotationBy(180).start();
             }

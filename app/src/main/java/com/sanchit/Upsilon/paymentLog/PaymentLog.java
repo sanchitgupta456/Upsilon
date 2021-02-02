@@ -1,5 +1,7 @@
 package com.sanchit.Upsilon.paymentLog;
 
+import com.sanchit.Upsilon.R;
+
 public class PaymentLog {
     private String transactionId;
     private String logMessage;
@@ -11,6 +13,8 @@ public class PaymentLog {
     }
 
     public PaymentLog(LogType type) {
+        transactionId = "Please wait...";
+        logMessage = "This is a test message of type " + type.toString();
         this.type = type;
     }
 
