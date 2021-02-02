@@ -1,7 +1,6 @@
 package com.sanchit.Upsilon;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
@@ -30,19 +29,14 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
-import android.view.SearchEvent;
 import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.android.volley.toolbox.HttpResponse;
 import com.facebook.login.LoginManager;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
@@ -53,7 +47,6 @@ import com.sanchit.Upsilon.courseData.Course;
 import com.sanchit.Upsilon.courseData.CoursesAdapter;
 import com.sanchit.Upsilon.courseData.CoursesAdapter1;
 import com.sanchit.Upsilon.courseLocationMap.MapsActivity;
-import com.sanchit.Upsilon.courseSearching.LocationSorter;
 import com.sanchit.Upsilon.courseSearching.SearchQuery;
 import com.sanchit.Upsilon.courseSearching.rankBy;
 import com.sanchit.Upsilon.notifications.NotifService;
@@ -62,32 +55,11 @@ import com.sanchit.Upsilon.ui.login.LoginActivity;
 import com.squareup.picasso.Picasso;
 
 import org.bson.Document;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 
-import java.io.BufferedInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.PriorityQueue;
-import java.util.concurrent.BlockingDeque;
-import java.util.regex.Pattern;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-import io.realm.Realm;
-import io.realm.RealmQuery;
-import io.realm.Sort;
 import io.realm.mongodb.App;
 import io.realm.mongodb.AppConfiguration;
 import io.realm.mongodb.Credentials;
@@ -96,9 +68,7 @@ import io.realm.mongodb.User;
 import io.realm.mongodb.mongo.MongoClient;
 import io.realm.mongodb.mongo.MongoCollection;
 import io.realm.mongodb.mongo.MongoDatabase;
-import io.realm.mongodb.mongo.iterable.FindIterable;
 import io.realm.mongodb.mongo.iterable.MongoCursor;
-import io.realm.mongodb.sync.SyncConfiguration;
 
 import static com.sanchit.Upsilon.notifications.NotifChannel.CHANNEL_ID;
 
@@ -142,6 +112,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public static final int[] TvShowImgs = {R.drawable.google, R.drawable.facebook};
     private String college;
     private String email;
+    private Menu menu;
+
 
     //NOTIFS
     Intent serviceIntent;
@@ -158,6 +130,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     //User location
     Document userLoc;
     DrawerLayout drawerLayout;
+    NavigationView navigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -222,7 +195,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(R.string.home);
         drawer = findViewById(R.id.drawer_layout);
-        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView = findViewById(R.id.nav_view);
         toggle = new ActionBarDrawerToggle(
                 this, drawer, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
@@ -238,6 +211,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
         else
         {
+            updateMenu();
+//            Document userdata = user.getCustomData();
+//            if(userdata.get("teacherSetup")==null)
+//            {
+//                navigationView.getMenu().clear();
+//                navigationView.inflateMenu(R.menu.home_drawer_menu_1);
+//            }
+//            else
+//            {
+//                navigationView.getMenu().clear();
+//                navigationView.inflateMenu(R.menu.home_drawer_menu_1);
+//            }
             Log.v("RefreshToken",app.currentUser().getRefreshToken().toString());
             //operationPURGE(user);
             //operationCalulateDistance();
@@ -257,7 +242,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     if(!results.hasNext())
                     {
                         mongoCollection.insertOne(
-                                new Document("userid", user.getId()).append("favoriteColor", "pink").append("email",email))
+                                new Document("userid", user.getId()).append("favoriteColor", "pink").append("email",email).append("teacherSetup",false))
                                 .getAsync(result -> {
                                     if (result.isSuccess()) {
                                         Log.v("EXAMPLE", "Inserted custom user data document. _id of inserted document: "
@@ -694,7 +679,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 return false;
             }
         });
-
         return true;
     }
 
@@ -1013,5 +997,68 @@ since the dispatchTouchEvent might dispatch your touch event to this function ag
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(coursesAdapter1_1);
         recyclerView.addItemDecoration(dividerItemDecoration);
+    }
+
+
+    @Override
+    protected void onResume() {
+        updateMenu();
+        super.onResume();
+    }
+
+//    @Override
+//    protected void onRestart() {
+//        updateMenu();
+//        getCourseData();
+//        super.onRestart();
+//    }
+
+    private void updateMenu()
+    {
+        try {
+            User user = app.currentUser();
+            mongoClient = user.getMongoClient("mongodb-atlas");
+            mongoDatabase = mongoClient.getDatabase("Upsilon");
+            MongoCollection<Document> mongoCollection  = mongoDatabase.getCollection("UserData");
+
+            //Blank query to find every single course in db
+            //TODO: Modify query to look for user preferred course IDs
+            Document queryFilter  = new Document("userid",user.getId());
+
+            RealmResultTask<MongoCursor<Document>> findTask = mongoCollection.find(queryFilter).iterator();
+
+            findTask.getAsync(task -> {
+                if (task.isSuccess()) {
+                    MongoCursor<Document> results = task.get();
+                    while (results.hasNext()) {
+                        //Log.v("EXAMPLE", results.next().toString());
+                        Document currentDoc = results.next();
+                            /*if(currentDoc.get("profilePicture") ==null)
+                            {
+                                goToSetupActivity();
+                            }
+                            if(currentDoc.get("username") == null)
+                            {
+                                goToSetupActivity();
+                            }*/
+                        if(currentDoc!=null && currentDoc.get("teacherSetup").equals(true))
+                        {
+                            navigationView.getMenu().clear();
+                            navigationView.inflateMenu(R.menu.home_drawer_menu);
+                        }
+                        else
+                        {
+                            navigationView.getMenu().clear();
+                            navigationView.inflateMenu(R.menu.home_drawer_menu_1);
+                        }
+                    }
+                } else {
+                    Snackbar.make(drawerLayout,"An error occured . Please signIn again",Snackbar.LENGTH_LONG).show();
+                    Log.v("User","Failed to complete search");
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -7,11 +7,8 @@
         android:id="@+id/homeDrawerMenuItem3"/>
 
     <item
-        android:title="@string/teach_a_new_course"
-        android:id="@+id/homeDrawerMenuItem1"/>
-    <item
-        android:title="@string/courses_taught"
-        android:id="@+id/homeDrawerMenuItem2"/>
+        android:title="Start Teaching with Upsilon"
+        android:id="@+id/homeDrawerMenuItem8"/>
 
     <item
         android:title="Upsilon Wallet"

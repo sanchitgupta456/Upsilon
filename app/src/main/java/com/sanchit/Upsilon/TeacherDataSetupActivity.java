@@ -137,6 +137,7 @@ public class TeacherDataSetupActivity extends AppCompatActivity {
                 {
                     Document document = new Document();
                     document = results.next();
+                    document.append("teacherSetup",true);
                     document.append("userid",user.getId());
                     document.append("specialities",model0.getSpecialities().getValue());
                     document.append("qualifications",model1.getExperience().getValue());
@@ -157,6 +158,7 @@ public class TeacherDataSetupActivity extends AppCompatActivity {
                 {
                     Document document = new Document();
                     document = results.next();
+                    document.append("teacherSetup",true);
                     document.append("specialities",model0.getSpecialities().getValue());
                     document.append("qualifications",model1.getExperience().getValue());
                     document.append("experience",model1.getExperience().getValue());
