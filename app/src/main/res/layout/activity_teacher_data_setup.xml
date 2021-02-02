@@ -5,7 +5,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".TeacherDataSetupActivity">
+    tools:context=".TeacherDataSetupActivity"
+    android:id="@+id/teacher_data_setup_layout">
 
     <androidx.viewpager.widget.ViewPager
         android:layout_width="match_parent"
