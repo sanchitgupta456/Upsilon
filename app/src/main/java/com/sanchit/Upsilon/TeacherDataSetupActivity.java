@@ -160,7 +160,7 @@ public class TeacherDataSetupActivity extends AppCompatActivity {
                     document = results.next();
                     document.append("teacherSetup",true);
                     document.append("specialities",model0.getSpecialities().getValue());
-                    document.append("qualifications",model1.getExperience().getValue());
+                    document.append("qualifications",model0.getQualifications().getValue());
                     document.append("experience",model1.getExperience().getValue());
                     mongoCollection.updateOne(new Document("userid",user.getId()),
                             document)

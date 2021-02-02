@@ -314,19 +314,19 @@ public class UserDataSetupActivity2 extends AppCompatActivity {
                 Profilepicpath = getRealPathFromURI(currImageURI);
 
             }*/
-        if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && null != data) {
-            Uri selectedImage = data.getData();
-            String[] filePathColumn = { MediaStore.Images.Media.DATA };
-            Cursor cursor = getContentResolver().query(selectedImage,
-                    filePathColumn, null, null, null);
-            cursor.moveToFirst();
-            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-            picturePath = cursor.getString(columnIndex);
-            cursor.close();
-            // String picturePath contains the path of selected Image
-            ImageView imageView = (ImageView) findViewById(R.id.profilePhoto);
-            imageView.setImageBitmap(BitmapFactory.decodeFile(picturePath));
-        }
+            if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && null != data) {
+                Uri selectedImage = data.getData();
+                String[] filePathColumn = { MediaStore.Images.Media.DATA };
+                Cursor cursor = getContentResolver().query(selectedImage,
+                        filePathColumn, null, null, null);
+                cursor.moveToFirst();
+                int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                picturePath = cursor.getString(columnIndex);
+                cursor.close();
+                // String picturePath contains the path of selected Image
+                ImageView imageView = (ImageView) findViewById(R.id.profilePhoto);
+                imageView.setImageBitmap(BitmapFactory.decodeFile(picturePath));
+            }
         }
     }
 

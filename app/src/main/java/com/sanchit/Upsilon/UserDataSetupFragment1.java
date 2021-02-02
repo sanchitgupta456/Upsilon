@@ -3,6 +3,7 @@ package com.sanchit.Upsilon;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -54,6 +55,13 @@ public class UserDataSetupFragment1 extends Fragment {
     public UserDataSetupFragment1() {
         // Required empty public constructor
     }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        viewModel = new ViewModelProvider(requireActivity()).get(UserDataViewModel.class);
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -75,8 +83,8 @@ public class UserDataSetupFragment1 extends Fragment {
         mongoDatabase = mongoClient.getDatabase("Upsilon");
         MongoCollection<Document> mongoCollection = mongoDatabase.getCollection("UserData");
 
-        mycourses = new ArrayList<>();
-        viewModel.setMycourses(mycourses);
+        //mycourses = new ArrayList<>();
+        //viewModel.setMycourses(mycourses);
 
         addInterests.setOnClickListener(new View.OnClickListener() {
             @Override
