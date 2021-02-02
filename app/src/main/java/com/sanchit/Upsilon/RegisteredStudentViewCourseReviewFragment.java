@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -51,6 +52,7 @@ public class RegisteredStudentViewCourseReviewFragment extends Fragment {
     private double Rating;
     private Gson gson;
     private GsonBuilder gsonBuilder;
+    private String name;
 
     @Nullable
     @Override
@@ -66,6 +68,12 @@ public class RegisteredStudentViewCourseReviewFragment extends Fragment {
         app = new App(new AppConfiguration.Builder(appID)
                 .build());
         User user = app.currentUser();
+        try {
+            name = user.getCustomData().getString("name");
+            textView.setText(name);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         if(user==null)
         {
             startActivity(new Intent(getContext(), LoginActivity.class));
@@ -112,10 +120,11 @@ public class RegisteredStudentViewCourseReviewFragment extends Fragment {
         submitReview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                submitReview.setVisibility(View.INVISIBLE);
                 Review = review.getText().toString();
                 Rating = ratingBar.getRating();
 
-                CourseReview courseReview = new CourseReview(Review,Rating,user.getId().toString());
+                CourseReview courseReview = new CourseReview(Review,Rating,user.getId().toString(),name);
                 BasicBSONList courseReviews = course.getCourseReviews();
                 if(courseReviews==null)
                 {
@@ -150,10 +159,11 @@ public class RegisteredStudentViewCourseReviewFragment extends Fragment {
                     }
                     else
                     {
+                        submitReview.setVisibility(View.VISIBLE);
+                        Toast.makeText(getActivity(),"Could not add review",Toast.LENGTH_LONG).show();
                         Log.v("Review","Could not add Review"+result.getError().toString());
                     }
                 });
-
             }
         });
 

@@ -45,6 +45,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="@color/colorPrimaryDark"
+        android:text="Upsilon"
         android:textStyle="italic"
         android:textSize="@dimen/text_margin"
         android:gravity="center_vertical"

@@ -7,6 +7,26 @@ public class CourseReview extends Object {
     private String review;
     private double reviewRating;
     private String reviewAuthorId;
+    private String reviewName;
+
+    public CourseReview(String review, double reviewRating, String reviewAuthorId, String reviewName) {
+        this.review = review;
+        this.reviewRating = reviewRating;
+        this.reviewAuthorId = reviewAuthorId;
+        this.reviewName = reviewName;
+    }
+
+    public void setReviewAuthorId(String reviewAuthorId) {
+        this.reviewAuthorId = reviewAuthorId;
+    }
+
+    public String getReviewName() {
+        return reviewName;
+    }
+
+    public void setReviewName(String reviewName) {
+        this.reviewName = reviewName;
+    }
 
     public CourseReview() {
     }

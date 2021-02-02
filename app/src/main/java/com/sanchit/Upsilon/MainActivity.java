@@ -1041,15 +1041,24 @@ since the dispatchTouchEvent might dispatch your touch event to this function ag
                             {
                                 goToSetupActivity();
                             }*/
-                        if(currentDoc!=null && currentDoc.get("teacherSetup").equals(true))
-                        {
-                            navigationView.getMenu().clear();
-                            navigationView.inflateMenu(R.menu.home_drawer_menu);
-                        }
-                        else
-                        {
-                            navigationView.getMenu().clear();
-                            navigationView.inflateMenu(R.menu.home_drawer_menu_1);
+                        try {
+                            if(currentDoc==null || currentDoc.get("teacherSetup")==null)
+                            {
+                                navigationView.getMenu().clear();
+                                navigationView.inflateMenu(R.menu.home_drawer_menu_1);
+                            }
+                            else if(currentDoc.get("teacherSetup").equals(true))
+                            {
+                                navigationView.getMenu().clear();
+                                navigationView.inflateMenu(R.menu.home_drawer_menu);
+                            }
+                            else
+                            {
+                                navigationView.getMenu().clear();
+                                navigationView.inflateMenu(R.menu.home_drawer_menu_1);
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
                     }
                 } else {

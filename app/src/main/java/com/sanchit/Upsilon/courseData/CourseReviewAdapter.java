@@ -51,6 +51,13 @@ public class CourseReviewAdapter extends RecyclerView.Adapter<CourseReviewAdapte
         CourseReview courseReviews = courseList.get(position);
 
         holder.courseReview.setText(courseReviews.getReview());
+        holder.courseRating.setText(String.valueOf(courseReviews.getReviewRating())+"/5");
+        try {
+            Log.v("CourseReviewAdapter",courseReviews.getReviewName());
+            holder.courseName.setText(courseReviews.getReviewName().toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         Log.v("Adapter",courseReviews.getReview());
         //holder.imgTvShow.setImageResource(course.getCardImgID());
         holder.ll.setOnClickListener(new View.OnClickListener() {
@@ -69,13 +76,15 @@ public class CourseReviewAdapter extends RecyclerView.Adapter<CourseReviewAdapte
 
     public class CourseReviewsViewHolder extends RecyclerView.ViewHolder
     {
-        TextView courseReview;
+        TextView courseReview,courseRating,courseName;
         LinearLayout ll;
 
         public CourseReviewsViewHolder(View itemView)
         {
             super(itemView);
             courseReview = (TextView) itemView.findViewById(R.id.course_review_view) ;
+            courseRating = (TextView) itemView.findViewById(R.id.course_review_rating);
+            courseName = (TextView) itemView.findViewById(R.id.course_review_name);
             ll = (LinearLayout) itemView.findViewById(R.id.courseReviewCard);
         }
 

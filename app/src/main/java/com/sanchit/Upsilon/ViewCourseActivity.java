@@ -108,6 +108,7 @@ public class ViewCourseActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent1 = new Intent(ViewCourseActivity.this,TeacherInfoActivity.class);
+                intent1.putExtra("tutorId",course.getTutorId());
                 startActivity(intent1);
             }
         });
@@ -211,7 +212,18 @@ public class ViewCourseActivity extends AppCompatActivity {
         {
             Object courseReview = (Object) courseReviews.get(counter);
             LinkedHashMap courseReview1 = (LinkedHashMap) courseReview;
-            CourseReview courseReview2 = new CourseReview(courseReview1.get("review").toString(), (Double) courseReview1.get("reviewRating"),courseReview1.get("reviewAuthorId").toString());
+            CourseReview courseReview2 = null;
+            try {
+                courseReview2 = new CourseReview(courseReview1.get("review").toString(), (Double) courseReview1.get("reviewRating"),courseReview1.get("reviewAuthorId").toString(),courseReview1.get("reviewName").toString());
+            } catch (Exception e) {
+                try {
+                    Log.v("counting","count");
+                    courseReview2 = new CourseReview(courseReview1.get("review").toString(), (Double) courseReview1.get("reviewRating"),courseReview1.get("reviewAuthorId").toString());
+                } catch (Exception exception) {
+                    exception.printStackTrace();
+                }
+                e.printStackTrace();
+            }
             courseReviewsArrayList.add(courseReview2);
             courseReviewAdapter.notifyDataSetChanged();
             Log.v("test", (String) courseReview1.get("review"));
