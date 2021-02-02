@@ -97,7 +97,11 @@ public class WalletActivity extends AppCompatActivity {
                     ifsc.setText(Ifsc);
                     mobile.setText(Mobile);
                     upi.setText(Upi);
-                    amountdue.setText(String.valueOf(AmountDue));
+                    if(AmountDue==null)
+                    {
+                        AmountDue=0;
+                    }
+                    amountdue.setText("Rs. "+String.valueOf(AmountDue));
                     Log.v("WalletDetails",Accountnumber+Ifsc+Mobile+Upi);
                 }
                 else
