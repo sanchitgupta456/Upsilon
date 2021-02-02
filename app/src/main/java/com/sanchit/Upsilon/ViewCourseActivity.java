@@ -57,6 +57,7 @@ public class ViewCourseActivity extends AppCompatActivity {
     private ImageView CourseImage;
     private TextView ActionBarCourseName,CourseDescription,CourseDuration,CourseMode,CourseCost,CourseTutorName;
     private ImageButton CourseLocation;
+    private ImageButton TeacherInfo;
     private Button RegisterButton;
     String appID = "upsilon-ityvn";
     App app;
@@ -89,6 +90,7 @@ public class ViewCourseActivity extends AppCompatActivity {
         reviewsRecyclerView = (RecyclerView) findViewById(R.id.listCourseReviews);
         introductoryRecyclerView = (RecyclerView) findViewById(R.id.listIntroductoryMaterial);
         CourseLocation = (ImageButton) findViewById(R.id.location_view_course);
+        TeacherInfo = (ImageButton) findViewById(R.id.view_course_tutor_info);
         RegisterButton = (Button) findViewById(R.id.view_course_register);
 
         app = new App(new AppConfiguration.Builder(appID)
@@ -101,6 +103,14 @@ public class ViewCourseActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         course = (Course)intent.getSerializableExtra("Course");
+
+        TeacherInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent1 = new Intent(ViewCourseActivity.this,TeacherInfoActivity.class);
+                startActivity(intent1);
+            }
+        });
 
         if(course.getTutorId().equals(user.getId()))
         {
