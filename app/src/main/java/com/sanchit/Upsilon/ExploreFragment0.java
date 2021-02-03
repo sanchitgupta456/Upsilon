@@ -207,7 +207,7 @@ public class ExploreFragment0 extends Fragment {
                     }
                     else
                     {
-                        Snackbar.make(getView(),"Please add Your Location in UserData to search courses near you",1).show();
+                        Snackbar.make(requireView(),"Please add Your Location in UserData to search courses near you",1).show();
                     }
                 }
             } else {
