@@ -14,7 +14,19 @@ public class LocationSorter implements Comparator<Document>
             return o1.getDouble("courseDistance").compareTo(o2.getDouble("courseDistance"));
         }
         else{
-            return o1.getDouble("courseRating").compareTo(o2.getDouble("courseRating"));
+            try {
+                return o1.getDouble("courseRating").compareTo(o2.getDouble("courseRating"));
+            } catch (Exception e) {
+                e.printStackTrace();
+                try {
+                    Double x;
+                    x = Double.parseDouble(String.valueOf(o1.get("courseRating")));
+                    return x.compareTo(Double.parseDouble(String.valueOf(o1.get("courseRating"))));
+                } catch (NumberFormatException numberFormatException) {
+                    numberFormatException.printStackTrace();
+                    return 1;
+                }
+            }
         }
     }
 }

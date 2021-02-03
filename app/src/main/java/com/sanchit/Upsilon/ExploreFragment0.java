@@ -72,6 +72,7 @@ public class ExploreFragment0 extends Fragment {
     LinearLayout ll, llLoader;
     SearchQuery searchQuery = new SearchQuery();
     Document userLocation;
+    ProgressBar progressBar;
 
     ArrayList<Course> list = new ArrayList<>();
 
@@ -95,21 +96,24 @@ public class ExploreFragment0 extends Fragment {
         Log.d(TAG, "onCreateView: started. 95");
         View view = inflater.inflate(R.layout.fragment_explore0, container, false);
         recyclerView = (RecyclerView) view.findViewById(R.id.exploreList0);
+        progressBar = (ProgressBar) view.findViewById(R.id.loadingExplore);
         alter = (CardView) view.findViewById(R.id.alter);
         ll = (LinearLayout) view.findViewById(R.id.linearLayoutSetupMaps);
         llLoader = (LinearLayout) view.findViewById(R.id.llLocationSetupProgress);
-        llLoader.setVisibility(View.INVISIBLE);
+//        llLoader.setVisibility(View.INVISIBLE);
         Log.d(TAG, "onCreateView: started. 102");
 
         app = new App(new AppConfiguration.Builder(appID).build());
         user = app.currentUser();
+        userdata = user.getCustomData();
         mongoClient = user.getMongoClient("mongodb-atlas");
         mongoDatabase = mongoClient.getDatabase("Upsilon");
         MongoCollection<Document> mongoCollection  = mongoDatabase.getCollection("CourseData");
+        findLocation();
         Log.d(TAG, "onCreateView: 109");
         userdata = user.getCustomData();
         Log.d(TAG, "onCreateView: 111");
-
+        alter.setVisibility(View.GONE);
         ll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -118,11 +122,10 @@ public class ExploreFragment0 extends Fragment {
                 } else {
                     llLoader.setVisibility(View.VISIBLE);
                     getLocation();
-                    app = new App(new AppConfiguration.Builder(appID).build());
-                    user = app.currentUser();
-                    userdata = user.getCustomData();
+//                    app = new App(new AppConfiguration.Builder(appID).build());
+//                    user = app.currentUser();
+//                    userdata = user.getCustomData();
                     Log.d(TAG, "onClick: tests...");
-                    performSearch();
                 }
             }
         });
@@ -139,16 +142,6 @@ public class ExploreFragment0 extends Fragment {
             recyclerView.setVisibility(View.GONE);
             alter.setVisibility(View.VISIBLE);
         }*/
-        if(userdata.get("userLocation")!=null) {
-            recyclerView.setVisibility(View.VISIBLE);
-            alter.setVisibility(View.GONE);
-            performSearch();
-        }
-        else
-        {
-            recyclerView.setVisibility(View.GONE);
-            alter.setVisibility(View.VISIBLE);
-        }
 
         return view;
     }
@@ -165,21 +158,21 @@ public class ExploreFragment0 extends Fragment {
         performSearch();
     }
     public void performSearch() {
+        progressBar.setVisibility(View.VISIBLE);
+//        llLoader.setVisibility(View.VISIBLE);
         mongoClient = user.getMongoClient("mongodb-atlas");
         mongoDatabase = mongoClient.getDatabase("Upsilon");
         MongoCollection<Document> mongoCollection  = mongoDatabase.getCollection("UserData");
-        userdata = user.getCustomData();
-
-        if(userdata.get("userLocation")!=null) {
-            recyclerView.setVisibility(View.VISIBLE);
-            alter.setVisibility(View.GONE);
-        }
-        else
-        {
-            recyclerView.setVisibility(View.GONE);
-            alter.setVisibility(View.VISIBLE);
-            return;
-        }
+//        if(userdata.get("userLocation")!=null) {
+//            recyclerView.setVisibility(View.VISIBLE);
+//            alter.setVisibility(View.GONE);
+//        }
+//        else
+//        {
+//            recyclerView.setVisibility(View.GONE);
+//            alter.setVisibility(View.VISIBLE);
+//            return;
+//        }
 
         //Blank query to find every single user in db
         Document queryFilter  = new Document("userid", user.getId());
@@ -209,8 +202,15 @@ public class ExploreFragment0 extends Fragment {
                     {
                         Snackbar.make(requireView(),"Please add Your Location in UserData to search courses near you",1).show();
                     }
+                    if(!results.hasNext())
+                    {
+                        progressBar.setVisibility(View.GONE);
+//                        llLoader.setVisibility(View.GONE);
+                    }
                 }
             } else {
+//                llLoader.setVisibility(View.INVISIBLE);
+                progressBar.setVisibility(View.GONE);
                 Log.v("User","Failed to complete search");
             }
         });
@@ -230,6 +230,7 @@ public class ExploreFragment0 extends Fragment {
 
     //location
     private void getLocation() {
+//        llLoader.setVisibility(View.VISIBLE);
         Log.d(TAG, "getLocation: I got permissions!");
         userLocation = new Document();
         if (ActivityCompat.checkSelfPermission(Objects.requireNonNull(getContext()), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -265,14 +266,57 @@ public class ExploreFragment0 extends Fragment {
                         updateLocation();
                         //Log.v("Location",addresses.get(0).getPostalCode()+" "+addresses.get(0).getLocality()+" "+addresses.get(0).getSubLocality());
                     } catch (IOException e) {
+//                        llLoader.setVisibility(View.INVISIBLE);
                         e.printStackTrace();
                     }
 
                 }
                 else
                 {
+                    llLoader.setVisibility(View.INVISIBLE);
                     Log.v("Location","Error");
                 }
+            }
+        });
+    }
+
+    public void findLocation(){
+        progressBar.setVisibility(View.VISIBLE);
+//        llLoader.setVisibility(View.VISIBLE);
+        Document queryFilter = new Document("userid", user.getId());
+        mongoClient = user.getMongoClient("mongodb-atlas");
+        mongoDatabase = mongoClient.getDatabase("Upsilon");
+        MongoCollection<Document> mongoCollection  = mongoDatabase.getCollection("UserData");
+        RealmResultTask<MongoCursor<Document>> findTask = mongoCollection.find(queryFilter).iterator();
+
+        findTask.getAsync(task -> {
+            if (task.isSuccess()) {
+                MongoCursor<Document> results = task.get();
+                if (!results.hasNext()) {
+
+                } else {
+                    Document userdata = results.next();
+                    userLocation = (Document) userdata.get("userLocation");
+                    if(userLocation!=null) {
+                        progressBar.setVisibility(View.GONE);
+                        Log.v("ExploreFragment0","userLoc is not null");
+                        recyclerView.setVisibility(View.VISIBLE);
+                        alter.setVisibility(View.GONE);
+                        llLoader.setVisibility(View.INVISIBLE);
+                        performSearch();
+                    }
+                    else
+                    {
+                        progressBar.setVisibility(View.GONE);
+                        llLoader.setVisibility(View.INVISIBLE);
+                        Log.v("ExploreFragment0","userLoc is null");
+                        recyclerView.setVisibility(View.GONE);
+                        alter.setVisibility(View.VISIBLE);
+                    }
+                }
+            } else {
+                progressBar.setVisibility(View.GONE);
+                Log.v("User", "Failed to complete search");
             }
         });
     }
@@ -295,8 +339,13 @@ public class ExploreFragment0 extends Fragment {
                                 if (result.isSuccess()) {
                                     Log.v("EXAMPLE", "Inserted custom user data document. _id of inserted document: "
                                             + result.get().getInsertedId());
+                                    llLoader.setVisibility(View.INVISIBLE);
+                                    performSearch();
+                                    alter.setVisibility(View.GONE);
+                                    recyclerView.setVisibility(View.VISIBLE);
                                     Log.d(TAG, "updateLocation: inserted");
                                 } else {
+                                    llLoader.setVisibility(View.INVISIBLE);
                                     Log.e("EXAMPLE", "Unable to insert custom user data. Error: " + result.getError());
                                 }
                             });
@@ -309,10 +358,15 @@ public class ExploreFragment0 extends Fragment {
                             new Document("userid", user.getId()), (userdata))
                             .getAsync(result -> {
                                 if (result.isSuccess()) {
+                                    llLoader.setVisibility(View.INVISIBLE);
                                     Log.v("EXAMPLE", "Inserted custom user data document. _id of inserted document: "
                                             + result.get().getModifiedCount());
                                     Log.d(TAG, "updateLocation: updated");
+                                    performSearch();
+                                    alter.setVisibility(View.GONE);
+                                    recyclerView.setVisibility(View.VISIBLE);
                                 } else {
+                                    llLoader.setVisibility(View.INVISIBLE);
                                     Log.e("EXAMPLE", "Unable to insert custom user data. Error: " + result.getError());
                                 }
                             });
@@ -323,6 +377,7 @@ public class ExploreFragment0 extends Fragment {
                     Log.v("User", currentDoc.getString("userid"));
                 }
             } else {
+                llLoader.setVisibility(View.INVISIBLE);
                 Log.v("User", "Failed to complete search");
             }
         });
