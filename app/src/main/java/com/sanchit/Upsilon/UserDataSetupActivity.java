@@ -125,6 +125,8 @@ public class UserDataSetupActivity extends AppCompatActivity {
                         break;
                     case 2:
                         //putInterests();
+                        view.setEnabled(false);
+                        next.setTextColor(getColor(R.color.colorBlue));
                         uploadData();
                         putProfile();
                         //putAddressAndPhone();
