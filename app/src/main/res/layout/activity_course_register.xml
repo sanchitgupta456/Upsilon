@@ -94,7 +94,7 @@
                     android:layout_margin="10dp"
                     android:background="@drawable/text_view_add_course"
                     android:padding="@dimen/text_margin"
-                    android:hint="@string/enter_you_street_address"
+                    android:hint="@string/enter_your_pincode"
                     android:textColor="@color/colorPrimaryDark"
                     android:inputType="textMultiLine"
                     android:id="@+id/addressStudent"/>

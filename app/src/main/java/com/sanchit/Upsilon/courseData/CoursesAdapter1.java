@@ -187,6 +187,10 @@ public class CoursesAdapter1 extends RecyclerView.Adapter<CoursesAdapter1.ViewHo
                                 try {
                                     Document currentDoc = results.next();
                                     myCourses = (ArrayList<String>) currentDoc.get("myCourses");
+                                    if(myCourses==null)
+                                    {
+                                        myCourses = new ArrayList<>();
+                                    }
                                     int i=0;
                                     for(i=0;i<myCourses.size();i++)
                                     {

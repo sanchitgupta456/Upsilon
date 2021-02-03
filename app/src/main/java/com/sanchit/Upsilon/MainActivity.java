@@ -558,8 +558,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     if (task.isSuccess()) {
                         MongoCursor<Document> results = task.get();
                         Log.v("COURSEHandler", "successfully found all courses:");
-                        Document document = results.next();
-                        String url = document.getString("profilePicUrl");
+
+                        try {
+                            Document document = results.next();
+                            String url = document.getString("profilePicUrl");
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                         //Toast.makeText(MainActivity.this,url,Toast.LENGTH_LONG).show();
                         //Log.v("User","Hi"+ url);
                         //Picasso.with(getApplicationContext()).load(url).into(imageView);

@@ -1,10 +1,14 @@
 package com.sanchit.Upsilon;
 
 import android.Manifest;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -16,6 +20,8 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.provider.Settings;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,8 +29,17 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.PendingResult;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.LocationSettingsRequest;
+import com.google.android.gms.location.LocationSettingsResult;
+import com.google.android.gms.location.LocationSettingsStatusCodes;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
@@ -32,6 +47,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.sanchit.Upsilon.courseData.Course;
 import com.sanchit.Upsilon.courseData.CoursesAdapter1;
+import com.sanchit.Upsilon.courseLocationMap.MapsActivity;
 import com.sanchit.Upsilon.courseSearching.SearchQuery;
 import com.sanchit.Upsilon.courseSearching.rankBy;
 
@@ -120,6 +136,21 @@ public class ExploreFragment0 extends Fragment {
                 if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                     ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_FINE_LOCATION);
                 } else {
+                    if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                        ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_FINE_LOCATION);
+                    } else {
+                        if(isLocationEnabled(getApplicationContext()))
+                        {
+                            Intent intent = new Intent(getActivity(), MapsActivity.class);
+                            int SECOND_ACTIVITY_REQUEST_CODE = 1234;
+                            startActivityForResult(intent, SECOND_ACTIVITY_REQUEST_CODE);
+                        }
+                        else
+                        {
+                            enableLoc();
+                        }
+
+                    }
                     llLoader.setVisibility(View.VISIBLE);
                     getLocation();
 //                    app = new App(new AppConfiguration.Builder(appID).build());
@@ -188,7 +219,7 @@ public class ExploreFragment0 extends Fragment {
                     Document currentDoc = results.next();
                     Document userLoc = (Document) currentDoc.get("userLocation");
                     Log.v("UserLocation", String.valueOf(currentDoc.get("userLocation")));
-                    if(currentDoc.get("userLocation")!=null) {
+                    if(currentDoc.get("userLocation")!=null && ((Document) currentDoc.get("userLocation")).get("lattitude")!=null) {
                         searchQuery.searchForCourse(app, mongoDatabase, getContext(), adapter, recyclerView, 10, userLoc);
                         list = searchQuery.getSearchResultsList();
                         Log.d(TAG, "performSearch: list after search: size: " + list.size());
@@ -297,7 +328,7 @@ public class ExploreFragment0 extends Fragment {
                 } else {
                     Document userdata = results.next();
                     userLocation = (Document) userdata.get("userLocation");
-                    if(userLocation!=null) {
+                    if(userLocation!=null && userLocation.get("lattitude")!=null) {
                         progressBar.setVisibility(View.GONE);
                         Log.v("ExploreFragment0","userLoc is not null");
                         recyclerView.setVisibility(View.VISIBLE);
@@ -382,5 +413,90 @@ public class ExploreFragment0 extends Fragment {
             }
         });
         Log.d(TAG, "updateLocation: safe exit here");
+    }
+
+    public static boolean isLocationEnabled(Context context) {
+        int locationMode = 0;
+        String locationProviders;
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){
+            try {
+                locationMode = Settings.Secure.getInt(context.getContentResolver(), Settings.Secure.LOCATION_MODE);
+
+            } catch (Settings.SettingNotFoundException e) {
+                e.printStackTrace();
+                return false;
+            }
+
+            return locationMode != Settings.Secure.LOCATION_MODE_OFF;
+
+        }else{
+            locationProviders = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
+            return !TextUtils.isEmpty(locationProviders);
+        }
+
+
+    }
+
+    private void enableLoc() {
+
+        GoogleApiClient googleApiClient = null;
+        if (googleApiClient == null) {
+            GoogleApiClient finalGoogleApiClient = googleApiClient;
+            googleApiClient = new GoogleApiClient.Builder(getApplicationContext())
+                    .addApi(LocationServices.API)
+                    .addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
+                        @Override
+                        public void onConnected(Bundle bundle) {
+
+                        }
+
+                        @Override
+                        public void onConnectionSuspended(int i) {
+                            finalGoogleApiClient.connect();
+                        }
+                    })
+                    .addOnConnectionFailedListener(new GoogleApiClient.OnConnectionFailedListener() {
+                        @Override
+                        public void onConnectionFailed(ConnectionResult connectionResult) {
+
+                            Log.d("Location error","Location error " + connectionResult.getErrorCode());
+                        }
+                    }).build();
+            googleApiClient.connect();
+
+            LocationRequest locationRequest = LocationRequest.create();
+            locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+            locationRequest.setInterval(30 * 1000);
+            locationRequest.setFastestInterval(5 * 1000);
+            LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder()
+                    .addLocationRequest(locationRequest);
+
+            builder.setAlwaysShow(true);
+
+            PendingResult<LocationSettingsResult> result =
+                    LocationServices.SettingsApi.checkLocationSettings(googleApiClient, builder.build());
+            result.setResultCallback(new ResultCallback<LocationSettingsResult>() {
+                private static final int REQUEST_LOCATION =  1235 ;
+
+                @Override
+                public void onResult(LocationSettingsResult result) {
+                    final Status status = result.getStatus();
+                    switch (status.getStatusCode()) {
+                        case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
+                            try {
+                                // Show the dialog by calling startResolutionForResult(),
+                                // and check the result in onActivityResult().
+                                status.startResolutionForResult(getActivity(), REQUEST_LOCATION);
+
+//                                finish();
+                            } catch (IntentSender.SendIntentException e) {
+                                // Ignore the error.
+                            }
+                            break;
+                    }
+                }
+            });
+        }
     }
 }

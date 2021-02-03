@@ -99,12 +99,20 @@ public class ProfileViewActivity extends AppCompatActivity {
                 while (results.hasNext()) {
                     //Log.v("EXAMPLE", results.next().toString());
                     Document currentDoc = results.next();
-                    UserName.setText(currentDoc.getString("name"));
-                    PhoneNumber.setText(currentDoc.getString("phonenumber"));
-                    Email.setText(user.getProfile().getEmail());
-                    Log.v("Email","Hello" + user.getProfile().toString());
-                    Picasso.with(getApplicationContext()).load(currentDoc.getString("profilePicUrl")).into(profileImage);
-                    Log.v("ProfilePic",currentDoc.getString("profilePicUrl"));
+                    try {
+                        UserName.setText(currentDoc.getString("name"));
+                        PhoneNumber.setText(currentDoc.getString("phonenumber"));
+                        Email.setText(user.getProfile().getEmail());
+                        Log.v("Email","Hello" + user.getProfile().toString());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    try {
+                        Picasso.with(getApplicationContext()).load(currentDoc.getString("profilePicUrl")).into(profileImage);
+                        Log.v("ProfilePic",currentDoc.getString("profilePicUrl"));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                     Log.v("User",currentDoc.getString("userid"));
                 }
             } else {

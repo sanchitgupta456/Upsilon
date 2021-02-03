@@ -5,7 +5,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,6 +21,7 @@ import com.google.gson.GsonBuilder;
 import com.razorpay.Checkout;
 import com.razorpay.PaymentResultListener;
 import com.sanchit.Upsilon.courseData.Course;
+import com.sanchit.Upsilon.ui.login.LoginActivity;
 import com.squareup.picasso.Picasso;
 
 import org.bson.BsonDocument;
@@ -43,7 +47,8 @@ public class RegisterCourseActivity extends AppCompatActivity implements Payment
     String appID = "upsilon-ityvn";
     String TAG = "Payment Error";
     Course course;
-    TextView courseName,studentName,studentContact,studentAddress,courseFees;
+    TextView courseName,courseFees;
+    EditText studentName,studentContact,studentAddress;
     ImageView courseImage;
     App app;
     User user;
@@ -64,9 +69,9 @@ public class RegisterCourseActivity extends AppCompatActivity implements Payment
 
         courseName = (TextView) findViewById(R.id.courseName);
         courseImage = (ImageView) findViewById(R.id.courseImage);
-        studentName = (TextView) findViewById(R.id.nameStudent);
-        studentContact = (TextView) findViewById(R.id.contactNumberStudent);
-        studentAddress = (TextView) findViewById(R.id.addressStudent);
+        studentName = (EditText) findViewById(R.id.nameStudent);
+        studentContact = (EditText) findViewById(R.id.contactNumberStudent);
+        studentAddress = (EditText) findViewById(R.id.addressStudent);
         proceedToPay = (Button) findViewById(R.id.btnProceedToPay);
         courseFees = (TextView) findViewById(R.id.textFees);
 
@@ -101,10 +106,70 @@ public class RegisterCourseActivity extends AppCompatActivity implements Payment
             @Override
             public void onClick(View v) {
 
-                if (course.getCourseFees() == 0) {
-                    RegisterStudent();
-                } else {
-                    startPayment(course.getCourseFees() * 100);
+                if(studentName.getText().toString().isEmpty())
+                {
+                    Animation shake = AnimationUtils.loadAnimation(RegisterCourseActivity.this, R.anim.shake);
+                    studentName.startAnimation(shake);
+                    studentName.setError("Please Enter a Valid Name");
+                    studentName.requestFocus();
+                }
+                else if(studentContact.getText().toString().isEmpty())
+                {
+                    Animation shake = AnimationUtils.loadAnimation(RegisterCourseActivity.this, R.anim.shake);
+                    studentContact.startAnimation(shake);
+                    studentContact.setError("Please Enter a Valid Contact Number");
+                    studentContact.requestFocus();
+                }
+                else if(studentAddress.getText().toString().isEmpty())
+                {
+                    Animation shake = AnimationUtils.loadAnimation(RegisterCourseActivity.this, R.anim.shake);
+                    studentAddress.startAnimation(shake);
+                    studentAddress.setError("Please Enter a Valid Address");
+                    studentAddress.requestFocus();
+                }
+                else
+                {
+                        mongoClient = user.getMongoClient("mongodb-atlas");
+                        mongoDatabase = mongoClient.getDatabase("Upsilon");
+                        MongoCollection<Document> mongoCollection  = mongoDatabase.getCollection("UserData");
+                        Document queryFilter = new Document().append("userid",user.getId());
+                        RealmResultTask<MongoCursor<Document>> findTask = mongoCollection.find(queryFilter).iterator();
+                        findTask.getAsync(task->{
+                            if(task.isSuccess())
+                            {
+                                MongoCursor<Document> results = task.get();
+                                Document document = results.next();
+                                if(document.getString("name")==null)
+                                {
+                                    document.append("name",studentName.getText().toString()).append("phonenumber",studentContact.getText().toString()).append("pincode",studentAddress.getText().toString());
+                                    mongoCollection.updateOne(queryFilter,document).getAsync(result -> {
+                                        if(result.isSuccess())
+                                        {
+                                            Log.v("Success RegisterCourse","Successfully Updated Details");
+                                        }
+                                        else
+                                        {
+                                            Log.v("Error RegisterCourse","Failed to update name and details");
+                                        }
+                                    });
+                                }
+
+                                if (course.getCourseFees() == 0) {
+                                    RegisterStudent();
+                                } else {
+                                    startPayment(course.getCourseFees() * 100);
+                                }
+
+                            }
+                            else
+                            {
+                                Log.v("Register Course ","Error , failed to complete user search");
+                            }
+                        });
+
+
+
+
                 }
             }
         });
@@ -222,6 +287,10 @@ public class RegisterCourseActivity extends AppCompatActivity implements Payment
                     Log.v("User", "successfully found the user");
                     Document userdata = results.next();
                     myRegisteredCourses = (ArrayList<String>) userdata.get("myCourses");
+                    if(myRegisteredCourses == null)
+                    {
+                        myRegisteredCourses = new ArrayList<>();
+                    }
                     Log.v("Register", String.valueOf(course.getCourseId()));
                     myRegisteredCourses.add(course.getCourseId());
                     userdata.append("myCourses",myRegisteredCourses);
