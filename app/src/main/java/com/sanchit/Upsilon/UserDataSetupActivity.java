@@ -139,6 +139,16 @@ public class UserDataSetupActivity extends AppCompatActivity {
             }
         });
 
+        skip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                next.setEnabled(false);
+                next.setTextColor(getColor(R.color.colorBlue));
+                uploadData();
+                putProfile();
+            }
+        });
+
     }
 
     private void setupViewPager(ViewPager viewPager) {
