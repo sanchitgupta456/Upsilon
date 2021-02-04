@@ -80,11 +80,11 @@ public class RegisterCourseActivity extends AppCompatActivity implements Payment
         app = new App(new AppConfiguration.Builder(appID)
                 .build());
         user = app.currentUser();
+        fillFields();
 
         org.bson.Document userData = user.getCustomData();
         Log.v("userdata", String.valueOf(userData));
 
-        Log.v("userData", String.valueOf(userData));
         studentName.setText(userData.getString("name"));
         studentContact.setText(userData.getString("phonenumber"));
         studentAddress.setText(userData.getString("pincode"));
@@ -171,6 +171,42 @@ public class RegisterCourseActivity extends AppCompatActivity implements Payment
 
 
                 }
+            }
+        });
+
+    }
+
+    public void fillFields()
+    {
+        mongoClient = user.getMongoClient("mongodb-atlas");
+        mongoDatabase = mongoClient.getDatabase("Upsilon");
+        MongoCollection<Document> mongoCollection  = mongoDatabase.getCollection("UserData");
+        Document queryFilter = new Document().append("userid",user.getId());
+        RealmResultTask<MongoCursor<Document>> findTask = mongoCollection.find(queryFilter).iterator();
+        findTask.getAsync(task->{
+            if(task.isSuccess())
+            {
+                MongoCursor<Document> results = task.get();
+                Document document = results.next();
+                if(document.getString("name")==null)
+                {
+
+                }
+                else
+                {
+                    try {
+                        studentName.setText(document.getString("name"));
+                        studentContact.setText(document.getString("phonenumber"));
+                        studentAddress.setText(document.getString("pincode"));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            }
+            else
+            {
+                Log.v("Register Course ","Error , failed to complete user search");
             }
         });
 

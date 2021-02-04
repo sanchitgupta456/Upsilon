@@ -212,6 +212,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         else
         {
             updateMenu();
+            getCourseData();
 //            Document userdata = user.getCustomData();
 //            if(userdata.get("teacherSetup")==null)
 //            {
@@ -471,7 +472,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                                                     Document currentDoc1 = results1.next();
                                                     //Log.v("CourseBySenior", (String) currentDoc1.get("college"));
                                                     //Log.v("CourseBySenior", (String)  college);
-
                                                     try {
                                                         if (currentDoc1.getString("college").equals(college)) {
                                                             //Log.v("CourseBy","Hello");

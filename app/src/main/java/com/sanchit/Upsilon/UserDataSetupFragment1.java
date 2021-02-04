@@ -90,17 +90,16 @@ public class UserDataSetupFragment1 extends Fragment implements InterestCardAdap
         //group = (ChipGroup) view.findViewById(R.id.groupInterests);
         grid = (RecyclerView) view.findViewById(R.id.gridInterests);
         //group.removeAllViews();
-        setupGrid();
+
         viewModel = new ViewModelProvider(requireActivity()).get(UserDataViewModel.class);
 
-        //app = new App(new AppConfiguration.Builder(appID)
-        //        .build());
-        //user = app.currentUser();
+        app = new App(new AppConfiguration.Builder(appID)
+                .build());
+        user = app.currentUser();
+        setupGrid();
         interests = new ArrayList<>();
         viewModel.setInterests(interests);
-        //mongoClient = user.getMongoClient("mongodb-atlas");
-        //mongoDatabase = mongoClient.getDatabase("Upsilon");
-        //MongoCollection<Document> mongoCollection = mongoDatabase.getCollection("UserData");
+
 
         //mycourses = new ArrayList<>();
         //viewModel.setMycourses(mycourses);
@@ -160,6 +159,7 @@ public class UserDataSetupFragment1 extends Fragment implements InterestCardAdap
         return view;
     }
     public void setupGrid() {
+        Log.v("UserDataSetupFragment1","Setting Up Grid");
         list = new ArrayList<>();
         /* test:
         list.add(new Interest("Computer Science"));
@@ -220,6 +220,36 @@ public class UserDataSetupFragment1 extends Fragment implements InterestCardAdap
     }
 
     public void getListOfInterestsData() {
+        Log.v("UserDataSetupFragment1","Getting Interest Data");
+        mongoClient = user.getMongoClient("mongodb-atlas");
+        mongoDatabase = mongoClient.getDatabase("Upsilon");
+        MongoCollection<Document> mongoCollection = mongoDatabase.getCollection("Utility");
+        Document queryFilter = new Document("field","interests");
+        RealmResultTask<MongoCursor<Document>> findTask = mongoCollection.find(queryFilter).iterator();
+
+        findTask.getAsync(task->{
+            if(task.isSuccess())
+            {
+                MongoCursor<Document> results = task.get();
+                try {
+                    Document result = results.next();
+                    ArrayList<String> temporary = (ArrayList<String>) result.get("interests");
+                    for(String s:temporary)
+                    {
+                        Log.v("UserDataSetupFragment1",s);
+                        list.add(new Interest(s));
+                        adapter.notifyDataSetChanged();
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            else
+            {
+                Log.v("UserDataSetupFragment1","Error"+task.getError().toString());
+            }
+        });
         //TODO: Get data for list (type: ArrayList<Interest> here)
         //
         //See: Interest class and other details.
