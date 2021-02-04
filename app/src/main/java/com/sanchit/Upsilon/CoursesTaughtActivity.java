@@ -65,7 +65,6 @@ public class CoursesTaughtActivity extends AppCompatActivity {
 
         addCourseButton = (Button) findViewById(R.id.addCourseButton_coursesTaught);
 
-
         addCourseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -93,10 +92,7 @@ public class CoursesTaughtActivity extends AppCompatActivity {
     }
 
     public void getCourseData(){
-
-
-// an authenticated user is required to access a MongoDB instance
-
+        // an authenticated user is required to access a MongoDB instance
         if (app.currentUser()!=null) {
             final User user = app.currentUser();
             assert user != null;
@@ -201,14 +197,60 @@ public class CoursesTaughtActivity extends AppCompatActivity {
     }
 
     public void getTeacherStatData() {
-        //TODO: Modify this function to fetch data from backend
+        User user = app.currentUser();
+        mongoClient = user.getMongoClient("mongodb-atlas");
+        mongoDatabase = mongoClient.getDatabase("Upsilon");
+        MongoCollection<Document> mongoCollection  = mongoDatabase.getCollection("UserData");
+        MongoCollection<Document> mongoCollection1  = mongoDatabase.getCollection("CourseData");
+
+
+        Document queryFilter  = new Document("userid",user.getId());
+        Document queryFilter1  = new Document("tutorId",user.getId());
+
+        RealmResultTask<MongoCursor<Document>> findTask = mongoCollection.find(queryFilter).iterator();
+        RealmResultTask<MongoCursor<Document>> findTask1 = mongoCollection1.find(queryFilter1).iterator();
+
+
+        findTask.getAsync(task -> {
+            if (task.isSuccess()) {
+                MongoCursor<Document> results = task.get();
+                Document result = results.next();
+                teachingStatDataArrayList.add(new TeachingStatData("Total earnings with us",String.valueOf(result.get("totalEarningWithUs"))));
+                statListAdapter.notifyDataSetChanged();
+            } else {
+                Log.e("Courses Taught Activity", "failed to find courses with: ", task.getError());
+            }
+        });
+
+        final Double[] sum = {0.00};
+        final Double[] count = { 0.00 };
+        final Double[] avgrating = new Double[1];
+        final int[] studentCount = {0};
+
+        findTask1.getAsync(task -> {
+            if (task.isSuccess()) {
+                MongoCursor<Document> results = task.get();
+                while (results.hasNext())
+                {
+                    Document result = results.next();
+                    sum[0] = sum[0] +Double.parseDouble(String.valueOf(result.get("courseRating")));
+                    count[0] = count[0] +1;
+                    studentCount[0] = studentCount[0] +Integer.parseInt(String.valueOf(result.get("numberOfStudentsEnrolled")));
+                    Log.v("CoursesTaughtActivity", String.valueOf(sum[0]));
+                    Log.v("CoursesTaughtActivity", String.valueOf(count[0]));
+                }
+                avgrating[0] = sum[0] / count[0];
+                teachingStatDataArrayList.add(new TeachingStatData("Number of Students Taught",String.valueOf(studentCount[0])));
+                teachingStatDataArrayList.add(new TeachingStatData("Average rating on your courses",String.format("%.3f",avgrating[0])));
+                teachingStatDataArrayList.add(new TeachingStatData("Number of Courses Taught",String.valueOf(count[0])));
+                statListAdapter.notifyDataSetChanged();
+            } else {
+                Log.e("Courses Taught Activity", "failed to find courses with: ", task.getError());
+            }
+        });
 
         /* for test purposes : begin */
-        teachingStatDataArrayList.add(new TeachingStatData("Number of Courses Taught","14"));
-        teachingStatDataArrayList.add(new TeachingStatData("Number of Students Taught","487"));
-        teachingStatDataArrayList.add(new TeachingStatData("Total earnings with us","Rs. 50,000/-"));
-        teachingStatDataArrayList.add(new TeachingStatData("Total earnings last month","Rs. 1,089/-"));
-        teachingStatDataArrayList.add(new TeachingStatData("Average rating on your courses","4.7"));
+//        teachingStatDataArrayList.add(new TeachingStatData("Total earnings last month","Rs. 1,089/-"));
         /* end */
     }
 
