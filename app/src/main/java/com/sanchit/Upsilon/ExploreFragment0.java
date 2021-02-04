@@ -141,9 +141,12 @@ public class ExploreFragment0 extends Fragment {
                     } else {
                         if(isLocationEnabled(getApplicationContext()))
                         {
-                            Intent intent = new Intent(getActivity(), MapsActivity.class);
-                            int SECOND_ACTIVITY_REQUEST_CODE = 1234;
-                            startActivityForResult(intent, SECOND_ACTIVITY_REQUEST_CODE);
+                            llLoader.setVisibility(View.VISIBLE);
+                            getLocation();
+//                    app = new App(new AppConfiguration.Builder(appID).build());
+//                    user = app.currentUser();
+//                    userdata = user.getCustomData();
+                            Log.d(TAG, "onClick: tests...");
                         }
                         else
                         {
@@ -151,12 +154,7 @@ public class ExploreFragment0 extends Fragment {
                         }
 
                     }
-                    llLoader.setVisibility(View.VISIBLE);
-                    getLocation();
-//                    app = new App(new AppConfiguration.Builder(appID).build());
-//                    user = app.currentUser();
-//                    userdata = user.getCustomData();
-                    Log.d(TAG, "onClick: tests...");
+
                 }
             }
         });
