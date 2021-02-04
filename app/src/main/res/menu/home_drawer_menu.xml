@@ -18,7 +18,7 @@
         android:id="@+id/homeDrawerMenuItem6"/>
 
     <item
-        android:title="Title 4"
+        android:title="Setup Your Profile"
         android:id="@+id/homeDrawerMenuItem4"/>
     <item
         android:title="Title 5"
