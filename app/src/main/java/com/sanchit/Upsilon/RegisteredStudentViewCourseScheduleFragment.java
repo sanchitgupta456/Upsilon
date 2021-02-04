@@ -5,9 +5,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -29,13 +32,20 @@ public class RegisteredStudentViewCourseScheduleFragment extends Fragment {
 
     ArrayList<ScheduledClass> classes = new ArrayList<>();
     private Course course;
+    RecyclerView recyclerView;
+    CardView alter;
+    Button refresh;
+    LinearLayout loading;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_active_course_schedule,null);
         course = (Course) getArguments().get("Course");
-        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.classSchedule);
+        recyclerView = (RecyclerView) view.findViewById(R.id.classSchedule);
+        alter = (CardView) view.findViewById(R.id.alter);
+        refresh = (Button) view.findViewById(R.id.btnRefresh);
+        loading = (LinearLayout) view.findViewById(R.id.llProgress);
         getClasses();
         ScheduleAdapter adapter = new ScheduleAdapter(getContext(), classes);
         LinearLayoutManager manager = new LinearLayoutManager(getContext());
@@ -44,6 +54,13 @@ public class RegisteredStudentViewCourseScheduleFragment extends Fragment {
         recyclerView.setLayoutManager(manager);
         recyclerView.setAdapter(adapter);
         recyclerView.addItemDecoration(dividerItemDecoration);
+        refresh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                loading.setVisibility(View.VISIBLE);
+                getClasses();
+            }
+        });
         return view;
     }
 
@@ -65,6 +82,7 @@ public class RegisteredStudentViewCourseScheduleFragment extends Fragment {
                 e.printStackTrace();
             }
         }
+        loading.setVisibility(View.INVISIBLE);
         /* this is for test */
         /* begin test */
         /*Log.d(TAG, "getClasses: getting entries");
@@ -75,5 +93,12 @@ public class RegisteredStudentViewCourseScheduleFragment extends Fragment {
         classes.add(new ScheduledClass("Functions", "11", "December", "08:00 AM"));
         classes.add(new ScheduledClass("Object Oriented Programming!", "13", "December", "09:00 AM"));*/
         /* end test */
+        if(classes.size() == 0) {
+            alter.setVisibility(View.VISIBLE);
+            recyclerView.setVisibility(View.GONE);
+        } else {
+            alter.setVisibility(View.GONE);
+            recyclerView.setVisibility(View.VISIBLE);
+        }
     }
 }
