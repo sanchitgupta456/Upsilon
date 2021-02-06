@@ -139,7 +139,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawerLayout = findViewById(R.id.drawer_layout);
         Intent intent1 = getIntent();
         email = intent1.getStringExtra("email");
-
         /*ctx = this;
         //startService(upsilonJobService);
         mSensorService = new NotifService(getCtx());
@@ -181,12 +180,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         app = new App(new AppConfiguration.Builder(appID)
                 .build());
         User user = app.currentUser();
+
         if (user == null){
             startActivity(new Intent(MainActivity.this, LoginActivity.class));
         }
         else
         {
-            app.getSync();
+            if(email==null)
+            {
+                email = user.getProfile().getEmail();
+            }
+                app.getSync();
             app.currentUser().getRefreshToken();
             app.currentUser().getAccessToken();
         }

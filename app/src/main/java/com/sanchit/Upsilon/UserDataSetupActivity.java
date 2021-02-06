@@ -215,7 +215,20 @@ public class UserDataSetupActivity extends AppCompatActivity {
             if(task.isSuccess()) {
                 MongoCursor<Document> results = task.get();
                 Document result = results.next();
-                final int[] counter = {result.getInteger("profilePicCounter")};
+                int[] counter = new int[]{0};
+                try {
+                    if (result.getInteger("profilePicCounter") == null)
+                    {
+                        counter = new int[]{0};
+                    }
+                    else
+                    {
+                        counter = new int[]{result.getInteger("profilePicCounter")};
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                int[] finalCounter = counter;
                 String requestId = MediaManager.get().upload(picturePath)
                         .unsigned("preset1")
                         .option("resource_type", "image")
@@ -236,7 +249,7 @@ public class UserDataSetupActivity extends AppCompatActivity {
 
                                 Log.v("User", resultData.toString());
                                 Log.v("User", requestId);
-                                counter[0]++;
+                                finalCounter[0]++;
                                 //name = Name.getText().toString();
 
                                 //Blank query to find every single course in db
@@ -263,7 +276,7 @@ public class UserDataSetupActivity extends AppCompatActivity {
                                                     });
                                         } else {
                                             Document userdata = results.next();
-                                            userdata.append("profilePicCounter", counter[0]);
+                                            userdata.append("profilePicCounter", finalCounter[0]);
                                             userdata.append("profilePicUrl", resultData.get("url").toString());
 
                                             mongoCollection.updateOne(
