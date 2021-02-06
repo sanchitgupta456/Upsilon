@@ -33,6 +33,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -104,6 +106,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     MongoClient mongoClient;
     MongoDatabase mongoDatabase;
     CircleImageView imageView;
+    TextView tvEmail, tvName, tvPhone, tvEditProfile;
+    ImageButton profileMoreToggle;
+    LinearLayout profileMore;
     ActionBarDrawerToggle toggle;
 
     SearchView searchView;
@@ -209,6 +214,27 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawer.closeDrawer(GravityCompat.START);
         View hView =  navigationView.getHeaderView(0);
         imageView = (CircleImageView) hView.findViewById(R.id.profilePhotoHeader);
+        profileMoreToggle = (ImageButton) hView.findViewById(R.id.btn_expand_collapse);
+        tvEmail = (TextView) hView.findViewById(R.id.email);
+        tvName = (TextView) hView.findViewById(R.id.name);
+        tvPhone = (TextView) hView.findViewById(R.id.phone);
+        tvEditProfile = (TextView) hView.findViewById(R.id.btn_edit_profile);
+        profileMore = (LinearLayout) hView.findViewById(R.id.more);
+        profileMoreToggle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                v.animate().rotationBy(180).start();
+                if(profileMore.getVisibility() == GONE)
+                    profileMore.setVisibility(View.VISIBLE);
+                else
+                    profileMore.setVisibility(GONE);
+            }
+        });
+        /*
+        getActionView().animate().rotationBy(180).start();
+            LinearLayout header_more = navigationView.getHeaderView(0).findViewById(R.id.more);
+            header_more.setVisibility(View.VISIBLE);
+         */
         if(user==null)
         {
             Intent intent = new Intent(MainActivity.this, LoginActivity.class);
@@ -280,6 +306,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         userLoc = (Document) currentDoc.get("userLocation");
                         Log.v("User",currentDoc.getString("userid"));
                         Picasso.with(getApplicationContext()).load(currentDoc.getString("profilePicUrl")).error(R.drawable.default_person_image).into(imageView);
+                        tvEmail.setText(user.getProfile().getEmail());
+                        tvName.setText(currentDoc.getString("name"));
+                        if(!currentDoc.getString("phonenumber").equals("0"))
+                        tvPhone.setText(currentDoc.getString("phonenumber"));
                         //Log.v("ProfilePic",currentDoc.getString("profilePicUrl"));
                     }
                 } else {
@@ -723,6 +753,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         {
             getCourseData();
         }
+        else if(item.getItemId()==R.id.btn_expand_collapse)
+        {
+            item.getActionView().animate().rotationBy(180).start();
+            LinearLayout header_more = navigationView.getHeaderView(0).findViewById(R.id.more);
+            header_more.setVisibility(View.VISIBLE);
+        }
+
         /*else if(item.getItemId()==R.id.search_home)
         {
             main.setVisibility(View.GONE);

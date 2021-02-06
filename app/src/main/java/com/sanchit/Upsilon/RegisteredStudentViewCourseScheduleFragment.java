@@ -33,6 +33,7 @@ public class RegisteredStudentViewCourseScheduleFragment extends Fragment {
     ArrayList<ScheduledClass> classes = new ArrayList<>();
     private Course course;
     RecyclerView recyclerView;
+    ScheduleAdapter adapter;
     CardView alter;
     Button refresh;
     LinearLayout loading;
@@ -47,7 +48,7 @@ public class RegisteredStudentViewCourseScheduleFragment extends Fragment {
         refresh = (Button) view.findViewById(R.id.btnRefresh);
         loading = (LinearLayout) view.findViewById(R.id.llProgress);
         getClasses();
-        ScheduleAdapter adapter = new ScheduleAdapter(getContext(), classes);
+        adapter = new ScheduleAdapter(getContext(), classes);
         LinearLayoutManager manager = new LinearLayoutManager(getContext());
         manager.setOrientation(LinearLayoutManager.VERTICAL);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(Objects.requireNonNull(getContext()), manager.getOrientation());
@@ -78,6 +79,7 @@ public class RegisteredStudentViewCourseScheduleFragment extends Fragment {
                 Log.v("scheduled", String.valueOf(scheduled));
                 LinkedHashMap Class = (LinkedHashMap) scheduled;
                 classes.add(new ScheduledClass(Class.get("ClassName").toString(), Class.get("Date").toString(), Class.get("Month").toString(), Class.get("Time").toString()));
+                adapter.notifyDataSetChanged();
             } catch (Exception e) {
                 e.printStackTrace();
             }
