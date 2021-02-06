@@ -70,6 +70,7 @@ import io.realm.mongodb.mongo.MongoCollection;
 import io.realm.mongodb.mongo.MongoDatabase;
 import io.realm.mongodb.mongo.iterable.MongoCursor;
 
+import static android.view.View.GONE;
 import static com.sanchit.Upsilon.notifications.NotifChannel.CHANNEL_ID;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -511,10 +512,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                                 }
                                 if(!results.hasNext())
                                 {
-                                    progressBar.setVisibility(View.GONE);
+                                    progressBar.setVisibility(GONE);
                                 }
                             }
+                            if(!results.hasNext())
+                            {
+                                progressBar.setVisibility(GONE);
+                            }
                         } catch (Exception e) {
+                            progressBar.setVisibility(GONE);
                             e.printStackTrace();
                         }
                     } else {
@@ -523,6 +529,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         app.loginAsync(credentials,it->{
                             if(it.isSuccess())
                             {
+                                progressBar.setVisibility(GONE);
+                                getCourseData();
                                 Log.v("Success","Authenticated");
                             }
                             else
@@ -534,17 +542,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 });
 
                 if(courseArrayList.size()==0){
-                    frame.setVisibility(View.GONE);
+                    frame.setVisibility(GONE);
                 } else {
                     frame.setVisibility(View.VISIBLE);
                 }
                 if(courseArrayList1.size()==0){
-                    frame1.setVisibility(View.GONE);
+                    frame1.setVisibility(GONE);
                 } else {
                     frame1.setVisibility(View.VISIBLE);
                 }
                 if(courseArrayList2.size()==0){
-                    frame2.setVisibility(View.GONE);
+                    frame2.setVisibility(GONE);
                 } else {
                     frame2.setVisibility(View.VISIBLE);
                 }
@@ -601,21 +609,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         frame2 = (CardView) findViewById(R.id.frameRecommendedCourses);
         Log.d(TAG, "displayCoursesInRecycler: in here; commence debug test");
         if(courseArrayList.size()==0){
-            frame.setVisibility(View.GONE);
+            frame.setVisibility(GONE);
             Log.d(TAG, "displayCoursesInRecycler: failure 3");
         } else {
             frame.setVisibility(View.VISIBLE);
             Log.d(TAG, "displayCoursesInRecycler: success 3");
         }
         if(courseArrayList1.size()==0){
-            frame1.setVisibility(View.GONE);
+            frame1.setVisibility(GONE);
             Log.d(TAG, "displayCoursesInRecycler: failure 1");
         } else {
             frame1.setVisibility(View.VISIBLE);
             Log.d(TAG, "displayCoursesInRecycler: success 1");
         }
         if(courseArrayList2.size()==0){
-            frame2.setVisibility(View.GONE);
+            frame2.setVisibility(GONE);
             Log.d(TAG, "displayCoursesInRecycler: failure 2");
         } else {
             frame2.setVisibility(View.VISIBLE);
@@ -648,7 +656,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         menuItem.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
             @Override
             public boolean onMenuItemActionExpand(MenuItem menuItem) {
-                main.setVisibility(View.GONE);
+                main.setVisibility(GONE);
                 recyclerViewSearchResults.setVisibility(View.VISIBLE);
                 return true;
             }
@@ -656,7 +664,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public boolean onMenuItemActionCollapse(MenuItem menuItem) {
                 main.setVisibility(View.VISIBLE);
-                recyclerViewSearchResults.setVisibility(View.GONE);
+                recyclerViewSearchResults.setVisibility(GONE);
                 return true;
             }
         });
