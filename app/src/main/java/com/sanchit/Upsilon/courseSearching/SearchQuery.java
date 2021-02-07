@@ -226,6 +226,7 @@ public class SearchQuery {
             assert user != null;
             MongoCollection<Document> mongoCollection = mongoDatabase.getCollection("CourseData");
             searchResultsList.clear();
+            searchResultsList = new ArrayList<>();
 
             //Blank query to find every single course in db
             Document queryFilter  = new Document();
@@ -277,6 +278,9 @@ public class SearchQuery {
                 if (task.isSuccess()) {
                     MongoCursor<Document> results = task.get();
                     Log.v("COURSEHandler", "successfully found all courses:");
+                    searchResultsList.clear();
+                    searchResultsByLocation = new
+                            PriorityQueue<Document>(5, new LocationSorter());
                     while (results.hasNext()) {
                         Document document = results.next();
                         //Cast the JSON data into the course class structure

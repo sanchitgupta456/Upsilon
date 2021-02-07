@@ -219,6 +219,8 @@ public class ExploreFragment0 extends Fragment {
                     Log.v("UserLocation", String.valueOf(currentDoc.get("userLocation")));
                     if(currentDoc.get("userLocation")!=null && ((Document) currentDoc.get("userLocation")).get("lattitude")!=null) {
                         searchQuery.searchForCourse(app, mongoDatabase, getContext(), adapter, recyclerView, 10, userLoc);
+                        list = new ArrayList<>();
+                        list.clear();
                         list = searchQuery.getSearchResultsList();
                         Log.d(TAG, "performSearch: list after search: size: " + list.size());
                         Log.v("COURSEDISTANCE", "START!");
