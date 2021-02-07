@@ -106,7 +106,7 @@ public class WalletActivity extends AppCompatActivity {
                 }
                 else
                 {
-                    Log.v("Wallet Activity","Error");
+                    Log.v("Wallet Activity","Error No Results For Payment Details");
                 }
             }
             else
