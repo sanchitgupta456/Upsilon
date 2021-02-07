@@ -136,7 +136,7 @@ public class ExploreActivity extends AppCompatActivity {
         mongoClient = user.getMongoClient("mongodb-atlas");
         mongoDatabase = mongoClient.getDatabase("Upsilon");
         MongoCollection<Document> mongoCollection  = mongoDatabase.getCollection("CourseData");
-        initFiltersGroup();
+        getFilters();
 
         viewPager = (ViewPager)(findViewById(R.id.viewPager));
         setupViewPager(viewPager);
@@ -263,8 +263,6 @@ public class ExploreActivity extends AppCompatActivity {
     }*/
 
     public void initFiltersGroup() {
-        getFilters();
-
         LayoutInflater inflater = getLayoutInflater();
         for (int i = 0; i < all_tags.size(); i++) {
             Chip chip = (Chip) inflater.inflate(R.layout.chip_filter, chipGroup, false);
@@ -293,13 +291,56 @@ public class ExploreActivity extends AppCompatActivity {
     }
 
     public void getFilters() {
-        all_tags = new ArrayList<>();
-        isChecked = new ArrayList<>();
-        String[] categories = getResources().getStringArray(R.array.categories);
-        for (String tag : categories) {
-            all_tags.add(tag);
-            isChecked.add(false);
-        }
+        App app = new App(new AppConfiguration.Builder(appID).build());
+        User user = app.currentUser();
+        mongoClient = user.getMongoClient("mongodb-atlas");
+        mongoDatabase = mongoClient.getDatabase("Upsilon");
+        MongoCollection<Document> mongoCollection  = mongoDatabase.getCollection("Utility");
+
+        Document queryFilter  = new Document("field","interests");
+
+        RealmResultTask<MongoCursor<Document>> findTask = mongoCollection.find(queryFilter).iterator();
+
+        findTask.getAsync(task -> {
+            if (task.isSuccess()) {
+                MongoCursor<Document> results = task.get();
+                if(results.hasNext())
+                {
+                    Document document = results.next();
+                    all_tags = new ArrayList<>();
+                    isChecked = new ArrayList<>();
+                    ArrayList<String> categories = (ArrayList<String>) document.get("interests");
+                    for (String tag : categories) {
+                        all_tags.add(tag);
+                        isChecked.add(false);
+                    }
+                    initFiltersGroup();
+                }
+                else
+                {
+                    all_tags = new ArrayList<>();
+                    isChecked = new ArrayList<>();
+                    String[] categories = getResources().getStringArray(R.array.categories);
+                    for (String tag : categories) {
+                        all_tags.add(tag);
+                        isChecked.add(false);
+                    }
+                    initFiltersGroup();
+                }
+            }
+            else
+            {
+                all_tags = new ArrayList<>();
+                isChecked = new ArrayList<>();
+                String[] categories = getResources().getStringArray(R.array.categories);
+                for (String tag : categories) {
+                    all_tags.add(tag);
+                    isChecked.add(false);
+                }
+                initFiltersGroup();
+            }
+        });
+
     }
 
     public void initRecyclerView(RecyclerView recyclerView, ArrayList<Course> list) {
