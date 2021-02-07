@@ -157,8 +157,8 @@ public class CoursesAdapter1 extends RecyclerView.Adapter<CoursesAdapter1.ViewHo
             public void onClick(View view) {
                 //Toast.makeText(context,"The position is:"+position,Toast.LENGTH_SHORT).show();
 
-                Log.v("Id",course.getTutorId());
-                Log.v("Id",user.getId());
+//                Log.v("Id",course.getTutorId());
+//                Log.v("Id",user.getId());
                 if(course.getTutorId().equals(user.getId()))
                 {
                     Log.v("Id","matched");

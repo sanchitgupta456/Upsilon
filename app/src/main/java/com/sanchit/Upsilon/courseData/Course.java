@@ -38,6 +38,32 @@ public class Course extends Object implements Serializable {
     private Document courseLocation;
     private double courseDistance;
     private int numberOfReviews;
+    private boolean registrationsOpen;
+    private String tutorCollege;
+
+    public String getTutorCollege() {
+        return tutorCollege;
+    }
+
+    public void setTutorCollege(String tutorCollege) {
+        this.tutorCollege = tutorCollege;
+    }
+
+    public double getCourseDistance() {
+        return courseDistance;
+    }
+
+    public void setCourseDistance(double courseDistance) {
+        this.courseDistance = courseDistance;
+    }
+
+    public boolean isRegistrationsOpen() {
+        return registrationsOpen;
+    }
+
+    public void setRegistrationsOpen(boolean registrationsOpen) {
+        this.registrationsOpen = registrationsOpen;
+    }
 
     public void setDistance(double d){
         this.courseDistance = d;

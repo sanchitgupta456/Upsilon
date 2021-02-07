@@ -105,6 +105,7 @@ public class AddCourseActivity extends AppCompatActivity implements AdapterView.
     ArrayList<String> categories_chosen = new ArrayList<>();
     Double latitude,longitude;
     private final Document courseLocation = new Document();
+    private String college;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -140,6 +141,21 @@ public class AddCourseActivity extends AppCompatActivity implements AdapterView.
         mongoDatabase = mongoClient.getDatabase("Upsilon");
         MongoCollection<Document> mongoCollection  = mongoDatabase.getCollection("CourseData");
         MongoCollection<Document> mongoCollection1  = mongoDatabase.getCollection("ForumData");
+        MongoCollection<Document> mongoCollection2  = mongoDatabase.getCollection("UserData");
+
+        mongoCollection.findOne(new Document("userid",user.getId())).getAsync(result -> {
+            if(result.isSuccess())
+            {
+                Document userdata = result.get();
+                college = userdata.getString("college");
+            }
+            else
+            {
+
+            }
+        });
+
+
 
         CourseImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -305,6 +321,8 @@ public class AddCourseActivity extends AppCompatActivity implements AdapterView.
                     courseDetails.append("courseLocation", courseLocation);
                     courseDetails.append("numberOfReviews", 0);
                     courseDetails.append("courseCategories", categories_chosen);
+                    courseDetails.append("registrationsOpen",true);
+                    courseDetails.append("tutorCollege",college);
 
                 /*Intent intent = new Intent(AddCourseActivity.this,AddCourseActivityContinued.class);
                 intent.putExtra("courseDetails",courseDetails.toJson().toString());
