@@ -263,7 +263,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     else
                     {
                         Log.v("User", "successfully found the user");
-                        getCourseData();
+//                        getCourseData();
 
                     }
                     while (results.hasNext()) {
@@ -353,9 +353,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void getCourseData(){
 
         progressBar.setVisibility(View.VISIBLE);
-        courseArrayList=new ArrayList<>();
-        courseArrayList1=new ArrayList<>();
-        courseArrayList2=new ArrayList<>();
+        courseArrayList = new ArrayList<>();
+        courseArrayList1 = new ArrayList<>();
+        courseArrayList2 = new ArrayList<>();
 
 
 

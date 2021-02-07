@@ -21,6 +21,7 @@ import com.google.gson.GsonBuilder;
 import com.razorpay.Checkout;
 import com.razorpay.PaymentResultListener;
 import com.sanchit.Upsilon.courseData.Course;
+import com.sanchit.Upsilon.paymentLog.LogType;
 import com.sanchit.Upsilon.ui.login.LoginActivity;
 import com.squareup.picasso.Picasso;
 
@@ -239,6 +240,7 @@ public class RegisterCourseActivity extends AppCompatActivity implements Payment
         Document transaction = new Document();
         transaction.append("date",System.currentTimeMillis());
         transaction.append("userid",user.getId());
+        transaction.append("type", "CREDITED");
         transaction.append("tutorId",course.getTutorId());
         transaction.append("courseId",course.getCourseId());
         transaction.append("courseName",course.getCourseName());
