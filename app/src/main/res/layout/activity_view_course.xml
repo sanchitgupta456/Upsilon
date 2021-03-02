@@ -150,6 +150,7 @@
                                 android:layout_height="match_parent"
                                 android:textColor="@color/colorPrimaryDark"
                                 android:textSize="18sp"
+                                android:text="Loading..."
                                 android:typeface="sans"
                                 android:id="@+id/view_course_tutor_name"
                                 android:layout_weight="15"

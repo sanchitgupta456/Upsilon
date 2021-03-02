@@ -57,6 +57,7 @@ public class TeacherInfoActivity extends AppCompatActivity {
     User user;
     Gson gson;
     GsonBuilder gsonBuilder;
+    ArrayList<String> specialities,qualificationsArray,experience;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,14 +79,16 @@ public class TeacherInfoActivity extends AppCompatActivity {
         mongoDatabase = mongoClient.getDatabase("Upsilon");
         mongoCollection  = mongoDatabase.getCollection("UserData");
         mongoCollection1  = mongoDatabase.getCollection("CourseData");
-
+        setupRecycler();
         getTutorData();
     }
     public void getTutorData(){
         //TODO: Get data here and set up the text fields and course array list
         Document queryFilter = new Document("userid",tutorId);
+        Document queryFilter1 = new Document("tutorId",tutorId);
+
         RealmResultTask<MongoCursor<Document>> findTask = mongoCollection.find(queryFilter).iterator();
-        RealmResultTask<MongoCursor<Document>> findTask1 = mongoCollection1.find(queryFilter).iterator();
+        RealmResultTask<MongoCursor<Document>> findTask1 = mongoCollection1.find(queryFilter1).iterator();
 
         findTask.getAsync(task->{
             if(task.isSuccess())
@@ -101,6 +104,34 @@ public class TeacherInfoActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
                     name.setText(teacherInfo.getString("name"));
+                    specialities = (ArrayList<String>) teacherInfo.get("specialities");
+                    if(specialities==null)
+                    {
+                        speciality.setText("No specialisations declosed");
+                    }
+                    else
+                    {
+                        speciality.setText("Specializes in ");
+                        for(int i=0;i<specialities.size();i++)
+                        {
+                            speciality.append(specialities.get(i)+" ");
+                        }
+                    }
+
+
+                    qualificationsArray = (ArrayList<String>) teacherInfo.get("qualifications");
+                    if(qualificationsArray==null)
+                    {
+                        qualifications.setText("No qualifications disclosed");
+                    }
+                    else
+                    {
+                        qualifications.setText("Qualifications in ");
+                        for(int i=0;i<qualificationsArray.size();i++)
+                        {
+                            qualifications.append(qualificationsArray.get(i)+" ");
+                        }
+                    }
 
                 }
             }
@@ -123,6 +154,8 @@ public class TeacherInfoActivity extends AppCompatActivity {
                         gson = gsonBuilder.create();
                         Course course = gson.fromJson(document.toJson(),Course.class);
                         list.add(course);
+                        Log.v("course",String.valueOf(course));
+                        adapter.notifyDataSetChanged();
                     } catch (JsonSyntaxException e) {
                         e.printStackTrace();
                     }
@@ -135,7 +168,6 @@ public class TeacherInfoActivity extends AppCompatActivity {
         });
 
 
-        setupRecycler();
     }
     public void setupRecycler(){
         if(list != null){

@@ -109,7 +109,11 @@ public class RegisteredStudentViewCourseReviewFragment extends Fragment {
                         //CourseReview courseReview2 = new CourseReview(courseReview1.get("review").toString(), (Double) courseReview1.get("reviewRating"),courseReview1.get("reviewAuthorId").toString());
                         //courseReviewsArrayList.add(courseReview2);
                         //courseReviewAdapter.notifyDataSetChanged();
-                        Log.v("test", (String) courseReview1.get("review"));
+                        try {
+                            Log.v("test", (String) courseReview1.get("review"));
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                     } catch (NumberFormatException e) {
                         e.printStackTrace();
                     }

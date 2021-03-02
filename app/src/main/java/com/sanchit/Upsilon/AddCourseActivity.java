@@ -143,7 +143,7 @@ public class AddCourseActivity extends AppCompatActivity implements AdapterView.
         MongoCollection<Document> mongoCollection1  = mongoDatabase.getCollection("ForumData");
         MongoCollection<Document> mongoCollection2  = mongoDatabase.getCollection("UserData");
 
-        mongoCollection.findOne(new Document("userid",user.getId())).getAsync(result -> {
+        mongoCollection2.findOne(new Document("userid",user.getId())).getAsync(result -> {
             if(result.isSuccess())
             {
                 Document userdata = result.get();
