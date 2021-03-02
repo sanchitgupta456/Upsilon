@@ -117,6 +117,10 @@ public class ViewCourseActivity extends AppCompatActivity {
         {
             RegisterButton.setVisibility(View.INVISIBLE);
         }
+        if(course.isRegistrationsOpen()==false)
+        {
+            RegisterButton.setVisibility(View.INVISIBLE);
+        }
         RegisterButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

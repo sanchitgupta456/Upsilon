@@ -27,7 +27,10 @@ import com.google.gson.GsonBuilder;
 import com.sanchit.Upsilon.courseData.Course;
 import com.squareup.picasso.Picasso;
 
+import org.bson.BsonDocument;
 import org.bson.Document;
+import org.cloudinary.json.JSONObject;
+import org.cloudinary.json.JSONString;
 
 import java.util.Calendar;
 import java.util.Locale;
@@ -58,6 +61,7 @@ public class TeacherViewCourseActivitySettingsFragment extends Fragment {
     private Boolean des;
     private Boolean dur;
     private Boolean fee;
+    Button saveButton;
 
     App app;
     String appID = "upsilon-ityvn";
@@ -75,7 +79,6 @@ public class TeacherViewCourseActivitySettingsFragment extends Fragment {
         Log.d(TAG, "onCreateView: started");
         View view = inflater.inflate(R.layout.teachers_viewof_course_settings, container, false);
         course = (Course) getArguments().get("Course");
-
         app = new App(new AppConfiguration.Builder(appID)
                 .build());
         User user = app.currentUser();
@@ -222,6 +225,21 @@ public class TeacherViewCourseActivitySettingsFragment extends Fragment {
                     course.setCourseFees(Integer.parseInt(etFee.getText().toString()));
                 }
                 //TODO: Update in backend
+                course.setRegistrationsOpen(enableRegistrations.isChecked());
+                Document queryFilter = new Document().append("courseId",course.getCourseId());
+                gsonBuilder = new GsonBuilder();
+                gson = gsonBuilder.create();
+                BsonDocument coursedoc = BsonDocument.parse(gson.toJson(course));
+                mongoCollection.updateOne(queryFilter,coursedoc).getAsync(result -> {
+                    if(result.isSuccess())
+                    {
+                        Log.v("CourseUpdate","Updated Successfully");
+                    }
+                    else
+                    {
+                        Log.v("CourseUpdate",result.getError().toString());
+                    }
+                });
             }
         });
 
