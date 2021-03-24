@@ -323,15 +323,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/course_name"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
                 android:layout_margin="10dp">
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/editTextCourseName"
                     android:inputType="text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="12dp"
-                    android:padding="5dp"
+                    android:padding="12dp"
                     android:textSize="18sp"
                     android:textColor="@color/colorPrimary"/>
             </com.google.android.material.textfield.TextInputLayout>
@@ -339,15 +338,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/course_description"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
                 android:layout_margin="10dp">
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/editTextCourseDescription"
                     android:inputType="textMultiLine"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="12dp"
-                    android:padding="5dp"
+                    android:padding="12dp"
                     android:textSize="18sp"
                     android:textColor="@color/colorPrimary"/>
             </com.google.android.material.textfield.TextInputLayout>
@@ -355,22 +353,20 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/course_duration"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
                 android:layout_margin="10dp">
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/editTextCourseDuration"
                     android:inputType="number"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="12dp"
-                    android:padding="5dp"
+                    android:padding="12dp"
                     android:textSize="18sp"
                     android:textColor="@color/colorPrimary"/>
             </com.google.android.material.textfield.TextInputLayout>
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp">
+                android:layout_height="wrap_content">
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -399,15 +395,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/course_fee"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
                 android:layout_margin="10dp">
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/editTextCourseFees"
                     android:inputType="text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="12dp"
-                    android:padding="5dp"
+                    android:padding="12dp"
                     android:textSize="18sp"
                     android:textColor="@color/colorPrimary"/>
             </com.google.android.material.textfield.TextInputLayout>
@@ -425,13 +420,16 @@
         </LinearLayout>
     </ScrollView>
     <Button
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/btn_blue"
         android:textColor="@color/colorWhite"
-        android:text="SAVE"
+        android:background="@color/colorPrimary"
+        android:elevation="4dp"
+        android:text="@string/save"
+        android:letterSpacing="0.3"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:id="@+id/updateChange"
-        android:layout_marginBottom="10dp"/>
+        android:clickable="true"
+        android:focusable="true"/>
 </RelativeLayout>

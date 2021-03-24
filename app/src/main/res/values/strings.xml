@@ -196,4 +196,5 @@
     <string name="error_not_enabled_location">You have not enabled location services of the app</string>
     <string name="please_wait">Please wait...</string>
     <string name="estimating_course_location_please_wait">Estimating course location, please wait...</string>
+    <string name="save">SAVE</string>
 </resources>
