@@ -197,4 +197,7 @@
     <string name="please_wait">Please wait...</string>
     <string name="estimating_course_location_please_wait">Estimating course location, please wait...</string>
     <string name="save">SAVE</string>
+    <string name="enter_a_message">Enter a message</string>
+    <string name="post">Post</string>
+    <string name="cancel">Cancel</string>
 </resources>
