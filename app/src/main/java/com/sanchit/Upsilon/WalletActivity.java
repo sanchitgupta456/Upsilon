@@ -28,17 +28,19 @@ import io.realm.mongodb.mongo.iterable.MongoCursor;
 
 public class WalletActivity extends AppCompatActivity {
 
-    private TextView accountnumber,ifsc,mobile,upi,amountdue;
+    private TextView accountnumber,ifsc,mobile,upi,amountdue,Amount;
     private String Accountnumber;
     private String Ifsc;
     private String Mobile;
     private String Upi;
     private Integer AmountDue;
+    private Integer amount;
     String appID = "upsilon-ityvn";
     App app;
     MongoClient mongoClient;
     MongoDatabase mongoDatabase;
     Button EditPaymentDetails;
+    Button Withdraw;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,12 +56,14 @@ public class WalletActivity extends AppCompatActivity {
         upi = (TextView) findViewById(R.id.textUPIId);
         amountdue = (TextView) findViewById(R.id.amount_due);
         EditPaymentDetails = (Button) findViewById(R.id.btn_edit_payment_details);
-
+        Withdraw = (Button) findViewById(R.id.btn_withdraw_from_wallet);
+        Amount = (TextView) findViewById(R.id.current_balance);
 //        accountnumber.setText(Accountnumber);
 //        ifsc.setText(Ifsc);
 //        mobile.setText(Mobile);
 //        upi.setText(Upi);
 //        amountdue.setText(AmountDue);
+
 
         EditPaymentDetails.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,6 +75,27 @@ public class WalletActivity extends AppCompatActivity {
         app = new App(new AppConfiguration.Builder(appID)
                 .build());
         User user = app.currentUser();
+
+        Withdraw.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                MongoCollection<Document> mongoCollection3  = mongoDatabase.getCollection("Transactions");
+                MongoCollection<Document> mongoCollection4  = mongoDatabase.getCollection("WalletAmount");
+                Document queryFilter1  = new Document("userid",user.getId());
+                RealmResultTask<MongoCursor<Document>> findTask2 = mongoCollection3.find(queryFilter1).iterator();
+                RealmResultTask<MongoCursor<Document>> findTask3 = mongoCollection4.find(queryFilter1).iterator();
+
+                Document transaction = new Document();
+                transaction.append("date",System.currentTimeMillis());
+                transaction.append("userid",user.getId());
+                transaction.append("type", "DEBITED");
+//                transaction.append("tutorId",course.getTutorId());
+//                transaction.append("courseId",course.getCourseId());
+//                transaction.append("courseName",course.getCourseName());
+                transaction.append("amount",amount);
+            }
+        });
+
 
         mongoClient = user.getMongoClient("mongodb-atlas");
         mongoDatabase = mongoClient.getDatabase("Upsilon");
@@ -93,7 +118,14 @@ public class WalletActivity extends AppCompatActivity {
                     Mobile = paymentDetails.getString("mobileNumber");
                     Upi = paymentDetails.getString("UpiId");
                     AmountDue = paymentDetails.getInteger("WalletAmountToBePaid");
+                    try {
+                        amount = paymentDetails.getInteger("walletAmount");
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        amount=0;
+                    }
                     accountnumber.setText(Accountnumber);
+                    Amount.setText(amount);
                     ifsc.setText(Ifsc);
                     mobile.setText(Mobile);
                     upi.setText(Upi);
