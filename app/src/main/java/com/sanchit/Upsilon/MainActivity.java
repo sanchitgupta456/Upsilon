@@ -508,7 +508,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 //                                                    Document currentDoc1 = results1.next();
 //                                                    //Log.v("CourseBySenior", (String) currentDoc1.get("college"));
 //                                                    //Log.v("CourseBySenior", (String)  college);
-//                                                    try {
+                                                    try {
                                                         if (course.getTutorCollege().equals(college)) {
                                                             //Log.v("CourseBy","Hello");
                                                             courseArrayList2.add(course);
@@ -516,9 +516,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                                                             frame2.setVisibility(View.VISIBLE);
                                                             //Log.v("CourseBySenior", String.valueOf(courseArrayList2));
                                                         }
-//                                                    } catch (Exception e) {
-//                                                        e.printStackTrace();
-//                                                    }
+                                                    } catch (Exception e) {
+                                                        e.printStackTrace();
+                                                    }
 //                                                    //Log.v("User", currentDoc1.getString("userid"));
 //                                                }
 //                                            } else {
