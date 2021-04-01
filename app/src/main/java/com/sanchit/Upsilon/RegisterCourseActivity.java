@@ -163,7 +163,7 @@ public class RegisterCourseActivity extends AppCompatActivity implements Payment
                                 if (course.getCourseFees() == 0) {
                                     RegisterStudent();
                                 } else {
-                                    startPayment(course.getCourseFees() * 100);
+                                    startPayment((course.getCourseFees() + (int)course.getCourseFees() * rate / 100) * 100);
                                 }
 
                             }
@@ -249,9 +249,7 @@ public class RegisterCourseActivity extends AppCompatActivity implements Payment
         transaction.append("tutorId",course.getTutorId());
         transaction.append("courseId",course.getCourseId());
         transaction.append("courseName",course.getCourseName());
-
-        //1/4/2021 : updated amount to be paid
-        transaction.append("amount",course.getCourseFees() + (int)course.getCourseFees() * rate / 100);
+        transaction.append("amount",course.getCourseFees());
         mongoCollection3.insertOne(transaction).getAsync(result -> {
             if(result.isSuccess())
             {
