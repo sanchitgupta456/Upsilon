@@ -5,7 +5,7 @@
     tools:context=".AboutActivity"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimaryDark">
+    android:background="@color/colorPrimary">
 
     <ImageView
         android:id="@+id/logo"
@@ -52,8 +52,7 @@
             android:layout_height="wrap_content"
             android:text="@string/aboutText"
             android:textSize="16sp"
-            android:textColor="@color/colorWhite"
-            android:textStyle="italic" />
+            android:textColor="@color/colorWhite" />
 
         <!-- contents? blah! -->
 

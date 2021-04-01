@@ -2,7 +2,50 @@
     <string name="app_name">Upsilon</string>
     <string name="aboutTitleText">About us.</string>
     <string name="aboutText">
-        *About page descriptive text comes here*
+        <p>
+        Upsilon is an organisation that glorifies the learning and teaching experience for everyone.
+        </p>
+        \n\n
+        <p>
+        We at Upsilon are a group of IIT Madras students who have built this application that guides a student to learn from the best suitable teacher, either online or offline,
+        and also helps the teachers reach the appropriate students.
+        </p>
+        \n\n
+        <p>
+        We believe that the learning process should never be affected no matter what crisis befalls and hence, we provide Upsilon, a remedy to all the common problems faced by the
+        educational system.
+        </p>
+        \n\n
+        <p>
+        <b>What do we feature?</b>
+        \n\n
+        Trouble finding the right? We search for the best suited courses and compare them for you. Find the right teacher in the right medium to learn from.
+        \n
+        Are you a teacher? Struggling to find students? Upsilon provides you with a student base and also provides the right support to enhance your teaching experience.
+        \n
+        Courses in the app can be ranked in several categories based on user choices so that you get the best out of what you wish for.
+        \n
+        </p>
+        \n\n
+        <p>
+        <b>Meet our team</b>
+        </p>
+        \n\n
+        <p>
+        Sanchit Gupta, Student in B Tech at the IIT Madras institute.
+        </p>
+        \n
+        <p>
+        Vedant Saboo, Student in B Tech at the IIT Madras institute.
+        </p>
+        \n
+        <p>
+        Saurav Kale, Student in B Tech at the IIT Madras institute.
+        </p>
+        \n\n
+        <p>
+        <b>Thanks for downloading the app!</b>
+        </p>
     </string>
     <string name="top_rated_tutors_string">Top Rated Tutors :</string>
     <string name="title_activity_login">LoginActivity</string>
