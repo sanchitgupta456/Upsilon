@@ -2,12 +2,14 @@ package com.sanchit.Upsilon;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,10 +18,23 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.snackbar.Snackbar;
 import com.sanchit.Upsilon.courseData.Course;
+import com.squareup.picasso.Picasso;
+
+import org.bson.Document;
 
 import java.util.List;
 import java.util.Objects;
+
+import io.realm.mongodb.App;
+import io.realm.mongodb.AppConfiguration;
+import io.realm.mongodb.RealmResultTask;
+import io.realm.mongodb.User;
+import io.realm.mongodb.mongo.MongoClient;
+import io.realm.mongodb.mongo.MongoCollection;
+import io.realm.mongodb.mongo.MongoDatabase;
+import io.realm.mongodb.mongo.iterable.MongoCursor;
 
 public class RegisteredStudentViewCourse extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
 
@@ -30,6 +45,11 @@ public class RegisteredStudentViewCourse extends AppCompatActivity implements Bo
     //private TextView courseName;
     //private ImageButton btnBack;
     View actionBar;
+    String appID = "upsilon-ityvn";
+    App app;
+    private MongoClient mongoClient;
+    private MongoDatabase mongoDatabase;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -50,9 +70,15 @@ public class RegisteredStudentViewCourse extends AppCompatActivity implements Bo
 
         loadFragment(new RegisteredStudentViewCourseScheduleFragment());
 
+
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(RegisteredStudentViewCourse.this);
 
+
+
+
+
+    }
         /*
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,7 +87,7 @@ public class RegisteredStudentViewCourse extends AppCompatActivity implements Bo
                 startActivity(intent);
             }
         });*/
-    }
+
 
     private boolean loadFragment(Fragment fragment) {
         //switching fragment
@@ -129,12 +155,13 @@ public class RegisteredStudentViewCourse extends AppCompatActivity implements Bo
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if(item.getActionView()==actionBar)
+//        if(item.getActionView()==actionBar)
+//        {
+//            finish();
+//        }
+        if(item.getItemId()==R.id.menuItemReview)
         {
-            finish();
-        }
-        else if(item.getItemId()==R.id.menuItemReview)
-        {
+            Log.v("RegisteredStudent","Review");
             loadFragment(new RegisteredStudentViewCourseReviewFragment());
         }
         else if(item.getItemId()==R.id.menuItemSettings)
@@ -143,6 +170,47 @@ public class RegisteredStudentViewCourse extends AppCompatActivity implements Bo
         }
         else if (item.getItemId()==R.id.menuItemUnregister)
         {
+
+            app = new App(new AppConfiguration.Builder(appID)
+                    .build());
+            User user = app.currentUser();
+            mongoClient = user.getMongoClient("mongodb-atlas");
+            mongoDatabase = mongoClient.getDatabase("Upsilon");
+            MongoCollection<Document> mongoCollection  = mongoDatabase.getCollection("DropRequests");
+
+            Document queryFilter  = new Document("userid",user.getId()).append("courseId",course.getCourseId());
+
+            RealmResultTask<MongoCursor<Document>> findTask = mongoCollection.find(queryFilter).iterator();
+
+            findTask.getAsync(task -> {
+                if (task.isSuccess()) {
+                    MongoCursor<Document> results = task.get();
+                    if(!results.hasNext())
+                    {
+                        mongoCollection.insertOne(
+                                new Document("userid", user.getId()).append("courseId",course.getCourseId()).append("timeStamp",System.currentTimeMillis()))
+                                .getAsync(result -> {
+                                    if (result.isSuccess()) {
+                                        Toast.makeText(getApplicationContext(),"Your request has been registered",Toast.LENGTH_LONG).show();
+                                        Log.v("EXAMPLE", "Inserted custom user data document. _id of inserted document: "
+                                                + result.get().getInsertedId());
+                                    } else {
+                                        Toast.makeText(getApplicationContext(),"Error registering request . Please try again later",Toast.LENGTH_LONG).show();
+                                        Log.e("EXAMPLE", "Unable to insert custom user data. Error: " + result.getError());
+                                    }
+                                });
+                    }
+                    else
+                    {
+                        Toast.makeText(getApplicationContext(),"Your request has already been registered",Toast.LENGTH_LONG).show();
+                        Log.v("User", "successfully found the user");
+//                        getCourseData();
+                    }
+
+                } else {
+                    Log.v("User","Failed to complete search"+task.getError());
+                }
+            });
             //unregister the course if registration happened < 7 days before, else do not
         }
         else if (item.getItemId()==R.id.menuItemRefresh)

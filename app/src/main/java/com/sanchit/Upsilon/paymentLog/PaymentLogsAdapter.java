@@ -11,8 +11,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.sanchit.Upsilon.R;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 
 public class PaymentLogsAdapter extends RecyclerView.Adapter<PaymentLogsAdapter.ViewHolder>{
     private ArrayList<PaymentLog> logs;
@@ -33,6 +35,11 @@ public class PaymentLogsAdapter extends RecyclerView.Adapter<PaymentLogsAdapter.
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         PaymentLog log = logs.get(position);
         holder.tvId.setText(log.getTransactionId());
+        Calendar c = Calendar.getInstance();
+        c.setTimeInMillis(log.getTimeStamp());
+        Date d = c.getTime();
+        SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, yyyy");
+        holder.tvDateTime.setText(sdf.format(d).toString());
         switch (log.getType()) {
             case CREDITED:
                 holder.tvMessageCredited.setText(log.getLogMessage());
