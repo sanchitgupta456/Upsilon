@@ -48,7 +48,7 @@ public class RegisterCourseActivity extends AppCompatActivity implements Payment
     String appID = "upsilon-ityvn";
     String TAG = "Payment Error";
     Course course;
-    TextView courseName,courseFees;
+    TextView courseName,courseFees, tuitionFees, convenienceFees;
     EditText studentName,studentContact,studentAddress;
     ImageView courseImage;
     App app;
@@ -59,6 +59,7 @@ public class RegisterCourseActivity extends AppCompatActivity implements Payment
     ArrayList<String> myRegisteredCourses;
     private Gson gson;
     private GsonBuilder gsonBuilder;
+    public static int rate = 5;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -75,6 +76,8 @@ public class RegisterCourseActivity extends AppCompatActivity implements Payment
         studentAddress = (EditText) findViewById(R.id.addressStudent);
         proceedToPay = (Button) findViewById(R.id.btnProceedToPay);
         courseFees = (TextView) findViewById(R.id.textFees);
+        tuitionFees = (TextView) findViewById(R.id.textFeesTution);
+        convenienceFees = (TextView) findViewById(R.id.textFeesConvenience);
 
         myRegisteredCourses = new ArrayList<String>();
 
@@ -100,7 +103,9 @@ public class RegisterCourseActivity extends AppCompatActivity implements Payment
         course = (Course) intent.getSerializableExtra("course");
 
         courseName.setText(course.getCourseName());
-        courseFees.setText("Rs. " + course.getCourseFees());
+        courseFees.setText("Total price - Rs. " + (course.getCourseFees() + (int)course.getCourseFees() * rate / 100));
+        tuitionFees.setText("\t\tTuition fee - Rs. " + course.getCourseFees());
+        convenienceFees.setText("\t\tConvenience fee - Rs. " + course.getCourseFees() * rate / 100);
         Picasso.with(getApplicationContext()).load(course.getCourseImage()).into(courseImage);
 
         proceedToPay.setOnClickListener(new View.OnClickListener() {
@@ -244,7 +249,9 @@ public class RegisterCourseActivity extends AppCompatActivity implements Payment
         transaction.append("tutorId",course.getTutorId());
         transaction.append("courseId",course.getCourseId());
         transaction.append("courseName",course.getCourseName());
-        transaction.append("amount",course.getCourseFees());
+
+        //1/4/2021 : updated amount to be paid
+        transaction.append("amount",course.getCourseFees() + (int)course.getCourseFees() * rate / 100);
         mongoCollection3.insertOne(transaction).getAsync(result -> {
             if(result.isSuccess())
             {

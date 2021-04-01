@@ -85,7 +85,7 @@
             android:id="@+id/btn_edit_profile"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Edit Profile"
+            android:text="@string/edit_profile"
             android:textColor="@color/colorAccent"
             android:textSize="16sp"
             android:textStyle="bold"

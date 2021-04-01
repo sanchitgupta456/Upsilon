@@ -812,6 +812,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             Intent intent = new Intent(MainActivity.this,CoursesTaughtActivity.class);
             startActivity(intent);
         }
+        else if(id==R.id.btn_edit_profile)
+        {
+            Intent intent = new Intent(MainActivity.this,ProfileViewActivity.class);
+            startActivity(intent);
+        }
         else if(id==R.id.homeDrawerMenuItem3)
         {
             Intent intent = new Intent(MainActivity.this,ProfileViewActivity.class);
