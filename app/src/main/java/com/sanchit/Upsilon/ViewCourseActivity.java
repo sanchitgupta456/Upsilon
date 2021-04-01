@@ -119,7 +119,9 @@ public class ViewCourseActivity extends AppCompatActivity {
         }
         if(course.isRegistrationsOpen()==false)
         {
-            RegisterButton.setVisibility(View.INVISIBLE);
+//            RegisterButton.setVisibility(View.INVISIBLE);
+            RegisterButton.setText("Registrations CLosed");
+            RegisterButton.setEnabled(false);
         }
         RegisterButton.setOnClickListener(new View.OnClickListener() {
             @Override

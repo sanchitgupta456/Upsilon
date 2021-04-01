@@ -2,10 +2,12 @@ package com.sanchit.Upsilon;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.Pair;
@@ -57,9 +59,12 @@ public class PaymentLogActivity extends AppCompatActivity {
         LinearLayoutManager manager = new LinearLayoutManager(recyclerView.getContext(), LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(manager);
         recyclerView.setAdapter(adapter);
-        getLogData();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            getLogData();
+        }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     private void getLogData() {
         //TODO: get log data;
         /* test: */
@@ -75,7 +80,12 @@ public class PaymentLogActivity extends AppCompatActivity {
                     Document transaction = results.next();
                     if(transaction.get("type").equals("CREDITED"))
                     {
-                        list.add(new PaymentLog(transaction.get("_id").toString(),"Bought the course - "+transaction.getString("courseName"),LogType.CREDITED));
+                        list.add(new PaymentLog(transaction.get("_id").toString(),"Bought the course - "+transaction.getString("courseName"),LogType.CREDITED, transaction.getLong("date"),transaction.getInteger("amount")));
+                        adapter.notifyDataSetChanged();
+                    }
+                    else if(transaction.get("type").equals("WITHDRAW_PENDING"))
+                    {
+                        list.add(new PaymentLog(transaction.get("_id").toString(),"Withdrawl of Rs. " + String.valueOf(transaction.getInteger("amount")),LogType.WITHDRAW_PENDING, transaction.getLong("date"),transaction.getInteger("amount")));
                         adapter.notifyDataSetChanged();
                     }
                 }

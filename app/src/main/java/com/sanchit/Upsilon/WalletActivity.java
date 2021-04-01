@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.bson.Document;
 import org.w3c.dom.Text;
@@ -41,6 +42,7 @@ public class WalletActivity extends AppCompatActivity {
     MongoDatabase mongoDatabase;
     Button EditPaymentDetails;
     Button Withdraw;
+    Document paymentDetails;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,27 +78,6 @@ public class WalletActivity extends AppCompatActivity {
                 .build());
         User user = app.currentUser();
 
-        Withdraw.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                MongoCollection<Document> mongoCollection3  = mongoDatabase.getCollection("Transactions");
-                MongoCollection<Document> mongoCollection4  = mongoDatabase.getCollection("WalletAmount");
-                Document queryFilter1  = new Document("userid",user.getId());
-                RealmResultTask<MongoCursor<Document>> findTask2 = mongoCollection3.find(queryFilter1).iterator();
-                RealmResultTask<MongoCursor<Document>> findTask3 = mongoCollection4.find(queryFilter1).iterator();
-
-                Document transaction = new Document();
-                transaction.append("date",System.currentTimeMillis());
-                transaction.append("userid",user.getId());
-                transaction.append("type", "DEBITED");
-//                transaction.append("tutorId",course.getTutorId());
-//                transaction.append("courseId",course.getCourseId());
-//                transaction.append("courseName",course.getCourseName());
-                transaction.append("amount",amount);
-            }
-        });
-
-
         mongoClient = user.getMongoClient("mongodb-atlas");
         mongoDatabase = mongoClient.getDatabase("Upsilon");
         MongoCollection<Document> mongoCollection  = mongoDatabase.getCollection("TeacherPaymentData");
@@ -112,7 +93,7 @@ public class WalletActivity extends AppCompatActivity {
             {
                 MongoCursor<Document> results = task.get();
                 if(results.hasNext()) {
-                    Document paymentDetails = results.next();
+                    paymentDetails = results.next();
                     Accountnumber = paymentDetails.getString("accountNumber");
                     Ifsc = paymentDetails.getString("ifscCode");
                     Mobile = paymentDetails.getString("mobileNumber");
@@ -120,12 +101,17 @@ public class WalletActivity extends AppCompatActivity {
                     AmountDue = paymentDetails.getInteger("WalletAmountToBePaid");
                     try {
                         amount = paymentDetails.getInteger("walletAmount");
+                        Log.v("amount",amount.toString());
                     } catch (Exception e) {
                         e.printStackTrace();
                         amount=0;
                     }
                     accountnumber.setText(Accountnumber);
-                    Amount.setText(amount);
+                    try {
+                        Amount.setText("Rs. " +amount.toString());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                     ifsc.setText(Ifsc);
                     mobile.setText(Mobile);
                     upi.setText(Upi);
@@ -144,6 +130,49 @@ public class WalletActivity extends AppCompatActivity {
             else
             {
                 Log.v("Wallet Error",task.getError().toString());
+            }
+        });
+
+        Withdraw.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                MongoCollection<Document> mongoCollection3  = mongoDatabase.getCollection("Transactions");
+                MongoCollection<Document> mongoCollection4  = mongoDatabase.getCollection("WalletAmount");
+                Document queryFilter1  = new Document("userid",user.getId());
+                RealmResultTask<MongoCursor<Document>> findTask2 = mongoCollection3.find(queryFilter1).iterator();
+                RealmResultTask<MongoCursor<Document>> findTask3 = mongoCollection4.find(queryFilter1).iterator();
+
+                Document transaction = new Document();
+                transaction.append("date",System.currentTimeMillis());
+                transaction.append("userid",user.getId());
+                transaction.append("type", "WITHDRAW_PENDING");
+//                transaction.append("tutorId",course.getTutorId());
+//                transaction.append("courseId",course.getCourseId());
+//                transaction.append("courseName",course.getCourseName());
+                transaction.append("amount",amount);
+
+                paymentDetails.append("walletAmount",0);
+                mongoCollection.updateOne(queryFilter,paymentDetails).getAsync(result -> {
+                    if(result.isSuccess())
+                    {
+                        Log.v("Amount Deduction","Success");
+                    }
+                    else
+                    {
+                        Log.v("Amount Deduction","Error");
+                    }
+                });
+
+                mongoCollection3.insertOne(transaction).getAsync(result -> {
+                    if(result.isSuccess())
+                    {
+                        Toast.makeText(getApplicationContext(),"Withdrawl Request Submitted Successfully",Toast.LENGTH_LONG).show();
+                    }
+                    else
+                    {
+                        Toast.makeText(getApplicationContext(),"Withdrawl Request Error",Toast.LENGTH_LONG).show();
+                    }
+                });
             }
         });
 

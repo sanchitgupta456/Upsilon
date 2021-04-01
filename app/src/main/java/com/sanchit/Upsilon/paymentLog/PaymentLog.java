@@ -6,17 +6,34 @@ public class PaymentLog {
     private String transactionId;
     private String logMessage;
     private LogType type;
-    private Integer timeStamp;
+    private Long timeStamp;
+    private Integer amount;
 
-    public Integer getTimeStamp() {
+    public Integer getAmount() {
+        return amount;
+    }
+
+    public void setAmount(Integer amount) {
+        this.amount = amount;
+    }
+
+    public PaymentLog(String transactionId, String logMessage, LogType type, Long timeStamp, Integer amount) {
+        this.transactionId = transactionId;
+        this.logMessage = logMessage;
+        this.type = type;
+        this.timeStamp = timeStamp;
+        this.amount = amount;
+    }
+
+    public Long getTimeStamp() {
         return timeStamp;
     }
 
-    public void setTimeStamp(Integer timeStamp) {
+    public void setTimeStamp(Long timeStamp) {
         this.timeStamp = timeStamp;
     }
 
-    public PaymentLog(String transactionId, String logMessage, LogType type, Integer timeStamp) {
+    public PaymentLog(String transactionId, String logMessage, LogType type, Long timeStamp) {
         this.transactionId = transactionId;
         this.logMessage = logMessage;
         this.type = type;
