@@ -7,6 +7,131 @@
     tools:context=".TeacherInfoActivity"
     android:background="@color/colorPrimaryLight">
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:src="@drawable/default_person_image"
+                android:layout_centerHorizontal="true"
+                android:layout_margin="20dp"
+                android:id="@+id/img_tutor"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/username"
+                android:layout_below="@id/img_tutor"
+                android:gravity="center"
+                android:textColor="@color/colorPrimary"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:id="@+id/text_tutor_name"
+                android:layout_margin="5dp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/text_tutor_name"
+                android:gravity="center"
+                android:textColor="@color/GreyDark"
+                android:textSize="14sp"
+                android:id="@+id/text_tutor_speciality"
+                android:layout_margin="5dp"/>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="30dp"
+                android:layout_marginTop="30dp"
+                android:background="@color/colorWhite"
+                app:cardElevation="8dp"
+                android:layout_below="@id/text_tutor_speciality"
+                android:id="@+id/card_tutor_qualifications">
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/qualifications"
+                        android:gravity="center"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="16sp"
+                        android:layout_margin="5dp"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:textColor="@color/GreyDark"
+                        android:textSize="14sp"
+                        android:id="@+id/text_tutor_qualifications"
+                        android:layout_margin="5dp"/>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="30dp"
+                android:layout_marginTop="30dp"
+                android:background="@color/colorWhite"
+                app:cardElevation="8dp"
+                android:layout_below="@id/card_tutor_qualifications"
+                android:id="@+id/card_tutor_teaching_statistics">
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/statistics"
+                        android:gravity="center"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="16sp"
+                        android:layout_margin="5dp"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:textColor="@color/GreyDark"
+                        android:textSize="14sp"
+                        android:id="@+id/text_tutor_statistics"
+                        android:layout_margin="5dp"/>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/more_courses_by_the_teacher"
+                android:gravity="center"
+                android:textColor="@color/colorPrimary"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:layout_below="@id/card_tutor_teaching_statistics"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="6dp"
+                android:id="@+id/textView"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_below="@id/textView"
+                android:id="@+id/list_courses_by_tutor"
+                android:layout_marginHorizontal="10dp"
+                tools:listitem="@layout/explore_course_recycler_card"/>
+
+        </RelativeLayout>
+    </ScrollView>
+<!--
     <de.hdodenhof.circleimageview.CircleImageView
         android:layout_width="100dp"
         android:layout_height="100dp"
@@ -126,7 +251,7 @@
         android:layout_marginHorizontal="10dp"
         tools:listitem="@layout/explore_course_recycler_card"/>
 
-
+-->
 
 
 

@@ -248,4 +248,7 @@
     <string name="terms_and_conditions_u">
         <u>Terms and Conditions</u>
     </string>
+    <string name="qualifications">Qualifications</string>
+    <string name="statistics">Statistics</string>
+    <string name="more_courses_by_the_teacher">More courses by the teacher</string>
 </resources>
