@@ -244,4 +244,8 @@
     <string name="post">Post</string>
     <string name="cancel">Cancel</string>
     <string name="edit_profile">Edit Profile</string>
+
+    <string name="terms_and_conditions_u">
+        <u>Terms and Conditions</u>
+    </string>
 </resources>

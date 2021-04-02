@@ -105,6 +105,32 @@
                 android:inputType="textPassword"
                 android:padding="10dp"/>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="16dp"
+                android:padding="10dp">
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/accept_tc"
+                    android:text="I accept the "
+                    android:textSize="@dimen/text_margin"
+                    android:buttonTint="@color/colorPrimary"/>
+                <TextView
+                    android:id="@+id/link_tc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/terms_and_conditions_u"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/text_margin"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:textColorLink="@color/colorPrimaryDark"/>
+            </LinearLayout>
+
         </LinearLayout>
     </ScrollView>
 

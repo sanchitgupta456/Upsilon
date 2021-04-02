@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -29,8 +30,10 @@ import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.sanchit.Upsilon.Interest.Interest;
 import com.sanchit.Upsilon.MainActivity;
 import com.sanchit.Upsilon.R;
+import com.sanchit.Upsilon.Terms;
 
 import java.util.Objects;
 
@@ -64,11 +67,21 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         final EditText cnfPasswordEditText = findViewById(R.id.confirmPassword);
         final EditText emailEditText = findViewById(R.id.email);
         final Button signUpButton = findViewById(R.id.signupBtn);
+        final CheckBox checkBox = findViewById(R.id.accept_tc);
+        final TextView linkTC = findViewById(R.id.link_tc);
         fbsignupButton = findViewById(R.id.signup_button);
         final TextView memberalready = findViewById(R.id.alreadyAMember);
         final ImageView FacebookSignInImage = findViewById(R.id.facebookSignUp);
         findViewById(R.id.facebookSignUp).setOnClickListener(this);
         findViewById(R.id.googleSignUp).setOnClickListener(this);
+
+        linkTC.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), Terms.class);
+                startActivity(intent);
+            }
+        });
 
         callbackManager1 = CallbackManager.Factory.create();
         fbsignupButton.registerCallback(callbackManager1, new FacebookCallback<LoginResult>() {
@@ -142,6 +155,9 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                     cnfPasswordEditText.setText("");
                     passwordEditText.setError("Passwords do not match!");
                     passwordEditText.requestFocus();
+                    return;
+                } else if (!checkBox.isChecked()){
+                    Toast.makeText(getApplicationContext(), "Please accept the terms and conditions", Toast.LENGTH_SHORT);
                     return;
                 }
 
