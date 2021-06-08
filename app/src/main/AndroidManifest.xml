@@ -23,7 +23,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".PaymentLogActivity"></activity>
+        <activity
+            android:name=".AssignmentActivity"
+            android:label="@string/title_activity_assignment"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity android:name=".AssignmentsActivity" />
+        <activity android:name=".PaymentLogActivity" />
         <activity android:name=".GetStartedAsTeacherActivity" />
         <activity android:name=".TeacherDataSetupActivity" />
         <activity android:name=".TeacherInfoActivity" />

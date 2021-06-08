@@ -251,4 +251,8 @@
     <string name="qualifications">Qualifications</string>
     <string name="statistics">Statistics</string>
     <string name="more_courses_by_the_teacher">More courses by the teacher</string>
+    <string name="title_activity_assignment">AssignmentActivity</string>
+    <string name="content">Content</string>
+    <string name="submission">Submission</string>
+    <string name="grade">Grade</string>
 </resources>
