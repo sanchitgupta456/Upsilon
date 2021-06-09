@@ -1,4 +1,4 @@
-package com.sanchit.Upsilon.ui.main;
+package com.sanchit.Upsilon.ui.assignment;
 
 import android.content.Context;
 
@@ -29,7 +29,10 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         // getItem is called to instantiate the fragment for the given page.
         // Return a PlaceholderFragment (defined as a static inner class below).
-        return PlaceholderFragment.newInstance(position + 1);
+//        return PlaceholderFragment.newInstance(position + 1);
+        if(position == 0) return PlaceholderFragment.newInstance(1);
+        else if(position == 1) return SubmissionFragment.newInstance(2);
+        else return PlaceholderFragment.newInstance(3);
     }
 
     @Nullable
