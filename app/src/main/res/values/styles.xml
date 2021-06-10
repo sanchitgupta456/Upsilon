@@ -22,6 +22,7 @@
     <style name="MaterialTheme" parent="Theme.MaterialComponents.Light">
         <!-- Customisations -->
         <item name="android:colorButtonNormal">@color/colorYellow</item>
+        <item name="android:colorPrimary">@color/colorPrimary</item>
         <item name="android:colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="android:colorAccent">@color/colorAccent</item>
     </style>
@@ -50,5 +51,10 @@
     <style name="DatePicker" parent="ThemeOverlay.MaterialComponents.MaterialCalendar">
         <item name="colorAccent">@color/colorPrimary</item>
     </style>
+
+<!--    <style name="CustomTextInputLayout">-->
+<!--        <item name="colorAccent">@color/colorPrimary</item>-->
+<!--        &lt;!&ndash; rest also we will add, if need be &ndash;&gt;-->
+<!--    </style>-->
 
 </resources>
