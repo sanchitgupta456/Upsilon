@@ -24,11 +24,7 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
         <activity android:name=".pdfUpload.pdfPlayground">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity android:name=".TestActivity"></activity>
         <activity
@@ -68,6 +64,11 @@
             android:label="Upsilon" />
         <activity android:name=".TeachActivity" />
         <activity android:name=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity android:name=".ui.login.SignUpActivity" />
         <activity android:name=".SearchActivity" />

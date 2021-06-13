@@ -155,14 +155,19 @@ public class RegisteredStudentViewCourse extends AppCompatActivity implements Bo
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-//        if(item.getActionView()==actionBar)
-//        {
-//            finish();
-//        }
+        if(item.getItemId()==android.R.id.home)
+        {
+            finish();
+        }
         if(item.getItemId()==R.id.menuItemReview)
         {
             Log.v("RegisteredStudent","Review");
             loadFragment(new RegisteredStudentViewCourseReviewFragment());
+        }
+        if(item.getItemId()==R.id.menuItemAssignmentsAndTests)
+        {
+            Log.v("RegisteredStudent","Assignments and Tests list");
+            loadFragment(new RegisteredStudentViewCourseATFragment());
         }
         else if(item.getItemId()==R.id.menuItemSettings)
         {
