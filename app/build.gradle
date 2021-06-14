@@ -90,7 +90,7 @@ dependencies {
     annotationProcessor 'com.github.bumptech.glide:compiler:4.8.0'
 
     //ExoPlayer
-    implementation 'com.google.android.exoplayer:exoplayer:2.7.3'
+    implementation 'com.google.android.exoplayer:exoplayer:2.14.0'
 
     //RazorPay
     implementation 'com.razorpay:checkout:1.5.16'
