@@ -257,4 +257,8 @@
     <string name="grade">Grade</string>
     <string name="assignments_and_tests">Assignments And Tests</string>
     <string name="drop_the_course">Drop the course</string>
+    <string name="yet_to_start">YET TO START</string>
+    <string name="ongoing">ONGOING</string>
+    <string name="completed_ungraded">COMPLETED UNGRADED</string>
+    <string name="graded">GRADED</string>
 </resources>

@@ -4,7 +4,8 @@ public class TestListItem {
     private String id; //some identification criterion
 
     private String name;
-    private String status;
+    private TestStatus status;
+//    private String status;
     private int marksReceived;
     private int totalMarks;
 
@@ -24,14 +25,6 @@ public class TestListItem {
         this.name = name;
     }
 
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
     public int getMarksReceived() {
         return marksReceived;
     }
@@ -42,6 +35,14 @@ public class TestListItem {
 
     public int getTotalMarks() {
         return totalMarks;
+    }
+
+    public TestStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(TestStatus status) {
+        this.status = status;
     }
 
     public void setTotalMarks(int totalMarks) {

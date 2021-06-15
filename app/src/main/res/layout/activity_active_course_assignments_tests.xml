@@ -90,8 +90,7 @@
             android:id="@+id/list_tests"
             android:layout_margin="10dp"
             android:layout_below="@id/textTests"
-            tools:listitem="@layout/layout_test_student_thumbnail"
-            tools:itemCount="6"/>
+            tools:listitem="@layout/layout_test_student_thumbnail"/>
 
 <!--        <TextView-->
 <!--            android:layout_width="match_parent"-->

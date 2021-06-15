@@ -1,7 +1,9 @@
 package com.sanchit.Upsilon.testData;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,7 +11,9 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.card.MaterialCardView;
@@ -45,24 +49,28 @@ public class TestsListAdapter extends RecyclerView.Adapter<TestsListAdapter.View
         TestListItem item = list.get(position);
         String id = item.getId(); //use it
         holder.nameTvShow.setText(item.getName());
-        String status = item.getStatus();
-        holder.statusTvShow.setText(status);
+        TestStatus status = item.getStatus();
+//        holder.statusTvShow.setText(status.toString());
         holder.llGrades.setVisibility(View.GONE);
         switch (status) {
-            case "YET TO START":
-                holder.statusTvShow.setTextColor(Color.parseColor("@color/colorPrimary"));
+            case YET_TO_START:
+                holder.statusTvShow.setTextColor(ContextCompat.getColor(context, R.color.colorPrimary));
+                holder.statusTvShow.setText(R.string.yet_to_start);
                 break;
-            case "ONGOING":
-                holder.statusTvShow.setTextColor(Color.parseColor("@color/colorRed"));
+            case ONGOING:
+                holder.statusTvShow.setTextColor(ContextCompat.getColor(context, R.color.colorRed));
+                holder.statusTvShow.setText(R.string.ongoing);
                 break;
-            case "COMPLETED UNGRADED":
-                holder.statusTvShow.setTextColor(Color.parseColor("@color/GreyDark"));
+            case COMPLETED_NOT_GRADED:
+                holder.statusTvShow.setTextColor(ContextCompat.getColor(context, R.color.GreyDark));
+                holder.statusTvShow.setText(R.string.completed_ungraded);
                 break;
-            case "GRADED":
+            case GRADED:
                 holder.statusTvShow.setTextColor(Color.parseColor("#007700"));
+                holder.statusTvShow.setText(R.string.graded);
                 holder.llGrades.setVisibility(View.VISIBLE);
-                holder.receivedMarksTvShow.setText(item.getMarksReceived());
-                holder.fullMarksTvShow.setText(item.getTotalMarks());
+                holder.receivedMarksTvShow.setText(String.valueOf(item.getMarksReceived()));
+                holder.fullMarksTvShow.setText(String.valueOf(item.getTotalMarks()));
                 break;
         }
 

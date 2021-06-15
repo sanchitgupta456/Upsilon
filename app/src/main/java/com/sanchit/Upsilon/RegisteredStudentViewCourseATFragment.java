@@ -3,13 +3,20 @@ package com.sanchit.Upsilon;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.sanchit.Upsilon.testData.TestListItem;
+import com.sanchit.Upsilon.testData.TestStatus;
 import com.sanchit.Upsilon.testData.TestsListAdapter;
+
+import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -17,10 +24,12 @@ import com.sanchit.Upsilon.testData.TestsListAdapter;
  * create an instance of this fragment.
  */
 public class RegisteredStudentViewCourseATFragment extends Fragment {
+    private static final String TAG = "StudentAssignmentTests";
 
     private RecyclerView rvTests;
     private TestsListAdapter adapterTests;
     private RecyclerView rvAssignments; // non existent at the moment
+    private ArrayList<TestListItem> testListItems;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -60,7 +69,7 @@ public class RegisteredStudentViewCourseATFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-
+        testListItems = new ArrayList<>();
     }
 
     @Override
@@ -69,7 +78,55 @@ public class RegisteredStudentViewCourseATFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.activity_active_course_assignments_tests, container, false);
         rvTests = view.findViewById(R.id.list_tests);
+        // get test list
+        getTestList();
+        Log.d(TAG, "onCreateView: list size:" + testListItems.size());
+        adapterTests = new TestsListAdapter(testListItems, getContext());
+        LinearLayoutManager manager = new LinearLayoutManager(getActivity().getApplicationContext(), RecyclerView.VERTICAL, false);
+        rvTests.setAdapter(adapterTests);
+        rvTests.setLayoutManager(manager);
+        rvTests.setItemAnimator(new DefaultItemAnimator());
+        Log.d(TAG, "onCreateView: recycler displayed: " + rvTests.getChildCount() + " items");
+//        adapterTests.notifyDataSetChanged();
+
 //        rvTests.setAdapter(adapterTests);
         return view;
+    }
+
+    public void getTestList() {
+        /* DEMO CODE START */
+        TestListItem item = new TestListItem();
+        item.setId("i");
+        item.setName("Test " + 0);
+        item.setTotalMarks(20);
+        item.setStatus(TestStatus.GRADED);
+        item.setMarksReceived(12);
+        testListItems.add(item);
+        item = new TestListItem();
+        item.setId("ii");
+        item.setName("Test " + 1);
+        item.setTotalMarks(20);
+        item.setStatus(TestStatus.GRADED);
+        item.setMarksReceived(1 + 12);
+        testListItems.add(item);
+        item = new TestListItem();
+        item.setId("iii");
+        item.setName("Test " + 2);
+        item.setTotalMarks(20);
+        item.setStatus(TestStatus.COMPLETED_NOT_GRADED);
+        testListItems.add(item);
+        item = new TestListItem();
+        item.setId("iv");
+        item.setName("Test " + 3);
+        item.setTotalMarks(20);
+        item.setStatus(TestStatus.ONGOING);
+        testListItems.add(item);
+        item = new TestListItem();
+        item.setId("v");
+        item.setName("Test " + 4);
+        item.setTotalMarks(20);
+        item.setStatus(TestStatus.YET_TO_START);
+        testListItems.add(item);
+        /* DEMO CODE ENDS */
     }
 }
