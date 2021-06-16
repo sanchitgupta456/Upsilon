@@ -847,21 +847,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             Intent intent = new Intent(MainActivity.this,UserDataSetupActivity.class);
             startActivity(intent);
         }
-        else if(id==R.id.homeDrawerMenuItem5)
-        {
-            Intent intent = new Intent(MainActivity.this, TestActivity.class);
-            startActivity(intent);
-        }
+//        else if(id==R.id.homeDrawerMenuItem5)
+//        {
+//            Intent intent = new Intent(MainActivity.this, MapsActivity.class);
+//            startActivity(intent);
+//        }
         else if(id==R.id.homeDrawerMenuItem6)
         {
             Intent intent = new Intent(MainActivity.this, WalletActivity.class);
             startActivity(intent);
         }
-        else if(id==R.id.homeDrawerMenuItem7)
-        {
-            Intent intent = new Intent(MainActivity.this, UserDataSetupActivity.class);
-            startActivity(intent);
-        }
+//        else if(id==R.id.homeDrawerMenuItem7)
+//        {
+//            Intent intent = new Intent(MainActivity.this, UserDataSetupActivity.class);
+//            startActivity(intent);
+//        }
         else if(id==R.id.homeDrawerMenuItem8)
         {
             Intent intent = new Intent(MainActivity.this, GetStartedAsTeacherActivity.class);
