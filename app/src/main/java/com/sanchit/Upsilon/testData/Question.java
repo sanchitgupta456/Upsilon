@@ -15,11 +15,24 @@ public class Question {
     private boolean isFileUploadEnabled;
     private boolean isTextEnabled;
 
+    private String correctAnswer;
+    private ArrayList<Integer> correctMCQOptions;
+    private ArrayList<Integer> markedMCQOptions;
+    private Mode mode;
+
     public Question() {
         isFileUploadEnabled = false;
         isTextEnabled = false;
         isMCQMultiple = false;
         isMCQSingle = true;
+    }
+
+    public Question(Mode _mode) {
+        isFileUploadEnabled = false;
+        isTextEnabled = false;
+        isMCQMultiple = false;
+        isMCQSingle = true;
+        mode = _mode;
     }
     //TODO: entry for file upload list
 
@@ -109,5 +122,37 @@ public class Question {
 
     public void setTextEnabled(boolean textEnabled) {
         isTextEnabled = textEnabled;
+    }
+
+    public String getCorrectAnswer() {
+        return correctAnswer;
+    }
+
+    public void setCorrectAnswer(String correctAnswer) {
+        this.correctAnswer = correctAnswer;
+    }
+
+    public ArrayList<Integer> getCorrectMCQOptions() {
+        return correctMCQOptions;
+    }
+
+    public void setCorrectMCQOptions(ArrayList<Integer> correctMCQOptions) {
+        this.correctMCQOptions = correctMCQOptions;
+    }
+
+    public ArrayList<Integer> getMarkedMCQOptions() {
+        return markedMCQOptions;
+    }
+
+    public void setMarkedMCQOptions(ArrayList<Integer> markedMCQOptions) {
+        this.markedMCQOptions = markedMCQOptions;
+    }
+
+    public Mode getMode() {
+        return mode;
+    }
+
+    public void setMode(Mode mode) {
+        this.mode = mode;
     }
 }

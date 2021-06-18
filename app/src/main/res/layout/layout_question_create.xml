@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="5dp"
+    android:background="@drawable/text_view_add_course">
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/cv_frame">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:id="@+id/ll"
+                android:padding="5dp">
+                <EditText
+                    android:id="@+id/question_number"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:hint="Q.No."
+                    android:layout_gravity="center"
+                    android:inputType="number"/>
+                <EditText
+                    android:id="@+id/optional_title"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="6"
+                    android:hint="Title (Optional)"
+                    android:layout_gravity="center"
+                    android:inputType="text" />
+                <EditText
+                    android:id="@+id/marks"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="6"
+                    android:hint="Marks"
+                    android:layout_gravity="center"
+                    android:inputType="text" />
+                <ImageButton
+                    android:layout_width="0dp"
+                    android:layout_height="42dp"
+                    android:layout_weight="2"
+                    android:layout_margin="0dp"
+                    android:src="@drawable/icon_down"
+                    android:id="@+id/drop_down"
+                    app:tint="@color/colorPrimary"
+                    android:layout_gravity="center"
+                    android:background="@drawable/btn_blue"
+                    android:backgroundTint="@color/colorLiteGrey"
+                    android:contentDescription="@string/more" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_below="@id/ll"
+                android:id="@+id/ll2">
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/GreyDark"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="Question type (required)"
+                        android:textColor="@color/GreyDark"
+                        android:textSize="14sp"
+                        android:padding="5dp"
+                        android:layout_weight="1"
+                        android:layout_gravity="center"/>
+                    <androidx.appcompat.widget.AppCompatSpinner
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_gravity="center"
+                        tools:listitem="@layout/simple_spinner_dark_text_color"
+                        android:backgroundTint="@color/colorPrimary"
+                        android:id="@+id/spinnerType"/>
+                </LinearLayout>
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textMultiLine"
+                    android:hint="Enter your question here (required)"
+                    android:id="@+id/question_text"
+                    android:padding="10dp"
+                    android:autofillHints="Question Text" />
+
+                <!-- MCQ SECTION -->
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/ll_mcq_frame">
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/GreyDark"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="MCQ Editing Section"
+                        android:textSize="16sp"
+                        android:textColor="@color/colorPrimary"
+                        android:textStyle="bold"
+                        android:padding="5dp"
+                        android:id="@+id/tvMCQEditSection"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="Enter the option in the text field provided and add it. Check the correct options before finalizing."
+                        android:textSize="12sp"
+                        android:textColor="@color/colorBlack"
+                        android:textStyle="italic"
+                        android:padding="5dp"/>
+                    <com.google.android.material.chip.ChipGroup
+                        android:id="@+id/mcq_options"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:chipSpacingHorizontal="36dp"
+                        app:chipSpacingVertical="10dp"
+                        android:padding="5dp"
+                        android:theme="@style/MaterialTheme"
+                        app:selectionRequired="true">
+                    </com.google.android.material.chip.ChipGroup>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp">
+                        <EditText
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:inputType="text"
+                            android:hint="Enter new MCQ option here"
+                            android:id="@+id/enter_option"
+                            android:padding="10dp"
+                            android:autofillHints="Question Text"
+                            android:layout_margin="10dp"
+                            android:layout_weight="5"
+                            android:layout_gravity="center"/>
+                        <Button
+                            android:id="@+id/btnAddOption"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/btn_blue"
+                            android:text="ADD"
+                            android:textColor="@color/colorWhite"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:layout_weight="1"
+                            android:layout_gravity="center"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <!-- DIRECT ANSWER SECTION -->
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/ll_direct_answer_frame">
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/GreyDark"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="Direct Answer Section"
+                        android:textSize="16sp"
+                        android:textColor="@color/colorPrimary"
+                        android:textStyle="bold"
+                        android:padding="5dp"/>
+                    <EditText
+                        android:id="@+id/et_correct_answer"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Enter the correct answer"
+                        android:textSize="16sp"
+                        android:textColor="@color/colorBlack"
+                        android:padding="10dp"
+                        android:checked="false"
+                        android:buttonTint="@color/colorPrimary"/>
+                </LinearLayout>
+
+                <!-- file upload section -->
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/ll_file_upload">
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/GreyDark"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="File Upload Section"
+                        android:textSize="16sp"
+                        android:textColor="@color/colorPrimary"
+                        android:textStyle="bold"
+                        android:padding="5dp"
+                        android:id="@+id/tvFileUpSection"/>
+                    <CheckBox
+                        android:id="@+id/checkFileUploading"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Enable File Uploading"
+                        android:textSize="14sp"
+                        android:textColor="@color/colorBlack"
+                        android:textStyle="bold"
+                        android:padding="5dp"
+                        android:checked="false"
+                        android:buttonTint="@color/colorPrimary"/>
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/GreyDark"/>
+            </LinearLayout>
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+</RelativeLayout>

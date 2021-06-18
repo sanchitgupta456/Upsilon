@@ -161,7 +161,8 @@ public class UserDataSetupActivity1 extends AppCompatActivity {
                         @Override
                         public void onClick(View view) {
                             group.removeView(view);
-                            interests.remove(chip.getText().toString());
+                            Chip chip1 = (Chip) view;
+                            interests.remove(chip1.getText().toString());
                         }
                     });
                 }

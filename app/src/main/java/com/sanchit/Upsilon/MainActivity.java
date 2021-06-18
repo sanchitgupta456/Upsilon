@@ -53,6 +53,7 @@ import com.sanchit.Upsilon.courseSearching.SearchQuery;
 import com.sanchit.Upsilon.courseSearching.rankBy;
 import com.sanchit.Upsilon.notifications.NotifService;
 import com.sanchit.Upsilon.notifications.UpsilonJobService;
+import com.sanchit.Upsilon.testData.TestStatus;
 import com.sanchit.Upsilon.ui.login.LoginActivity;
 import com.squareup.picasso.Picasso;
 
@@ -857,11 +858,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             Intent intent = new Intent(MainActivity.this, WalletActivity.class);
             startActivity(intent);
         }
-//        else if(id==R.id.homeDrawerMenuItem7)
-//        {
-//            Intent intent = new Intent(MainActivity.this, UserDataSetupActivity.class);
-//            startActivity(intent);
-//        }
+        else if(id==R.id.homeDrawerMenuItem7)
+        {
+            Intent intent = new Intent(MainActivity.this, TestCreateActivity.class);
+            startActivity(intent);
+        }
         else if(id==R.id.homeDrawerMenuItem8)
         {
             Intent intent = new Intent(MainActivity.this, GetStartedAsTeacherActivity.class);

@@ -261,4 +261,8 @@
     <string name="ongoing">ONGOING</string>
     <string name="completed_ungraded">COMPLETED UNGRADED</string>
     <string name="graded">GRADED</string>
+    <string name="your_answer_here">Your answer here</string>
+    <string name="title_activity_test_creation">TestCreationActivity</string>
+    <string name="tab_text_1">Tab 1</string>
+    <string name="tab_text_2">Tab 2</string>
 </resources>
