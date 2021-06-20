@@ -4,14 +4,21 @@
     <group
         android:checkableBehavior="none">
         <item
+            android:id="@+id/menuItemAssignmentsAndTests"
+            android:title="@string/assignments_and_tests"
+            android:icon="@drawable/icon_assignment"
+            app:showAsAction="never"
+            />
+        <item
             android:id="@+id/menuItemRefresh"
             android:title="@string/refresh"
             android:icon="@drawable/icon_refresh_24"
             app:showAsAction="never"
             />
+
         <item
             android:id="@+id/menuItemSettings"
-            android:title="Settings"
+            android:title="@string/settings"
             android:icon="@drawable/icon_settings_holo_dark"
             app:showAsAction="ifRoom"
             android:visible="false"
@@ -24,7 +31,7 @@
             />
         <item
             android:id="@+id/menuItemUnregister"
-            android:title="Drop the course"
+            android:title="@string/drop_the_course"
             android:icon="@drawable/icon_close"
             app:showAsAction="never"
             />

@@ -13,17 +13,20 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.google.android.exoplayer2.ExoPlayerFactory;
+//import com.google.android.exoplayer2.ExoPlayerFactory;
+import com.google.android.exoplayer2.ExoPlayer;
+import com.google.android.exoplayer2.MediaItem;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
 import com.google.android.exoplayer2.extractor.ExtractorsFactory;
-import com.google.android.exoplayer2.source.ExtractorMediaSource;
+//import com.google.android.exoplayer2.source.ExtractorMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelector;
-import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
+//import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
+import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.upstream.BandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
@@ -161,7 +164,7 @@ public class CourseResourcesAdapter extends RecyclerView.Adapter<CourseResources
     public class IntroductoryContentViewHolder extends RecyclerView.ViewHolder
     {
         ImageView IntroductoryContentImage;
-        SimpleExoPlayerView IntroductoryContentVideo;
+        PlayerView IntroductoryContentVideo;
         private long playbackPosition;
         private int currentWindow;
         private boolean playWhenReady;
@@ -178,15 +181,19 @@ public class CourseResourcesAdapter extends RecyclerView.Adapter<CourseResources
         }
         private void intiPlayer(String url) {
             try {
-                BandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
-                TrackSelector trackSelector = new DefaultTrackSelector(new AdaptiveTrackSelection.Factory(bandwidthMeter));
-                exoPlayer = ExoPlayerFactory.newSimpleInstance(context, trackSelector);
+//                BandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
+//                TrackSelector trackSelector = new DefaultTrackSelector(new AdaptiveTrackSelection.Factory(bandwidthMeter));
+//                exoPlayer = ExoPlayerFactory.newSimpleInstance(context, trackSelector);
+                exoPlayer = new SimpleExoPlayer.Builder(context).build();
                 Uri videoURI = Uri.parse(url);
-                DefaultHttpDataSourceFactory dataSourceFactory = new DefaultHttpDataSourceFactory("exoplayer_video");
-                ExtractorsFactory extractorsFactory = new DefaultExtractorsFactory();
-                MediaSource mediaSource = new ExtractorMediaSource(videoURI, dataSourceFactory, extractorsFactory, null, null);
+                MediaItem mediaItem = MediaItem.fromUri(videoURI);
+//                DefaultHttpDataSourceFactory dataSourceFactory = new DefaultHttpDataSourceFactory("exoplayer_video");
+//                ExtractorsFactory extractorsFactory = new DefaultExtractorsFactory();
+//                MediaSource mediaSource = new ExtractorMediaSource(videoURI, dataSourceFactory, extractorsFactory, null, null);
                 IntroductoryContentVideo.setPlayer(exoPlayer);
-                exoPlayer.prepare(mediaSource);
+                exoPlayer.setMediaItem(mediaItem);
+                exoPlayer.prepare();
+//                exoPlayer.prepare(mediaSource);
                 //exoPlayer.setPlayWhenReady(true);
             } catch (Exception e) {
                 Log.e("MainAcvtivity", " exoplayer error " + e.toString());

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.chip.Chip
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:text="This is a sample MCQ option"
+    android:textSize="@dimen/text_margin"
+    android:paddingBottom="5dp"
+    android:paddingHorizontal="5dp"
+    android:gravity="center_vertical|start"
+    android:padding="15dp"
+    android:buttonTint="@color/colorPrimary"
+    android:theme="@style/MaterialTheme"
+    style="@style/Widget.MaterialComponents.Chip.Entry"
+    android:checkable="true"
+    app:closeIconEnabled="true"
+    >
+
+</com.google.android.material.chip.Chip>
