@@ -1,4 +1,4 @@
-package com.sanchit.Upsilon.testData;
+package com.sanchit.Upsilon.advancedTestData;
 
 import android.content.Context;
 import android.text.Editable;
@@ -13,22 +13,16 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatSpinner;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
-import com.google.android.material.textfield.TextInputEditText;
-import com.google.android.material.textfield.TextInputLayout;
 import com.sanchit.Upsilon.R;
 
 import java.util.ArrayList;
-
-import static io.realm.Realm.getApplicationContext;
 
 public class QuestionCreateAdapter extends RecyclerView.Adapter<QuestionCreateAdapter.ViewHolder>{
 

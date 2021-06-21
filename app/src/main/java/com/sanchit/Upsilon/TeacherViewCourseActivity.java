@@ -129,7 +129,8 @@ public class TeacherViewCourseActivity extends AppCompatActivity implements Bott
                 fragment.setArguments(bundle);
                 break;
 
-            case R.id.bottomNavMenuNotificationsTeacher:
+            case R.id.bottomNavMenuMaterialsTeacher:
+                //TODO
                 fragment = new TeacherViewCourseActivityNotificationsFragment();
                 fragment.setArguments(bundle);
                 break;
@@ -196,6 +197,13 @@ public class TeacherViewCourseActivity extends AppCompatActivity implements Bott
             loadFragment(fragment);
             return true;
         } else if (itemId == R.id.course_review) {
+            return true;
+        } else if (itemId == R.id.notifications) {
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("Course",course);
+            Fragment fragment = new TeacherViewCourseActivityNotificationsFragment();
+            fragment.setArguments(bundle);
+            loadFragment(fragment);
             return true;
         }
         return super.onOptionsItemSelected(item);

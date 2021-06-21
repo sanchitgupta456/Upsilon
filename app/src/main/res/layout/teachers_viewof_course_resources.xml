@@ -52,8 +52,8 @@
         android:layout_marginEnd="@dimen/activity_horizontal_margin"
         android:textColor="@color/colorBlack"
         android:textStyle="bold"
-        android:textSize="24sp"
-        android:text="@string/course_resources"
+        android:textSize="18sp"
+        android:text="Course Media Resources"
         android:typeface="sans"
         android:gravity="center_vertical"/>
     <!-- This view should be vertical -->

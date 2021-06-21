@@ -10,11 +10,16 @@
         android:enabled="true"
         android:icon="@drawable/icon_home"
         android:title="@string/course_home"/>
+<!--    <item-->
+<!--        android:id="@+id/bottomNavMenuNotificationsTeacher"-->
+<!--        android:enabled="true"-->
+<!--        android:icon="@drawable/icon_notifications"-->
+<!--        android:title="@string/notifications"/>-->
     <item
-        android:id="@+id/bottomNavMenuNotificationsTeacher"
+        android:id="@+id/bottomNavMenuMaterialsTeacher"
         android:enabled="true"
-        android:icon="@drawable/icon_notifications"
-        android:title="@string/notifications"/>
+        android:icon="@drawable/icon_folder"
+        android:title="Course Material"/>
     <item
         android:id="@+id/bottomNavMenuForumTeacher"
         android:enabled="true"

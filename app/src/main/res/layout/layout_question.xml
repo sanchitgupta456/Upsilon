@@ -168,7 +168,8 @@
                 android:padding="10dp"
                 android:layout_below="@id/upload"
                 android:background="@drawable/text_view_add_course"
-                android:layout_margin="5dp"/>
+                android:layout_margin="5dp"
+                android:visibility="gone"/>
         </RelativeLayout>
 
     </com.google.android.material.card.MaterialCardView>

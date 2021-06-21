@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/parentRelative"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.testcreate.PlaceholderFragment"
+    android:background="@color/colorPrimary">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_below="@id/ll"
+            android:id="@+id/ll2"
+            android:padding="10dp">
+            <EditText
+                android:id="@+id/question_number"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:hint="Question Number"
+                android:layout_gravity="center"
+                android:inputType="number"
+                android:gravity="center_vertical"
+                android:background="@drawable/text_view_login"
+                android:padding="10dp"
+                android:backgroundTint="@color/GreyDark"
+                android:textColor="@color/colorWhite"
+                android:layout_marginVertical="5dp"
+                android:layout_marginHorizontal="10dp"/>
+            <EditText
+                android:id="@+id/optional_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="6"
+                android:hint="Title (Optional)"
+                android:layout_gravity="center"
+                android:inputType="text"
+                android:gravity="center_vertical"
+                android:background="@drawable/text_view_login"
+                android:padding="10dp"
+                android:backgroundTint="@color/GreyDark"
+                android:textColor="@color/colorWhite"
+                android:layout_marginVertical="5dp"
+                android:layout_marginHorizontal="10dp"/>
+            <EditText
+                android:id="@+id/marks"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="6"
+                android:hint="Full Marks"
+                android:layout_gravity="center"
+                android:inputType="numberDecimal"
+                android:gravity="center_vertical"
+                android:background="@drawable/text_view_login"
+                android:padding="10dp"
+                android:backgroundTint="@color/GreyDark"
+                android:textColor="@color/colorWhite"
+                android:layout_marginVertical="5dp"
+                android:layout_marginHorizontal="10dp"
+                android:autofillHints="Full Marks"/>
+<!--            <LinearLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginVertical="15dp"-->
+<!--                android:layout_marginHorizontal="10dp"-->
+<!--                android:visibility="gone">-->
+<!--                <TextView-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="Question type (required)"-->
+<!--                    android:textColor="@color/colorLiteGrey"-->
+<!--                    android:textSize="14sp"-->
+<!--                    android:padding="5dp"-->
+<!--                    android:layout_weight="1"-->
+<!--                    android:layout_gravity="center"/>-->
+<!--                <androidx.appcompat.widget.AppCompatSpinner-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_weight="1"-->
+<!--                    android:layout_gravity="center"-->
+<!--                    tools:listitem="@layout/simple_spinner_dark_text_color"-->
+<!--                    android:backgroundTint="@color/colorWhite"-->
+<!--                    android:id="@+id/spinnerType"/>-->
+<!--            </LinearLayout>-->
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textMultiLine"
+                android:hint="Enter your question here (required)"
+                android:id="@+id/question_text"
+                android:padding="10dp"
+                android:autofillHints="Question Text"
+                android:gravity="center_vertical"
+                android:background="@drawable/text_view_login"
+                android:backgroundTint="@color/GreyDark"
+                android:textColor="@color/colorWhite"
+                android:layout_marginVertical="5dp"
+                android:layout_marginHorizontal="10dp"/>
+
+            <!-- MCQ SECTION -->
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/ll_mcq_frame">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="MCQ Editing Section"
+                    android:textSize="16sp"
+                    android:textColor="@color/colorWhite"
+                    android:textStyle="bold"
+                    android:padding="5dp"
+                    android:id="@+id/tvMCQEditSection"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="Click to add an option, and then type the details in the dialog box provided"
+                    android:textSize="12sp"
+                    android:textColor="@color/colorAccent"
+                    android:textStyle="italic"
+                    android:padding="5dp" />
+                <RadioGroup
+                    android:id="@+id/mcq_options"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    app:selectionRequired="true"
+                    app:singleLine="false">
+                    <RadioButton
+                        android:id="@+id/option_1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:buttonTint="@color/colorWhite"
+                        android:textColor="@color/colorWhite"
+                        android:hint="Click to add Option 1"
+                        android:textColorHint="@color/colorLiteGrey"
+                        android:paddingHorizontal="10dp"
+                        android:layout_marginHorizontal="10dp"
+                        android:paddingVertical="10dp"
+                        android:clickable="false"/>
+                    <RadioButton
+                        android:id="@+id/option_2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:buttonTint="@color/colorWhite"
+                        android:textColor="@color/colorWhite"
+                        android:hint="Click to add Option 2"
+                        android:textColorHint="@color/colorLiteGrey"
+                        android:paddingHorizontal="10dp"
+                        android:layout_marginHorizontal="10dp"
+                        android:paddingVertical="10dp"
+                        android:clickable="false"/>
+                    <RadioButton
+                        android:id="@+id/option_3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:buttonTint="@color/colorWhite"
+                        android:textColor="@color/colorWhite"
+                        android:hint="Click to add Option 3"
+                        android:textColorHint="@color/colorLiteGrey"
+                        android:paddingHorizontal="10dp"
+                        android:layout_marginHorizontal="10dp"
+                        android:paddingVertical="10dp"
+                        android:clickable="false"/>
+                    <RadioButton
+                        android:id="@+id/option_4"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:buttonTint="@color/colorWhite"
+                        android:textColor="@color/colorWhite"
+                        android:hint="Click to add Option 4"
+                        android:textColorHint="@color/colorLiteGrey"
+                        android:paddingHorizontal="10dp"
+                        android:layout_marginHorizontal="10dp"
+                        android:paddingVertical="10dp"
+                        android:clickable="false"/>
+                </RadioGroup>
+<!--                <LinearLayout-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_margin="5dp"-->
+<!--                    android:visibility="gone">-->
+<!--                    <EditText-->
+<!--                        android:layout_width="0dp"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:inputType="text"-->
+<!--                        android:hint="Enter new MCQ option here"-->
+<!--                        android:id="@+id/enter_option"-->
+<!--                        android:padding="10dp"-->
+<!--                        android:autofillHints="Question Text"-->
+<!--                        android:layout_margin="10dp"-->
+<!--                        android:layout_weight="5"-->
+<!--                        android:layout_gravity="center"-->
+<!--                        android:gravity="center_vertical"-->
+<!--                        android:background="@drawable/text_view_login"-->
+<!--                        android:backgroundTint="@color/GreyDark"-->
+<!--                        android:textColor="@color/colorWhite"-->
+<!--                        android:layout_marginVertical="5dp"-->
+<!--                        android:layout_marginHorizontal="10dp"/>-->
+<!--                    <Button-->
+<!--                        android:id="@+id/btnAddOption"-->
+<!--                        android:layout_width="0dp"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:background="@drawable/btn_blue"-->
+<!--                        android:text="ADD"-->
+<!--                        android:textColor="@color/colorWhite"-->
+<!--                        android:clickable="true"-->
+<!--                        android:focusable="true"-->
+<!--                        android:layout_weight="1"-->
+<!--                        android:layout_gravity="center"/>-->
+<!--                </LinearLayout>-->
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+
+</RelativeLayout>

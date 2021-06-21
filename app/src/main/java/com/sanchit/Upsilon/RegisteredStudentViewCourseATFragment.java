@@ -12,9 +12,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.sanchit.Upsilon.testData.TestListItem;
-import com.sanchit.Upsilon.testData.TestStatus;
-import com.sanchit.Upsilon.testData.TestsListAdapter;
+import com.sanchit.Upsilon.advancedTestData.TestListItem;
+import com.sanchit.Upsilon.advancedTestData.TestStatus;
+import com.sanchit.Upsilon.advancedTestData.TestsListAdapter;
 
 import java.util.ArrayList;
 

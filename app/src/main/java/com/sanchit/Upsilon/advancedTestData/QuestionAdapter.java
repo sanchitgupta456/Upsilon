@@ -1,4 +1,4 @@
-package com.sanchit.Upsilon.testData;
+package com.sanchit.Upsilon.advancedTestData;
 
 import android.content.Context;
 import android.text.Editable;
@@ -8,13 +8,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CompoundButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.card.MaterialCardView;
@@ -22,12 +19,9 @@ import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
-import com.google.android.material.textview.MaterialTextView;
 import com.sanchit.Upsilon.R;
-import com.sanchit.Upsilon.courseData.CoursesAdapter;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.ViewHolder> {
     private static final String TAG = "QuestionAdapter";

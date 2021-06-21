@@ -1,4 +1,4 @@
-package com.sanchit.Upsilon.testData;
+package com.sanchit.Upsilon.advancedTestData;
 
 public class TestListItem {
     private String id; //some identification criterion

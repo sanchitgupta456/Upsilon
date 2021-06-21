@@ -1,28 +1,19 @@
-package com.sanchit.Upsilon.testData;
+package com.sanchit.Upsilon.advancedTestData;
 
 import android.content.Context;
-import android.content.res.ColorStateList;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.card.MaterialCardView;
-import com.google.android.material.chip.ChipGroup;
-import com.google.android.material.textfield.TextInputEditText;
-import com.google.android.material.textfield.TextInputLayout;
 import com.sanchit.Upsilon.R;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class TestsListAdapter extends RecyclerView.Adapter<TestsListAdapter.ViewHolder>{

@@ -48,12 +48,10 @@ import com.google.gson.JsonSyntaxException;
 import com.sanchit.Upsilon.courseData.Course;
 import com.sanchit.Upsilon.courseData.CoursesAdapter;
 import com.sanchit.Upsilon.courseData.CoursesAdapter1;
-import com.sanchit.Upsilon.courseLocationMap.MapsActivity;
 import com.sanchit.Upsilon.courseSearching.SearchQuery;
 import com.sanchit.Upsilon.courseSearching.rankBy;
 import com.sanchit.Upsilon.notifications.NotifService;
 import com.sanchit.Upsilon.notifications.UpsilonJobService;
-import com.sanchit.Upsilon.testData.TestStatus;
 import com.sanchit.Upsilon.ui.login.LoginActivity;
 import com.squareup.picasso.Picasso;
 
