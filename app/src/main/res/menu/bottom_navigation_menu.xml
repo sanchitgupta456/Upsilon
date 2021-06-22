@@ -11,18 +11,13 @@
         android:icon="@drawable/icon_home"
         android:title="@string/course_home"/>
     <item
-        android:id="@+id/bottomNavMenuNotifications"
-        android:enabled="true"
-        android:icon="@drawable/icon_notifications"
-        android:title="@string/notifications"/>
-    <item
         android:id="@+id/bottomNavMenuForum"
         android:enabled="true"
         android:icon="@drawable/icon_forum"
         android:title="@string/Forum"/>
     <item
-        android:id="@+id/bottomNavMenuReview"
+        android:id="@+id/bottomNavMenuTestsAssignments"
         android:enabled="true"
-        android:icon="@drawable/icon_review"
-        android:title="@string/write_a_review"/>
+        android:icon="@drawable/icon_assignment"
+        android:title="Tests and Assignments"/>
 </menu>

@@ -118,8 +118,8 @@ public class RegisteredStudentViewCourse extends AppCompatActivity implements Bo
                 fragment.setArguments(bundle);
                 break;
 
-            case R.id.bottomNavMenuNotifications:
-                fragment = new RegisteredStudentViewCourseNotificationFragment();
+            case R.id.bottomNavMenuTestsAssignments:
+                fragment = new RegisteredStudentViewCourseATFragment();
                 fragment.setArguments(bundle);
                 break;
 
@@ -127,11 +127,11 @@ public class RegisteredStudentViewCourse extends AppCompatActivity implements Bo
                 fragment = new RegisteredStudentViewCourseScheduleFragment();
                 fragment.setArguments(bundle);
                 break;
-
-            case R.id.bottomNavMenuReview:
-                fragment = new RegisteredStudentViewCourseReviewFragment();
-                fragment.setArguments(bundle);
-                break;
+//
+//            case R.id.bottomNavMenuReview:
+//                fragment = new RegisteredStudentViewCourseReviewFragment();
+//                fragment.setArguments(bundle);
+//                break;
             case R.id.bottomNavMenuForum:
                 fragment = new RegisteredStudentViewCourseForumFragment();
                 fragment.setArguments(bundle);
@@ -164,15 +164,20 @@ public class RegisteredStudentViewCourse extends AppCompatActivity implements Bo
             Log.v("RegisteredStudent","Review");
             loadFragment(new RegisteredStudentViewCourseReviewFragment());
         }
-        if(item.getItemId()==R.id.menuItemAssignmentsAndTests)
+        if(item.getItemId()==R.id.menuItemNotifications)
         {
-            Log.v("RegisteredStudent","Assignments and Tests list");
-            loadFragment(new RegisteredStudentViewCourseATFragment());
+            Log.v("RegisteredStudent","Notifications");
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("Course",course);
+
+            Fragment fragment = new RegisteredStudentViewCourseNotificationFragment();
+            fragment.setArguments(bundle);
+            loadFragment(fragment);
         }
-        else if(item.getItemId()==R.id.menuItemSettings)
-        {
-            //open settings page
-        }
+//        else if(item.getItemId()==R.id.menuItemSettings)
+//        {
+//            //open settings page
+//        }
         else if (item.getItemId()==R.id.menuItemUnregister)
         {
 

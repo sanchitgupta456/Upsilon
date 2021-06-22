@@ -4,11 +4,17 @@
     <group
         android:checkableBehavior="none">
         <item
-            android:id="@+id/menuItemAssignmentsAndTests"
-            android:title="@string/assignments_and_tests"
-            android:icon="@drawable/icon_assignment"
-            app:showAsAction="never"
-            />
+            android:id="@+id/menuItemNotifications"
+            android:enabled="true"
+            android:icon="@drawable/icon_notifications"
+            android:title="@string/notifications"
+            app:showAsAction="ifRoom"/>
+<!--        <item-->
+<!--            android:id="@+id/menuItemAssignmentsAndTests"-->
+<!--            android:title="@string/assignments_and_tests"-->
+<!--            android:icon="@drawable/icon_assignment"-->
+<!--            app:showAsAction="never"-->
+<!--            />-->
         <item
             android:id="@+id/menuItemRefresh"
             android:title="@string/refresh"

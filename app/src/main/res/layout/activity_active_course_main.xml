@@ -30,6 +30,6 @@
         android:background="@drawable/bottom_app_bar"
         app:elevation="20dp"
         app:itemIconTint="@color/colorWhite"
-        app:itemTextColor="@color/colorWhite"/>
+        app:itemTextColor="@color/colorWhite" />
 
 </RelativeLayout>
