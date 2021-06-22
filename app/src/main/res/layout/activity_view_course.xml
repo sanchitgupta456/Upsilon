@@ -162,11 +162,11 @@
                                 android:src="@drawable/info_icon_dark"
                                 android:layout_weight="85"
                                 android:backgroundTint="#00000000"
-                                android:tint="@color/colorPrimary"
                                 android:gravity="end"
                                 android:contentDescription="@string/info_about_course_instructor"
                                 android:clickable="true"
-                                android:focusable="true"/>
+                                android:focusable="true"
+                                app:tint="@color/colorPrimary" />
                         </LinearLayout>
 
                         <TextView
@@ -202,11 +202,11 @@
                                 android:id="@+id/location_view_course"
                                 android:layout_weight="85"
                                 android:backgroundTint="#00000000"
-                                android:tint="@color/colorPrimary"
                                 android:gravity="end"
                                 android:contentDescription="@string/see_location_of_offline_course"
                                 android:clickable="true"
-                                android:focusable="true"/>
+                                android:focusable="true"
+                                app:tint="@color/colorPrimary" />
                         </LinearLayout>
 
 

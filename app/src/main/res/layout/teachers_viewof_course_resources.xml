@@ -20,26 +20,29 @@
             android:elevation="30dp"
             android:layout_margin="@dimen/activity_horizontal_margin"
             android:src="@drawable/icon_doc"
-            android:tint="@color/colorBlack"
-            tools:ignore="ContentDescription" />
+            android:tint="@color/colorWhite"
+            tools:ignore="ContentDescription"
+            android:backgroundTint="@color/colorPrimary"/>
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/btnUploadImage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:elevation="30dp"
             android:layout_margin="@dimen/activity_horizontal_margin"
-            android:tint="@color/colorBlack"
+            android:tint="@color/colorWhite"
             android:src="@drawable/icon_image"
-            tools:ignore="ContentDescription" />
+            tools:ignore="ContentDescription"
+            android:backgroundTint="@color/colorPrimary"/>
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/btnUploadVideo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:elevation="20dp"
             android:layout_margin="@dimen/activity_horizontal_margin"
-            android:tint="@color/colorBlack"
+            android:tint="@color/colorWhite"
             android:src="@drawable/icon_video"
-            tools:ignore="ContentDescription" />
+            tools:ignore="ContentDescription"
+            android:backgroundTint="@color/colorPrimary"/>
     </LinearLayout>
     <TextView
         android:id="@+id/textCourseResources"
@@ -56,19 +59,44 @@
         android:text="Course Media Resources"
         android:typeface="sans"
         android:gravity="center_vertical"/>
-    <!-- This view should be vertical -->
+    <!-- This view should be horizontal -->
     <androidx.recyclerview.widget.RecyclerView
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/listResources"
-        android:orientation="vertical"
+        android:orientation="horizontal"
         android:layout_below="@id/textCourseResources"
-        android:layout_marginTop="24dp"
-        android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
         android:padding="10dp"
         android:gravity="center_horizontal"
         android:background="@drawable/text_view_login"/>
     <!-- End DisplayOnClickingResourcesButton -->
+
+    <TextView
+        android:id="@+id/textCourseResourcesPdf"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/listResources"
+        android:padding="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"
+        android:textColor="@color/colorBlack"
+        android:textStyle="bold"
+        android:textSize="18sp"
+        android:text="File resources"
+        android:typeface="sans"
+        android:gravity="center_vertical" />
+    <androidx.recyclerview.widget.RecyclerView
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/listResourcesPdf"
+        android:orientation="vertical"
+        android:layout_below="@id/textCourseResourcesPdf"
+        android:padding="10dp"
+        android:gravity="center_horizontal"
+        android:background="@drawable/text_view_login"
+        tools:listitem="@layout/layout_file_attachment"/>
 
 </RelativeLayout>

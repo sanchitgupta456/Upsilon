@@ -3,13 +3,104 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/info">
+        <TextView
+            android:id="@+id/textClassInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
+            android:layout_marginEnd="@dimen/activity_horizontal_margin"
+            android:textColor="@color/colorBlack"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:text="@string/class_information"
+            android:typeface="sans"
+            android:gravity="center_vertical" />
+        <LinearLayout
+            android:id="@+id/linearLayoutLecture"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/textClassInfo"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
+            android:layout_marginEnd="@dimen/activity_horizontal_margin"
+            android:orientation="horizontal"
+            android:weightSum="100">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:textColor="@color/colorBlack"
+                android:textStyle="italic"
+                android:textSize="@dimen/text_margin"
+                android:text="@string/next_lecture_on"
+                android:typeface="normal"
+                android:gravity="center_vertical"
+                android:layout_weight="60"/>
+            <TextView
+                android:id="@+id/textDateTimeNextLecture"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:textColor="@color/colorBlack"
+                android:textStyle="italic"
+                android:textSize="@dimen/text_margin"
+                android:typeface="normal"
+                android:gravity="center_vertical"
+                android:layout_weight="40"/>
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/linearLayoutMeetingLink"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/linearLayoutLecture"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
+            android:layout_marginEnd="@dimen/activity_horizontal_margin"
+            android:orientation="horizontal"
+            android:weightSum="100">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:textColor="@color/colorBlack"
+                android:textStyle="italic"
+                android:textSize="@dimen/text_margin"
+                android:text="@string/class_meeting_link"
+                android:typeface="normal"
+                android:gravity="center_vertical"
+                android:layout_weight="60"/>
+            <TextView
+                android:autoLink="web"
+                android:linksClickable="true"
+                android:id="@+id/meetingLink"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:textColor="@color/colorBlack"
+                android:textStyle="italic"
+                android:textSize="@dimen/text_margin"
+                android:typeface="normal"
+                android:gravity="center_vertical"
+                android:layout_gravity="center"
+                android:layout_weight="40"/>
+        </LinearLayout>
+
+        <!-- course information here. to be added later. -->
+    </RelativeLayout>
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/alter"
         android:layout_margin="10dp"
         app:cardBackgroundColor="@color/colorWhite"
-        app:cardElevation="4dp">
+        app:cardElevation="4dp"
+        android:layout_below="@id/info">
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -68,5 +159,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:visibility="gone"/>
+        android:visibility="gone"
+        android:layout_below="@id/info"/>
 </RelativeLayout>

@@ -11,91 +11,49 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-            <TextView
-                android:id="@+id/textClassInfo"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginStart="@dimen/activity_horizontal_margin"
-                android:layout_marginEnd="@dimen/activity_horizontal_margin"
-                android:textColor="@color/colorBlack"
-                android:textStyle="bold"
-                android:textSize="24sp"
-                android:text="@string/class_information"
-                android:typeface="sans"
-                android:gravity="center_vertical" />
-            <LinearLayout
-                android:id="@+id/linearLayoutLecture"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/textClassInfo"
-                android:layout_marginTop="@dimen/activity_vertical_margin"
-                android:layout_marginStart="@dimen/activity_horizontal_margin"
-                android:layout_marginEnd="@dimen/activity_horizontal_margin"
-                android:orientation="horizontal"
-                android:weightSum="100">
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="10dp"
-                    android:textColor="@color/colorBlack"
-                    android:textStyle="italic"
-                    android:textSize="@dimen/text_margin"
-                    android:text="@string/next_lecture_on"
-                    android:typeface="normal"
-                    android:gravity="center_vertical"
-                    android:layout_weight="60"/>
-                <TextView
-                    android:id="@+id/textDateTimeNextLecture"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="10dp"
-                    android:textColor="@color/colorBlack"
-                    android:textStyle="italic"
-                    android:textSize="@dimen/text_margin"
-                    android:typeface="normal"
-                    android:gravity="center_vertical"
-                    android:layout_weight="40"/>
-            </LinearLayout>
-            <LinearLayout
-                android:id="@+id/linearLayoutMeetingLink"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/linearLayoutLecture"
-                android:layout_marginTop="@dimen/activity_vertical_margin"
-                android:layout_marginStart="@dimen/activity_horizontal_margin"
-                android:layout_marginEnd="@dimen/activity_horizontal_margin"
-                android:orientation="horizontal"
-                android:weightSum="100">
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="10dp"
-                    android:textColor="@color/colorBlack"
-                    android:textStyle="italic"
-                    android:textSize="@dimen/text_margin"
-                    android:text="@string/class_meeting_link"
-                    android:typeface="normal"
-                    android:gravity="center_vertical"
-                    android:layout_weight="60"/>
-                <TextView
-                    android:autoLink="web"
-                    android:linksClickable="true"
-                    android:id="@+id/meetingLink"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="10dp"
-                    android:textColor="@color/colorBlack"
-                    android:textStyle="italic"
-                    android:textSize="@dimen/text_margin"
-                    android:typeface="normal"
-                    android:gravity="center_vertical"
-                    android:layout_gravity="center"
-                    android:layout_weight="40"/>
-            </LinearLayout>
-
             <!-- course information here. to be added later. -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorBlack"
+                android:textSize="@dimen/text_margin"
+                android:typeface="sans"
+                android:textStyle="bold"
+                android:layout_margin="@dimen/activity_horizontal_margin"
+                android:id="@+id/textCourseDescription"
+                android:text="This is course description. This is course description. This is course description. This is course description. This is course description. This is course description. This is course description."
+                android:padding="5dp"/>
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/listIntroductoryMaterial"
+                android:layout_below="@id/textCourseDescription"
+                android:orientation="horizontal"
+                android:layout_margin="@dimen/activity_vertical_margin"
+                tools:listitem="@layout/course_introductory_content_card"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorBlack"
+                android:textSize="18sp"
+                android:typeface="sans"
+                android:textStyle="bold"
+                android:layout_margin="@dimen/activity_horizontal_margin"
+                android:id="@+id/text"
+                android:text="@string/course_resources"
+                android:padding="5dp"
+                android:layout_below="@id/listIntroductoryMaterial"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/list_resource_files"
+                android:layout_below="@id/text"
+                android:orientation="vertical"
+                android:layout_margin="@dimen/activity_vertical_margin"
+                tools:listitem="@layout/layout_file_attachment"/>
         </RelativeLayout>
     </ScrollView>
 </RelativeLayout>

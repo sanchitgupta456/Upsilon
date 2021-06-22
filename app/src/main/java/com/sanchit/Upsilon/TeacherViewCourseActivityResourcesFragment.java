@@ -33,7 +33,7 @@ public class TeacherViewCourseActivityResourcesFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.teachers_viewof_course_resources,null);
         courseResources = view.findViewById(R.id.listResources);
-        courseResources.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false));
+        courseResources.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL,false));
         courseResources.setItemAnimator(new DefaultItemAnimator());
         //resourcesAdapter = new IntroductoryContentAdapter(introductoryImages,introductoryVideos);
         course = (Course) getArguments().get("Course");

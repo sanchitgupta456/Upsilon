@@ -1,12 +1,14 @@
 package com.sanchit.Upsilon;
 
 import android.os.Bundle;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -23,7 +25,9 @@ import com.sanchit.Upsilon.courseData.Course;
 import org.bson.types.BasicBSONList;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.LinkedHashMap;
+import java.util.Locale;
 import java.util.Objects;
 
 import static android.content.ContentValues.TAG;
@@ -43,6 +47,13 @@ public class RegisteredStudentViewCourseScheduleFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_active_course_schedule,null);
         course = (Course) getArguments().get("Course");
+        TextView nextLecture = view.findViewById(R.id.textDateTimeNextLecture);
+        TextView meetLink = view.findViewById(R.id.meetingLink);
+        Calendar cal = Calendar.getInstance(Locale.ENGLISH);
+        cal.setTimeInMillis(Long.parseLong(course.getNextLectureOn()));
+        String date = DateFormat.format("dd-MM-yyyy HH:mm:ss", cal).toString();
+        nextLecture.setText(date);
+        meetLink.setText(course.getMeetLink());
         recyclerView = (RecyclerView) view.findViewById(R.id.classSchedule);
         alter = (CardView) view.findViewById(R.id.alter);
         refresh = (Button) view.findViewById(R.id.btnRefresh);
@@ -51,7 +62,7 @@ public class RegisteredStudentViewCourseScheduleFragment extends Fragment {
         adapter = new ScheduleAdapter(getContext(), classes);
         LinearLayoutManager manager = new LinearLayoutManager(getContext());
         manager.setOrientation(LinearLayoutManager.VERTICAL);
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(Objects.requireNonNull(getContext()), manager.getOrientation());
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(requireContext(), manager.getOrientation());
         recyclerView.setLayoutManager(manager);
         recyclerView.setAdapter(adapter);
         recyclerView.addItemDecoration(dividerItemDecoration);

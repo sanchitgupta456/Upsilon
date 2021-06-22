@@ -10,16 +10,24 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.sanchit.Upsilon.courseData.Course;
+import com.sanchit.Upsilon.courseData.IntroductoryContentAdapter;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 
 public class RegisteredStudentViewCourseHomeFragment extends Fragment {
 
-    private TextView nextLecture,meetLink;
     private Course course;
+    private RecyclerView introductoryRecyclerView;
+    ArrayList<String> introductoryImages = new ArrayList<String>();
+    ArrayList<String> introductoryVideos = new ArrayList<String>();
+    IntroductoryContentAdapter courseIntroductoryMaterialAdapter;
 
     @Nullable
     @Override
@@ -27,13 +35,31 @@ public class RegisteredStudentViewCourseHomeFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.activity_active_course_home,null);
         course = (Course) getArguments().get("Course");
-        nextLecture = view.findViewById(R.id.textDateTimeNextLecture);
-        meetLink = view.findViewById(R.id.meetingLink);
-        Calendar cal = Calendar.getInstance(Locale.ENGLISH);
-        cal.setTimeInMillis(Long.parseLong(course.getNextLectureOn()));
-        String date = DateFormat.format("dd-MM-yyyy HH:mm:ss", cal).toString();
-        nextLecture.setText(date);
-        meetLink.setText(course.getMeetLink());
+        TextView courseDescription = (TextView) view.findViewById(R.id.textCourseDescription);
+        introductoryRecyclerView = (RecyclerView) view.findViewById(R.id.listIntroductoryMaterial);
+        courseDescription.setText(course.getCourseDescription());
+        getCourseIntroductoryContent();
         return view;
+    }
+
+    public void getCourseIntroductoryContent()
+    {
+
+        introductoryRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext(),LinearLayoutManager.HORIZONTAL,false));
+        introductoryRecyclerView.setItemAnimator(new DefaultItemAnimator());
+
+        introductoryImages = course.getIntroductoryContentImages();
+        introductoryVideos = course.getIntroductoryContentVideos();
+
+        courseIntroductoryMaterialAdapter = new IntroductoryContentAdapter(introductoryImages,introductoryVideos);
+        if(introductoryVideos == null || introductoryImages == null) {
+            introductoryRecyclerView.setVisibility(View.GONE);
+        } else if(introductoryImages.size()+introductoryVideos.size()==0) {
+            introductoryRecyclerView.setVisibility(View.GONE);
+        } else {
+            introductoryRecyclerView.setVisibility(View.VISIBLE);
+        }
+        introductoryRecyclerView.setAdapter(courseIntroductoryMaterialAdapter);
+        courseIntroductoryMaterialAdapter.notifyDataSetChanged();
     }
 }
