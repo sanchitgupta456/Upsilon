@@ -330,7 +330,6 @@
                     android:inputType="text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="12dp"
                     android:textSize="18sp"
                     android:textColor="@color/colorPrimary"/>
             </com.google.android.material.textfield.TextInputLayout>
@@ -345,7 +344,6 @@
                     android:inputType="textMultiLine"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="12dp"
                     android:textSize="18sp"
                     android:textColor="@color/colorPrimary"/>
             </com.google.android.material.textfield.TextInputLayout>
@@ -360,7 +358,6 @@
                     android:inputType="number"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="12dp"
                     android:textSize="18sp"
                     android:textColor="@color/colorPrimary"/>
             </com.google.android.material.textfield.TextInputLayout>
@@ -402,7 +399,6 @@
                     android:inputType="text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="12dp"
                     android:textSize="18sp"
                     android:textColor="@color/colorPrimary"/>
             </com.google.android.material.textfield.TextInputLayout>
