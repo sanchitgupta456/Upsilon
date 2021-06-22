@@ -1,14 +1,20 @@
 package com.sanchit.Upsilon.courseData;
 
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
@@ -87,6 +93,30 @@ public class IntroductoryContentAdapter extends RecyclerView.Adapter<Introductor
             Log.v("Images","Binded");
             //holder.imgTvShow.setImageResource(course.getCardImgID());
             Glide.with(context).load(imageUrl).into(holder.IntroductoryContentImage);
+            holder.IntroductoryContentVideo.setVisibility(View.GONE);
+            holder.IntroductoryContentImage.setVisibility(View.VISIBLE);
+            holder.IntroductoryContentImage.setClickable(true);
+            holder.IntroductoryContentImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Dialog builder = new Dialog(context);
+                    builder.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                    builder.getWindow().setBackgroundDrawable(
+                            new ColorDrawable(android.graphics.Color.TRANSPARENT));
+                    builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                        @Override
+                        public void onDismiss(DialogInterface dialogInterface) {
+                            //nothing;
+                        }
+                    });
+                    ImageView imageView = new ImageView(context);
+                    Glide.with(context).load(imageUrl).into(imageView);
+                    builder.addContentView(imageView, new RelativeLayout.LayoutParams(
+                            ViewGroup.LayoutParams.WRAP_CONTENT,
+                            ViewGroup.LayoutParams.WRAP_CONTENT));
+                    builder.show();
+                }
+            });
             holder.cv.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -133,7 +163,8 @@ public class IntroductoryContentAdapter extends RecyclerView.Adapter<Introductor
                 }
             });*/
 
-            holder.IntroductoryContentImage.setVisibility(View.INVISIBLE);
+            holder.IntroductoryContentImage.setVisibility(View.GONE);
+            holder.IntroductoryContentVideo.setVisibility(View.VISIBLE);
             holder.cv.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

@@ -50,7 +50,7 @@ public class TeacherViewCourseActivityResourcesFragment extends Fragment {
 
     private void initialise()
     {
-        courseResources.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false));
+        courseResources.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL,false));
         courseResources.setItemAnimator(new DefaultItemAnimator());
 
         introductoryImages = course.getIntroductoryContentImages();

@@ -68,8 +68,7 @@
         android:orientation="horizontal"
         android:layout_below="@id/textCourseResources"
         android:padding="10dp"
-        android:gravity="center_horizontal"
-        android:background="@drawable/text_view_login"/>
+        android:gravity="center_horizontal"/>
     <!-- End DisplayOnClickingResourcesButton -->
 
     <TextView
@@ -96,7 +95,6 @@
         android:layout_below="@id/textCourseResourcesPdf"
         android:padding="10dp"
         android:gravity="center_horizontal"
-        android:background="@drawable/text_view_login"
         tools:listitem="@layout/layout_file_attachment"/>
 
 </RelativeLayout>

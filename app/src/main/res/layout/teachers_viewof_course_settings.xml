@@ -380,11 +380,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="12dp"
-                    android:padding="5dp"
-                    android:textSize="18sp"
+                    android:padding="10dp"
+                    android:textSize="14sp"
                     android:background="@drawable/btn_blue"
                     android:textColor="@color/colorWhite"
-                    android:letterSpacing="0.1"
                     android:text="@string/view_course_location"
                     android:visibility="gone"/>
             </RelativeLayout>
