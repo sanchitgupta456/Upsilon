@@ -129,9 +129,9 @@ public class TeacherViewCourseActivity extends AppCompatActivity implements Bott
                 fragment.setArguments(bundle);
                 break;
 
-            case R.id.bottomNavMenuMaterialsTeacher:
+            case R.id.bottomNavMenuResourcesTeacher:
                 //TODO
-                fragment = new TeacherViewCourseActivityNotificationsFragment();
+                fragment = new TeacherViewCourseActivityResourcesFragment();
                 fragment.setArguments(bundle);
                 break;
             case R.id.bottomNavMenuForumTeacher:
@@ -202,6 +202,13 @@ public class TeacherViewCourseActivity extends AppCompatActivity implements Bott
             Bundle bundle = new Bundle();
             bundle.putSerializable("Course",course);
             Fragment fragment = new TeacherViewCourseActivityNotificationsFragment();
+            fragment.setArguments(bundle);
+            loadFragment(fragment);
+            return true;
+        } else if (itemId == R.id.assignments_tests) {
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("Course",course);
+            Fragment fragment = new TeacherViewCourseActivityTestsFragment();
             fragment.setArguments(bundle);
             loadFragment(fragment);
             return true;

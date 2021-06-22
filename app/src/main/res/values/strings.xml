@@ -265,4 +265,8 @@
     <string name="title_activity_test_creation">TestCreationActivity</string>
     <string name="tab_text_1">Tab 1</string>
     <string name="tab_text_2">Tab 2</string>
+    <string name="course_stats">Course Stats</string>
+    <string name="student_performance_stats">Student Performance Stats</string>
+    <string name="view_payments_history">View Payments History</string>
+    <string name="view_course_reviews">View Course Reviews</string>
 </resources>

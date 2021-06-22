@@ -16,10 +16,10 @@
 <!--        android:icon="@drawable/icon_notifications"-->
 <!--        android:title="@string/notifications"/>-->
     <item
-        android:id="@+id/bottomNavMenuMaterialsTeacher"
+        android:id="@+id/bottomNavMenuResourcesTeacher"
         android:enabled="true"
         android:icon="@drawable/icon_folder"
-        android:title="Course Material"/>
+        android:title="Resources"/>
     <item
         android:id="@+id/bottomNavMenuForumTeacher"
         android:enabled="true"

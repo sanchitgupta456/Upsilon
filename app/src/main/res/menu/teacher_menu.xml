@@ -4,27 +4,27 @@
     <item
         android:title="@string/notifications"
         android:id="@+id/notifications"
-        android:icon="@drawable/icon_notifications"
+        android:icon="@drawable/icon_notification_add"
         app:showAsAction="ifRoom"
         />
     <item
-        android:title="Tests"
-        android:id="@+id/tests"
+        android:title="@string/assignments_and_tests"
+        android:id="@+id/assignments_tests"
         />
     <item
-        android:title="Course Stats"
+        android:title="@string/course_stats"
         android:id="@+id/course_stats"
         />
     <item
-        android:title="Student Performance Stats"
+        android:title="@string/student_performance_stats"
         android:id="@+id/student_performance_stats"
         />
     <item
-        android:title="View Payemnts History"
+        android:title="@string/view_payments_history"
         android:id="@+id/payments_history"
         />
     <item
-        android:title="View Course Reviews"
+        android:title="@string/view_course_reviews"
         android:id="@+id/course_review"
         />
 
