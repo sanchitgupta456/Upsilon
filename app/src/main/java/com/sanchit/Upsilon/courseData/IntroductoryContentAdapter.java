@@ -25,6 +25,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 //import com.google.android.exoplayer2.ExoPlayerFactory;
+import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.MediaItem;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
@@ -46,7 +47,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class IntroductoryContentAdapter extends RecyclerView.Adapter<IntroductoryContentAdapter.IntroductoryContentViewHolder> {
-
+    private static final String TAG = "ContentAdapter";
+    
     final int VIEW_TYPE_VIDEO = 1;
     final int VIEW_TYPE_IMAGE = 0;
 
@@ -168,12 +170,57 @@ public class IntroductoryContentAdapter extends RecyclerView.Adapter<Introductor
             holder.cv.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    Log.d(TAG, "onClick: working");
 
                     //holder.IntroductoryContentVideo.start();
                     //Toast.makeText(context,"The position is:"+position,Toast.LENGTH_SHORT).show();
+                    Dialog builder = new Dialog(context);
+                    builder.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                    builder.getWindow().setBackgroundDrawable(
+                            new ColorDrawable(android.graphics.Color.TRANSPARENT));
+                    builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                        @Override
+                        public void onDismiss(DialogInterface dialogInterface) {
+                            //nothing;
+                        }
+                    });
+                    PlayerView playerView = new PlayerView(context);
+                    ExoPlayer player = new SimpleExoPlayer.Builder(context).build();
+                    player.setMediaItem(MediaItem.fromUri(Uri.parse(videoUrl)));
+                    player.prepare();
+                    playerView.setPlayer(player);
+                    builder.addContentView(playerView, new RelativeLayout.LayoutParams(
+                            ViewGroup.LayoutParams.MATCH_PARENT,
+                            ViewGroup.LayoutParams.MATCH_PARENT));
+                    builder.show();
                 }
             });
-
+            holder.IntroductoryContentVideo.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    Dialog builder = new Dialog(context);
+                    builder.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                    builder.getWindow().setBackgroundDrawable(
+                            new ColorDrawable(android.graphics.Color.TRANSPARENT));
+                    builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                        @Override
+                        public void onDismiss(DialogInterface dialogInterface) {
+                            //nothing;
+                        }
+                    });
+                    PlayerView playerView = new PlayerView(context);
+//                ExoPlayer player = new SimpleExoPlayer.Builder(context).build();
+//                player.setMediaItem(mediaItem);
+//                player.prepare();
+//                playerView.setPlayer(player);
+                    PlayerView.switchTargetView(exoPlayer, (PlayerView) v, playerView);
+                    builder.addContentView(playerView, new RelativeLayout.LayoutParams(
+                            ViewGroup.LayoutParams.MATCH_PARENT,
+                            ViewGroup.LayoutParams.MATCH_PARENT));
+                    builder.show();
+                    return false;
+                }
+            });
         }
     }
 
@@ -225,11 +272,33 @@ public class IntroductoryContentAdapter extends RecyclerView.Adapter<Introductor
 //                DefaultHttpDataSourceFactory dataSourceFactory = new DefaultHttpDataSourceFactory("exoplayer_video");
 //                ExtractorsFactory extractorsFactory = new DefaultExtractorsFactory();
 //                MediaSource mediaSource = new ExtractorMediaSource(videoURI, dataSourceFactory, extractorsFactory, null, null);
+
                 IntroductoryContentVideo.setPlayer(exoPlayer);
                 exoPlayer.setMediaItem(mediaItem);
                 exoPlayer.prepare();                //exoPlayer.setPlayWhenReady(true);
+//                Dialog builder = new Dialog(context);
+//                builder.requestWindowFeature(Window.FEATURE_NO_TITLE);
+//                builder.getWindow().setBackgroundDrawable(
+//                        new ColorDrawable(android.graphics.Color.TRANSPARENT));
+//                builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
+//                    @Override
+//                    public void onDismiss(DialogInterface dialogInterface) {
+//                        //nothing;
+//                    }
+//                });
+//                PlayerView playerView = new PlayerView(context);
+////                ExoPlayer player = new SimpleExoPlayer.Builder(context).build();
+////                player.setMediaItem(mediaItem);
+////                player.prepare();
+////                playerView.setPlayer(player);
+//                PlayerView.switchTargetView(exoPlayer, IntroductoryContentVideo, playerView);
+//                builder.addContentView(playerView, new RelativeLayout.LayoutParams(
+//                        ViewGroup.LayoutParams.MATCH_PARENT,
+//                        ViewGroup.LayoutParams.MATCH_PARENT));
+//                builder.show();
+
             } catch (Exception e) {
-                Log.e("MainAcvtivity", " exoplayer error " + e.toString());
+                Log.e("MainActivity", " exoplayer error " + e.toString());
             }
         }
 
@@ -249,5 +318,7 @@ public class IntroductoryContentAdapter extends RecyclerView.Adapter<Introductor
                 exoPlayer = null;
             }
         }
+
+
     }
 }
