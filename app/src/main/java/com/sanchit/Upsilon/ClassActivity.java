@@ -42,7 +42,6 @@ public class ClassActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_class);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("Class #");
 
         Intent intent = getIntent();
 
@@ -62,7 +61,8 @@ public class ClassActivity extends AppCompatActivity {
             Log.d(TAG, "onCreate: scheduled class is null");
             return;
         }
-        date.setText(new StringBuilder().append(scheduledClass.getMonth()).append(" ").append(scheduledClass.getDay()).toString());
+        getSupportActionBar().setTitle(scheduledClass.getClassName());
+        date.setText(scheduledClass.getMonth() + " " + scheduledClass.getDay());
         start_time.setText(scheduledClass.getTime());
         end_time.setText(scheduledClass.getEndTime());
 
