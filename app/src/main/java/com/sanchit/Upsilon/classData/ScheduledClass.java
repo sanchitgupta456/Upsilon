@@ -1,10 +1,24 @@
 package com.sanchit.Upsilon.classData;
 
-public class ScheduledClass {
+import java.io.Serializable;
+
+public class ScheduledClass implements Serializable {
     String className;
     String day;
     String month;
     String time;
+    String endTime;
+
+    public ScheduledClass() {
+    }
+
+    public String getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(String endTime) {
+        this.endTime = endTime;
+    }
 
     public ScheduledClass(String className, String day, String month, String time) {
         this.className = className;

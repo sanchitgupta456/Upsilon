@@ -1,16 +1,21 @@
 package com.sanchit.Upsilon.classData;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.card.MaterialCardView;
+import com.sanchit.Upsilon.ClassActivity;
 import com.sanchit.Upsilon.R;
 
 import java.util.ArrayList;
@@ -61,7 +66,7 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
         TextView day;
         TextView className;
         TextView time;
-        CardView cv;
+        LinearLayout cv;
 
         public ViewHolder(View itemView)
         {
@@ -70,7 +75,7 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
             day = (TextView) itemView.findViewById(R.id.date);
             className = (TextView) itemView.findViewById(R.id.classTitle);
             time = (TextView) itemView.findViewById(R.id.time);
-            cv = (CardView) itemView.findViewById(R.id.card);
+            cv = (LinearLayout) itemView.findViewById(R.id.card);
         }
 
         @Override
@@ -78,6 +83,7 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
             if (mClickListener != null) {
                 Log.d(TAG, "onClick: inside view holder method: here");
                 mClickListener.onItemClick(v, getAdapterPosition());
+
             }
         }
     }

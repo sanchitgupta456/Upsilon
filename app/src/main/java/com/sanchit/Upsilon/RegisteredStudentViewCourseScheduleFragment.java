@@ -1,5 +1,6 @@
 package com.sanchit.Upsilon;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.util.Log;
@@ -32,7 +33,7 @@ import java.util.Objects;
 
 import static android.content.ContentValues.TAG;
 
-public class RegisteredStudentViewCourseScheduleFragment extends Fragment {
+public class RegisteredStudentViewCourseScheduleFragment extends Fragment implements ScheduleAdapter.ItemClickListener {
 
     ArrayList<ScheduledClass> classes = new ArrayList<>();
     private Course course;
@@ -60,6 +61,7 @@ public class RegisteredStudentViewCourseScheduleFragment extends Fragment {
         loading = (LinearLayout) view.findViewById(R.id.llProgress);
         getClasses();
         adapter = new ScheduleAdapter(getContext(), classes);
+        adapter.setClickListener(this);
         LinearLayoutManager manager = new LinearLayoutManager(getContext());
         manager.setOrientation(LinearLayoutManager.VERTICAL);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(requireContext(), manager.getOrientation());
@@ -113,5 +115,18 @@ public class RegisteredStudentViewCourseScheduleFragment extends Fragment {
             alter.setVisibility(View.GONE);
             recyclerView.setVisibility(View.VISIBLE);
         }
+    }
+
+    @Override
+    public void onItemClick(View view, int position) {
+        try {
+            Intent intent = new Intent(getContext(), ClassActivity.class);
+            intent.putExtra("ScheduledClass", classes.get(position));
+            requireContext().startActivity(intent);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.d(TAG, "onItemClick: Didn't work");
+        }
+        
     }
 }

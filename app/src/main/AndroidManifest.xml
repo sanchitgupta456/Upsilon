@@ -23,12 +23,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".pdfUpload.pdfPlayground">
-
-        </activity>
-        <activity android:name=".TestActivity"></activity>
-        <activity android:name=".TestCreationActivity"></activity>
-        <activity android:name=".TestCreateActivity"></activity>
+        <activity android:name=".ClassActivity"></activity>
+        <activity android:name=".pdfUpload.pdfPlayground"></activity>
+        <activity android:name=".TestActivity" />
+        <activity android:name=".TestCreationActivity" />
+        <activity android:name=".TestCreateActivity" />
         <activity
             android:name=".AssignmentActivity"
             android:label="@string/title_activity_assignment"
