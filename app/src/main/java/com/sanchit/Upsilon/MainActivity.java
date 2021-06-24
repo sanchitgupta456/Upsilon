@@ -304,11 +304,29 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         }*/
                         userLoc = (Document) currentDoc.get("userLocation");
                         Log.v("User",currentDoc.getString("userid"));
-                        Picasso.with(getApplicationContext()).load(currentDoc.getString("profilePicUrl")).error(R.drawable.default_person_image).into(imageView);
-                        tvEmail.setText(user.getProfile().getEmail());
-                        tvName.setText(currentDoc.getString("name"));
-                        if(!currentDoc.getString("phonenumber").equals("0"))
-                        tvPhone.setText(currentDoc.getString("phonenumber"));
+                        try {
+                            Picasso.with(getApplicationContext()).load(currentDoc.getString("profilePicUrl")).error(R.drawable.default_person_image).into(imageView);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        try {
+                            tvEmail.setText(user.getProfile().getEmail());
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        try {
+                            tvName.setText(currentDoc.getString("name"));
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        try {
+                            if(!currentDoc.getString("phonenumber").equals("0"))
+                            {
+                                tvPhone.setText(currentDoc.getString("phonenumber"));
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                         //Log.v("ProfilePic",currentDoc.getString("profilePicUrl"));
                     }
                 } else {

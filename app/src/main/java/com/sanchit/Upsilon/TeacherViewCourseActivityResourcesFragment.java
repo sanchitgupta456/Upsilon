@@ -37,7 +37,11 @@ public class TeacherViewCourseActivityResourcesFragment extends Fragment {
         courseResources.setItemAnimator(new DefaultItemAnimator());
         //resourcesAdapter = new IntroductoryContentAdapter(introductoryImages,introductoryVideos);
         course = (Course) getArguments().get("Course");
-        Log.v("CourseResources",course.getCourseId());
+        try {
+            Log.v("CourseResources",course.getCourseId());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         introductoryImages = course.getIntroductoryContentImages();
         introductoryVideos = course.getIntroductoryContentVideos();
         //resourcesAdapter.notifyDataSetChanged();

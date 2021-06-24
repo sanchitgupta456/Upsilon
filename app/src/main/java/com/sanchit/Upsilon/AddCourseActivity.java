@@ -331,62 +331,66 @@ public class AddCourseActivity extends AppCompatActivity implements AdapterView.
                         if (result.isSuccess()) {
                             String id = String.valueOf(result.get().getInsertedId().asObjectId().getValue());
                             Log.v("Added Course", id);
-                            String requestId = MediaManager.get().upload(CourseImageUrl)
-                                    .unsigned("preset1")
-                                    .option("resource_type", "image")
-                                    .option("folder", "Upsilon/Courses/".concat(id))
-                                    .option("public_id", "CourseImage " + 0)
-                                    .callback(new UploadCallback() {
-                                        @Override
-                                        public void onStart(String requestId) {
-                                        }
+                            try {
+                                String requestId = MediaManager.get().upload(CourseImageUrl)
+                                        .unsigned("preset1")
+                                        .option("resource_type", "image")
+                                        .option("folder", "Upsilon/Courses/".concat(id))
+                                        .option("public_id", "CourseImage " + 0)
+                                        .callback(new UploadCallback() {
+                                            @Override
+                                            public void onStart(String requestId) {
+                                            }
 
-                                        @RequiresApi(api = Build.VERSION_CODES.N)
-                                        @Override
-                                        public void onProgress(String requestId, long bytes, long totalBytes) {
-                                            progressBar.setProgress(Math.toIntExact((bytes / totalBytes) * 100));
-                                        }
+                                            @RequiresApi(api = Build.VERSION_CODES.N)
+                                            @Override
+                                            public void onProgress(String requestId, long bytes, long totalBytes) {
+                                                progressBar.setProgress(Math.toIntExact((bytes / totalBytes) * 100));
+                                            }
 
-                                        @Override
-                                        public void onSuccess(String requestId, Map resultData) {
+                                            @Override
+                                            public void onSuccess(String requestId, Map resultData) {
 
-                                            mongoCollection1.insertOne(new Document("courseId", result.get().getInsertedId())).getAsync(result2 -> {
-                                                if (result2.isSuccess()) {
-                                                    Log.v("Course", "Successfully Created Forum");
-                                                } else {
-                                                    Log.v("Course", result2.getError().toString());
-                                                }
-                                            });
+                                                mongoCollection1.insertOne(new Document("courseId", result.get().getInsertedId())).getAsync(result2 -> {
+                                                    if (result2.isSuccess()) {
+                                                        Log.v("Course", "Successfully Created Forum");
+                                                    } else {
+                                                        Log.v("Course", result2.getError().toString());
+                                                    }
+                                                });
 
-                                            courseDetails.append("courseImage", resultData.get("url").toString());
-                                            mongoCollection.updateOne(new Document("_id", result.get().getInsertedId()), courseDetails).getAsync(result1 -> {
-                                                if (result1.isSuccess()) {
-                                                    progressBar.setProgress(100);
-                                                    progressBar.setVisibility(View.INVISIBLE);
-                                                    Log.v("EXAMPLE", "Inserted custom user data document. _id of inserted document: "
-                                                            + result1.get().getModifiedCount());
-                                                    Log.v("AddCourse", "Updated Image Successfully");
-                                                    Intent intent = new Intent(AddCourseActivity.this, AddCourseActivityContinued.class);
-                                                    intent.putExtra("InsertedDocument", result.get().getInsertedId().asObjectId().getValue().toString());
-                                                    intent.putExtra("fees", fees);
-                                                    startActivity(intent);
-                                                } else {
-                                                    Log.v("AddCourse", result1.getError().toString());
-                                                }
-                                            });
-                                        }
+                                                courseDetails.append("courseImage", resultData.get("url").toString());
+                                                mongoCollection.updateOne(new Document("_id", result.get().getInsertedId()), courseDetails).getAsync(result1 -> {
+                                                    if (result1.isSuccess()) {
+                                                        progressBar.setProgress(100);
+                                                        progressBar.setVisibility(View.INVISIBLE);
+                                                        Log.v("EXAMPLE", "Inserted custom user data document. _id of inserted document: "
+                                                                + result1.get().getModifiedCount());
+                                                        Log.v("AddCourse", "Updated Image Successfully");
+                                                        Intent intent = new Intent(AddCourseActivity.this, AddCourseActivityContinued.class);
+                                                        intent.putExtra("InsertedDocument", result.get().getInsertedId().asObjectId().getValue().toString());
+                                                        intent.putExtra("fees", fees);
+                                                        startActivity(intent);
+                                                    } else {
+                                                        Log.v("AddCourse", result1.getError().toString());
+                                                    }
+                                                });
+                                            }
 
-                                        @Override
-                                        public void onError(String requestId, ErrorInfo error) {
+                                            @Override
+                                            public void onError(String requestId, ErrorInfo error) {
 
-                                        }
+                                            }
 
-                                        @Override
-                                        public void onReschedule(String requestId, ErrorInfo error) {
+                                            @Override
+                                            public void onReschedule(String requestId, ErrorInfo error) {
 
-                                        }
-                                    })
-                                    .dispatch();
+                                            }
+                                        })
+                                        .dispatch();
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
                             //Toast.makeText(getApplicationContext(),"Successfully Added The Course",Toast.LENGTH_LONG).show();
                         } else {
                             Log.v("User", result.getError().toString());
