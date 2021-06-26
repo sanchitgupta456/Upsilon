@@ -28,8 +28,6 @@
         android:orientation="vertical"
         android:layout_below="@id/textNotifications"
         android:layout_marginTop="24dp"
-        android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
-        android:padding="10dp"
-        android:background="@drawable/text_view_login"/>
+        android:layout_marginHorizontal="@dimen/activity_horizontal_margin"/>
     <!-- End DisplayOnClickingResourcesButton -->
 </RelativeLayout>

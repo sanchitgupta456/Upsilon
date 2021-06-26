@@ -33,6 +33,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -105,7 +106,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     MongoClient mongoClient;
     MongoDatabase mongoDatabase;
     CircleImageView imageView;
-    TextView tvEmail, tvName, tvPhone, tvEditProfile;
+    TextView tvEmail, tvName, tvPhone;
+    Button btnEditProfile;
     ImageButton profileMoreToggle;
     LinearLayout profileMore;
     ActionBarDrawerToggle toggle;
@@ -217,8 +219,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         tvEmail = (TextView) hView.findViewById(R.id.email);
         tvName = (TextView) hView.findViewById(R.id.name);
         tvPhone = (TextView) hView.findViewById(R.id.phone);
-        tvEditProfile = (TextView) hView.findViewById(R.id.btn_edit_profile);
+        btnEditProfile = (Button) hView.findViewById(R.id.btn_edit_profile);
         profileMore = (LinearLayout) hView.findViewById(R.id.more);
+        btnEditProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, ProfileViewActivity.class);
+                startActivity(intent);
+            }
+        });
         profileMoreToggle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -829,11 +838,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             Intent intent = new Intent(MainActivity.this,CoursesTaughtActivity.class);
             startActivity(intent);
         }
-        else if(id==R.id.btn_edit_profile)
-        {
-            Intent intent = new Intent(MainActivity.this,ProfileViewActivity.class);
-            startActivity(intent);
-        }
+//        else if(id==R.id.btn_edit_profile)
+//        {
+//            Intent intent = new Intent(MainActivity.this,ProfileViewActivity.class);
+//            startActivity(intent);
+//        }
         else if(id==R.id.homeDrawerMenuItem3)
         {
             Intent intent = new Intent(MainActivity.this,ProfileViewActivity.class);
