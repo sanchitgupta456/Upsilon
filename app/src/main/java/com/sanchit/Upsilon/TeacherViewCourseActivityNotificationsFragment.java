@@ -1,10 +1,15 @@
 package com.sanchit.Upsilon;
 
+import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -42,7 +47,7 @@ import io.realm.mongodb.mongo.options.UpdateOptions;
 
 import static io.realm.Realm.getApplicationContext;
 
-public class TeacherViewCourseActivityNotificationsFragment extends Fragment {
+public class TeacherViewCourseActivityNotificationsFragment extends Fragment implements NotificationAdapter.ItemClickListener {
     RecyclerView recyclerView;
     ArrayList<Notification> notifications = new ArrayList<>();
     NotificationAdapter adapter;
@@ -134,5 +139,11 @@ public class TeacherViewCourseActivityNotificationsFragment extends Fragment {
                 "\tIdent your message to improve its look" +
                 "\n\nBest,\nUpsilon"));
         /* test code ends */
+    }
+
+    @Override
+    public boolean onItemLongClick(View view, int position) {
+        //TODO: to be completed
+        return false;
     }
 }
