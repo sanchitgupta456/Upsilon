@@ -66,7 +66,7 @@ public class TeacherViewCourseActivityNotificationsFragment extends Fragment imp
 
         adapter = new NotificationAdapter(notifications);
         recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(), RecyclerView.VERTICAL, false));
+        recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(), RecyclerView.VERTICAL, true));
         adapter.notifyDataSetChanged();
         dialogView = View.inflate(getActivity(), R.layout.layout_add_notification, null);
         EditText et = dialogView.findViewById(R.id.note_text);

@@ -34,7 +34,7 @@ public class RegisteredStudentViewCourseNotificationFragment extends Fragment {
 
         adapter = new NotificationAdapter(notifications);
         recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(), RecyclerView.VERTICAL, false));
+        recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(), RecyclerView.VERTICAL, true));
         adapter.notifyDataSetChanged();
 
         return view;
