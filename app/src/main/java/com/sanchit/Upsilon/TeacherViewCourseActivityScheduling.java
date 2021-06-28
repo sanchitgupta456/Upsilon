@@ -2,6 +2,7 @@
 package com.sanchit.Upsilon;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.format.DateFormat;
@@ -53,7 +54,7 @@ import io.realm.mongodb.mongo.options.UpdateOptions;
 import static android.content.ContentValues.TAG;
 import static io.realm.Realm.getApplicationContext;
 
-public class TeacherViewCourseActivityScheduling extends Fragment {
+public class TeacherViewCourseActivityScheduling extends Fragment implements ScheduleAdapter.ItemClickListener {
     String appID = "upsilon-ityvn";
     int year,month,day;
     private RecyclerView recyclerView;
@@ -235,5 +236,17 @@ public class TeacherViewCourseActivityScheduling extends Fragment {
             }};
         DatePickerDialog dpDialog=new DatePickerDialog(getApplicationContext(), listener, year, month, day);
         dpDialog.show();
+    }
+
+    @Override
+    public void onItemClick(View view, int position) {
+        try {
+            Intent intent = new Intent(getContext(), ClassActivityTeacher.class);
+            intent.putExtra("ScheduledClass", classes.get(position));
+            requireContext().startActivity(intent);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.d(TAG, "onItemClick: Didn't work");
+        }
     }
 }
