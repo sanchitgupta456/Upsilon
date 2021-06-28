@@ -23,8 +23,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ClassActivity"></activity>
-        <activity android:name=".pdfUpload.pdfPlayground"></activity>
+        <activity android:name=".ClassActivityTeacher"></activity>
+        <activity android:name=".ClassActivity" />
+        <activity android:name=".pdfUpload.pdfPlayground" />
         <activity android:name=".TestActivity" />
         <activity android:name=".TestCreationActivity" />
         <activity android:name=".TestCreateActivity" />

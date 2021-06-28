@@ -13,9 +13,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.google.android.material.textfield.TextInputEditText;
 import com.sanchit.Upsilon.classData.ScheduledClass;
 import com.sanchit.Upsilon.courseData.Course;
 import com.sanchit.Upsilon.courseData.IntroductoryContentAdapter;
@@ -24,36 +24,36 @@ import com.sanchit.Upsilon.courseData.VideoResourceAdapter;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class ClassActivity extends AppCompatActivity {
-    private static final String TAG = "ClassActivity";
+public class ClassActivityTeacher extends AppCompatActivity {
+
+    private static final String TAG = "ClassActivityTeacher";
     private Course course;
     private ScheduledClass scheduledClass;
-    private TextView date;
-    private TextView start_time;
-    private TextView end_time;
-    private CardView alter, alter2;
-    private LinearLayout progressBarAlter;
-    private Button mark, markTrue;
+    private TextInputEditText date;
+    private TextInputEditText start_time;
+    private TextInputEditText end_time;
+//    private CardView alter, alter2;
+//    private LinearLayout progressBarAlter;
+//    private Button mark, markTrue;
     private RecyclerView recyclerView;
 
-//    private ArrayList<String> images;
+    private Button addVideo;
+    private Button updateChange;
+
     private ArrayList<String> videos = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_class);
+        setContentView(R.layout.activity_class_teacher);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
         Intent intent = getIntent();
 
-        date = (TextView) findViewById(R.id.date);
-        start_time = (TextView) findViewById(R.id.start_time);
-        end_time = (TextView) findViewById(R.id.end_time);
-        alter = (CardView) findViewById(R.id.alter);
-        alter2 = (CardView) findViewById(R.id.alter2);
-        progressBarAlter = (LinearLayout) findViewById(R.id.llProgress);
-        mark = (Button) findViewById(R.id.btnMark);
-        markTrue = (Button) findViewById(R.id.btnMarkTrue);
+        date = (TextInputEditText) findViewById(R.id.etDate);
+        start_time = (TextInputEditText) findViewById(R.id.etStartTime);
+        end_time = (TextInputEditText) findViewById(R.id.etEndTime);
+        addVideo = (Button) findViewById(R.id.btnAdd);
+        updateChange = (Button) findViewById(R.id.updateChange);
         recyclerView = (RecyclerView) findViewById(R.id.video_resources);
 
         //get the scheduled class in scheduledClass
@@ -67,32 +67,19 @@ public class ClassActivity extends AppCompatActivity {
         start_time.setText(scheduledClass.getTime());
         end_time.setText(scheduledClass.getEndTime());
 
-        //attendance handling
-
-        //test code
-        alter2.setVisibility(View.GONE);
-        alter.setVisibility(View.VISIBLE);
-        progressBarAlter.setVisibility(View.GONE);
-        markTrue.setVisibility(View.GONE);
-        mark.setVisibility(View.VISIBLE);
-        mark.setOnClickListener(new View.OnClickListener() {
+        addVideo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mark.setVisibility(View.GONE);
-                progressBarAlter.setVisibility(View.VISIBLE);
-                new CountDownTimer(5000, 1000) {
-                    public void onFinish() {
-                        progressBarAlter.setVisibility(View.GONE);
-                        markTrue.setVisibility(View.VISIBLE);
-                    }
-                    public void onTick(long millisUntilFinished) {
-                        // millisUntilFinished    The amount of time until finished.
-                    }
-                }.start();
-                //TODO: do something
+                //TODO: upload a video
             }
         });
-        //end of test code
+
+        updateChange.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO: update class information of date, start and end times
+            }
+        });
 
         VideoResourceAdapter adapter = new VideoResourceAdapter(videos);
         recyclerView.setItemAnimator(new DefaultItemAnimator());

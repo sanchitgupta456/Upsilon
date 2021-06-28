@@ -221,6 +221,6 @@
         android:layout_below="@id/text3"
         android:gravity="center"
         android:layout_centerHorizontal="true"
-        tools:listitem="@layout/course_introductory_content_card"/>
+        tools:listitem="@layout/video_resource_card"/>
 
 </RelativeLayout>
