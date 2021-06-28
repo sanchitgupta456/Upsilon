@@ -56,6 +56,7 @@ import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.textfield.TextInputEditText;
 import com.sanchit.Upsilon.MainActivity;
 import com.sanchit.Upsilon.R;
 
@@ -101,11 +102,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         getSupportActionBar().setTitle(R.string.login_title_text);
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getColor(R.color.colorPrimaryDark)));
          */
-        final EditText usernameEditText = findViewById(R.id.username);
-        final EditText passwordEditText = findViewById(R.id.password);
+        final TextInputEditText usernameEditText = findViewById(R.id.username);
+        final TextInputEditText passwordEditText = findViewById(R.id.password);
         Button loginButton = findViewById(R.id.login);
         fbloginButton = findViewById(R.id.login_button);
-        final Button signUpButton = (Button)findViewById(R.id.signUp);
+        final TextView signUpButton = (TextView) findViewById(R.id.signUp);
         loadingProgressBar = findViewById(R.id.loading);
         final ImageView GoogleSignInImage = findViewById(R.id.googleSignIn);
         final ImageView FacebookSignInImage = findViewById(R.id.facebookSignIn);

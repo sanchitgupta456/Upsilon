@@ -61,7 +61,9 @@
     <string name="or">OR</string>
     <string name="sign_in_with_google">Sign in with Google</string>
     <string name="sign_in_with_facebook">Sign in with Facebook</string>
-    <string name="signup_text">New here? Sign up!</string>
+    <string name="signup_text">
+        New here? <font color="#003153"><u>Create an account!</u></font>
+    </string>
     <string name="forgot_password">Forgot Password?</string>
     <string name="google_icon">Google Icon</string>
     <string name="facebook_icon">Facebook Icon</string>

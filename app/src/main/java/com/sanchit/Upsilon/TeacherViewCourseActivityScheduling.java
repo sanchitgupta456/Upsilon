@@ -95,6 +95,7 @@ public class TeacherViewCourseActivityScheduling extends Fragment implements Sch
         MongoCollection<org.bson.Document> mongoCollection  = mongoDatabase.getCollection("CourseData");
         getClasses();
 
+        adapter.setClickListener(this);
 
         dialogView.findViewById(R.id.date_time_set).setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)

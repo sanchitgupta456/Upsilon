@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.sanchit.Upsilon.classData.ScheduledClass;
 import com.sanchit.Upsilon.courseData.Course;
@@ -37,7 +38,7 @@ public class ClassActivityTeacher extends AppCompatActivity {
 //    private Button mark, markTrue;
     private RecyclerView recyclerView;
 
-    private Button addVideo;
+    private FloatingActionButton addVideo;
     private Button updateChange;
 
     private ArrayList<String> videos = new ArrayList<>();
@@ -52,7 +53,7 @@ public class ClassActivityTeacher extends AppCompatActivity {
         date = (TextInputEditText) findViewById(R.id.etDate);
         start_time = (TextInputEditText) findViewById(R.id.etStartTime);
         end_time = (TextInputEditText) findViewById(R.id.etEndTime);
-        addVideo = (Button) findViewById(R.id.btnAdd);
+        addVideo = (FloatingActionButton) findViewById(R.id.btnAdd);
         updateChange = (Button) findViewById(R.id.updateChange);
         recyclerView = (RecyclerView) findViewById(R.id.video_resources);
 
