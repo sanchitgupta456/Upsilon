@@ -42,6 +42,7 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.LinkedHashMap;
 import java.util.Locale;
+import java.util.Objects;
 
 import io.realm.mongodb.App;
 import io.realm.mongodb.AppConfiguration;
@@ -218,7 +219,7 @@ public class TeacherViewCourseActivityScheduling extends Fragment implements Sch
         adapter = new ScheduleAdapter(getContext(), classes);
         LinearLayoutManager manager = new LinearLayoutManager(getContext());
         manager.setOrientation(LinearLayoutManager.VERTICAL);
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getContext(), manager.getOrientation());
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(requireContext(), manager.getOrientation());
         recyclerView.setLayoutManager(manager);
         recyclerView.setAdapter(adapter);
         recyclerView.addItemDecoration(dividerItemDecoration);
