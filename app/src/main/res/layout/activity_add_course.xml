@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".AddCourseActivity">
+    tools:context=".AddCourseActivity"
+    android:theme="@style/MaterialTheme">
 
     <!--
     <TextView
@@ -69,10 +70,11 @@
                     android:layout_height="160dp"
                     android:layout_gravity="center_horizontal"
                     android:maxHeight="160dp"
-                    android:src="@drawable/background"
+                    android:src="@drawable/lightlogo2"
                     android:id="@+id/imgAddCourseImage"
                     android:scaleType="centerCrop"
-                    tools:ignore="ContentDescription" />
+                    tools:ignore="ContentDescription"
+                    android:background="@drawable/text_view_add_course"/>
 
                 <ImageView
                     android:layout_width="40dp"
@@ -82,42 +84,63 @@
                     android:layout_gravity="end"
                     android:layout_margin="12dp"
                     tools:ignore="ContentDescription"
-                    app:tint="@color/colorAccent"/>
+                    app:tint="@color/colorPrimary"/>
 
             </FrameLayout>
 
-            <EditText
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/course_name"
-                android:inputType="text"
-                android:textColorHint="@color/colorGrey"
-                android:textColor="@color/colorBlack"
-                android:background="@drawable/text_view_add_course"
-                android:padding="10dp"
-                android:layout_marginHorizontal="@dimen/text_margin"
-                android:layout_marginVertical="4dp"
-                android:id="@+id/add_course_name"
-                android:imeOptions="actionDone"/>
-
-            <EditText
+                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+                android:id="@+id/ll1"
+                android:layout_marginStart="24dp"
+                android:layout_marginEnd="24dp"
+                android:layout_marginTop="4dp"
+                app:boxBackgroundColor="@color/transparent">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/add_course_name"
+                    android:inputType="text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    android:textColor="@color/colorBlack"
+                    android:selectAllOnFocus="true"/>
+            </com.google.android.material.textfield.TextInputLayout>
+<!--            <EditText-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:hint="@string/course_name"-->
+<!--                android:inputType="text"-->
+<!--                android:textColorHint="@color/colorGrey"-->
+<!--                android:textColor="@color/colorBlack"-->
+<!--                android:background="@drawable/text_view_add_course"-->
+<!--                android:padding="10dp"-->
+<!--                android:layout_marginHorizontal="@dimen/text_margin"-->
+<!--                android:layout_marginVertical="4dp"-->
+<!--                android:id="@+id/add_course_name"-->
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/course_description"
-                android:textColorHint="@color/colorGrey"
-                android:textColor="@color/colorBlack"
-                android:inputType="textMultiLine"
-                android:background="@drawable/text_view_add_course"
-                android:padding="10dp"
-                android:layout_marginHorizontal="@dimen/text_margin"
-                android:layout_marginVertical="4dp"
-                android:id="@+id/add_course_description"
-                android:imeOptions="actionDone|actionNext"/>
-
+                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+                android:id="@+id/ll2"
+                android:layout_marginStart="24dp"
+                android:layout_marginEnd="24dp"
+                android:layout_marginTop="4dp"
+                app:boxBackgroundColor="@color/transparent">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/add_course_description"
+                    android:inputType="textMultiLine"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    android:textColor="@color/colorBlack"
+                    android:selectAllOnFocus="true"/>
+            </com.google.android.material.textfield.TextInputLayout>
             <HorizontalScrollView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="10dp">
+                android:layout_height="wrap_content">
                 <com.google.android.material.chip.ChipGroup
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -161,10 +184,11 @@
                 android:layout_marginHorizontal="@dimen/text_margin"
                 android:layout_marginVertical="10dp"
                 android:background="@drawable/btn_blue"
+                android:backgroundTint="@color/button_green"
                 android:elevation="100dp"
                 android:textColor="@color/colorWhite"
                 android:textSize="@dimen/text_margin"
-                android:drawableStart="@drawable/add_icon_48"
+                android:drawableStart="@drawable/add_icon_24"
                 android:drawableTint="@color/colorWhite"
                 android:layout_gravity="center_horizontal"
                 android:paddingHorizontal="10dp"
@@ -190,8 +214,7 @@
 
             <HorizontalScrollView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="10dp">
+                android:layout_height="wrap_content">
                 <com.google.android.material.chip.ChipGroup
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -228,58 +251,43 @@
                 </com.google.android.material.chip.ChipGroup>
             </HorizontalScrollView>
 
-
-            <LinearLayout
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginHorizontal="@dimen/text_margin"
-                android:layout_marginVertical="10dp"
-                android:weightSum="100">
-
-                <EditText
+                android:hint="@string/course_duration"
+                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+                android:id="@+id/ll3"
+                android:layout_marginStart="24dp"
+                android:layout_marginEnd="24dp"
+                android:layout_marginTop="4dp"
+                app:boxBackgroundColor="@color/transparent"
+                app:suffixText="Class Hours (Approx.)">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/add_course_duration"
+                    android:inputType="textEmailAddress"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/course_duration"
-                    android:inputType="number"
-                    android:textColorHint="@color/colorGrey"
+                    android:textSize="16sp"
                     android:textColor="@color/colorBlack"
-                    android:background="@drawable/text_view_add_course"
-                    android:padding="10dp"
-                    android:layout_weight="50"
-                    android:id="@+id/add_course_duration"
-                    android:imeOptions="actionDone"/>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:text="@string/class_hours"
-                    android:textColor="@color/colorBlack"
-                    android:autoSizeTextType="uniform"
-                    android:maxLines="1"
-                    android:gravity="center_vertical"
-                    android:layout_weight="50"
-                    android:textAlignment="textEnd"
-                    android:paddingEnd="@dimen/activity_horizontal_margin"
-                    tools:ignore="RtlCompat,RtlSymmetry"
-                    android:paddingStart="@dimen/text_margin"/>
-
-            </LinearLayout>
+                    android:selectAllOnFocus="true"/>
+            </com.google.android.material.textfield.TextInputLayout>
 
             <ToggleButton
                 android:id="@+id/add_course_mode"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textOff="@string/offline"
                 android:textOn="@string/online"
                 android:layout_marginHorizontal="@dimen/text_margin"
                 android:layout_marginVertical="10dp"
-                android:background="@drawable/btn_multi_select"
+                android:paddingHorizontal="24dp"
+                android:layout_gravity="center"
                 android:elevation="100dp"
-                android:textColor="@color/colorWhite"
                 android:textSize="@dimen/text_margin"
+                android:textColor="@color/colorBlue"
                 android:textStyle="bold"
-                android:checked="true"/>
+                android:checked="true"
+                android:theme="@style/AppTheme"/>
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -450,19 +458,41 @@
             </RadioGroup>
 
             <!-- to be made visible only if charge a fee is checked -->
-            <EditText
+<!--            <EditText-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:hint="@string/prompt_fees"-->
+<!--                android:inputType="number"-->
+<!--                android:textColorHint="@color/colorPrimaryDark"-->
+<!--                android:textColor="@color/colorPrimaryDark"-->
+<!--                android:background="@drawable/text_view_add_course"-->
+<!--                android:padding="10dp"-->
+<!--                android:layout_marginHorizontal="@dimen/text_margin"-->
+<!--                android:layout_marginVertical="4dp"-->
+<!--                android:id="@+id/course_fee"-->
+<!--                android:visibility="gone"/>-->
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/prompt_fees"
-                android:inputType="number"
-                android:textColorHint="@color/colorPrimaryDark"
-                android:textColor="@color/colorPrimaryDark"
-                android:background="@drawable/text_view_add_course"
-                android:padding="10dp"
-                android:layout_marginHorizontal="@dimen/text_margin"
-                android:layout_marginVertical="4dp"
-                android:id="@+id/course_fee"
-                android:visibility="gone"/>
+                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+                android:id="@+id/ll4"
+                android:layout_marginStart="24dp"
+                android:layout_marginEnd="24dp"
+                android:layout_marginTop="4dp"
+                app:boxBackgroundColor="@color/transparent"
+                app:prefixText="INR"
+                app:helperText="* This is what you wish to receive per student. The student will pay a small convenience fee over it.">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/course_fee"
+                    android:inputType="numberDecimal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    android:textColor="@color/colorBlack"
+                    android:selectAllOnFocus="true"
+                    android:text="100.00"/>
+            </com.google.android.material.textfield.TextInputLayout>
 
 
         </LinearLayout>

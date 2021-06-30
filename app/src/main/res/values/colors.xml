@@ -17,4 +17,5 @@
     <color name="transparent">#00000000</color>
     <color name="GreyDark">#555555</color>
     <color name="colorPrimaryLight">#0D003153</color>
+    <color name="button_green">#00C853</color>
 </resources>

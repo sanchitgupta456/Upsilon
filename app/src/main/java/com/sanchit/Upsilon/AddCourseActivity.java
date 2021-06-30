@@ -54,6 +54,7 @@ import com.google.android.gms.location.LocationSettingsStatusCodes;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.textfield.TextInputEditText;
 import com.sanchit.Upsilon.courseData.Course;
 import com.sanchit.Upsilon.courseLocationMap.MapsActivity;
 import com.sanchit.Upsilon.ui.login.LoginActivity;
@@ -76,7 +77,7 @@ public class AddCourseActivity extends AppCompatActivity implements AdapterView.
     private static final String TAG = "AddCourseActivity";
 
     String appID = "upsilon-ityvn";
-    EditText CourseName,CourseDescription,CourseDuration,CourseFees;
+    TextInputEditText CourseName,CourseDescription,CourseDuration,CourseFees;
     String courseName,courseDescription,courseDuration,mode,courseDurationMeasure;
     ChipGroup group;
     int fees;
@@ -115,19 +116,19 @@ public class AddCourseActivity extends AppCompatActivity implements AdapterView.
         getSupportActionBar().setElevation(0);
         getSupportActionBar().setTitle(R.string.add_course_details);
         bar = (View) getSupportActionBar().getCustomView();
-        CourseName = (EditText) findViewById(R.id.add_course_name);
-        CourseDescription = (EditText) findViewById(R.id.add_course_description);
+        CourseName = (TextInputEditText) findViewById(R.id.add_course_name);
+        CourseDescription = (TextInputEditText) findViewById(R.id.add_course_description);
         addCategory = (Button) findViewById(R.id.add_course_category);
         addLocation = (Button) findViewById(R.id.btnCourseLocation);
         //courseCategories = (RecyclerView) findViewById(R.id.categories_list_add_course);
         group = (ChipGroup) findViewById(R.id.selectedCategoriesDisplayGroup);
         group.removeAllViews();
-        CourseDuration = (EditText) findViewById(R.id.add_course_duration);
+        CourseDuration = (TextInputEditText) findViewById(R.id.add_course_duration);
         //NumberOfBatches = (EditText) findViewById(R.id.add_course_num_batches);
         nextButton = (Button) findViewById(R.id.btnNext);
         offline_online = (ToggleButton) findViewById(R.id.add_course_mode);
         CourseImage = (ImageView) findViewById(R.id.imgAddCourseImage);
-        CourseFees = (EditText) findViewById(R.id.course_fee);
+        CourseFees = (TextInputEditText) findViewById(R.id.course_fee);
         Free = (RadioButton) findViewById(R.id.add_course_free);
         Paid = (RadioButton) findViewById(R.id.add_course_paid);
         progressBar = (ProgressBar) findViewById(R.id.loadingAddCourse);
@@ -475,7 +476,8 @@ public class AddCourseActivity extends AppCompatActivity implements AdapterView.
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        if(requestCode == WRITE_PERMISSION){
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == WRITE_PERMISSION) {
             if (grantResults[0] == PackageManager.PERMISSION_DENIED) {
                 Log.d("Hello", "Write Permission Failed");
                 Toast.makeText(this, "You must allow permission write external storage to your mobile device.", Toast.LENGTH_SHORT).show();
