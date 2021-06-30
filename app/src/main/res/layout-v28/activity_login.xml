@@ -67,6 +67,7 @@
                     android:textSize="16sp"
                     android:textColor="@color/colorBlack"
                     android:text="someone@gmail.com"
+                    android:textFontWeight="100"
                     android:selectAllOnFocus="true"/>
             </com.google.android.material.textfield.TextInputLayout>
             <com.google.android.material.textfield.TextInputLayout

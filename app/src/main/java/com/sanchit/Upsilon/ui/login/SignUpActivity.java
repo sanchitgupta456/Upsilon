@@ -2,10 +2,15 @@ package com.sanchit.Upsilon.ui.login;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.EventLog;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -30,6 +35,8 @@ import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.sanchit.Upsilon.Interest.Interest;
 import com.sanchit.Upsilon.MainActivity;
 import com.sanchit.Upsilon.R;
@@ -49,6 +56,15 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
     String appID = "upsilon-ityvn";
 
+    TextInputEditText passwordEditText;
+    TextInputEditText cnfPasswordEditText;
+    TextInputEditText emailEditText;
+    TextInputLayout emailLayout;
+    TextInputLayout passwordLayout;
+    TextInputLayout confirmPasswordLayout;
+    CheckBox checkBox;
+    App app;
+
     private GoogleSignInClient mGoogleSignInClient;
 
     private CallbackManager callbackManager1;
@@ -59,15 +75,25 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.signup);
         Objects.requireNonNull(this.getSupportActionBar()).hide();
-        App app = new App(new AppConfiguration.Builder(appID)
+        app = new App(new AppConfiguration.Builder(appID)
                 .build());
 
-        final EditText usernameEditText = findViewById(R.id.username);
-        final EditText passwordEditText = findViewById(R.id.password);
-        final EditText cnfPasswordEditText = findViewById(R.id.confirmPassword);
-        final EditText emailEditText = findViewById(R.id.email);
+//        final EditText usernameEditText = findViewById(R.id.username);
+//        final TextInputEditText passwordEditText;
+//        final TextInputEditText cnfPasswordEditText;
+//        final TextInputEditText emailEditText;
+//        final TextInputLayout emailLayout;
+//        final TextInputLayout passwordLayout;
+//        final TextInputLayout confirmPasswordLayout;
+        passwordEditText = findViewById(R.id.password);
+        cnfPasswordEditText = findViewById(R.id.confirmPassword);
+        emailEditText = findViewById(R.id.email);
+        emailLayout = findViewById(R.id.ll1);
+        passwordLayout = findViewById(R.id.ll2);
+        confirmPasswordLayout = findViewById(R.id.ll3);
         final Button signUpButton = findViewById(R.id.signupBtn);
-        final CheckBox checkBox = findViewById(R.id.accept_tc);
+//        final CheckBox checkBox;
+        checkBox = findViewById(R.id.accept_tc);
         final TextView linkTC = findViewById(R.id.link_tc);
         fbsignupButton = findViewById(R.id.signup_button);
         final TextView memberalready = findViewById(R.id.alreadyAMember);
@@ -114,67 +140,89 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
             }
         });
 
+        passwordEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                if(s.toString().length()<8) {
+                    passwordLayout.setErrorEnabled(true);
+                    passwordLayout.setError("Less than required characters");
+                } else {
+                    passwordLayout.setErrorEnabled(false);
+                }
+            }
 
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(s.toString().length()<8) {
+                    passwordLayout.setErrorEnabled(true);
+                    passwordLayout.setError("Less than required characters");
+                } else {
+                    passwordLayout.setErrorEnabled(false);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(s.toString().length()<8) {
+                    passwordLayout.setErrorEnabled(true);
+                    passwordLayout.setError("Less than required characters");
+                } else {
+                    passwordLayout.setErrorEnabled(false);
+                }
+            }
+        });
+
+        cnfPasswordEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                if(!passwordEditText.getText().toString().equals(s.toString())) {
+                    confirmPasswordLayout.setErrorEnabled(true);
+                    confirmPasswordLayout.setError("Passwords don't match");
+                }
+                else {
+                    confirmPasswordLayout.setErrorEnabled(false);
+                }
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(!passwordEditText.getText().toString().equals(s.toString())) {
+                    confirmPasswordLayout.setErrorEnabled(true);
+                    confirmPasswordLayout.setError("Passwords don't match");
+                }
+                else {
+                    confirmPasswordLayout.setErrorEnabled(false);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(!passwordEditText.getText().toString().equals(s.toString())) {
+                    confirmPasswordLayout.setErrorEnabled(true);
+                    confirmPasswordLayout.setError("Passwords don't match");
+                }
+                else {
+                    confirmPasswordLayout.setErrorEnabled(false);
+                }
+            }
+        });
+        
+        cnfPasswordEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if(actionId == EditorInfo.IME_ACTION_DONE) {
+                    Log.d(TAG, "onEditorAction: done clicked");
+                    signup();
+                }
+                return false;
+            }
+        });
 
         signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view)
             {
-                Toast.makeText(SignUpActivity.this,"Hello",Toast.LENGTH_LONG);
-                String email = emailEditText.getText().toString();
-                String password = passwordEditText.getText().toString();
-                String confirm = cnfPasswordEditText.getText().toString();
-
-                if (email.length() == 0){
-                    Animation shake = AnimationUtils.loadAnimation(SignUpActivity.this, R.anim.shake);
-                    emailEditText.startAnimation(shake);
-                    emailEditText.setError("Please Enter an Email!");
-                    emailEditText.requestFocus();
-                    return;
-                }
-                else if (password.length() == 0){
-                    Animation shake = AnimationUtils.loadAnimation(SignUpActivity.this, R.anim.shake);
-                    passwordEditText.startAnimation(shake);
-                    passwordEditText.setText("");
-                    cnfPasswordEditText.setText("");
-                    passwordEditText.setError("Please Enter a Valid Password!");
-                    passwordEditText.requestFocus();
-                    return;
-                }
-                else if (usernameEditText.getText().length() == 0){
-                    Animation shake = AnimationUtils.loadAnimation(SignUpActivity.this, R.anim.shake);
-                    usernameEditText.startAnimation(shake);
-                    usernameEditText.setError("Please Enter a Valid Username!");
-                    usernameEditText.requestFocus();
-                    return;
-                }
-                else if (!password.equals(confirm)){
-                    Animation shake = AnimationUtils.loadAnimation(SignUpActivity.this, R.anim.shake);
-                    passwordEditText.startAnimation(shake);
-                    passwordEditText.setText("");
-                    cnfPasswordEditText.setText("");
-                    passwordEditText.setError("Passwords do not match!");
-                    passwordEditText.requestFocus();
-                    return;
-                } else if (!checkBox.isChecked()){
-                    Toast.makeText(getApplicationContext(), "Please accept the terms and conditions", Toast.LENGTH_SHORT);
-                    return;
-                }
-
-                app.getEmailPassword().registerUserAsync(email, password, it -> {
-                    if (it.isSuccess()) {
-                        Log.i(TAG,"Successfully registered user.");
-                        goToLoginActivity();
-
-                    } else {
-                        Log.e(TAG,"Failed to register user: ${it.error}");
-                        Animation shake = AnimationUtils.loadAnimation(SignUpActivity.this, R.anim.shake);
-                        emailEditText.startAnimation(shake);
-                        emailEditText.setText("");
-                        emailEditText.setError("Invalid email!");
-                        emailEditText.requestFocus();
-                    }
-                });
+                signup();
             }
         });
 
@@ -309,6 +357,63 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     public void goToLoginActivity(){
         Intent intent = new Intent(SignUpActivity.this,LoginActivity.class);
         startActivity(intent);
+    }
+
+    public void signup() {
+        String email = emailEditText.getText().toString();
+        String password = passwordEditText.getText().toString();
+        String confirm = cnfPasswordEditText.getText().toString();
+
+        if (email.length() == 0){
+            Animation shake = AnimationUtils.loadAnimation(SignUpActivity.this, R.anim.shake);
+            emailEditText.startAnimation(shake);
+            emailEditText.setError("Please Enter an Email!");
+            emailEditText.requestFocus();
+            return;
+        }
+        else if (password.length() == 0){
+            Animation shake = AnimationUtils.loadAnimation(SignUpActivity.this, R.anim.shake);
+            passwordEditText.startAnimation(shake);
+            passwordEditText.setText("");
+            cnfPasswordEditText.setText("");
+            passwordEditText.setError("Please Enter a Valid Password!");
+            passwordEditText.requestFocus();
+            return;
+        }
+//                else if (usernameEditText.getText().length() == 0){
+//                    Animation shake = AnimationUtils.loadAnimation(SignUpActivity.this, R.anim.shake);
+//                    usernameEditText.startAnimation(shake);
+//                    usernameEditText.setError("Please Enter a Valid Username!");
+//                    usernameEditText.requestFocus();
+//                    return;
+//                }
+        else if (!password.equals(confirm)){
+            Animation shake = AnimationUtils.loadAnimation(SignUpActivity.this, R.anim.shake);
+            passwordEditText.startAnimation(shake);
+            passwordEditText.setText("");
+            cnfPasswordEditText.setText("");
+            passwordEditText.setError("Passwords do not match!");
+            passwordEditText.requestFocus();
+            return;
+        } else if (!checkBox.isChecked()){
+            Toast.makeText(getApplicationContext(), "Please accept the terms and conditions", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        app.getEmailPassword().registerUserAsync(email, password, it -> {
+            if (it.isSuccess()) {
+                Log.i(TAG,"Successfully registered user.");
+                goToLoginActivity();
+
+            } else {
+                Log.e(TAG,"Failed to register user: ${it.error}");
+                Animation shake = AnimationUtils.loadAnimation(SignUpActivity.this, R.anim.shake);
+                emailEditText.startAnimation(shake);
+                emailEditText.setText("");
+                emailEditText.setError("Invalid email!");
+                emailEditText.requestFocus();
+            }
+        });
     }
 
 }
