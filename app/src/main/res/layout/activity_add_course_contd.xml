@@ -3,7 +3,22 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
-    android:theme="@style/AppTheme">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:theme="@style/MaterialTheme">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/exo_black_opacity_60"
+        android:id="@+id/frameLoading"
+        android:visibility="gone">
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="6dp"
+            android:indeterminateTint="@color/colorPrimary"/>
+    </FrameLayout>
 
     <ProgressBar
         android:id="@+id/loadingAddCourseContd"
@@ -58,30 +73,25 @@
 
     <LinearLayout
         android:id="@+id/linearLayoutInsertButtons"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_below="@id/loadingAddCourseContd"
         android:orientation="horizontal"
-        android:layout_marginTop="48dp"
-        android:weightSum="90"
-        android:baselineAligned="false"
         android:theme="@style/MaterialTheme">
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:layout_weight="30"
-            android:gravity="center"
-            android:layout_margin="@dimen/activity_horizontal_margin">
+            android:gravity="center">
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:elevation="30dp"
                 android:layout_margin="@dimen/activity_horizontal_margin"
                 android:src="@drawable/icon_doc"
-                android:tint="@color/colorBlack"
                 tools:ignore="ContentDescription"
                 android:id="@+id/add_documents_introductory"/>
             <TextView
@@ -93,18 +103,16 @@
                 android:textSize="@dimen/text_margin"/>
         </LinearLayout>
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:layout_weight="30"
-            android:gravity="center"
-            android:layout_margin="@dimen/activity_horizontal_margin">
+            android:gravity="center">
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:elevation="30dp"
                 android:layout_margin="@dimen/activity_horizontal_margin"
-                android:tint="@color/colorBlack"
                 android:src="@drawable/icon_image"
                 tools:ignore="ContentDescription"
                 android:id="@+id/add_images_introductory"/>
@@ -118,18 +126,16 @@
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:layout_weight="30"
-            android:gravity="center"
-            android:layout_margin="@dimen/activity_horizontal_margin">
+            android:gravity="center">
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:elevation="20dp"
                 android:layout_margin="@dimen/activity_horizontal_margin"
-                android:tint="@color/colorBlack"
                 android:src="@drawable/icon_video"
                 tools:ignore="ContentDescription"
                 android:id="@+id/add_video_introductory" />
@@ -147,13 +153,14 @@
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:layout_marginTop="72dp"
+        android:id="@+id/display_introductory_content"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/linearLayoutInsertButtons"
-        android:layout_above="@id/btnAddCourse"
-        android:layout_margin="@dimen/activity_horizontal_margin"
-        android:orientation="vertical"/>
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/btnAddCourse"
+        android:layout_below="@+id/linearLayoutInsertButtons"
+        android:layout_marginVertical="24dp"
+        android:orientation="horizontal"
+        tools:listitem="@layout/course_introductory_content_card" />
     <Button
         android:theme="@style/AppTheme"
         android:id="@+id/btnAddCourse"
@@ -162,6 +169,7 @@
         android:layout_alignParentBottom="true"
         android:layout_margin="24dp"
         android:background="@drawable/btn_blue"
+        android:backgroundTint="@color/button_green"
         android:textColor="@color/colorWhite"
         android:textSize="@dimen/text_margin"
         android:text="@string/upload_and_proceed"
@@ -184,5 +192,5 @@
         android:progress="100"
         android:progressTint="@color/colorPrimary"
         android:progressBackgroundTint="@color/colorGrey"
-        android:scaleY="3"/>
+        android:scaleY="1.2"/>
 </RelativeLayout>

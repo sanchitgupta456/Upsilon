@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -24,12 +25,14 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.cloudinary.android.MediaManager;
 import com.cloudinary.android.callback.ErrorInfo;
 import com.cloudinary.android.callback.UploadCallback;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.sanchit.Upsilon.courseData.IntroductoryContentAdapter;
 
 import org.bson.Document;
 import org.bson.types.ObjectId;
@@ -70,6 +73,8 @@ public class AddCourseActivityContinued extends AppCompatActivity {
     ArrayList<String> documentPaths;
     ArrayList<String> introductoryDocumentUrls;
     RecyclerView recyclerView;
+    IntroductoryContentAdapter adapter;
+    FrameLayout frameLayout;
     String id="5fad2a5a9f30789191ea7d15";
     private static int RESULT_LOAD_IMAGE = 1,RESULT_LOAD_VIDEO = 2,RESULT_LOAD_DOCUMENT=3;
     private static final int WRITE_PERMISSION = 0x01;
@@ -87,7 +92,7 @@ public class AddCourseActivityContinued extends AppCompatActivity {
         addImages = (FloatingActionButton) findViewById(R.id.add_images_introductory);
         addVideos = (FloatingActionButton) findViewById(R.id.add_video_introductory);
         addDocuments = (FloatingActionButton) findViewById(R.id.add_documents_introductory);
-        recyclerView =(RecyclerView) findViewById(R.id.listIntroductoryMaterial);
+        recyclerView =(RecyclerView) findViewById(R.id.display_introductory_content);
         Intent intent = getIntent();
         id = intent.getStringExtra("InsertedDocument");
         fees = intent.getIntExtra("fees",0);
@@ -100,6 +105,12 @@ public class AddCourseActivityContinued extends AppCompatActivity {
         documentPaths = new ArrayList<>();
         introductoryVideoUrls = new ArrayList<>();
         nextButton = (Button) findViewById(R.id.btnAddCourse);
+        frameLayout = (FrameLayout) findViewById(R.id.frameLoading);
+        frameLayout.setVisibility(View.GONE);
+        adapter = new IntroductoryContentAdapter(picturePaths, videoPaths);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(recyclerView.getContext(), RecyclerView.HORIZONTAL, false));
+        adapter.notifyDataSetChanged();
 
         app = new App(new AppConfiguration.Builder(appID)
                 .build());
@@ -151,7 +162,7 @@ public class AddCourseActivityContinued extends AppCompatActivity {
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                frameLayout.setVisibility(View.VISIBLE);
                 if(picturePaths.size()==0 && videoPaths.size()==0 && documentPaths.size()==0)
                 {
                     Document queryFilter  = new Document("_id",_id);
@@ -712,12 +723,14 @@ public class AddCourseActivityContinued extends AppCompatActivity {
                     //imageView.setImageBitmap(BitmapFactory.decodeFile(picturePath));
                 }*/
             }
+            adapter.notifyDataSetChanged();
         }
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
-        if(requestCode == WRITE_PERMISSION){
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == WRITE_PERMISSION) {
             if (grantResults[0] == PackageManager.PERMISSION_DENIED) {
                 Log.d("Hello", "Write Permission Failed");
                 Toast.makeText(this, "You must allow permission write external storage to your mobile device.", Toast.LENGTH_SHORT).show();

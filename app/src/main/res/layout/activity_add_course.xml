@@ -485,13 +485,12 @@
                 app:helperText="* This is what you wish to receive per student. The student will pay a small convenience fee over it.">
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/course_fee"
-                    android:inputType="numberDecimal"
+                    android:inputType="number"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textSize="16sp"
                     android:textColor="@color/colorBlack"
-                    android:selectAllOnFocus="true"
-                    android:text="100.00"/>
+                    android:selectAllOnFocus="true"/>
             </com.google.android.material.textfield.TextInputLayout>
 
 
