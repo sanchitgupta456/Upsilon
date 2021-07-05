@@ -38,7 +38,8 @@
         android:id="@+id/btnGetStarted"
         android:layout_below="@id/img"
         android:background="@drawable/btn_blue"
+        android:backgroundTint="@color/button_green"
         android:paddingVertical="10dp"
-        android:paddingHorizontal="20dp"/>
+        android:paddingHorizontal="40dp"/>
 
 </RelativeLayout>
