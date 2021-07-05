@@ -7,7 +7,8 @@
     tools:context=".AddCoursePayment"
     android:paddingHorizontal="@dimen/activity_horizontal_margin"
     android:paddingVertical="@dimen/activity_vertical_margin"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:theme="@style/MaterialTheme">
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -17,62 +18,130 @@
         android:textStyle="bold"
         android:typeface="sans"
         />
-    <EditText
-        android:id="@+id/account_number"
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="number"
-        android:layout_marginTop="48dp"
-        android:textColor="@color/colorPrimary"
-        android:textSize="14sp"
-        android:typeface="sans"
-        android:textColorHint="#464646"
         android:hint="Enter Account Number"
-        android:background="@drawable/text_view_add_course"
-        android:padding="10dp"
-        />
-    <EditText
-        android:id="@+id/ifsc_code"
+        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+        android:id="@+id/ll1"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginTop="48dp">
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/account_number"
+            android:inputType="text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textColor="@color/colorBlack"
+            android:selectAllOnFocus="true"/>
+    </com.google.android.material.textfield.TextInputLayout>
+<!--    <EditText-->
+<!--        android:id="@+id/account_number"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:inputType="number"-->
+<!--        android:textColor="@color/colorPrimary"-->
+<!--        android:textSize="14sp"-->
+<!--        android:typeface="sans"-->
+<!--        android:textColorHint="#464646"-->
+<!--        android:hint=""-->
+<!--        android:background="@drawable/text_view_add_course"-->
+<!--        android:padding="10dp"-->
+<!--        />-->
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:inputType="text"
-        android:textColor="@color/colorPrimary"
-        android:textSize="14sp"
-        android:typeface="sans"
-        android:textColorHint="#464646"
         android:hint="Enter IFSC Code"
-        android:background="@drawable/text_view_add_course"
-        android:padding="10dp"
-        />
-    <EditText
-        android:id="@+id/mobile_number"
+        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginTop="10dp">
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/ifsc_code"
+            android:inputType="text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textColor="@color/colorBlack"
+            android:selectAllOnFocus="true"/>
+    </com.google.android.material.textfield.TextInputLayout>
+<!--    <EditText-->
+<!--        android:id="@+id/ifsc_code"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="4dp"-->
+<!--        android:inputType="text"-->
+<!--        android:textColor="@color/colorPrimary"-->
+<!--        android:textSize="14sp"-->
+<!--        android:typeface="sans"-->
+<!--        android:textColorHint="#464646"-->
+<!--        android:hint=""-->
+<!--        android:background="@drawable/text_view_add_course"-->
+<!--        android:padding="10dp"-->
+<!--        />-->
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:inputType="phone"
-        android:textColor="@color/colorPrimary"
-        android:textSize="14sp"
-        android:typeface="sans"
-        android:textColorHint="#464646"
         android:hint="Enter Mobile Number"
-        android:background="@drawable/text_view_add_course"
-        android:padding="10dp"
-        />
-    <EditText
-        android:id="@+id/upi_code"
+        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginTop="10dp">
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/mobile_number"
+            android:inputType="text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textColor="@color/colorBlack"
+            android:selectAllOnFocus="true"/>
+    </com.google.android.material.textfield.TextInputLayout>
+<!--    <EditText-->
+<!--        android:id="@+id/mobile_number"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="4dp"-->
+<!--        android:inputType="phone"-->
+<!--        android:textColor="@color/colorPrimary"-->
+<!--        android:textSize="14sp"-->
+<!--        android:typeface="sans"-->
+<!--        android:textColorHint="#464646"-->
+<!--        android:hint=""-->
+<!--        android:background="@drawable/text_view_add_course"-->
+<!--        android:padding="10dp"-->
+<!--        />-->
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:inputType="text"
-        android:textColor="@color/colorPrimary"
-        android:textSize="14sp"
-        android:typeface="sans"
-        android:textColorHint="#464646"
         android:hint="Enter UPI ID"
-        android:background="@drawable/text_view_add_course"
-        android:padding="10dp"
-        />
+        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginTop="10dp">
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/upi_code"
+            android:inputType="text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textColor="@color/colorBlack"
+            android:selectAllOnFocus="true"/>
+    </com.google.android.material.textfield.TextInputLayout>
+<!--    <EditText-->
+<!--        android:id="@+id/upi_code"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="4dp"-->
+<!--        android:inputType="text"-->
+<!--        android:textColor="@color/colorPrimary"-->
+<!--        android:textSize="14sp"-->
+<!--        android:typeface="sans"-->
+<!--        android:textColorHint="#464646"-->
+<!--        android:hint="Enter UPI ID"-->
+<!--        android:background="@drawable/text_view_add_course"-->
+<!--        android:padding="10dp"-->
+<!--        />-->
 
     <Button
         android:id="@+id/btnSubmitPaymentInfo"

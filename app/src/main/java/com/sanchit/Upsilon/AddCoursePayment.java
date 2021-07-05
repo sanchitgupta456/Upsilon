@@ -11,6 +11,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.google.android.material.textfield.TextInputEditText;
 import com.sanchit.Upsilon.ui.login.LoginActivity;
 
 import org.bson.Document;
@@ -26,7 +27,7 @@ import io.realm.mongodb.mongo.iterable.MongoCursor;
 
 public class AddCoursePayment extends AppCompatActivity {
 
-    EditText accountNumber,ifscCode,mobileNumber,upiId;
+    TextInputEditText accountNumber,ifscCode,mobileNumber,upiId;
     Button submit;
     String AccountNumber,IfscCode,MobileNumber,UpiId;
     String appID = "upsilon-ityvn";
