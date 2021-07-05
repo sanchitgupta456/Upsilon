@@ -10,6 +10,12 @@ public class Interest {
         this.isSelected = false;
     }
 
+    public Interest(String nameInterest, String imageUri) {
+        this.nameInterest = nameInterest;
+        this.isSelected = false;
+        this.imageUri = imageUri;
+    }
+
     public String getNameInterest() {
         return nameInterest;
     }
