@@ -91,8 +91,6 @@ public class UserDataSetupFragment1 extends Fragment implements InterestCardAdap
         grid = (RecyclerView) view.findViewById(R.id.gridInterests);
         //group.removeAllViews();
 
-        viewModel = new ViewModelProvider(requireActivity()).get(UserDataViewModel.class);
-
         app = new App(new AppConfiguration.Builder(appID)
                 .build());
         user = app.currentUser();
