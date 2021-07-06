@@ -31,14 +31,27 @@ public class AssignmentContentFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_assignment_content, container, false);
+        String url = "https://res.cloudinary.com/upsilon175/image/upload/v1625568680/Upsilon/Courses/5facf7889f30789191b2afea/assign3_eavpwl.pdf";
         PDFView pdfView = view.findViewById(R.id.contentView);
-//        InputStream input = null;
-//        try {
-//            input = new URL("something").openStream();
-//            pdfView.fromStream(input).load();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
+
+        Thread thread = new Thread(new Runnable() {
+
+            @Override
+            public void run() {
+                try  {
+                    InputStream input = null;
+                    try {
+                        input = new URL(url).openStream();
+                        pdfView.fromStream(input).load();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        thread.start();
 
         assert getArguments() != null;
         assignmentStudentData = (AssignmentStudentData) getArguments().getSerializable("Assignment");
