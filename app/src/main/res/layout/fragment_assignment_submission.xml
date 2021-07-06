@@ -3,7 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AssignmentSubmissionFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".AssignmentSubmissionFragment"
+    android:theme="@style/MaterialTheme">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -40,6 +42,19 @@
             android:layout_marginBottom="16dp"
             android:textColor="@color/colorWhite"
             android:id="@+id/submit_all"/>
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true"
+            android:layout_margin="@dimen/activity_horizontal_margin"
+            app:srcCompat="@drawable/icon_cloud_upload"
+            android:tint="@color/colorWhite"
+            android:text="Add Submission"
+            android:textColor="@color/colorWhite"
+            android:textSize="14sp"
+            android:backgroundTint="@color/button_green"/>
     </RelativeLayout>
 
 

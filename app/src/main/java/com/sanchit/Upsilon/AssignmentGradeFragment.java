@@ -14,8 +14,7 @@ import com.sanchit.Upsilon.ui.assignment.AssignmentStudentData;
 
 
 public class AssignmentGradeFragment extends Fragment {
-    RecyclerView recyclerView;
-    Button submit;
+
 
     //TODO: to be completed
 
@@ -30,8 +29,8 @@ public class AssignmentGradeFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View inflate = inflater.inflate(R.layout.fragment_assignment_grade, container, false);
-        recyclerView = inflate.findViewById(R.id.submissionList);
-        submit = inflate.findViewById(R.id.submit_all);
+//        recyclerView = inflate.findViewById(R.id.submissionList);
+//        submit = inflate.findViewById(R.id.submit_all);
         assert getArguments() != null;
         assignmentStudentData = (AssignmentStudentData) getArguments().getSerializable("Assignment");
         return inflate;
