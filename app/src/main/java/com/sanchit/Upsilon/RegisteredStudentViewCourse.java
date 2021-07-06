@@ -119,8 +119,11 @@ public class RegisteredStudentViewCourse extends AppCompatActivity implements Bo
                 break;
 
             case R.id.bottomNavMenuTestsAssignments:
-                fragment = new RegisteredStudentViewCourseATFragment();
-                fragment.setArguments(bundle);
+//                fragment = new RegisteredStudentViewCourseATFragment();
+//                fragment.setArguments(bundle);
+                Intent intent = new Intent(getApplicationContext(), AssignmentsActivity.class);
+                intent.putExtra("Course", course);
+                startActivity(intent);
                 break;
 
             case R.id.bottomNavMenuSchedule:
