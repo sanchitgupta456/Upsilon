@@ -22,7 +22,8 @@
         android:layout_height="wrap_content"
         android:id="@+id/list_assignments"
         android:layout_margin="10dp"
-        android:layout_below="@id/textPending"/>
+        android:layout_below="@id/textPending"
+        tools:listitem="@layout/assignment_card"/>
 
     <TextView
         android:layout_width="match_parent"
@@ -41,6 +42,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/list_assignments_completed"
         android:layout_margin="10dp"
-        android:layout_below="@id/textCompleted"/>
+        android:layout_below="@id/textCompleted"
+        tools:listitem="@layout/assignment_card_completed"/>
 
 </RelativeLayout>

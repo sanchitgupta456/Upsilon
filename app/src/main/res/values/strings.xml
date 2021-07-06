@@ -273,6 +273,9 @@
     <string name="view_course_reviews">View Course Reviews</string>
     <string name="acceptance_terms_and_conditions">
         I accept the
-<!--        <font color="#A0003153"><u> Terms and Conditions </u></font>-->
+        <!--        <font color="#A0003153"><u> Terms and Conditions </u></font>-->
 </string>
+    <string name="testPdfSource">
+        https://file-examples-com.github.io/uploads/2017/10/file-sample_150kB.pdf
+    </string>
 </resources>
