@@ -5,11 +5,24 @@
     android:layout_height="match_parent"
     tools:context=".AssignmentContentFragment">
 
+
     <com.github.barteksc.pdfviewer.PDFView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/contentView"
         android:scrollbarFadeDuration="@integer/material_motion_duration_short_1"
         />
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorGrey"
+        android:id="@+id/loading">
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:indeterminateTint="@color/colorPrimary"
+            android:indeterminate="true"/>
+    </FrameLayout>
 
 </FrameLayout>
