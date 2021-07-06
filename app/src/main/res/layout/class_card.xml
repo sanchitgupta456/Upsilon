@@ -1,75 +1,95 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="100dp"
-    android:orientation="horizontal"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:padding="10dp"
-    android:id="@+id/card"
-    android:background="@drawable/btn_blue"
-    android:backgroundTint="@color/colorYellow"
-    android:elevation="4dp"
-    android:layout_margin="10dp">
-    <LinearLayout
-        android:layout_width="100dp"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:text="December"
-            android:textAllCaps="true"
-            android:gravity="center"
-            android:typeface="sans"
-            android:textColor="@color/colorPrimary"
-            android:textStyle="bold"
-            android:id="@+id/month"
-            android:singleLine="true"
-            android:ellipsize="end"/>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="4"
-            android:text="14"
-            android:textSize="48sp"
-            android:textAllCaps="true"
-            android:gravity="center"
-            android:typeface="sans"
-            android:textColor="@color/colorPrimary"
-            android:textStyle="bold"
-            android:id="@+id/date"/>
-    </LinearLayout>
+    android:elevation="12dp"
+    android:layout_margin="10dp"
+    android:theme="@style/MaterialTheme"
+    app:cardCornerRadius="4dp"
+    android:outlineAmbientShadowColor="@color/colorGrey"
+    android:outlineSpotShadowColor="@color/GreyDark">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:text="Introduction to data science! and more and more and more..."
-            android:textAllCaps="true"
-            android:gravity="center"
-            android:typeface="sans"
-            android:textColor="@color/colorPrimary"
-            android:textStyle="bold"
-            android:id="@+id/classTitle"
-            android:ellipsize="end"
-            android:singleLine="true"/>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="3"
-            android:text="09:50 AM"
-            android:textAllCaps="true"
-            android:textSize="36sp"
-            android:gravity="center"
-            android:typeface="sans"
-            android:textColor="@color/colorWhite"
-            android:background="@color/colorPrimary"
-            android:textStyle="bold"
-            android:id="@+id/time"/>
+        android:orientation="horizontal"
+        android:id="@+id/card">
+        <LinearLayout
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:text="December"
+                android:autoSizeTextType="uniform"
+                android:textAllCaps="true"
+                android:gravity="center"
+                android:typeface="sans"
+                android:textColor="@color/colorPrimary"
+                android:textStyle="bold"
+                android:id="@+id/month"
+                android:singleLine="true"
+                android:ellipsize="end"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="4"
+                android:text="14"
+                android:autoSizeTextType="uniform"
+                android:textSize="48sp"
+                android:textAllCaps="true"
+                android:gravity="center"
+                android:typeface="sans"
+                android:textColor="@color/colorPrimary"
+                android:textStyle="bold"
+                android:id="@+id/date"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_weight="1">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:text="Introduction to data science! and more and more and more..."
+                android:autoSizeTextType="uniform"
+                android:textAllCaps="true"
+                android:gravity="center"
+                android:typeface="sans"
+                android:textColor="@color/colorPrimary"
+                android:textStyle="bold"
+                android:id="@+id/classTitle"
+                android:ellipsize="end"
+                android:singleLine="true"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="3"
+                android:text="09:50 AM"
+                android:autoSizeTextType="uniform"
+                android:textAllCaps="true"
+                android:textSize="36sp"
+                android:gravity="center"
+                android:typeface="sans"
+                android:textColor="@color/colorWhite"
+                android:background="@color/colorPrimary"
+                android:textStyle="bold"
+                android:id="@+id/time"/>
+        </LinearLayout>
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="match_parent"
+            android:src="@drawable/next"
+            android:scaleType="fitCenter"
+            android:background="@color/transparent"
+            android:scaleY="3"
+            android:scaleX="1"
+            android:layout_gravity="center"
+            app:tint="@color/colorPrimary" />
     </LinearLayout>
-</LinearLayout>
+</androidx.cardview.widget.CardView>
