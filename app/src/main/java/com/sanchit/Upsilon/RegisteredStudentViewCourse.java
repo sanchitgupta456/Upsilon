@@ -159,6 +159,11 @@ public class RegisteredStudentViewCourse extends AppCompatActivity implements Bo
         {
             finish();
         }
+        if(item.getItemId() == R.id.assignments) {
+            Intent intent = new Intent(getApplicationContext(), AssignmentsActivity.class);
+            intent.putExtra("Course", course);
+            startActivity(intent);
+        }
         if(item.getItemId()==R.id.menuItemReview)
         {
             Log.v("RegisteredStudent","Review");
