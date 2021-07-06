@@ -87,7 +87,7 @@
             android:src="@drawable/next"
             android:scaleType="fitCenter"
             android:background="@color/transparent"
-            android:scaleY="3"
+            android:scaleY="1.5"
             android:scaleX="1"
             android:layout_gravity="center"
             app:tint="@color/colorPrimary" />
