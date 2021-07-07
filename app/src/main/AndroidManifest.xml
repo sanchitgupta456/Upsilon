@@ -23,7 +23,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ClassActivityTeacher"></activity>
+        <activity android:name=".AssignmentTeacherActivity"></activity>
+        <activity android:name=".AssignmentsTeacherActivity" />
+        <activity android:name=".ClassActivityTeacher" />
         <activity android:name=".ClassActivity" />
         <activity android:name=".pdfUpload.pdfPlayground" />
         <activity android:name=".TestActivity" />
@@ -31,7 +33,7 @@
         <activity android:name=".TestCreateActivity" />
         <activity
             android:name=".AssignmentActivity"
-            android:label="@string/title_activity_assignment"/>
+            android:label="@string/title_activity_assignment" />
         <activity android:name=".AssignmentsActivity" />
         <activity android:name=".PaymentLogActivity" />
         <activity android:name=".GetStartedAsTeacherActivity" />
