@@ -38,6 +38,17 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkResponse;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.HttpHeaderParser;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.load.resource.drawable.DrawableResource;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
@@ -59,9 +70,13 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.sanchit.Upsilon.MainActivity;
 import com.sanchit.Upsilon.R;
+import com.sanchit.Upsilon.Upsilon;
 
 import org.bson.Document;
+import org.json.JSONException;
+import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
 import java.util.Objects;
 
@@ -92,12 +107,17 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private String Email;
     private TextView ForgotPassword;
     private String forgotpasswordemail;
+    private RequestQueue queue;
+    private String API ;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         Objects.requireNonNull(this.getSupportActionBar()).hide();
+        queue = Volley.newRequestQueue(getApplicationContext());
+        API = ((Upsilon)this.getApplication()).getAPI();
         /*
         getSupportActionBar().setTitle(R.string.login_title_text);
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getColor(R.color.colorPrimaryDark)));
@@ -199,7 +219,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             }
         });
 
-
         signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view)
@@ -210,8 +229,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view)
-            {
+            public void onClick(View view) {
                 loadingProgressBar.setVisibility(View.VISIBLE);
                 loadingProgressBar.setIndeterminate(true);
                 loadingProgressBar.setProgress(0);
@@ -246,32 +264,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                 .apply();
 
                     }
-                    Credentials emailPasswordCredentials = Credentials.emailPassword(email, password);
-
-                    app.loginAsync(emailPasswordCredentials, new App.Callback<User>() {
-                        @Override
-                        public void onResult(App.Result<User> it) {
-                            if (it.isSuccess()) {
-                                Log.v(TAG, "Successfully authenticated using an email and password.");
-                                loadingProgressBar.setVisibility(View.INVISIBLE);
-                                User user = app.currentUser();
-                                goToMainActivity();
-                            } else {
-                                Animation shake = AnimationUtils.loadAnimation(LoginActivity.this, R.anim.shake);
-                                //usernameEditText.startAnimation(shake);
-                                //usernameEditText.setError("Please Enter a Valid UserName");
-
-                                passwordEditText.startAnimation(shake);
-                                passwordEditText.setError(it.getError().getErrorMessage().toString());
-                                passwordEditText.requestFocus();
-                                loadingProgressBar.setVisibility(View.INVISIBLE);
-                                Log.v(TAG, "LOGIN FAILED!");
-                                Log.e(TAG, it.getError().toString());
-                            }
-                        }
-                    });
+                    try {
+                        JSONObject jsonBody = new JSONObject();
+                        jsonBody.put("email", email);
+                        jsonBody.put("password", password);
+                        login(jsonBody,passwordEditText);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
-
             }
         });
 
@@ -431,4 +432,39 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         intent.putExtra("email",Email);
         startActivity(intent);
     }
+
+    private void login(JSONObject credentials,EditText passwordEditText) {
+        JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, API+"/signin",credentials,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Log.d("Response", response.toString());
+                        try {
+                            ((Upsilon)getApplication()).setToken(response.getString("token"));
+                            Log.v(TAG, "Successfully authenticated using an email and password.");
+                            loadingProgressBar.setVisibility(View.INVISIBLE);
+                            goToMainActivity();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("Error response", error.toString());
+                        Animation shake = AnimationUtils.loadAnimation(LoginActivity.this, R.anim.shake);
+                        passwordEditText.startAnimation(shake);
+                        passwordEditText.setError(error.toString());
+                        passwordEditText.requestFocus();
+                        loadingProgressBar.setVisibility(View.INVISIBLE);
+                        Log.v(TAG, "LOGIN FAILED!");
+                        Log.e(TAG, error.toString());
+                    }
+                }
+        );
+        queue.add(jsonRequest);
+    }
+
+
 }

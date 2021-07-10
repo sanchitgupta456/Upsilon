@@ -21,6 +21,12 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -41,6 +47,10 @@ import com.sanchit.Upsilon.Interest.Interest;
 import com.sanchit.Upsilon.MainActivity;
 import com.sanchit.Upsilon.R;
 import com.sanchit.Upsilon.Terms;
+import com.sanchit.Upsilon.Upsilon;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.Objects;
 
@@ -69,6 +79,8 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
     private CallbackManager callbackManager1;
     LoginButton fbsignupButton;
+    private RequestQueue queue;
+    private String API ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +89,8 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         Objects.requireNonNull(this.getSupportActionBar()).hide();
         app = new App(new AppConfiguration.Builder(appID)
                 .build());
+        queue = Volley.newRequestQueue(getApplicationContext());
+        API = ((Upsilon)this.getApplication()).getAPI();
 
 //        final EditText usernameEditText = findViewById(R.id.username);
 //        final TextInputEditText passwordEditText;
@@ -399,21 +413,59 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
             Toast.makeText(getApplicationContext(), "Please accept the terms and conditions", Toast.LENGTH_SHORT).show();
             return;
         }
+        try {
+            JSONObject jsonBody = new JSONObject();
+            jsonBody.put("email", email);
+            jsonBody.put("password", password);
+            signupRequest(jsonBody,emailEditText);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+//        app.getEmailPassword().registerUserAsync(email, password, it -> {
+//            if (it.isSuccess()) {
+//                Log.i(TAG,"Successfully registered user.");
+//                goToLoginActivity();
+//
+//            } else {
+//                Log.e(TAG,"Failed to register user: ${it.error}");
+//                Animation shake = AnimationUtils.loadAnimation(SignUpActivity.this, R.anim.shake);
+//                emailEditText.startAnimation(shake);
+//                emailEditText.setText("");
+//                emailEditText.setError("Invalid email!");
+//                emailEditText.requestFocus();
+//            }
+//        });
+    }
 
-        app.getEmailPassword().registerUserAsync(email, password, it -> {
-            if (it.isSuccess()) {
-                Log.i(TAG,"Successfully registered user.");
-                goToLoginActivity();
-
-            } else {
-                Log.e(TAG,"Failed to register user: ${it.error}");
-                Animation shake = AnimationUtils.loadAnimation(SignUpActivity.this, R.anim.shake);
-                emailEditText.startAnimation(shake);
-                emailEditText.setText("");
-                emailEditText.setError("Invalid email!");
-                emailEditText.requestFocus();
-            }
-        });
+    private void signupRequest(JSONObject credentials,EditText emailEditText) {
+        JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, API+"/signup",credentials,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Log.d("Response", response.toString());
+                        try {
+                            ((Upsilon)getApplication()).setToken(response.getString("token"));
+                            Log.v(TAG, "Successfully authenticated using an email and password.");
+                            goToMainActivity();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("Error response", error.toString());
+                        Animation shake = AnimationUtils.loadAnimation(SignUpActivity.this, R.anim.shake);
+                        emailEditText.startAnimation(shake);
+                        emailEditText.setError(error.toString());
+                        emailEditText.requestFocus();
+                        Log.v(TAG, "SIGNUP FAILED!");
+                        Log.e(TAG, error.toString());
+                    }
+                }
+        );
+        queue.add(jsonRequest);
     }
 
 }
