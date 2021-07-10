@@ -3,7 +3,7 @@
     android:layout_width="match_parent" android:layout_height="match_parent"
     android:background="@color/colorPrimaryLight"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:theme="@style/AppTheme">
+    android:theme="@style/MaterialTheme">
     <ProgressBar
         android:id="@+id/loadingActiveCourse"
         android:layout_width="wrap_content"
@@ -26,10 +26,8 @@
         android:layout_height="wrap_content"
         app:menu="@menu/bottom_navigation_menu"
         android:layout_alignParentBottom="true"
-        app:backgroundTint="@color/colorPrimaryDark"
-        android:background="@drawable/bottom_app_bar"
         app:elevation="20dp"
-        app:itemIconTint="@color/colorWhite"
-        app:itemTextColor="@color/colorWhite" />
+        android:elevation="8dp"
+        android:theme="@style/Widget.MaterialComponents.BottomNavigationView" />
 
 </RelativeLayout>

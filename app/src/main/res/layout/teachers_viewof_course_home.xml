@@ -4,130 +4,201 @@
     android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
-    <TextView
-        android:id="@+id/textClassInfo"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:layout_marginTop="@dimen/activity_vertical_margin"
-        android:layout_marginStart="@dimen/activity_horizontal_margin"
-        android:layout_marginEnd="@dimen/activity_horizontal_margin"
-        android:textColor="@color/colorBlack"
-        android:textStyle="bold"
-        android:textSize="24sp"
-        android:text="@string/class_information"
-        android:typeface="sans"
-        android:gravity="center_vertical" />
-    <LinearLayout
-        android:id="@+id/linearLayoutNextLecture"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/textClassInfo"
-        android:layout_marginStart="@dimen/activity_horizontal_margin"
-        android:layout_marginEnd="@dimen/activity_horizontal_margin"
-        android:orientation="horizontal"
-        android:weightSum="100">
-        <TextView
+        android:id="@+id/frame"
+        android:visibility="visible">
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:textColor="@color/colorBlack"
-            android:textStyle="italic"
-            android:textSize="@dimen/text_margin"
-            android:text="@string/next_lecture_on"
-            android:typeface="normal"
-            android:gravity="center_vertical"
-            android:layout_weight="60"/>
+            android:orientation="vertical">
+            <Button
+                android:id="@+id/continue_class"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/sender_messages_layout"
+                android:layout_marginHorizontal="24dp"
+                android:layout_marginVertical="10dp"
+                android:textAllCaps="false"
+                android:text="A class underway! Go Now!"
+                android:drawableStart="@drawable/info_icon_dark"
+                android:drawableTint="@color/button_green"
+                android:paddingHorizontal="30dp"/>
+            <Button
+                android:id="@+id/new_live_video"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/sender_messages_layout"
+                android:layout_marginHorizontal="24dp"
+                android:layout_marginVertical="10dp"
+                android:textAllCaps="false"
+                android:text="Set up new live video!"
+                android:drawableStart="@drawable/video"
+                android:drawableTint="@color/button_green"
+                android:paddingHorizontal="30dp"/>
+            <Button
+                android:id="@+id/check_forum"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/sender_messages_layout"
+                android:layout_marginHorizontal="24dp"
+                android:layout_marginVertical="10dp"
+                android:textAllCaps="false"
+                android:text="Checkout the Forum!"
+                android:drawableStart="@drawable/icon_forum"
+                android:drawableTint="@color/button_green"
+                android:paddingHorizontal="30dp"/>
+            <Button
+                android:id="@+id/add_lecture_resource"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/sender_messages_layout"
+                android:layout_marginHorizontal="24dp"
+                android:layout_marginVertical="10dp"
+                android:textAllCaps="false"
+                android:text="Add a new lecture resource!"
+                android:drawableStart="@drawable/add_icon_24"
+                android:drawableTint="@color/button_green"
+                android:paddingHorizontal="30dp"/>
+        </LinearLayout>
+    </FrameLayout>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/frame1"
+        android:visibility="gone"
+        android:layout_below="@id/frame">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/textClassInfo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:layout_marginStart="@dimen/activity_horizontal_margin"
+                android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                android:textColor="@color/colorBlack"
+                android:textStyle="bold"
+                android:textSize="24sp"
+                android:text="@string/class_information"
+                android:typeface="sans"
+                android:gravity="center_vertical" />
+            <LinearLayout
+                android:id="@+id/linearLayoutNextLecture"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/textClassInfo"
+                android:layout_marginStart="@dimen/activity_horizontal_margin"
+                android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                android:orientation="horizontal"
+                android:weightSum="100">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:textColor="@color/colorBlack"
+                    android:textStyle="italic"
+                    android:textSize="@dimen/text_margin"
+                    android:text="@string/next_lecture_on"
+                    android:typeface="normal"
+                    android:gravity="center_vertical"
+                    android:layout_weight="60"/>
 
-        <EditText
-            android:id="@+id/view_course_teacher_schedule_class"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="40"
-            android:background="@drawable/text_view_login"
-            android:gravity="center_vertical"
-            android:inputType="datetime"
-            android:padding="10dp"
-            android:textColor="@color/colorBlack"
-            android:textSize="@dimen/text_margin"
-            android:textStyle="italic"
-            android:typeface="normal"/>
-    </LinearLayout>
-    <Button
-        android:id="@+id/btnScheduleClass"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/linearLayoutNextLecture"
-        android:layout_margin="10dp"
-        android:background="@drawable/btn_blue"
-        android:textColor="@color/colorWhite"
-        android:textSize="@dimen/text_margin"
-        android:text="@string/schedule_class"
-        android:paddingStart="20dp"
-        android:paddingEnd="20dp"
-        android:paddingBottom="10dp"
-        android:paddingTop="10dp"
-        android:layout_centerHorizontal="true"
-        android:drawableStart="@drawable/icon_clock"
-        android:drawablePadding="@dimen/activity_horizontal_margin"
-        android:drawableTint="@color/colorWhite"/>
-    <LinearLayout
-        android:id="@+id/linearLayoutMeetLink"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/btnScheduleClass"
-        android:layout_marginTop="10dp"
-        android:layout_marginStart="@dimen/activity_horizontal_margin"
-        android:layout_marginEnd="@dimen/activity_horizontal_margin"
-        android:orientation="horizontal"
-        android:weightSum="100">
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:textColor="@color/colorBlack"
-            android:textStyle="italic"
-            android:textSize="@dimen/text_margin"
-            android:text="@string/class_meeting_link"
-            android:typeface="normal"
-            android:gravity="center_vertical"
-            android:layout_weight="60"/>
-        <EditText
-            android:id="@+id/teacher_view_course_meet_link"
-            android:inputType="text"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="10dp"
-            android:textColor="@color/colorBlack"
-            android:textStyle="italic"
-            android:textSize="@dimen/text_margin"
-            android:typeface="normal"
-            android:gravity="center_vertical"
-            android:layout_weight="40"
-            android:background="@drawable/text_view_login"/>
-    </LinearLayout>
-    <Button
-        android:id="@+id/btnUpdateLink"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/linearLayoutMeetLink"
-        android:layout_margin="10dp"
-        android:background="@drawable/btn_blue"
-        android:textColor="@color/colorWhite"
-        android:textSize="@dimen/text_margin"
-        android:text="@string/update_link"
-        android:paddingStart="20dp"
-        android:paddingEnd="20dp"
-        android:paddingBottom="10dp"
-        android:paddingTop="10dp"
-        android:layout_centerHorizontal="true"/>
+                <EditText
+                    android:id="@+id/view_course_teacher_schedule_class"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="40"
+                    android:background="@drawable/text_view_login"
+                    android:gravity="center_vertical"
+                    android:inputType="datetime"
+                    android:padding="10dp"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="@dimen/text_margin"
+                    android:textStyle="italic"
+                    android:typeface="normal"/>
+            </LinearLayout>
+            <Button
+                android:id="@+id/btnScheduleClass"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/linearLayoutNextLecture"
+                android:layout_margin="10dp"
+                android:background="@drawable/btn_blue"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/text_margin"
+                android:text="@string/schedule_class"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp"
+                android:layout_centerHorizontal="true"
+                android:drawableStart="@drawable/icon_clock"
+                android:drawablePadding="@dimen/activity_horizontal_margin"
+                android:drawableTint="@color/colorWhite"/>
+            <LinearLayout
+                android:id="@+id/linearLayoutMeetLink"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/btnScheduleClass"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="@dimen/activity_horizontal_margin"
+                android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                android:orientation="horizontal"
+                android:weightSum="100">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:textColor="@color/colorBlack"
+                    android:textStyle="italic"
+                    android:textSize="@dimen/text_margin"
+                    android:text="@string/class_meeting_link"
+                    android:typeface="normal"
+                    android:gravity="center_vertical"
+                    android:layout_weight="60"/>
+                <EditText
+                    android:id="@+id/teacher_view_course_meet_link"
+                    android:inputType="text"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="10dp"
+                    android:textColor="@color/colorBlack"
+                    android:textStyle="italic"
+                    android:textSize="@dimen/text_margin"
+                    android:typeface="normal"
+                    android:gravity="center_vertical"
+                    android:layout_weight="40"
+                    android:background="@drawable/text_view_login"/>
+            </LinearLayout>
+            <Button
+                android:id="@+id/btnUpdateLink"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/linearLayoutMeetLink"
+                android:layout_margin="10dp"
+                android:background="@drawable/btn_blue"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/text_margin"
+                android:text="@string/update_link"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp"
+                android:layout_centerHorizontal="true"/>
+        </RelativeLayout>
+    </FrameLayout>
+
 
     <!-- course information here. to be added later. -->
     <LinearLayout
         android:id="@+id/linearLayoutCourseInfo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/btnUpdateLink"
+        android:layout_below="@id/frame1"
         android:orientation="vertical"
         android:layout_marginTop="@dimen/activity_vertical_margin"
         android:layout_marginBottom="@dimen/activity_vertical_margin"
@@ -218,7 +289,7 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:id="@+id/divider"
-        android:layout_below="@id/btnUpdateLink"/>
+        android:layout_below="@id/frame1"/>
 
     <TextView
         android:id="@+id/textRegisteredStudents"

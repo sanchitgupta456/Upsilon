@@ -17,7 +17,7 @@
             android:id="@+id/imgCourseImage"
             android:layout_width="200dp"
             android:layout_height="160dp"
-            android:src="@drawable/background"
+            android:src="@drawable/lightlogo2"
             android:scaleType="centerCrop"
             tools:ignore="ContentDescription"
             android:layout_gravity="center_horizontal"/>

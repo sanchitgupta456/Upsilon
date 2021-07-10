@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:theme="@style/MaterialTheme">
     <ProgressBar
         android:id="@+id/loadingTeachersViewCourse"
         android:layout_width="wrap_content"
@@ -21,13 +23,11 @@
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation_teacher"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="?attr/actionBarSize"
         app:menu="@menu/bottom_navigation_teacher_menu"
         android:layout_alignParentBottom="true"
-        app:backgroundTint="@color/colorPrimaryDark"
-        android:background="@drawable/bottom_app_bar"
         app:elevation="20dp"
-        app:itemIconTint="@color/colorWhite"
-        app:itemTextColor="@color/colorWhite"/>
+        android:elevation="8dp"
+        android:theme="@style/Widget.MaterialComponents.BottomNavigationView"/>
 
 </RelativeLayout>
