@@ -117,7 +117,7 @@ public class ExploreFragment1 extends Fragment {
 
         JSONObject jsonBody = new JSONObject();
         try {
-            jsonBody.put("index",0);
+            jsonBody.put("index",10);
             jsonBody.put("filter","Rating");
             JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, API+"/paging",jsonBody,
                     new Response.Listener<JSONObject>() {
@@ -199,7 +199,7 @@ public class ExploreFragment1 extends Fragment {
 
     public void initRecyclerView(RecyclerView recyclerView, ArrayList<CourseFinal> list) {
         Log.d(TAG, "initRecyclerView: now displaying " + recyclerView.getId());
-        CoursesAdapter1 coursesAdapter1 = new CoursesAdapter1(list,getActivity().getApplication());
+        CoursesAdapter1 coursesAdapter1 = new CoursesAdapter1(list,((Upsilon)getActivity().getApplication()).getAPI() , ((Upsilon)getActivity().getApplication()).getToken());
         linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(coursesAdapter1);

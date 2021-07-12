@@ -12,6 +12,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.Volley;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -34,6 +36,8 @@ import io.realm.mongodb.mongo.MongoCollection;
 import io.realm.mongodb.mongo.MongoDatabase;
 import io.realm.mongodb.mongo.iterable.MongoCursor;
 
+import static io.realm.Realm.getApplicationContext;
+
 public class ExploreFragment3 extends Fragment {
     private static final String TAG = "Top Rated";
     String appID = "upsilon-ityvn";
@@ -47,6 +51,9 @@ public class ExploreFragment3 extends Fragment {
     private GsonBuilder gsonBuilder;
     RecyclerView recyclerView;
     SearchQuery searchQuery = new SearchQuery();
+    private RequestQueue queue;
+    private String API ;
+
 
     ArrayList<CourseFinal> list = new ArrayList<>();
 
@@ -67,6 +74,8 @@ public class ExploreFragment3 extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_explore3, container, false);
         recyclerView = (RecyclerView)  view.findViewById(R.id.exploreList3);
+        queue = Volley.newRequestQueue(getApplicationContext());
+        API = ((Upsilon)getActivity().getApplication()).getAPI();
 
 //        app = new App(new AppConfiguration.Builder(appID).build());
 //        user = app.currentUser();

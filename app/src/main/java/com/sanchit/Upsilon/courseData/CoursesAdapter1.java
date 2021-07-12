@@ -63,16 +63,24 @@ public class CoursesAdapter1 extends RecyclerView.Adapter<CoursesAdapter1.ViewHo
     private RequestQueue queue;
     private String API;
     private Application application;
+    private String Token;
 
     public CoursesAdapter1(List<CourseFinal>_courseList)
     {
         this.courseList = _courseList;
     }
 
-    public CoursesAdapter1(List<CourseFinal>_courseList,Application _application)
+    public CoursesAdapter1(List<CourseFinal>_courseList,String _API)
     {
         this.courseList = _courseList;
-        this.application = _application;
+        this.API = _API;
+    }
+
+    public CoursesAdapter1(List<CourseFinal>_courseList,String _API , String _Token)
+    {
+        this.courseList = _courseList;
+        this.API = _API;
+        this.Token = _Token;
     }
 
 
@@ -88,7 +96,6 @@ public class CoursesAdapter1 extends RecyclerView.Adapter<CoursesAdapter1.ViewHo
     public void onBindViewHolder(ViewHolder holder, final int position) {
         CourseFinal course = courseList.get(position);
         queue = Volley.newRequestQueue(context.getApplicationContext());
-        API = ((Upsilon)application).getAPI();
 
 //        App app = new App(new AppConfiguration.Builder(appID)
 //                .build());
@@ -127,7 +134,7 @@ public class CoursesAdapter1 extends RecyclerView.Adapter<CoursesAdapter1.ViewHo
                                                 }
                                                 else
                                                 {
-                                                    holder.textDistanceTvShow.setText(new StringBuilder().append("About")
+                                                    holder.textDistanceTvShow.setText(new StringBuilder().append("About ")
                                                         .append(String.format("%.2f",response.get("courseDistance")))
                                                        .append(" kilometers from your location").toString());
                                                 }
@@ -156,7 +163,7 @@ public class CoursesAdapter1 extends RecyclerView.Adapter<CoursesAdapter1.ViewHo
                             @Override
                             public Map<String, String> getHeaders() {
                                 Map<String, String> params = new HashMap<String, String>();
-                                params.put("token", ((Upsilon)application).getToken());
+                                params.put("token", Token);
                                 return params;
                             }
                         };

@@ -32,7 +32,7 @@ import io.realm.Realm;
 
 public class Upsilon extends Application {
 
-    String API = "http://192.168.0.107:3000";
+    String API = "https://upsilonbackend.herokuapp.com";
     String Token = null;
     private RequestQueue queue;
     ArrayList<String> interests = new ArrayList<>();
@@ -83,7 +83,7 @@ public class Upsilon extends Application {
         this.userLocation = userLocation;
     }
 
-    private void fetchUserLocation() {
+    public void fetchUserLocation() {
         JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.GET, API+"/userLocation",new JSONObject(),
                 new Response.Listener<JSONObject>() {
                     @Override

@@ -62,6 +62,7 @@ import com.sanchit.Upsilon.courseSearching.rankBy;
 import com.sanchit.Upsilon.userData.UserLocation;
 
 import org.bson.Document;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -206,10 +207,59 @@ public class ExploreFragment0 extends Fragment {
     }
     public void performSearch() {
         progressBar.setVisibility(View.VISIBLE);
+        JSONObject jsonBody = new JSONObject();
+        try {
+            jsonBody.put("index",0);
+            jsonBody.put("filter","Distance");
+            JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, API+"/paging",jsonBody,
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            Log.d("Response", response.toString());
+                            list = new ArrayList<CourseFinal>();
+                            try {
+                                JSONArray jsonArray = (JSONArray) response.get("courses");
+                                Log.v("array",String.valueOf(jsonArray));
+                                for(int i=0;i<jsonArray.length();i++)
+                                {
+                                    JSONObject jsonObject = (JSONObject) jsonArray.get(i);
+                                    Gson gson= new Gson();
+                                    CourseFinal course = gson.fromJson(jsonObject.toString(),CourseFinal.class);
+                                    list.add(course);
+                                    Log.v("course",String.valueOf(course.getCourseReviews()));
+                                }
+                                initRecyclerView(recyclerView, list);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+//                                initRecyclerView(recyclerView, list);
+
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Log.d("Error response", error.toString());
+                            Log.v(TAG, "Fetch Courses FAILED!");
+                            Log.e(TAG, error.toString());
+                        }
+                    }
+            ){
+                @Override
+                public Map<String, String> getHeaders() {
+                    Map<String, String> params = new HashMap<String, String>();
+                    params.put("token", ((Upsilon)getActivity().getApplication()).getToken());
+                    return params;
+                }
+            };
+            queue.add(jsonRequest);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 //        llLoader.setVisibility(View.VISIBLE);
-        mongoClient = user.getMongoClient("mongodb-atlas");
-        mongoDatabase = mongoClient.getDatabase("Upsilon");
-        MongoCollection<Document> mongoCollection  = mongoDatabase.getCollection("UserData");
+//        mongoClient = user.getMongoClient("mongodb-atlas");
+//        mongoDatabase = mongoClient.getDatabase("Upsilon");
+//        MongoCollection<Document> mongoCollection  = mongoDatabase.getCollection("UserData");
 //        if(userdata.get("userLocation")!=null) {
 //            recyclerView.setVisibility(View.VISIBLE);
 //            alter.setVisibility(View.GONE);
@@ -222,55 +272,55 @@ public class ExploreFragment0 extends Fragment {
 //        }
 
         //Blank query to find every single user in db
-        Document queryFilter  = new Document("userid", user.getId());
-
-        RealmResultTask<MongoCursor<Document>> findTask = mongoCollection.find(queryFilter).iterator();
-
-        findTask.getAsync(task -> {
-            if (task.isSuccess()) {
-                MongoCursor<Document> results = task.get();
-                int i = 0;
-                while (results.hasNext()) {
-                    //Log.v("EXAMPLE", results.next().toString());
-                    Document currentDoc = results.next();
-                    Document userLoc = (Document) currentDoc.get("userLocation");
-                    Log.v("UserLocation", String.valueOf(currentDoc.get("userLocation")));
-                    if(currentDoc.get("userLocation")!=null && ((Document) currentDoc.get("userLocation")).get("lattitude")!=null) {
-                        searchQuery.searchForCourse(app, mongoDatabase, getContext(), adapter, recyclerView, 10, userLoc);
-                        list = new ArrayList<>();
-                        list.clear();
-//                        list = searchQuery.getSearchResultsList();
-                        Log.d(TAG, "performSearch: list after search: size: " + list.size());
-                        Log.v("COURSEDISTANCE", "START!");
-//                        for (int p = 0; p < list.size(); p++){
-//                            Log.v("COURSEDISTANCE", list.get(p).getCourseName());
-//                            Log.v("COURSEDISTANCE", Double.toString(searchQuery.getCourseDistance(list.get(p), userLoc)));
-//                        }
-                    }
-                    else
-                    {
-                        Snackbar.make(requireView(),"Please add Your Location in UserData to search courses near you",1).show();
-                    }
-                    if(!results.hasNext())
-                    {
-                        progressBar.setVisibility(View.GONE);
-//                        llLoader.setVisibility(View.GONE);
-                    }
-                }
-            } else {
-//                llLoader.setVisibility(View.INVISIBLE);
-                progressBar.setVisibility(View.GONE);
-                Log.v("User","Failed to complete search");
-            }
-        });
-//        list = searchQuery.getSearchResultsList();
-
-        initRecyclerView(recyclerView,list);
+//        Document queryFilter  = new Document("userid", user.getId());
+//
+//        RealmResultTask<MongoCursor<Document>> findTask = mongoCollection.find(queryFilter).iterator();
+//
+//        findTask.getAsync(task -> {
+//            if (task.isSuccess()) {
+//                MongoCursor<Document> results = task.get();
+//                int i = 0;
+//                while (results.hasNext()) {
+//                    //Log.v("EXAMPLE", results.next().toString());
+//                    Document currentDoc = results.next();
+//                    Document userLoc = (Document) currentDoc.get("userLocation");
+//                    Log.v("UserLocation", String.valueOf(currentDoc.get("userLocation")));
+//                    if(currentDoc.get("userLocation")!=null && ((Document) currentDoc.get("userLocation")).get("lattitude")!=null) {
+//                        searchQuery.searchForCourse(app, mongoDatabase, getContext(), adapter, recyclerView, 10, userLoc);
+//                        list = new ArrayList<>();
+//                        list.clear();
+////                        list = searchQuery.getSearchResultsList();
+//                        Log.d(TAG, "performSearch: list after search: size: " + list.size());
+//                        Log.v("COURSEDISTANCE", "START!");
+////                        for (int p = 0; p < list.size(); p++){
+////                            Log.v("COURSEDISTANCE", list.get(p).getCourseName());
+////                            Log.v("COURSEDISTANCE", Double.toString(searchQuery.getCourseDistance(list.get(p), userLoc)));
+////                        }
+//                    }
+//                    else
+//                    {
+//                        Snackbar.make(requireView(),"Please add Your Location in UserData to search courses near you",1).show();
+//                    }
+//                    if(!results.hasNext())
+//                    {
+//                        progressBar.setVisibility(View.GONE);
+////                        llLoader.setVisibility(View.GONE);
+//                    }
+//                }
+//            } else {
+////                llLoader.setVisibility(View.INVISIBLE);
+//                progressBar.setVisibility(View.GONE);
+//                Log.v("User","Failed to complete search");
+//            }
+//        });
+////        list = searchQuery.getSearchResultsList();
+//
+//        initRecyclerView(recyclerView,list);
     }
 
     public void initRecyclerView(RecyclerView recyclerView, ArrayList<CourseFinal> list) {
         Log.d(TAG, "initRecyclerView: now displaying " + recyclerView.getId());
-        CoursesAdapter1 coursesAdapter1 = new CoursesAdapter1(list);
+        CoursesAdapter1 coursesAdapter1 = new CoursesAdapter1(list,((Upsilon)getActivity().getApplication()).getAPI() , ((Upsilon)getActivity().getApplication()).getToken());
         linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(coursesAdapter1);
@@ -339,7 +389,7 @@ public class ExploreFragment0 extends Fragment {
                         recyclerView.setVisibility(View.VISIBLE);
                         alter.setVisibility(View.GONE);
                         llLoader.setVisibility(View.INVISIBLE);
-//                        performSearch();
+                        performSearch();
         }
         else
         {
@@ -405,6 +455,8 @@ public class ExploreFragment0 extends Fragment {
                             llLoader.setVisibility(View.INVISIBLE);
 //                                    performSearch();
                                     alter.setVisibility(View.GONE);
+                            ((Upsilon)getActivity().getApplication()).fetchUserLocation();
+                            performSearch();
                                     recyclerView.setVisibility(View.VISIBLE);
                         }
                     },
