@@ -132,10 +132,10 @@ public class ExploreActivity extends AppCompatActivity {
         app = new App(new AppConfiguration.Builder(appID).build());
         progressBar = findViewById(R.id.loadingExplore);
 
-        user = app.currentUser();
-        mongoClient = user.getMongoClient("mongodb-atlas");
-        mongoDatabase = mongoClient.getDatabase("Upsilon");
-        MongoCollection<Document> mongoCollection  = mongoDatabase.getCollection("CourseData");
+//        user = app.currentUser();
+//        mongoClient = user.getMongoClient("mongodb-atlas");
+//        mongoDatabase = mongoClient.getDatabase("Upsilon");
+//        MongoCollection<Document> mongoCollection  = mongoDatabase.getCollection("CourseData");
         getFilters();
 
         viewPager = (ViewPager)(findViewById(R.id.viewPager));
@@ -291,33 +291,31 @@ public class ExploreActivity extends AppCompatActivity {
     }
 
     public void getFilters() {
-        App app = new App(new AppConfiguration.Builder(appID).build());
-        User user = app.currentUser();
-        mongoClient = user.getMongoClient("mongodb-atlas");
-        mongoDatabase = mongoClient.getDatabase("Upsilon");
-        MongoCollection<Document> mongoCollection  = mongoDatabase.getCollection("Utility");
+//        App app = new App(new AppConfiguration.Builder(appID).build());
+//        User user = app.currentUser();
+//        mongoClient = user.getMongoClient("mongodb-atlas");
+//        mongoDatabase = mongoClient.getDatabase("Upsilon");
+//        MongoCollection<Document> mongoCollection  = mongoDatabase.getCollection("Utility");
 
-        Document queryFilter  = new Document("field","interests");
+//        Document queryFilter  = new Document("field","interests");
 
-        RealmResultTask<MongoCursor<Document>> findTask = mongoCollection.find(queryFilter).iterator();
+//        RealmResultTask<MongoCursor<Document>> findTask = mongoCollection.find(queryFilter).iterator();
 
-        findTask.getAsync(task -> {
-            if (task.isSuccess()) {
-                MongoCursor<Document> results = task.get();
-                if(results.hasNext())
-                {
-                    Document document = results.next();
+
+            if(((Upsilon)this.getApplication()).getInterests() !=null)
+            {
                     all_tags = new ArrayList<>();
                     isChecked = new ArrayList<>();
-                    ArrayList<String> categories = (ArrayList<String>) document.get("interests");
+                    ArrayList<String> categories = (ArrayList<String>) ((Upsilon)this.getApplication()).getInterests();
                     for (String tag : categories) {
                         all_tags.add(tag);
                         isChecked.add(false);
                     }
                     initFiltersGroup();
-                }
-                else
-                {
+            }
+            else
+            {
+                    ((Upsilon)this.getApplication()).fetchInterests();
                     all_tags = new ArrayList<>();
                     isChecked = new ArrayList<>();
                     String[] categories = getResources().getStringArray(R.array.categories);
@@ -326,20 +324,46 @@ public class ExploreActivity extends AppCompatActivity {
                         isChecked.add(false);
                     }
                     initFiltersGroup();
-                }
             }
-            else
-            {
-                all_tags = new ArrayList<>();
-                isChecked = new ArrayList<>();
-                String[] categories = getResources().getStringArray(R.array.categories);
-                for (String tag : categories) {
-                    all_tags.add(tag);
-                    isChecked.add(false);
-                }
-                initFiltersGroup();
-            }
-        });
+//        findTask.getAsync(task -> {
+//            if (task.isSuccess()) {
+//                MongoCursor<Document> results = task.get();
+//                if(results.hasNext())
+//                {
+//                    Document document = results.next();
+//                    all_tags = new ArrayList<>();
+//                    isChecked = new ArrayList<>();
+//                    ArrayList<String> categories = (ArrayList<String>) document.get("interests");
+//                    for (String tag : categories) {
+//                        all_tags.add(tag);
+//                        isChecked.add(false);
+//                    }
+//                    initFiltersGroup();
+//                }
+//                else
+//                {
+//                    all_tags = new ArrayList<>();
+//                    isChecked = new ArrayList<>();
+//                    String[] categories = getResources().getStringArray(R.array.categories);
+//                    for (String tag : categories) {
+//                        all_tags.add(tag);
+//                        isChecked.add(false);
+//                    }
+//                    initFiltersGroup();
+//                }
+//            }
+//            else
+//            {
+//                all_tags = new ArrayList<>();
+//                isChecked = new ArrayList<>();
+//                String[] categories = getResources().getStringArray(R.array.categories);
+//                for (String tag : categories) {
+//                    all_tags.add(tag);
+//                    isChecked.add(false);
+//                }
+//                initFiltersGroup();
+//            }
+//        });
 
     }
 

@@ -1,6 +1,7 @@
 package com.sanchit.Upsilon;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
@@ -22,6 +23,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.provider.Settings;
 import android.text.TextUtils;
+import android.util.ArrayMap;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,6 +31,12 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
@@ -50,13 +58,18 @@ import com.sanchit.Upsilon.courseData.CoursesAdapter1;
 import com.sanchit.Upsilon.courseLocationMap.MapsActivity;
 import com.sanchit.Upsilon.courseSearching.SearchQuery;
 import com.sanchit.Upsilon.courseSearching.rankBy;
+import com.sanchit.Upsilon.userData.UserLocation;
 
 import org.bson.Document;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Objects;
 
 import io.realm.mongodb.App;
@@ -91,6 +104,8 @@ public class ExploreFragment0 extends Fragment {
     ProgressBar progressBar;
 
     ArrayList<Course> list = new ArrayList<>();
+    private RequestQueue queue;
+    private String API ;
 
     public rankBy sortCriteria = rankBy.LOC;
 
@@ -116,20 +131,22 @@ public class ExploreFragment0 extends Fragment {
         alter = (CardView) view.findViewById(R.id.alter);
         ll = (LinearLayout) view.findViewById(R.id.linearLayoutSetupMaps);
         llLoader = (LinearLayout) view.findViewById(R.id.llLocationSetupProgress);
+        queue = Volley.newRequestQueue(getApplicationContext());
+        API = ((Upsilon)getActivity().getApplication()).getAPI();
 //        llLoader.setVisibility(View.INVISIBLE);
         Log.d(TAG, "onCreateView: started. 102");
 
-        app = new App(new AppConfiguration.Builder(appID).build());
-        user = app.currentUser();
-        userdata = user.getCustomData();
-        mongoClient = user.getMongoClient("mongodb-atlas");
-        mongoDatabase = mongoClient.getDatabase("Upsilon");
-        MongoCollection<Document> mongoCollection  = mongoDatabase.getCollection("CourseData");
+//        app = new App(new AppConfiguration.Builder(appID).build());
+//        user = app.currentUser();
+//        userdata = user.getCustomData();
+//        mongoClient = user.getMongoClient("mongodb-atlas");
+//        mongoDatabase = mongoClient.getDatabase("Upsilon");
+//        MongoCollection<Document> mongoCollection  = mongoDatabase.getCollection("CourseData");
         findLocation();
         Log.d(TAG, "onCreateView: 109");
-        userdata = user.getCustomData();
+//        userdata = user.getCustomData();
         Log.d(TAG, "onCreateView: 111");
-        alter.setVisibility(View.GONE);
+//        alter.setVisibility(View.GONE);
         ll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -264,7 +281,7 @@ public class ExploreFragment0 extends Fragment {
 //        llLoader.setVisibility(View.VISIBLE);
         Log.d(TAG, "getLocation: I got permissions!");
         userLocation = new Document();
-        if (ActivityCompat.checkSelfPermission(Objects.requireNonNull(getContext()), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
             //    ActivityCompat#requestPermissions
             // here to request the missing permissions, and then overriding
@@ -274,11 +291,12 @@ public class ExploreFragment0 extends Fragment {
             // for ActivityCompat#requestPermissions for more details.
             return;
         }
-        FusedLocationProviderClient fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(Objects.requireNonNull(getContext()));;
+        FusedLocationProviderClient fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireContext());;
         fusedLocationProviderClient.getLastLocation().addOnCompleteListener(new OnCompleteListener<Location>() {
             @Override
             public void onComplete(@NonNull Task<Location> task) {
                 Location location = task.getResult();
+                Log.v("Location", String.valueOf(location));
                 if(location!=null)
                 {
                     Log.v("Location","Location"+location.getLatitude());
@@ -290,7 +308,7 @@ public class ExploreFragment0 extends Fragment {
                         viewModel.setCity(addresses.get(0).getLocality());
                         Pincode.setText(addresses.get(0).getPostalCode());
                         viewModel.setPincode(addresses.get(0).getPostalCode());*/
-                        userLocation.append("lattitude",location.getLatitude());
+                        userLocation.append("latitude",location.getLatitude());
                         userLocation.append("longitude",location.getLongitude());
                         //viewModel.setUserLocation(userLocation);
                         //user.getCustomData().append("userLocation", userLocation);
@@ -313,105 +331,162 @@ public class ExploreFragment0 extends Fragment {
 
     public void findLocation(){
         progressBar.setVisibility(View.VISIBLE);
-//        llLoader.setVisibility(View.VISIBLE);
-        Document queryFilter = new Document("userid", user.getId());
-        mongoClient = user.getMongoClient("mongodb-atlas");
-        mongoDatabase = mongoClient.getDatabase("Upsilon");
-        MongoCollection<Document> mongoCollection  = mongoDatabase.getCollection("UserData");
-        RealmResultTask<MongoCursor<Document>> findTask = mongoCollection.find(queryFilter).iterator();
-
-        findTask.getAsync(task -> {
-            if (task.isSuccess()) {
-                MongoCursor<Document> results = task.get();
-                if (!results.hasNext()) {
-
-                } else {
-                    Document userdata = results.next();
-                    userLocation = (Document) userdata.get("userLocation");
-                    if(userLocation!=null && userLocation.get("lattitude")!=null) {
+        if(((Upsilon)getActivity().getApplication()).getUserLocation() != null)
+        {
                         progressBar.setVisibility(View.GONE);
-                        Log.v("ExploreFragment0","userLoc is not null");
+                        Log.v("ExploreFragment0","userLoc is not null"+String.valueOf(((Upsilon)getActivity().getApplication()).getUserLocation()));
                         recyclerView.setVisibility(View.VISIBLE);
                         alter.setVisibility(View.GONE);
                         llLoader.setVisibility(View.INVISIBLE);
-                        performSearch();
-                    }
-                    else
-                    {
-                        progressBar.setVisibility(View.GONE);
-                        llLoader.setVisibility(View.INVISIBLE);
-                        Log.v("ExploreFragment0","userLoc is null");
-                        recyclerView.setVisibility(View.GONE);
-                        alter.setVisibility(View.VISIBLE);
-                    }
-                }
-            } else {
-                progressBar.setVisibility(View.GONE);
-                Log.v("User", "Failed to complete search");
-            }
-        });
+//                        performSearch();
+        }
+        else
+        {
+            progressBar.setVisibility(View.GONE);
+            llLoader.setVisibility(View.INVISIBLE);
+            Log.v("ExploreFragment0","userLoc is null");
+            recyclerView.setVisibility(View.GONE);
+            alter.setVisibility(View.VISIBLE);
+        }
+//        llLoader.setVisibility(View.VISIBLE);
+//        Document queryFilter = new Document("userid", user.getId());
+//        mongoClient = user.getMongoClient("mongodb-atlas");
+//        mongoDatabase = mongoClient.getDatabase("Upsilon");
+//        MongoCollection<Document> mongoCollection  = mongoDatabase.getCollection("UserData");
+//        RealmResultTask<MongoCursor<Document>> findTask = mongoCollection.find(queryFilter).iterator();
+
+//        findTask.getAsync(task -> {
+//            if (task.isSuccess()) {
+//                MongoCursor<Document> results = task.get();
+//                if (!results.hasNext()) {
+//
+//                } else {
+//                    Document userdata = results.next();
+//                    userLocation = (Document) userdata.get("userLocation");
+//                    if(userLocation!=null && userLocation.get("lattitude")!=null) {
+//                        progressBar.setVisibility(View.GONE);
+//                        Log.v("ExploreFragment0","userLoc is not null");
+//                        recyclerView.setVisibility(View.VISIBLE);
+//                        alter.setVisibility(View.GONE);
+//                        llLoader.setVisibility(View.INVISIBLE);
+//                        performSearch();
+//                    }
+//                    else
+//                    {
+//                        progressBar.setVisibility(View.GONE);
+//                        llLoader.setVisibility(View.INVISIBLE);
+//                        Log.v("ExploreFragment0","userLoc is null");
+//                        recyclerView.setVisibility(View.GONE);
+//                        alter.setVisibility(View.VISIBLE);
+//                    }
+//                }
+//            } else {
+//                progressBar.setVisibility(View.GONE);
+//                Log.v("User", "Failed to complete search");
+//            }
+//        });
     }
 
     public void updateLocation(){
-        Document queryFilter = new Document("userid", user.getId());
-        mongoClient = user.getMongoClient("mongodb-atlas");
-        mongoDatabase = mongoClient.getDatabase("Upsilon");
-        MongoCollection<Document> mongoCollection  = mongoDatabase.getCollection("UserData");
-        RealmResultTask<MongoCursor<Document>> findTask = mongoCollection.find(queryFilter).iterator();
+        Log.v("Location",String.valueOf(userLocation.get("latitude"))+String.valueOf(userLocation.get("longitude")));
+        Map<String, String> mHeaders = new ArrayMap<String, String>();
+        mHeaders.put("token",((Upsilon)this.getActivity().getApplication()).getToken());
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("latitude", userLocation.get("latitude"));
+            jsonObject.put("longitude", userLocation.get("longitude"));
 
-        findTask.getAsync(task -> {
-            if (task.isSuccess()) {
-                MongoCursor<Document> results = task.get();
-                if (!results.hasNext()) {
-                    
-                    mongoCollection.insertOne(
-                            new Document("userid", user.getId()).append("userLocation",userLocation))
-                            .getAsync(result -> {
-                                if (result.isSuccess()) {
-                                    Log.v("EXAMPLE", "Inserted custom user data document. _id of inserted document: "
-                                            + result.get().getInsertedId());
-                                    llLoader.setVisibility(View.INVISIBLE);
-                                    performSearch();
+            JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, API+"/userLocation",jsonObject,
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            Log.d("UpdatingUserLocation", response.toString());
+                            llLoader.setVisibility(View.INVISIBLE);
+//                                    performSearch();
                                     alter.setVisibility(View.GONE);
                                     recyclerView.setVisibility(View.VISIBLE);
-                                    Log.d(TAG, "updateLocation: inserted");
-                                } else {
-                                    llLoader.setVisibility(View.INVISIBLE);
-                                    Log.e("EXAMPLE", "Unable to insert custom user data. Error: " + result.getError());
-                                }
-                            });
-                    Log.d(TAG, "updateLocation: This is some error?!");
-                } else {
-                    Document userdata = results.next();
-                    userdata.append("userLocation",userLocation);
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @SuppressLint("LongLogTag")
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Log.d("ErrorUpdatingUserLocation", error.toString());
+                                                                llLoader.setVisibility(View.INVISIBLE);
 
-                    mongoCollection.updateOne(
-                            new Document("userid", user.getId()), (userdata))
-                            .getAsync(result -> {
-                                if (result.isSuccess()) {
-                                    llLoader.setVisibility(View.INVISIBLE);
-                                    Log.v("EXAMPLE", "Inserted custom user data document. _id of inserted document: "
-                                            + result.get().getModifiedCount());
-                                    Log.d(TAG, "updateLocation: updated");
-                                    performSearch();
-                                    alter.setVisibility(View.GONE);
-                                    recyclerView.setVisibility(View.VISIBLE);
-                                } else {
-                                    llLoader.setVisibility(View.INVISIBLE);
-                                    Log.e("EXAMPLE", "Unable to insert custom user data. Error: " + result.getError());
-                                }
-                            });
+                        }
+                    }
+            ){
+                @Override
+                public Map<String, String> getHeaders() {
+                    Map<String, String> params = new HashMap<String, String>();
+                    params.put("token", ((Upsilon)getActivity().getApplication()).getToken());
+                    return params;
                 }
-                while (results.hasNext()) {
-                    //Log.v("EXAMPLE", results.next().toString());
-                    Document currentDoc = results.next();
-                    Log.v("User", currentDoc.getString("userid"));
-                }
-            } else {
-                llLoader.setVisibility(View.INVISIBLE);
-                Log.v("User", "Failed to complete search");
-            }
-        });
+            };
+            queue.add(jsonRequest);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+//        Document queryFilter = new Document("userid", user.getId());
+//        mongoClient = user.getMongoClient("mongodb-atlas");
+//        mongoDatabase = mongoClient.getDatabase("Upsilon");
+//        MongoCollection<Document> mongoCollection  = mongoDatabase.getCollection("UserData");
+//        RealmResultTask<MongoCursor<Document>> findTask = mongoCollection.find(queryFilter).iterator();
+//        findTask.getAsync(task -> {
+//            if (task.isSuccess()) {
+//                MongoCursor<Document> results = task.get();
+//                if (!results.hasNext()) {
+//
+//                    mongoCollection.insertOne(
+//                            new Document("userid", user.getId()).append("userLocation",userLocation))
+//                            .getAsync(result -> {
+//                                if (result.isSuccess()) {
+//                                    Log.v("EXAMPLE", "Inserted custom user data document. _id of inserted document: "
+//                                            + result.get().getInsertedId());
+//                                    llLoader.setVisibility(View.INVISIBLE);
+//                                    performSearch();
+//                                    alter.setVisibility(View.GONE);
+//                                    recyclerView.setVisibility(View.VISIBLE);
+//                                    Log.d(TAG, "updateLocation: inserted");
+//                                } else {
+//                                    llLoader.setVisibility(View.INVISIBLE);
+//                                    Log.e("EXAMPLE", "Unable to insert custom user data. Error: " + result.getError());
+//                                }
+//                            });
+//                    Log.d(TAG, "updateLocation: This is some error?!");
+//                } else {
+//                    Document userdata = results.next();
+//                    userdata.append("userLocation",userLocation);
+//
+//                    mongoCollection.updateOne(
+//                            new Document("userid", user.getId()), (userdata))
+//                            .getAsync(result -> {
+//                                if (result.isSuccess()) {
+//                                    llLoader.setVisibility(View.INVISIBLE);
+//                                    Log.v("EXAMPLE", "Inserted custom user data document. _id of inserted document: "
+//                                            + result.get().getModifiedCount());
+//                                    Log.d(TAG, "updateLocation: updated");
+//                                    performSearch();
+//                                    alter.setVisibility(View.GONE);
+//                                    recyclerView.setVisibility(View.VISIBLE);
+//                                } else {
+//                                    llLoader.setVisibility(View.INVISIBLE);
+//                                    Log.e("EXAMPLE", "Unable to insert custom user data. Error: " + result.getError());
+//                                }
+//                            });
+//                }
+//                while (results.hasNext()) {
+//                    //Log.v("EXAMPLE", results.next().toString());
+//                    Document currentDoc = results.next();
+//                    Log.v("User", currentDoc.getString("userid"));
+//                }
+//            } else {
+//                llLoader.setVisibility(View.INVISIBLE);
+//                Log.v("User", "Failed to complete search");
+//            }
+//        });
         Log.d(TAG, "updateLocation: safe exit here");
     }
 

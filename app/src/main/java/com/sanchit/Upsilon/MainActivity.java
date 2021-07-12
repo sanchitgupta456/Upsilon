@@ -33,13 +33,22 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.facebook.login.LoginManager;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
@@ -54,9 +63,12 @@ import com.sanchit.Upsilon.courseSearching.rankBy;
 import com.sanchit.Upsilon.notifications.NotifService;
 import com.sanchit.Upsilon.notifications.UpsilonJobService;
 import com.sanchit.Upsilon.ui.login.LoginActivity;
+import com.sanchit.Upsilon.ui.login.SignUpActivity;
 import com.squareup.picasso.Picasso;
 
 import org.bson.Document;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -120,8 +132,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private String college;
     private String email;
     private Menu menu;
-
-
     //NOTIFS
     Intent serviceIntent;
     Intent mServiceIntent;
@@ -139,6 +149,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     DrawerLayout drawerLayout;
     NavigationView navigationView;
 
+    private RequestQueue queue;
+    private String API ;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -146,6 +160,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawerLayout = findViewById(R.id.drawer_layout);
         Intent intent1 = getIntent();
         email = intent1.getStringExtra("email");
+        queue = Volley.newRequestQueue(getApplicationContext());
+        API = ((Upsilon)this.getApplication()).getAPI();
         /*ctx = this;
         //startService(upsilonJobService);
         mSensorService = new NotifService(getCtx());
@@ -184,22 +200,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else {
             frame2.setVisibility(View.VISIBLE);
         }*/
-        app = new App(new AppConfiguration.Builder(appID)
-                .build());
-        User user = app.currentUser();
+//        app = new App(new AppConfiguration.Builder(appID)
+//                .build());
+//        User user = app.currentUser();
 
-        if (user == null){
+        if ( ((Upsilon)this.getApplication()).getToken() == null){
             startActivity(new Intent(MainActivity.this, LoginActivity.class));
         }
         else
         {
-            if(email==null)
-            {
-                email = user.getProfile().getEmail();
-            }
-                app.getSync();
-            app.currentUser().getRefreshToken();
-            app.currentUser().getAccessToken();
+//            if(email==null)
+//            {
+//                email = user.getProfile().getEmail();
+//            }
+//                app.getSync();
+//            app.currentUser().getRefreshToken();
+//            app.currentUser().getAccessToken();
         }
         //Toolbar toolbar = findViewById(R.id.toolbar);
  //     setSupportActionBar(toolbar);
@@ -243,106 +259,96 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             LinearLayout header_more = navigationView.getHeaderView(0).findViewById(R.id.more);
             header_more.setVisibility(View.VISIBLE);
          */
-        if(user==null)
+        if(((Upsilon)this.getApplication()).getToken()==null)
         {
             Intent intent = new Intent(MainActivity.this, LoginActivity.class);
             startActivity(intent);
         }
-        else
-        {
-            updateMenu();
-            getCourseData();
-//            Document userdata = user.getCustomData();
-//            if(userdata.get("teacherSetup")==null)
-//            {
-//                navigationView.getMenu().clear();
-//                navigationView.inflateMenu(R.menu.home_drawer_menu_1);
-//            }
-//            else
-//            {
-//                navigationView.getMenu().clear();
-//                navigationView.inflateMenu(R.menu.home_drawer_menu_1);
-//            }
-            Log.v("RefreshToken",app.currentUser().getRefreshToken().toString());
-            //operationPURGE(user);
-            //operationCalulateDistance();
-            mongoClient = user.getMongoClient("mongodb-atlas");
-            mongoDatabase = mongoClient.getDatabase("Upsilon");
-            MongoCollection<Document> mongoCollection  = mongoDatabase.getCollection("UserData");
-
-            //Blank query to find every single course in db
-            //TODO: Modify query to look for user preferred course IDs
-            Document queryFilter  = new Document("userid",user.getId());
-
-            RealmResultTask<MongoCursor<Document>> findTask = mongoCollection.find(queryFilter).iterator();
-
-            findTask.getAsync(task -> {
-                if (task.isSuccess()) {
-                    MongoCursor<Document> results = task.get();
-                    if(!results.hasNext())
-                    {
-                        mongoCollection.insertOne(
-                                new Document("userid", user.getId()).append("favoriteColor", "pink").append("email",email).append("teacherSetup",false))
-                                .getAsync(result -> {
-                                    if (result.isSuccess()) {
-                                        Log.v("EXAMPLE", "Inserted custom user data document. _id of inserted document: "
-                                                + result.get().getInsertedId());
-                                        goToSetupActivity();
-                                    } else {
-                                        Snackbar.make(drawerLayout,"An error occured . Please signIn again",Snackbar.LENGTH_LONG).show();
-                                        Log.e("EXAMPLE", "Unable to insert custom user data. Error: " + result.getError());
-                                    }
-                                });
-                    }
-                    else
-                    {
-                        Log.v("User", "successfully found the user");
-//                        getCourseData();
-
-                    }
-                    while (results.hasNext()) {
-                        //Log.v("EXAMPLE", results.next().toString());
-                        Document currentDoc = results.next();
-                        /*if(currentDoc.get("profilePicture") ==null)
-                        {
-                            goToSetupActivity();
-                        }
-                        if(currentDoc.get("username") == null)
-                        {
-                            goToSetupActivity();
-                        }*/
-                        userLoc = (Document) currentDoc.get("userLocation");
-                        Log.v("User",currentDoc.getString("userid"));
-                        try {
-                            Picasso.with(getApplicationContext()).load(currentDoc.getString("profilePicUrl")).error(R.drawable.default_person_image).into(imageView);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                        try {
-                            tvEmail.setText(user.getProfile().getEmail());
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                        try {
-                            tvName.setText(currentDoc.getString("name"));
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                        try {
-                            if(!currentDoc.getString("phonenumber").equals("0"))
-                            {
-                                tvPhone.setText(currentDoc.getString("phonenumber"));
-                            }
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                        //Log.v("ProfilePic",currentDoc.getString("profilePicUrl"));
-                    }
-                } else {
-                    Snackbar.make(drawerLayout,"An error occured . Please signIn again",Snackbar.LENGTH_LONG).show();
-                    Log.v("User","Failed to complete search");
-                }
-            });
+        else {
+//            updateMenu();
+//            getCourseData();
+//
+//            Log.v("RefreshToken",app.currentUser().getRefreshToken().toString());
+//            //operationPURGE(user);
+//            //operationCalulateDistance();
+//            mongoClient = user.getMongoClient("mongodb-atlas");
+//            mongoDatabase = mongoClient.getDatabase("Upsilon");
+//            MongoCollection<Document> mongoCollection  = mongoDatabase.getCollection("UserData");
+//
+//            //Blank query to find every single course in db
+//            //TODO: Modify query to look for user preferred course IDs
+//            Document queryFilter  = new Document("userid",user.getId());
+//
+//            RealmResultTask<MongoCursor<Document>> findTask = mongoCollection.find(queryFilter).iterator();
+//
+//            findTask.getAsync(task -> {
+//                if (task.isSuccess()) {
+//                    MongoCursor<Document> results = task.get();
+//                    if(!results.hasNext())
+//                    {
+//                        mongoCollection.insertOne(
+//                                new Document("userid", user.getId()).append("favoriteColor", "pink").append("email",email).append("teacherSetup",false))
+//                                .getAsync(result -> {
+//                                    if (result.isSuccess()) {
+//                                        Log.v("EXAMPLE", "Inserted custom user data document. _id of inserted document: "
+//                                                + result.get().getInsertedId());
+//                                        goToSetupActivity();
+//                                    } else {
+//                                        Snackbar.make(drawerLayout,"An error occured . Please signIn again",Snackbar.LENGTH_LONG).show();
+//                                        Log.e("EXAMPLE", "Unable to insert custom user data. Error: " + result.getError());
+//                                    }
+//                                });
+//                    }
+//                    else
+//                    {
+//                        Log.v("User", "successfully found the user");
+////                        getCourseData();
+//
+//                    }
+//                    while (results.hasNext()) {
+//                        //Log.v("EXAMPLE", results.next().toString());
+//                        Document currentDoc = results.next();
+//                        /*if(currentDoc.get("profilePicture") ==null)
+//                        {
+//                            goToSetupActivity();
+//                        }
+//                        if(currentDoc.get("username") == null)
+//                        {
+//                            goToSetupActivity();
+//                        }*/
+//                        userLoc = (Document) currentDoc.get("userLocation");
+//                        Log.v("User",currentDoc.getString("userid"));
+//                        try {
+//                            Picasso.with(getApplicationContext()).load(currentDoc.getString("profilePicUrl")).error(R.drawable.default_person_image).into(imageView);
+//                        } catch (Exception e) {
+//                            e.printStackTrace();
+//                        }
+//                        try {
+//                            tvEmail.setText(user.getProfile().getEmail());
+//                        } catch (Exception e) {
+//                            e.printStackTrace();
+//                        }
+//                        try {
+//                            tvName.setText(currentDoc.getString("name"));
+//                        } catch (Exception e) {
+//                            e.printStackTrace();
+//                        }
+//                        try {
+//                            if(!currentDoc.getString("phonenumber").equals("0"))
+//                            {
+//                                tvPhone.setText(currentDoc.getString("phonenumber"));
+//                            }
+//                        } catch (Exception e) {
+//                            e.printStackTrace();
+//                        }
+//                        //Log.v("ProfilePic",currentDoc.getString("profilePicUrl"));
+//                    }
+//                } else {
+//                    Snackbar.make(drawerLayout,"An error occured . Please signIn again",Snackbar.LENGTH_LONG).show();
+//                    Log.v("User","Failed to complete search");
+//                }
+//            });
+//        }
         }
         explore = (TextView) findViewById(R.id.textExploreCoursesList);
         explore.setOnClickListener(new View.OnClickListener() {
@@ -413,200 +419,226 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         courseArrayList1 = new ArrayList<>();
         courseArrayList2 = new ArrayList<>();
 
-
-
-            displayCoursesInRecycler();
+        displayCoursesInRecycler();
 // an authenticated user is required to access a MongoDB instance
 
-            if (app.currentUser()!=null) {
-                final User user = app.currentUser();
-                assert user != null;
-                MongoCollection<Document> mongoCollection  = mongoDatabase.getCollection("CourseData");
-                MongoCollection<Document> mongoCollection2  = mongoDatabase.getCollection("UserData");
-                //Blank query to find every single course in db
-                //TODO: Modify query to look for user preferred course IDs
+            if (((Upsilon)this.getApplication()).getToken() != null) {
 
-                Document queryFilter2 = new Document("userid", user.getId());
-
-                RealmResultTask<MongoCursor<Document>> findTask2 = mongoCollection2.find(queryFilter2).iterator();
-
-                findTask2.getAsync(task2 -> {
-                    if (task2.isSuccess()) {
-                        MongoCursor<Document> results1 = task2.get();
-                        if (!results1.hasNext()) {
-                            Log.v("ViewCourse", "Couldnt Find The Tutor");
-                        } else {
-                            Log.v("User", "successfully found the Tutor");
-                        }
-                        while (results1.hasNext()) {
-                            //Log.v("EXAMPLE", results.next().toString());
-                            Document currentDoc1 = results1.next();
-                            myCourses = (ArrayList<String>) currentDoc1.get("myCourses");
-                            if(myCourses==null)
-                            {
-                                myCourses=new ArrayList<>();
-                            }
-                            college = currentDoc1.getString("college");
-
-                        }
-                    } else {
-                        Log.v("User", "Failed to complete search");
-                    }
-                });
-
-
-                Document queryFilter  = new Document();
-                //Document userdata = user.getCustomData();
-                // myCourses = (ArrayList<String>) userdata.get("myCourses");
-
-
-                RealmResultTask<MongoCursor<Document>> findTask = mongoCollection.find(queryFilter).iterator();
-
-                final int[] flag = {0};
-                findTask.getAsync(task -> {
-                    if (task.isSuccess()) {
-                        try {
-                            MongoCursor<Document> results = task.get();
-                            Log.v("COURSEHandler", "successfully found all courses:");
-                            while (results.hasNext()) {
-                                //Log.v("EXAMPLE", results.next().toString());
+                JSONObject jsonBody = new JSONObject();
+                JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, API+"/signup",jsonBody,
+                        new Response.Listener<JSONObject>() {
+                            @Override
+                            public void onResponse(JSONObject response) {
+                                Log.d("Response", response.toString());
                                 try {
-                                    Document currentDoc = results.next();
-
-                                    //Log.v("IMPORTANT","Error:"+currentDoc.getString("nextLectureOn"));
-
-                                    if(currentDoc.getString("nextLectureOn")==null)
-                                    {
-                                        currentDoc.append("nextLectureOn","0");
-                                    }
-                                    currentDoc.toJson();
-                                    gsonBuilder = new GsonBuilder();
-                                    gson = gsonBuilder.create();
-
-                                    Course course = gson.fromJson(currentDoc.toJson(),Course.class);
-
-                                    flag[0] =0;
-                                    //Log.v("MyCourses", String.valueOf(myCourses));
-                                    try {
-                                        for(int i=0;i<myCourses.size();i++)
-                                        {
-                                            try {
-                                                Log.v("currentCourse", course.getCourseId() + myCourses.get(i));
-                                                if(myCourses.get(i).equals(course.getCourseId()))
-                                                {
-                                                    Log.v("CourseAdded","Added");
-                                                    courseArrayList1.add(course);
-                                                    coursesAdapter1.notifyDataSetChanged();
-                                                    frame1.setVisibility(View.VISIBLE);
-                                                    flag[0] =1;
-                                                    break;
-                                                }
-                                            } catch (Exception e) {
-                                                e.printStackTrace();
-                                            }
-                                        }
-                                    } catch (Exception e) {
-                                        e.printStackTrace();
-                                    }
-                                    if(flag[0] ==1)
-                                    {
-                                        continue;
-                                    }
-                                    if(!course.getTutorId().equals(user.getId())) {
-                                        courseArrayList.add(course);
-                                        coursesAdapter.notifyDataSetChanged();
-                                        frame.setVisibility(View.VISIBLE);
-                                        //courseArrayList2.add(course);
-//                                        Document queryFilter1 = new Document("userid", course.getTutorId());
-
-//                                        RealmResultTask<MongoCursor<Document>> findTask1 = mongoCollection2.find(queryFilter1).iterator();
-
-//                                        findTask1.getAsync(task1 -> {
-//                                            if (task1.isSuccess()) {
-//                                                MongoCursor<Document> results1 = task1.get();
-//                                                if (!results1.hasNext()) {
-//                                                    //Log.v("ViewCourse", "Couldnt Find The Tutor");
-//                                                } else {
-//                                                    //Log.v("User", "successfully found the Tutor");
-//                                                }
-//                                                while (results1.hasNext()) {
-//                                                    //Log.v("EXAMPLE", results.next().toString());
-//                                                    Document currentDoc1 = results1.next();
-//                                                    //Log.v("CourseBySenior", (String) currentDoc1.get("college"));
-//                                                    //Log.v("CourseBySenior", (String)  college);
-                                                    try {
-                                                        if (course.getTutorCollege().equals(college)) {
-                                                            //Log.v("CourseBy","Hello");
-                                                            courseArrayList2.add(course);
-                                                            coursesAdapter2.notifyDataSetChanged();
-                                                            frame2.setVisibility(View.VISIBLE);
-                                                            //Log.v("CourseBySenior", String.valueOf(courseArrayList2));
-                                                        }
-                                                    } catch (Exception e) {
-                                                        e.printStackTrace();
-                                                    }
-//                                                    //Log.v("User", currentDoc1.getString("userid"));
-//                                                }
-//                                            } else {
-//                                                //Log.v("User", "Failed to complete search"+task1.getError().toString());
-//                                                Credentials credentials = Credentials.jwt(app.currentUser().getRefreshToken());
-//                                                //Log.v("RefreshToken","eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJiYWFzX2RhdGEiOm51bGwsImJhYXNfZGV2aWNlX2lkIjoiNWZmMWMzOGFmZmRjZmJmNjRiOWU5YWFmIiwiYmFhc19kb21haW5faWQiOiI1Zjg0NmU3M2Y4MzM3YmYyMmI5NjI4YTYiLCJiYWFzX2lkIjoiNWZmMWMzOGFmZmRjZmJmNjRiOWU5YjFkIiwiYmFhc19pZGVudGl0eSI6eyJpZCI6IjVmOGQ3NDNjZWQ3M2VkMTZlYWZiZmFmNyIsInByb3ZpZGVyX3R5cGUiOiJsb2NhbC11c2VycGFzcyIsInByb3ZpZGVyX2lkIjoiNWY4ODg5MjlmNjlmZDllMjQxZjBiZjAxIn0sImV4cCI6MTYxNDg2Mzc1NCwiaWF0IjoxNjA5Njc5NzU0LCJzdGl0Y2hfZGF0YSI6bnVsbCwic3RpdGNoX2RldklkIjoiNWZmMWMzOGFmZmRjZmJmNjRiOWU5YWFmIiwic3RpdGNoX2RvbWFpbklkIjoiNWY4NDZlNzNmODMzN2JmMjJiOTYyOGE2Iiwic3RpdGNoX2lkIjoiNWZmMWMzOGFmZmRjZmJmNjRiOWU5YjFkIiwic3RpdGNoX2lkZW50Ijp7ImlkIjoiNWY4ZDc0M2NlZDczZWQxNmVhZmJmYWY3IiwicHJvdmlkZXJfdHlwZSI6ImxvY2FsLXVzZXJwYXNzIiwicHJvdmlkZXJfaWQiOiI1Zjg4ODkyOWY2OWZkOWUyNDFmMGJmMDEifSwic3ViIjoiNWY4ZDc0NDU1ODNiYjRhYmI3OGJjYzJhIiwidHlwIjoicmVmcmVzaCJ9.pNJzrvq60722wT2zeJlWVIDhEkcmAp_hDcG8g3YQsws");
-//                                                app.loginAsync(credentials,it->{
-//                                                    if(it.isSuccess())
-//                                                    {
-//                                                        //Log.v("Success","Authenticated");
-//                                                    }
-//                                                    else
-//                                                    {
-//                                                        Log.v("Error",it.getError().toString());
-//                                                    }
-//                                                });
-//                                            }
-//                                        });
-                                    }
-                                } catch (JsonSyntaxException e) {
+                                    ((Upsilon)getApplication()).setToken(response.getString("token"));
+                                    Log.v(TAG, "Successfully authenticated using an email and password.");
+                                } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
-                                if(!results.hasNext())
-                                {
-                                    progressBar.setVisibility(GONE);
-                                }
                             }
-                            if(!results.hasNext())
-                            {
-                                progressBar.setVisibility(GONE);
-                                if(courseArrayList.size()==0)
-                                {
-                                    frame.setVisibility(View.VISIBLE);
-                                    Course nocourse = new Course();
-                                    nocourse.setCourseName("No Courses Found");
-                                    nocourse.setCourseMode("Online");
-                                    nocourse.setCourseImage("https://i.pinimg.com/originals/89/39/06/893906d9df7228cc36e1b3679a0d1dac.png");
-                                    courseArrayList.add(nocourse);
-                                    coursesAdapter.notifyDataSetChanged();
-                                }
+                        },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                Log.d("Error response", error.toString());
+                                Log.v(TAG, "Fetch Courses FAILED!");
+                                Log.e(TAG, error.toString());
                             }
-                        } catch (Exception e) {
-                            progressBar.setVisibility(GONE);
-                            e.printStackTrace();
                         }
-                    } else {
-                        Log.e("COURSEHandler", "failed to find courses with: ", task.getError());
-                        Credentials credentials = Credentials.jwt("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJiYWFzX2RhdGEiOm51bGwsImJhYXNfZGV2aWNlX2lkIjoiNWZmMWMzOGFmZmRjZmJmNjRiOWU5YWFmIiwiYmFhc19kb21haW5faWQiOiI1Zjg0NmU3M2Y4MzM3YmYyMmI5NjI4YTYiLCJiYWFzX2lkIjoiNWZmMWMzOGFmZmRjZmJmNjRiOWU5YjFkIiwiYmFhc19pZGVudGl0eSI6eyJpZCI6IjVmOGQ3NDNjZWQ3M2VkMTZlYWZiZmFmNyIsInByb3ZpZGVyX3R5cGUiOiJsb2NhbC11c2VycGFzcyIsInByb3ZpZGVyX2lkIjoiNWY4ODg5MjlmNjlmZDllMjQxZjBiZjAxIn0sImV4cCI6MTYxNDg2Mzc1NCwiaWF0IjoxNjA5Njc5NzU0LCJzdGl0Y2hfZGF0YSI6bnVsbCwic3RpdGNoX2RldklkIjoiNWZmMWMzOGFmZmRjZmJmNjRiOWU5YWFmIiwic3RpdGNoX2RvbWFpbklkIjoiNWY4NDZlNzNmODMzN2JmMjJiOTYyOGE2Iiwic3RpdGNoX2lkIjoiNWZmMWMzOGFmZmRjZmJmNjRiOWU5YjFkIiwic3RpdGNoX2lkZW50Ijp7ImlkIjoiNWY4ZDc0M2NlZDczZWQxNmVhZmJmYWY3IiwicHJvdmlkZXJfdHlwZSI6ImxvY2FsLXVzZXJwYXNzIiwicHJvdmlkZXJfaWQiOiI1Zjg4ODkyOWY2OWZkOWUyNDFmMGJmMDEifSwic3ViIjoiNWY4ZDc0NDU1ODNiYjRhYmI3OGJjYzJhIiwidHlwIjoicmVmcmVzaCJ9.pNJzrvq60722wT2zeJlWVIDhEkcmAp_hDcG8g3YQsws");
-                        app.loginAsync(credentials,it->{
-                            if(it.isSuccess())
-                            {
-                                progressBar.setVisibility(GONE);
-                                getCourseData();
-                                Log.v("Success","Authenticated");
-                            }
-                            else
-                            {
-                                Log.v("Error",it.getError().toString());
-                            }
-                        });
-                    }
-                });
+                );
+                queue.add(jsonRequest);
+
+//                final User user = app.currentUser();
+//                assert user != null;
+//                MongoCollection<Document> mongoCollection  = mongoDatabase.getCollection("CourseData");
+//                MongoCollection<Document> mongoCollection2  = mongoDatabase.getCollection("UserData");
+                //Blank query to find every single course in db
+//                TODO: Modify query to look for user preferred course IDs
+
+//                Document queryFilter2 = new Document("userid", user.getId());
+
+//                RealmResultTask<MongoCursor<Document>> findTask2 = mongoCollection2.find(queryFilter2).iterator();
+
+//                findTask2.getAsync(task2 -> {
+//                    if (task2.isSuccess()) {
+//                        MongoCursor<Document> results1 = task2.get();
+//                        if (!results1.hasNext()) {
+//                            Log.v("ViewCourse", "Couldnt Find The Tutor");
+//                        } else {
+//                            Log.v("User", "successfully found the Tutor");
+//                        }
+//                        while (results1.hasNext()) {
+//                            //Log.v("EXAMPLE", results.next().toString());
+//                            Document currentDoc1 = results1.next();
+//                            myCourses = (ArrayList<String>) currentDoc1.get("myCourses");
+//                            if(myCourses==null)
+//                            {
+//                                myCourses=new ArrayList<>();
+//                            }
+//                            college = currentDoc1.getString("college");
+//
+//                        }
+//                    } else {
+//                        Log.v("User", "Failed to complete search");
+//                    }
+//                });
+
+
+
+
+//                Document queryFilter  = new Document();
+//                //Document userdata = user.getCustomData();
+//                // myCourses = (ArrayList<String>) userdata.get("myCourses");
+//
+//
+//                RealmResultTask<MongoCursor<Document>> findTask = mongoCollection.find(queryFilter).iterator();
+//
+//                final int[] flag = {0};
+//                findTask.getAsync(task -> {
+//                    if (task.isSuccess()) {
+//                        try {
+//                            MongoCursor<Document> results = task.get();
+//                            Log.v("COURSEHandler", "successfully found all courses:");
+//                            while (results.hasNext()) {
+//                                //Log.v("EXAMPLE", results.next().toString());
+//                                try {
+//                                    Document currentDoc = results.next();
+//
+//                                    //Log.v("IMPORTANT","Error:"+currentDoc.getString("nextLectureOn"));
+//
+//                                    if(currentDoc.getString("nextLectureOn")==null)
+//                                    {
+//                                        currentDoc.append("nextLectureOn","0");
+//                                    }
+//                                    currentDoc.toJson();
+//                                    gsonBuilder = new GsonBuilder();
+//                                    gson = gsonBuilder.create();
+//
+//                                    Course course = gson.fromJson(currentDoc.toJson(),Course.class);
+//
+//                                    flag[0] =0;
+//                                    //Log.v("MyCourses", String.valueOf(myCourses));
+//                                    try {
+//                                        for(int i=0;i<myCourses.size();i++)
+//                                        {
+//                                            try {
+//                                                Log.v("currentCourse", course.getCourseId() + myCourses.get(i));
+//                                                if(myCourses.get(i).equals(course.getCourseId()))
+//                                                {
+//                                                    Log.v("CourseAdded","Added");
+//                                                    courseArrayList1.add(course);
+//                                                    coursesAdapter1.notifyDataSetChanged();
+//                                                    frame1.setVisibility(View.VISIBLE);
+//                                                    flag[0] =1;
+//                                                    break;
+//                                                }
+//                                            } catch (Exception e) {
+//                                                e.printStackTrace();
+//                                            }
+//                                        }
+//                                    } catch (Exception e) {
+//                                        e.printStackTrace();
+//                                    }
+//                                    if(flag[0] ==1)
+//                                    {
+//                                        continue;
+//                                    }
+//                                    if(!course.getTutorId().equals(user.getId())) {
+//                                        courseArrayList.add(course);
+//                                        coursesAdapter.notifyDataSetChanged();
+//                                        frame.setVisibility(View.VISIBLE);
+//                                        //courseArrayList2.add(course);
+////                                        Document queryFilter1 = new Document("userid", course.getTutorId());
+//
+////                                        RealmResultTask<MongoCursor<Document>> findTask1 = mongoCollection2.find(queryFilter1).iterator();
+//
+////                                        findTask1.getAsync(task1 -> {
+////                                            if (task1.isSuccess()) {
+////                                                MongoCursor<Document> results1 = task1.get();
+////                                                if (!results1.hasNext()) {
+////                                                    //Log.v("ViewCourse", "Couldnt Find The Tutor");
+////                                                } else {
+////                                                    //Log.v("User", "successfully found the Tutor");
+////                                                }
+////                                                while (results1.hasNext()) {
+////                                                    //Log.v("EXAMPLE", results.next().toString());
+////                                                    Document currentDoc1 = results1.next();
+////                                                    //Log.v("CourseBySenior", (String) currentDoc1.get("college"));
+////                                                    //Log.v("CourseBySenior", (String)  college);
+//                                                    try {
+//                                                        if (course.getTutorCollege().equals(college)) {
+//                                                            //Log.v("CourseBy","Hello");
+//                                                            courseArrayList2.add(course);
+//                                                            coursesAdapter2.notifyDataSetChanged();
+//                                                            frame2.setVisibility(View.VISIBLE);
+//                                                            //Log.v("CourseBySenior", String.valueOf(courseArrayList2));
+//                                                        }
+//                                                    } catch (Exception e) {
+//                                                        e.printStackTrace();
+//                                                    }
+////                                                    //Log.v("User", currentDoc1.getString("userid"));
+////                                                }
+////                                            } else {
+////                                                //Log.v("User", "Failed to complete search"+task1.getError().toString());
+////                                                Credentials credentials = Credentials.jwt(app.currentUser().getRefreshToken());
+////                                                //Log.v("RefreshToken","eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJiYWFzX2RhdGEiOm51bGwsImJhYXNfZGV2aWNlX2lkIjoiNWZmMWMzOGFmZmRjZmJmNjRiOWU5YWFmIiwiYmFhc19kb21haW5faWQiOiI1Zjg0NmU3M2Y4MzM3YmYyMmI5NjI4YTYiLCJiYWFzX2lkIjoiNWZmMWMzOGFmZmRjZmJmNjRiOWU5YjFkIiwiYmFhc19pZGVudGl0eSI6eyJpZCI6IjVmOGQ3NDNjZWQ3M2VkMTZlYWZiZmFmNyIsInByb3ZpZGVyX3R5cGUiOiJsb2NhbC11c2VycGFzcyIsInByb3ZpZGVyX2lkIjoiNWY4ODg5MjlmNjlmZDllMjQxZjBiZjAxIn0sImV4cCI6MTYxNDg2Mzc1NCwiaWF0IjoxNjA5Njc5NzU0LCJzdGl0Y2hfZGF0YSI6bnVsbCwic3RpdGNoX2RldklkIjoiNWZmMWMzOGFmZmRjZmJmNjRiOWU5YWFmIiwic3RpdGNoX2RvbWFpbklkIjoiNWY4NDZlNzNmODMzN2JmMjJiOTYyOGE2Iiwic3RpdGNoX2lkIjoiNWZmMWMzOGFmZmRjZmJmNjRiOWU5YjFkIiwic3RpdGNoX2lkZW50Ijp7ImlkIjoiNWY4ZDc0M2NlZDczZWQxNmVhZmJmYWY3IiwicHJvdmlkZXJfdHlwZSI6ImxvY2FsLXVzZXJwYXNzIiwicHJvdmlkZXJfaWQiOiI1Zjg4ODkyOWY2OWZkOWUyNDFmMGJmMDEifSwic3ViIjoiNWY4ZDc0NDU1ODNiYjRhYmI3OGJjYzJhIiwidHlwIjoicmVmcmVzaCJ9.pNJzrvq60722wT2zeJlWVIDhEkcmAp_hDcG8g3YQsws");
+////                                                app.loginAsync(credentials,it->{
+////                                                    if(it.isSuccess())
+////                                                    {
+////                                                        //Log.v("Success","Authenticated");
+////                                                    }
+////                                                    else
+////                                                    {
+////                                                        Log.v("Error",it.getError().toString());
+////                                                    }
+////                                                });
+////                                            }
+////                                        });
+//                                    }
+//                                } catch (JsonSyntaxException e) {
+//                                    e.printStackTrace();
+//                                }
+//                                if(!results.hasNext())
+//                                {
+//                                    progressBar.setVisibility(GONE);
+//                                }
+//                            }
+//                            if(!results.hasNext())
+//                            {
+//                                progressBar.setVisibility(GONE);
+//                                if(courseArrayList.size()==0)
+//                                {
+//                                    frame.setVisibility(View.VISIBLE);
+//                                    Course nocourse = new Course();
+//                                    nocourse.setCourseName("No Courses Found");
+//                                    nocourse.setCourseMode("Online");
+//                                    nocourse.setCourseImage("https://i.pinimg.com/originals/89/39/06/893906d9df7228cc36e1b3679a0d1dac.png");
+//                                    courseArrayList.add(nocourse);
+//                                    coursesAdapter.notifyDataSetChanged();
+//                                }
+//                            }
+//                        } catch (Exception e) {
+//                            progressBar.setVisibility(GONE);
+//                            e.printStackTrace();
+//                        }
+//                    } else {
+//                        Log.e("COURSEHandler", "failed to find courses with: ", task.getError());
+//                        Credentials credentials = Credentials.jwt("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJiYWFzX2RhdGEiOm51bGwsImJhYXNfZGV2aWNlX2lkIjoiNWZmMWMzOGFmZmRjZmJmNjRiOWU5YWFmIiwiYmFhc19kb21haW5faWQiOiI1Zjg0NmU3M2Y4MzM3YmYyMmI5NjI4YTYiLCJiYWFzX2lkIjoiNWZmMWMzOGFmZmRjZmJmNjRiOWU5YjFkIiwiYmFhc19pZGVudGl0eSI6eyJpZCI6IjVmOGQ3NDNjZWQ3M2VkMTZlYWZiZmFmNyIsInByb3ZpZGVyX3R5cGUiOiJsb2NhbC11c2VycGFzcyIsInByb3ZpZGVyX2lkIjoiNWY4ODg5MjlmNjlmZDllMjQxZjBiZjAxIn0sImV4cCI6MTYxNDg2Mzc1NCwiaWF0IjoxNjA5Njc5NzU0LCJzdGl0Y2hfZGF0YSI6bnVsbCwic3RpdGNoX2RldklkIjoiNWZmMWMzOGFmZmRjZmJmNjRiOWU5YWFmIiwic3RpdGNoX2RvbWFpbklkIjoiNWY4NDZlNzNmODMzN2JmMjJiOTYyOGE2Iiwic3RpdGNoX2lkIjoiNWZmMWMzOGFmZmRjZmJmNjRiOWU5YjFkIiwic3RpdGNoX2lkZW50Ijp7ImlkIjoiNWY4ZDc0M2NlZDczZWQxNmVhZmJmYWY3IiwicHJvdmlkZXJfdHlwZSI6ImxvY2FsLXVzZXJwYXNzIiwicHJvdmlkZXJfaWQiOiI1Zjg4ODkyOWY2OWZkOWUyNDFmMGJmMDEifSwic3ViIjoiNWY4ZDc0NDU1ODNiYjRhYmI3OGJjYzJhIiwidHlwIjoicmVmcmVzaCJ9.pNJzrvq60722wT2zeJlWVIDhEkcmAp_hDcG8g3YQsws");
+//                        app.loginAsync(credentials,it->{
+//                            if(it.isSuccess())
+//                            {
+//                                progressBar.setVisibility(GONE);
+//                                getCourseData();
+//                                Log.v("Success","Authenticated");
+//                            }
+//                            else
+//                            {
+//                                Log.v("Error",it.getError().toString());
+//                            }
+//                        });
+//                    }
+//                });
 
                 if(courseArrayList.size()==0){
                     frame.setVisibility(GONE);
@@ -623,40 +655,42 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 } else {
                     frame2.setVisibility(View.VISIBLE);
                 }
-
-
-                MongoCollection<Document> mongoCollection1  = mongoDatabase.getCollection("UserData");
-
-                //Blank query to find every single course in db
-                Document queryFilter1  = new Document();
-                queryFilter1.append("userid",user.getId());
-
-                RealmResultTask<MongoCursor<Document>> findTask1 = mongoCollection1.find(queryFilter1).iterator();
-
-                findTask1.getAsync(task -> {
-                    if (task.isSuccess()) {
-                        MongoCursor<Document> results = task.get();
-                        Log.v("COURSEHandler", "successfully found all courses:");
-
-                        try {
-                            Document document = results.next();
-                            String url = document.getString("profilePicUrl");
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                        //Toast.makeText(MainActivity.this,url,Toast.LENGTH_LONG).show();
-                        //Log.v("User","Hi"+ url);
-                        //Picasso.with(getApplicationContext()).load(url).into(imageView);
-                    } else {
-                        Log.e("COURSEHandler", "failed to find courses with: ", task.getError());
-                    }
-                });
+//
+//
+//                MongoCollection<Document> mongoCollection1  = mongoDatabase.getCollection("UserData");
+//
+//                //Blank query to find every single course in db
+//                Document queryFilter1  = new Document();
+//                queryFilter1.append("userid",user.getId());
+//
+//                RealmResultTask<MongoCursor<Document>> findTask1 = mongoCollection1.find(queryFilter1).iterator();
+//
+//                findTask1.getAsync(task -> {
+//                    if (task.isSuccess()) {
+//                        MongoCursor<Document> results = task.get();
+//                        Log.v("COURSEHandler", "successfully found all courses:");
+//
+//                        try {
+//                            Document document = results.next();
+//                            String url = document.getString("profilePicUrl");
+//                        } catch (Exception e) {
+//                            e.printStackTrace();
+//                        }
+//                        //Toast.makeText(MainActivity.this,url,Toast.LENGTH_LONG).show();
+//                        //Log.v("User","Hi"+ url);
+//                        //Picasso.with(getApplicationContext()).load(url).into(imageView);
+//                    } else {
+//                        Log.e("COURSEHandler", "failed to find courses with: ", task.getError());
+//                    }
+//                });
             }
             else {
+                Toast.makeText(getApplicationContext(),"You have been Logged Out because of Inactivity",Toast.LENGTH_LONG).show();
+                startActivity(new Intent(MainActivity.this,LoginActivity.class));
                     Log.e(TAG, "Error logging into the Realm app. Make sure that anonymous authentication is enabled.");
-                }
+            }
 
-        User user = app.currentUser();
+//        User user = app.currentUser();
     }
 
     public void displayCoursesInRecycler(){

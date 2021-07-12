@@ -443,6 +443,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             ((Upsilon)getApplication()).setToken(response.getString("token"));
                             Log.v(TAG, "Successfully authenticated using an email and password.");
                             loadingProgressBar.setVisibility(View.INVISIBLE);
+                            ((Upsilon)getApplication()).initialise();
                             goToMainActivity();
                         } catch (JSONException e) {
                             e.printStackTrace();

@@ -446,6 +446,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                         try {
                             ((Upsilon)getApplication()).setToken(response.getString("token"));
                             Log.v(TAG, "Successfully authenticated using an email and password.");
+                            ((Upsilon)getApplication()).initialise();
                             goToMainActivity();
                         } catch (JSONException e) {
                             e.printStackTrace();

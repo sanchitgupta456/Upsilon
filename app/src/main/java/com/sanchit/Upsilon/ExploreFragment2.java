@@ -67,14 +67,14 @@ public class ExploreFragment2 extends Fragment {
         View view = inflater.inflate(R.layout.fragment_explore2, container, false);
         recyclerView = (RecyclerView)  view.findViewById(R.id.exploreList2);
 
-        app = new App(new AppConfiguration.Builder(appID).build());
-        user = app.currentUser();
-        mongoClient = user.getMongoClient("mongodb-atlas");
-        mongoDatabase = mongoClient.getDatabase("Upsilon");
-        MongoCollection<Document> mongoCollection  = mongoDatabase.getCollection("CourseData");
+//        app = new App(new AppConfiguration.Builder(appID).build());
+//        user = app.currentUser();
+//        mongoClient = user.getMongoClient("mongodb-atlas");
+//        mongoDatabase = mongoClient.getDatabase("Upsilon");
+//        MongoCollection<Document> mongoCollection  = mongoDatabase.getCollection("CourseData");
 
-        searchQuery.setRankMethod(sortCriteria);
-        searchForCourses(query);
+//        searchQuery.setRankMethod(sortCriteria);
+//        searchForCourses(query);
 
         return view;
 
