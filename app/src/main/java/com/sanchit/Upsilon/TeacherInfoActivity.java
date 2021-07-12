@@ -21,6 +21,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 import com.sanchit.Upsilon.courseData.Course;
+import com.sanchit.Upsilon.courseData.CourseFinal;
 import com.sanchit.Upsilon.courseData.CoursesAdapter1;
 import com.sanchit.Upsilon.paymentLog.PaymentLog;
 
@@ -45,7 +46,7 @@ public class TeacherInfoActivity extends AppCompatActivity {
     CircleImageView imageView;
     TextView name, speciality, qualifications;
     RecyclerView recyclerView;
-    ArrayList<Course> list = new ArrayList<>();
+    ArrayList<CourseFinal> list = new ArrayList<>();
     CoursesAdapter1 adapter;
     LinearLayoutManager manager;
     String tutorId;
@@ -152,7 +153,7 @@ public class TeacherInfoActivity extends AppCompatActivity {
                         document.toJson();
                         gsonBuilder = new GsonBuilder();
                         gson = gsonBuilder.create();
-                        Course course = gson.fromJson(document.toJson(),Course.class);
+                        CourseFinal course = gson.fromJson(document.toJson(),CourseFinal.class);
                         list.add(course);
                         Log.v("course",String.valueOf(course));
                         adapter.notifyDataSetChanged();

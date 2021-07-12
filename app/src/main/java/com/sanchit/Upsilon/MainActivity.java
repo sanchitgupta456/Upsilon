@@ -56,6 +56,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 import com.sanchit.Upsilon.courseData.Course;
+import com.sanchit.Upsilon.courseData.CourseFinal;
 import com.sanchit.Upsilon.courseData.CoursesAdapter;
 import com.sanchit.Upsilon.courseData.CoursesAdapter1;
 import com.sanchit.Upsilon.courseSearching.SearchQuery;
@@ -110,7 +111,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     CoursesAdapter1 coursesAdapter1_1;
     CoursesAdapter coursesAdapter1;
     CoursesAdapter coursesAdapter2;
-    ArrayList<Course> courseArrayList = new ArrayList<Course>();
+    ArrayList<CourseFinal> courseArrayList = new ArrayList<>();
     ArrayList<Course> courseArrayList1 = new ArrayList<>();
     ArrayList<Course> courseArrayList2 = new ArrayList<>();
     ArrayList<Course> searchResultsList = new ArrayList<>();
@@ -792,7 +793,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             public boolean onQueryTextSubmit(String query) {
                 searchQuery.setQuery(query);
                 searchQuery.setRankMethod(rankBy.RATING);
-                initRecyclerView(recyclerViewSearchResults, searchResultsList);
+//                initRecyclerView(recyclerViewSearchResults, searchResultsList);
                 searchQuery.searchForCourse(app, mongoDatabase,MainActivity.this,  coursesAdapter1_1, recyclerViewSearchResults, 10, userLoc);
                 return false;
             }
@@ -1120,7 +1121,7 @@ since the dispatchTouchEvent might dispatch your touch event to this function ag
 //        });
     }
 
-    public void initRecyclerView(RecyclerView recyclerView, ArrayList<Course> list) {
+    public void initRecyclerView(RecyclerView recyclerView, ArrayList<CourseFinal> list) {
         coursesAdapter1_1 = new CoursesAdapter1(list);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getApplicationContext(), linearLayoutManager.getOrientation());

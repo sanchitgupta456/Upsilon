@@ -1,7 +1,10 @@
 package com.sanchit.Upsilon.courseData;
 
+import android.annotation.SuppressLint;
+import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
+import android.util.ArrayMap;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,17 +18,30 @@ import android.widget.TextView;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.google.android.material.snackbar.Snackbar;
 import com.sanchit.Upsilon.R;
 import com.sanchit.Upsilon.RegisteredStudentViewCourse;
 import com.sanchit.Upsilon.TeacherViewCourseActivity;
+import com.sanchit.Upsilon.Upsilon;
 import com.sanchit.Upsilon.ViewCourseActivity;
+import com.sanchit.Upsilon.userData.UserLocation;
 
 import org.bson.Document;
+import org.json.JSONException;
+import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import io.realm.mongodb.App;
 import io.realm.mongodb.AppConfiguration;
@@ -38,17 +54,27 @@ import io.realm.mongodb.mongo.iterable.MongoCursor;
 
 public class CoursesAdapter1 extends RecyclerView.Adapter<CoursesAdapter1.ViewHolder> {
 
-    List<Course> courseList;
+    List<CourseFinal> courseList;
     Context context;
     String appID = "upsilon-ityvn";
     ArrayList<String> myCourses;
     MongoClient mongoClient;
     MongoDatabase mongoDatabase;
+    private RequestQueue queue;
+    private String API;
+    private Application application;
 
-    public CoursesAdapter1(List<Course>_courseList)
+    public CoursesAdapter1(List<CourseFinal>_courseList)
     {
         this.courseList = _courseList;
     }
+
+    public CoursesAdapter1(List<CourseFinal>_courseList,Application _application)
+    {
+        this.courseList = _courseList;
+        this.application = _application;
+    }
+
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -60,13 +86,16 @@ public class CoursesAdapter1 extends RecyclerView.Adapter<CoursesAdapter1.ViewHo
 
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
-        Course course = courseList.get(position);
-        App app = new App(new AppConfiguration.Builder(appID)
-                .build());
-        User user = app.currentUser();
-        mongoClient = user.getMongoClient("mongodb-atlas");
-        mongoDatabase = mongoClient.getDatabase("Upsilon");
-        MongoCollection<Document> mongoCollection  = mongoDatabase.getCollection("UserData");
+        CourseFinal course = courseList.get(position);
+        queue = Volley.newRequestQueue(context.getApplicationContext());
+        API = ((Upsilon)application).getAPI();
+
+//        App app = new App(new AppConfiguration.Builder(appID)
+//                .build());
+//        User user = app.currentUser();
+//        mongoClient = user.getMongoClient("mongodb-atlas");
+//        mongoDatabase = mongoClient.getDatabase("Upsilon");
+//        MongoCollection<Document> mongoCollection  = mongoDatabase.getCollection("UserData");
         //Document userLoc = new Document();
 
         holder.ll.setVisibility(View.GONE);
@@ -79,50 +108,106 @@ public class CoursesAdapter1 extends RecyclerView.Adapter<CoursesAdapter1.ViewHo
                 }
                 else {
                     holder.ll.setVisibility(View.VISIBLE);
-                    Document queryFilter1  = new Document("userid",course.getTutorId());
-                    RealmResultTask<MongoCursor<Document>> findTask1 = mongoCollection.find(queryFilter1).iterator();
-                    findTask1.getAsync(task1 -> {
-                        if (task1.isSuccess()) {
-                            MongoCursor<Document> results = task1.get();
-                            if(!results.hasNext())
-                            {
-
-                            }
-                            else
-                            {
-                                Document currentDoc = results.next();
-                                holder.textTutorTvShow.setText("Course By "+currentDoc.getString("name"));
-                            }
-                        } else {
-                            Log.v("User","Failed to complete search");
-                        }
-                    });
-                    Document queryFilter  = new Document("userid",user.getId());
-                    RealmResultTask<MongoCursor<Document>> findTask = mongoCollection.find(queryFilter).iterator();
-                    findTask.getAsync(task -> {
-                        if (task.isSuccess()) {
-                            MongoCursor<Document> results = task.get();
-                            if (results.hasNext()) {
-                                if(!course.getCourseMode().equals("Online")){
-                                    Document currentDoc = results.next();
-                                    Document userLoc = (Document) currentDoc.get("userLocation");
-                                    Log.v("Hello", String.valueOf(userLoc));
-                                    if(userLoc != null) {
-                                        holder.textDistanceTvShow.setText(new StringBuilder().append("About ")
-                                                .append(String.format("%.2f",calcDist(course.getCourseLocation(), userLoc)))
-                                                .append(" kilometers from your location").toString());
-                                    } else {
-                                        holder.textDistanceTvShow.setText(R.string.error_not_enabled_location);
+                    try {
+                        Log.v("courseId",course.get_id());
+                        JSONObject jsonObject = new JSONObject();
+                        jsonObject.put("courseId",course.get_id());
+                        JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, API+"/tutorNameLoc",jsonObject,
+                                new Response.Listener<JSONObject>() {
+                                    @Override
+                                    public void onResponse(JSONObject response) {
+                                        Log.d("FetchTutorNameLoc", response.toString());
+                                        if(course.getCourseMode().equals("Offline"))
+                                        {
+                                            try {
+                                                holder.textTutorTvShow.setText(response.getString("tutorName"));
+                                                if(response.get("courseDistance").equals(null))
+                                                {
+                                                    holder.textDistanceTvShow.setText(R.string.error_not_enabled_location);
+                                                }
+                                                else
+                                                {
+                                                    holder.textDistanceTvShow.setText(new StringBuilder().append("About")
+                                                        .append(String.format("%.2f",response.get("courseDistance")))
+                                                       .append(" kilometers from your location").toString());
+                                                }
+                                            } catch (JSONException e) {
+                                                e.printStackTrace();
+                                            }
+                                        }
+                                        else
+                                        {
+                                            try {
+                                                holder.textTutorTvShow.setText(response.getString("tutorName"));
+                                            } catch (JSONException e) {
+                                                e.printStackTrace();
+                                            }
+                                        }
+                                    }
+                                },
+                                new Response.ErrorListener() {
+                                    @SuppressLint("LongLogTag")
+                                    @Override
+                                    public void onErrorResponse(VolleyError error) {
+                                        Log.d("ErrorFetchingTutorNameLoc", error.toString());
                                     }
                                 }
-                                else {
-                                    holder.textDistanceTvShow.setText("");
-                                }
+                        ){
+                            @Override
+                            public Map<String, String> getHeaders() {
+                                Map<String, String> params = new HashMap<String, String>();
+                                params.put("token", ((Upsilon)application).getToken());
+                                return params;
                             }
-                        } else {
-                            Log.v("User","Failed to complete search");
-                        }
-                    });
+                        };
+                        queue.add(jsonRequest);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+//                    Document queryFilter1  = new Document("userid",course.getTutorId());
+//                    RealmResultTask<MongoCursor<Document>> findTask1 = mongoCollection.find(queryFilter1).iterator();
+//                    findTask1.getAsync(task1 -> {
+//                        if (task1.isSuccess()) {
+//                            MongoCursor<Document> results = task1.get();
+//                            if(!results.hasNext())
+//                            {
+//
+//                            }
+//                            else
+//                            {
+//                                Document currentDoc = results.next();
+//                                holder.textTutorTvShow.setText("Course By "+currentDoc.getString("name"));
+//                            }
+//                        } else {
+//                            Log.v("User","Failed to complete search");
+//                        }
+//                    });
+//                    Document queryFilter  = new Document("userid",user.getId());
+//                    RealmResultTask<MongoCursor<Document>> findTask = mongoCollection.find(queryFilter).iterator();
+//                    findTask.getAsync(task -> {
+//                        if (task.isSuccess()) {
+//                            MongoCursor<Document> results = task.get();
+//                            if (results.hasNext()) {
+//                                if(!course.getCourseMode().equals("Online")){
+//                                    Document currentDoc = results.next();
+//                                    Document userLoc = (Document) currentDoc.get("userLocation");
+//                                    Log.v("Hello", String.valueOf(userLoc));
+//                                    if(userLoc != null) {
+////                                        holder.textDistanceTvShow.setText(new StringBuilder().append("About ")
+////                                                .append(String.format("%.2f",calcDist(course.getCourseLocation(), userLoc)))
+////                                                .append(" kilometers from your location").toString());
+//                                    } else {
+//                                        holder.textDistanceTvShow.setText(R.string.error_not_enabled_location);
+//                                    }
+//                                }
+//                                else {
+//                                    holder.textDistanceTvShow.setText("");
+//                                }
+//                            }
+//                        } else {
+//                            Log.v("User","Failed to complete search");
+//                        }
+//                    });
                 }
                 holder.toggle.animate().rotationBy(180).start();
             }
@@ -131,10 +216,10 @@ public class CoursesAdapter1 extends RecyclerView.Adapter<CoursesAdapter1.ViewHo
 
 
         holder.textTvShow.setText(course.getCourseName());
-        Log.v("CourseAdapter",course.getCourseImage());
-        //Picasso.with(context).load(course.getCourseImage()).fit().centerCrop().into(holder.imgTvShow);
+//        Log.v("CourseAdapter",course.getCourseImage());
+//        Picasso.with(context).load(course.getCourseImage()).fit().centerCrop().into(holder.imgTvShow);
         Glide.with(context).load(course.getCourseImage()).into(holder.imgTvShow);
-        //holder.imgTvShow.setImageResource(course.getCardImgID());
+//        holder.imgTvShow.setImageResource(course.getCardImgID());
         //holder.textTutorTvShow.setText(course.getTutorId());
         holder.textModeTvShow.setText(course.getCourseMode());
         if(course.getCourseMode().equals("Online")) {
@@ -159,11 +244,11 @@ public class CoursesAdapter1 extends RecyclerView.Adapter<CoursesAdapter1.ViewHo
 
 //                Log.v("Id",course.getTutorId());
 //                Log.v("Id",user.getId());
-                if(course.getTutorId().equals(user.getId()))
+                if(course.getTutorId().equals("1"))
                 {
                     Log.v("Id","matched");
                     Intent intent = new Intent(holder.itemView.getContext(), TeacherViewCourseActivity.class);
-                    intent.putExtra("Course", course);
+                    intent.putExtra("Course", (Serializable) course);
                     holder.itemView.getContext().startActivity(intent);
                 }
                 else
@@ -171,52 +256,52 @@ public class CoursesAdapter1 extends RecyclerView.Adapter<CoursesAdapter1.ViewHo
 
                     //Blank query to find every single course in db
                     //TODO: Modify query to look for user preferred course IDs
-                    Document queryFilter  = new Document("userid",user.getId());
+//                    Document queryFilter  = new Document("userid",user.getId());
 
-                    RealmResultTask<MongoCursor<Document>> findTask = mongoCollection.find(queryFilter).iterator();
+//                    RealmResultTask<MongoCursor<Document>> findTask = mongoCollection.find(queryFilter).iterator();
 
-                    findTask.getAsync(task -> {
-                        if (task.isSuccess()) {
-                            MongoCursor<Document> results = task.get();
-                            if(!results.hasNext())
-                            {
-
-                            }
-                            else
-                            {
-                                try {
-                                    Document currentDoc = results.next();
-                                    myCourses = (ArrayList<String>) currentDoc.get("myCourses");
-                                    if(myCourses==null)
-                                    {
-                                        myCourses = new ArrayList<>();
-                                    }
-                                    int i=0;
-                                    for(i=0;i<myCourses.size();i++)
-                                    {
-                                        if(((String)myCourses.get(i)).equals((String)course.getCourseId()))
-                                        {
-                                            Intent intent = new Intent(holder.itemView.getContext(), RegisteredStudentViewCourse.class);
-                                            intent.putExtra("Course", course);
-                                            holder.itemView.getContext().startActivity(intent);
-                                            break;
-                                        }
-                                    }
-                                    if(i==myCourses.size())
-                                    {
-                                        Intent intent = new Intent(holder.itemView.getContext(), ViewCourseActivity.class);
-                                        intent.putExtra("Course", course);
-                                        holder.itemView.getContext().startActivity(intent);
-                                    }
-                                    Log.v("User", "successfully found the user");
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        } else {
-                            Log.v("User","Failed to complete search");
-                        }
-                    });
+//                    findTask.getAsync(task -> {
+//                        if (task.isSuccess()) {
+//                            MongoCursor<Document> results = task.get();
+//                            if(!results.hasNext())
+//                            {
+//
+//                            }
+//                            else
+//                            {
+//                                try {
+//                                    Document currentDoc = results.next();
+//                                    myCourses = (ArrayList<String>) currentDoc.get("myCourses");
+//                                    if(myCourses==null)
+//                                    {
+//                                        myCourses = new ArrayList<>();
+//                                    }
+//                                    int i=0;
+//                                    for(i=0;i<myCourses.size();i++)
+//                                    {
+//                                        if(((String)myCourses.get(i)).equals((String)course.get_id()))
+//                                        {
+//                                            Intent intent = new Intent(holder.itemView.getContext(), RegisteredStudentViewCourse.class);
+//                                            intent.putExtra("Course", (Serializable) course);
+//                                            holder.itemView.getContext().startActivity(intent);
+//                                            break;
+//                                        }
+//                                    }
+//                                    if(i==myCourses.size())
+//                                    {
+//                                        Intent intent = new Intent(holder.itemView.getContext(), ViewCourseActivity.class);
+//                                        intent.putExtra("Course", (Serializable) course);
+//                                        holder.itemView.getContext().startActivity(intent);
+//                                    }
+//                                    Log.v("User", "successfully found the user");
+//                                } catch (Exception e) {
+//                                    e.printStackTrace();
+//                                }
+//                            }
+//                        } else {
+//                            Log.v("User","Failed to complete search");
+//                        }
+//                    });
 
 
                 }

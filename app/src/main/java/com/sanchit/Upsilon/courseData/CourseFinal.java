@@ -23,8 +23,17 @@ public class CourseFinal {
     private int numberOfReviews;
     private int numberOfStudentsEnrolled;
     private String tutorId;
+    private String courseName;
+    private ArrayList<String> IntroductoryContentImages;
+    private ArrayList<String> IntroductoryContentVideos;
+    private ArrayList<String> IntroductoryContentDocuments;
+    private String courseImage;
+    private ArrayList<Lecture> lectures;
 
-    public CourseFinal(ArrayList<String> courseCategories, String coursePreReq, ArrayList<CourseReview> courseReviews, boolean registrationsOpen, ArrayList<ScheduledClass> scheduledClasses, ArrayList<Test> test, ArrayList<Assignment> assignments, String _id, String courseDescription, int courseDuration, int courseFees, CourseLocation courseLocation, String courseMode, Double courseRating, int numberOfBatches, int numberOfReviews, int numberOfStudentsEnrolled, String tutorId) {
+    public CourseFinal() {
+    }
+
+    public CourseFinal(ArrayList<String> courseCategories, String coursePreReq, ArrayList<CourseReview> courseReviews, boolean registrationsOpen, ArrayList<ScheduledClass> scheduledClasses, ArrayList<Test> test, ArrayList<Assignment> assignments, String _id, String courseDescription, int courseDuration, int courseFees, CourseLocation courseLocation, String courseMode, Double courseRating, int numberOfBatches, int numberOfReviews, int numberOfStudentsEnrolled, String tutorId, String courseName, ArrayList<String> introductoryContentImages, ArrayList<String> introductoryContentVideos, ArrayList<String> introductoryContentDocuments, String courseImage, ArrayList<Lecture> lectures) {
         this.courseCategories = courseCategories;
         this.coursePreReq = coursePreReq;
         this.courseReviews = courseReviews;
@@ -43,9 +52,12 @@ public class CourseFinal {
         this.numberOfReviews = numberOfReviews;
         this.numberOfStudentsEnrolled = numberOfStudentsEnrolled;
         this.tutorId = tutorId;
-    }
-
-    public CourseFinal() {
+        this.courseName = courseName;
+        IntroductoryContentImages = introductoryContentImages;
+        IntroductoryContentVideos = introductoryContentVideos;
+        IntroductoryContentDocuments = introductoryContentDocuments;
+        this.courseImage = courseImage;
+        this.lectures = lectures;
     }
 
     public ArrayList<String> getCourseCategories() {
@@ -190,5 +202,53 @@ public class CourseFinal {
 
     public void setTutorId(String tutorId) {
         this.tutorId = tutorId;
+    }
+
+    public String getCourseName() {
+        return courseName;
+    }
+
+    public void setCourseName(String courseName) {
+        this.courseName = courseName;
+    }
+
+    public ArrayList<String> getIntroductoryContentImages() {
+        return IntroductoryContentImages;
+    }
+
+    public void setIntroductoryContentImages(ArrayList<String> introductoryContentImages) {
+        IntroductoryContentImages = introductoryContentImages;
+    }
+
+    public ArrayList<String> getIntroductoryContentVideos() {
+        return IntroductoryContentVideos;
+    }
+
+    public void setIntroductoryContentVideos(ArrayList<String> introductoryContentVideos) {
+        IntroductoryContentVideos = introductoryContentVideos;
+    }
+
+    public ArrayList<String> getIntroductoryContentDocuments() {
+        return IntroductoryContentDocuments;
+    }
+
+    public void setIntroductoryContentDocuments(ArrayList<String> introductoryContentDocuments) {
+        IntroductoryContentDocuments = introductoryContentDocuments;
+    }
+
+    public String getCourseImage() {
+        return courseImage;
+    }
+
+    public void setCourseImage(String courseImage) {
+        this.courseImage = courseImage;
+    }
+
+    public ArrayList<Lecture> getLectures() {
+        return lectures;
+    }
+
+    public void setLectures(ArrayList<Lecture> lectures) {
+        this.lectures = lectures;
     }
 }

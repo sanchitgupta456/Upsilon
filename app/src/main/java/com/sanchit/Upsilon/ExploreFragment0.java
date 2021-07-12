@@ -54,6 +54,7 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.sanchit.Upsilon.courseData.Course;
+import com.sanchit.Upsilon.courseData.CourseFinal;
 import com.sanchit.Upsilon.courseData.CoursesAdapter1;
 import com.sanchit.Upsilon.courseLocationMap.MapsActivity;
 import com.sanchit.Upsilon.courseSearching.SearchQuery;
@@ -103,7 +104,7 @@ public class ExploreFragment0 extends Fragment {
     Document userLocation;
     ProgressBar progressBar;
 
-    ArrayList<Course> list = new ArrayList<>();
+    ArrayList<CourseFinal> list = new ArrayList<>();
     private RequestQueue queue;
     private String API ;
 
@@ -238,13 +239,13 @@ public class ExploreFragment0 extends Fragment {
                         searchQuery.searchForCourse(app, mongoDatabase, getContext(), adapter, recyclerView, 10, userLoc);
                         list = new ArrayList<>();
                         list.clear();
-                        list = searchQuery.getSearchResultsList();
+//                        list = searchQuery.getSearchResultsList();
                         Log.d(TAG, "performSearch: list after search: size: " + list.size());
                         Log.v("COURSEDISTANCE", "START!");
-                        for (int p = 0; p < list.size(); p++){
-                            Log.v("COURSEDISTANCE", list.get(p).getCourseName());
-                            Log.v("COURSEDISTANCE", Double.toString(searchQuery.getCourseDistance(list.get(p), userLoc)));
-                        }
+//                        for (int p = 0; p < list.size(); p++){
+//                            Log.v("COURSEDISTANCE", list.get(p).getCourseName());
+//                            Log.v("COURSEDISTANCE", Double.toString(searchQuery.getCourseDistance(list.get(p), userLoc)));
+//                        }
                     }
                     else
                     {
@@ -262,12 +263,12 @@ public class ExploreFragment0 extends Fragment {
                 Log.v("User","Failed to complete search");
             }
         });
-        list = searchQuery.getSearchResultsList();
+//        list = searchQuery.getSearchResultsList();
 
         initRecyclerView(recyclerView,list);
     }
 
-    public void initRecyclerView(RecyclerView recyclerView, ArrayList<Course> list) {
+    public void initRecyclerView(RecyclerView recyclerView, ArrayList<CourseFinal> list) {
         Log.d(TAG, "initRecyclerView: now displaying " + recyclerView.getId());
         CoursesAdapter1 coursesAdapter1 = new CoursesAdapter1(list);
         linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);

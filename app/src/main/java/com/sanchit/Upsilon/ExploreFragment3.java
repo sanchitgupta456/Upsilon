@@ -16,6 +16,7 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.sanchit.Upsilon.courseData.Course;
+import com.sanchit.Upsilon.courseData.CourseFinal;
 import com.sanchit.Upsilon.courseData.CoursesAdapter1;
 import com.sanchit.Upsilon.courseSearching.SearchQuery;
 import com.sanchit.Upsilon.courseSearching.rankBy;
@@ -47,7 +48,7 @@ public class ExploreFragment3 extends Fragment {
     RecyclerView recyclerView;
     SearchQuery searchQuery = new SearchQuery();
 
-    ArrayList<Course> list = new ArrayList<>();
+    ArrayList<CourseFinal> list = new ArrayList<>();
 
     public rankBy sortCriteria = rankBy.ONLINE_ONLY_RATING;
 
@@ -111,11 +112,11 @@ public class ExploreFragment3 extends Fragment {
                 Log.v("User","Failed to complete search");
             }
         });
-        list = searchQuery.getSearchResultsList();
+//        list = searchQuery.getSearchResultsList();
         initRecyclerView(recyclerView,list);
     }
 
-    public void initRecyclerView(RecyclerView recyclerView, ArrayList<Course> list) {
+    public void initRecyclerView(RecyclerView recyclerView, ArrayList<CourseFinal> list) {
         Log.d(TAG, "initRecyclerView: now displaying " + recyclerView.getId());
         CoursesAdapter1 coursesAdapter1 = new CoursesAdapter1(list);
         linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
@@ -155,7 +156,7 @@ public class ExploreFragment3 extends Fragment {
                 Log.v("User","Failed to complete search");
             }
         });
-        list = searchQuery.getSearchResultsList();
+//        list = searchQuery.getSearchResultsList();
         initRecyclerView(recyclerView,list);
     }
 }

@@ -84,8 +84,6 @@ public class Upsilon extends Application {
     }
 
     private void fetchUserLocation() {
-        Map<String, String> mHeaders = new ArrayMap<String, String>();
-        mHeaders.put("token",Token);
         JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.GET, API+"/userLocation",new JSONObject(),
                 new Response.Listener<JSONObject>() {
                     @Override

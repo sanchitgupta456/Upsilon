@@ -351,7 +351,7 @@ public class SearchQuery {
     }
 
     public void showSearchResults(Context context, CoursesAdapter1 courseAdapter, RecyclerView recyclerView) {
-        courseAdapter = new CoursesAdapter1(searchResultsList);
+//        courseAdapter = new CoursesAdapter1(searchResultsList);
         LinearLayoutManager layoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());

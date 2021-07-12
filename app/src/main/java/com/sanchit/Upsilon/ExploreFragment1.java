@@ -64,7 +64,7 @@ public class ExploreFragment1 extends Fragment {
     private RequestQueue queue;
     private String API ;
 
-    ArrayList<Course> list = new ArrayList<>();
+    ArrayList<CourseFinal> list = new ArrayList<>();
 
     public rankBy sortCriteria = rankBy.RATING;
 
@@ -124,7 +124,7 @@ public class ExploreFragment1 extends Fragment {
                         @Override
                         public void onResponse(JSONObject response) {
                             Log.d("Response", response.toString());
-                            list = new ArrayList<Course>();
+                            list = new ArrayList<CourseFinal>();
                             try {
                                 JSONArray jsonArray = (JSONArray) response.get("courses");
                                 Log.v("array",String.valueOf(jsonArray));
@@ -133,8 +133,10 @@ public class ExploreFragment1 extends Fragment {
                                     JSONObject jsonObject = (JSONObject) jsonArray.get(i);
                                     Gson gson= new Gson();
                                     CourseFinal course = gson.fromJson(jsonObject.toString(),CourseFinal.class);
+                                    list.add(course);
                                     Log.v("course",String.valueOf(course.getCourseReviews()));
                                 }
+                                initRecyclerView(recyclerView, list);
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -195,9 +197,9 @@ public class ExploreFragment1 extends Fragment {
 //        initRecyclerView(recyclerView, list);
     }
 
-    public void initRecyclerView(RecyclerView recyclerView, ArrayList<Course> list) {
+    public void initRecyclerView(RecyclerView recyclerView, ArrayList<CourseFinal> list) {
         Log.d(TAG, "initRecyclerView: now displaying " + recyclerView.getId());
-        CoursesAdapter1 coursesAdapter1 = new CoursesAdapter1(list);
+        CoursesAdapter1 coursesAdapter1 = new CoursesAdapter1(list,getActivity().getApplication());
         linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(coursesAdapter1);

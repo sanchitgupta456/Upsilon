@@ -36,6 +36,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 import com.sanchit.Upsilon.courseData.Course;
 import com.sanchit.Upsilon.courseData.CourseAdapter2;
+import com.sanchit.Upsilon.courseData.CourseFinal;
 import com.sanchit.Upsilon.courseData.CoursesAdapter1;
 import com.sanchit.Upsilon.courseSearching.LocationSorter;
 import com.sanchit.Upsilon.courseSearching.SearchQuery;
@@ -367,7 +368,7 @@ public class ExploreActivity extends AppCompatActivity {
 
     }
 
-    public void initRecyclerView(RecyclerView recyclerView, ArrayList<Course> list) {
+    public void initRecyclerView(RecyclerView recyclerView, ArrayList<CourseFinal> list) {
         Log.d(TAG, "initRecyclerView: now displaying " + recyclerView.getId());
         CoursesAdapter1 coursesAdapter1 = new CoursesAdapter1(list);
         linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
