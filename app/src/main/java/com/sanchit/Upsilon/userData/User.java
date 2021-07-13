@@ -8,6 +8,32 @@ public class User {
     String _id;
     UserLocation userLocation;
     ArrayList<String> myCourses;
+    String role;
+
+    public User(String email, String username, String _id, UserLocation userLocation, ArrayList<String> myCourses, String role) {
+        this.email = email;
+        this.username = username;
+        this._id = _id;
+        this.userLocation = userLocation;
+        this.myCourses = myCourses;
+        this.role = role;
+    }
+
+    public String get_id() {
+        return _id;
+    }
+
+    public void set_id(String _id) {
+        this._id = _id;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
 
     public User(String email, String username, String _id) {
         this.email = email;

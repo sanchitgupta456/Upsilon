@@ -38,7 +38,15 @@ public class TeachingStatListAdapter extends RecyclerView.Adapter<TeachingStatLi
 
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
-        holder.statData.setText(mTeachingStatDataArrayList.get(position).getStatData());
+        if(mTeachingStatDataArrayList.get(position).getStatData()!=null && !mTeachingStatDataArrayList.get(position).getStatData().equals("null"))
+        {
+            holder.statData.setText(mTeachingStatDataArrayList.get(position).getStatData());
+        }
+        else
+        {
+            holder.statData.setText("0");
+
+        }
         holder.statField.setText(mTeachingStatDataArrayList.get(position).getStatField());
     }
 

@@ -17,43 +17,43 @@
         android:layout_marginHorizontal="20dp"
         android:layout_marginTop="20dp"
         android:layout_marginBottom="5dp"/>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_below="@id/profilePhotoHeader"
-        android:layout_marginHorizontal="20dp"
-        android:layout_marginVertical="3dp"
-        android:weightSum="100"
-        android:id="@+id/linearLayout1">
-        <TextView
-            android:id="@+id/email"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/email_id"
-            android:textColor="@color/colorWhite"
-            android:textSize="@dimen/text_margin"
-            android:layout_weight="10"
-            android:layout_gravity="center"
-            android:padding="3dp"
-            android:gravity="center_vertical"/>
-        <ImageButton
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="90"
-            android:background="@color/transparent"
-            android:src="@drawable/icon_down"
-            android:layout_gravity="center"
-            tools:ignore="ContentDescription"
-            android:clickable="true"
-            android:focusable="true"
-            android:id="@+id/btn_expand_collapse"/>
-    </LinearLayout>
+<!--    <LinearLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:orientation="horizontal"-->
+<!--        android:layout_below="@id/profilePhotoHeader"-->
+<!--        android:layout_marginHorizontal="20dp"-->
+<!--        android:layout_marginVertical="3dp"-->
+<!--        android:weightSum="100"-->
+<!--        android:id="@+id/linearLayout1">-->
+<!--        <TextView-->
+<!--            android:id="@+id/email"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="@string/email_id"-->
+<!--            android:textColor="@color/colorWhite"-->
+<!--            android:textSize="@dimen/text_margin"-->
+<!--            android:layout_weight="10"-->
+<!--            android:layout_gravity="center"-->
+<!--            android:padding="3dp"-->
+<!--            android:gravity="center_vertical"/>-->
+<!--        <ImageButton-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_weight="90"-->
+<!--            android:background="@color/transparent"-->
+<!--            android:src="@drawable/icon_down"-->
+<!--            android:layout_gravity="center"-->
+<!--            tools:ignore="ContentDescription"-->
+<!--            android:clickable="true"-->
+<!--            android:focusable="true"-->
+<!--            android:id="@+id/btn_expand_collapse"/>-->
+<!--    </LinearLayout>-->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_below="@id/linearLayout1"
+        android:layout_below="@id/profilePhotoHeader"
         android:layout_marginHorizontal="20dp"
         android:layout_marginVertical="3dp"
         android:weightSum="100"
@@ -70,34 +70,34 @@
             android:layout_gravity="center"
             android:padding="3dp"
             android:gravity="center_vertical"/>
-        <TextView
-            android:id="@+id/phone"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/phone"
-            android:textColor="@color/colorLiteGrey"
-            android:textSize="@dimen/text_margin"
-            android:layout_weight="10"
-            android:layout_gravity="center"
-            android:padding="3dp"
-            android:gravity="center_vertical"/>
-        <Button
-            android:id="@+id/btn_edit_profile"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/edit_profile"
-            android:textColor="@color/colorAccent"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:layout_weight="10"
-            android:layout_gravity="center"
-            android:padding="8dp"
-            android:drawablePadding="5dp"
-            app:drawableStartCompat="@drawable/edit_icon"
-            app:drawableTint="@color/colorAccent"
-            android:gravity="center_vertical"
-            android:clickable="true"
-            android:focusable="true"
-            android:background="@color/transparent"/>
+<!--        <TextView-->
+<!--            android:id="@+id/phone"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="@string/phone"-->
+<!--            android:textColor="@color/colorLiteGrey"-->
+<!--            android:textSize="@dimen/text_margin"-->
+<!--            android:layout_weight="10"-->
+<!--            android:layout_gravity="center"-->
+<!--            android:padding="3dp"-->
+<!--            android:gravity="center_vertical"/>-->
+<!--        <Button-->
+<!--            android:id="@+id/btn_edit_profile"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="@string/edit_profile"-->
+<!--            android:textColor="@color/colorAccent"-->
+<!--            android:textSize="16sp"-->
+<!--            android:textStyle="bold"-->
+<!--            android:layout_weight="10"-->
+<!--            android:layout_gravity="center"-->
+<!--            android:padding="8dp"-->
+<!--            android:drawablePadding="5dp"-->
+<!--            app:drawableStartCompat="@drawable/edit_icon"-->
+<!--            app:drawableTint="@color/colorAccent"-->
+<!--            android:gravity="center_vertical"-->
+<!--            android:clickable="true"-->
+<!--            android:focusable="true"-->
+<!--            android:background="@color/transparent"/>-->
     </LinearLayout>
 </RelativeLayout>

@@ -236,29 +236,29 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawer.closeDrawer(GravityCompat.START);
         View hView =  navigationView.getHeaderView(0);
         imageView = (CircleImageView) hView.findViewById(R.id.profilePhotoHeader);
-        profileMoreToggle = (ImageButton) hView.findViewById(R.id.btn_expand_collapse);
-        tvEmail = (TextView) hView.findViewById(R.id.email);
+//        profileMoreToggle = (ImageButton) hView.findViewById(R.id.btn_expand_collapse);
+//        tvEmail = (TextView) hView.findViewById(R.id.email);
         tvName = (TextView) hView.findViewById(R.id.name);
-        tvPhone = (TextView) hView.findViewById(R.id.phone);
-        btnEditProfile = (Button) hView.findViewById(R.id.btn_edit_profile);
-        profileMore = (LinearLayout) hView.findViewById(R.id.more);
-        btnEditProfile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, ProfileViewActivity.class);
-                startActivity(intent);
-            }
-        });
-        profileMoreToggle.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                v.animate().rotationBy(180).start();
-                if(profileMore.getVisibility() == GONE)
-                    profileMore.setVisibility(View.VISIBLE);
-                else
-                    profileMore.setVisibility(GONE);
-            }
-        });
+//        tvPhone = (TextView) hView.findViewById(R.id.phone);
+//        btnEditProfile = (Button) hView.findViewById(R.id.btn_edit_profile);
+//        profileMore = (LinearLayout) hView.findViewById(R.id.more);
+//        btnEditProfile.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(MainActivity.this, ProfileViewActivity.class);
+//                startActivity(intent);
+//            }
+//        });
+//        profileMoreToggle.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                v.animate().rotationBy(180).start();
+//                if(profileMore.getVisibility() == GONE)
+//                    profileMore.setVisibility(View.VISIBLE);
+//                else
+//                    profileMore.setVisibility(GONE);
+//            }
+//        });
         /*
         getActionView().animate().rotationBy(180).start();
             LinearLayout header_more = navigationView.getHeaderView(0).findViewById(R.id.more);
@@ -447,6 +447,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 //                                            coursesAdapter1.notifyDataSetChanged();
                                             frame1.setVisibility(View.VISIBLE);
                                             Log.v("course",String.valueOf(course.getCourseReviews()));
+                                            tvName.setText(((Upsilon)getApplication()).getUser().getUsername());
                                         }
                                         progressBar.setVisibility(GONE);
                                         displayCoursesInRecycler();
@@ -895,12 +896,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         {
             getCourseData();
         }
-        else if(item.getItemId()==R.id.btn_expand_collapse)
-        {
-            item.getActionView().animate().rotationBy(180).start();
-            LinearLayout header_more = navigationView.getHeaderView(0).findViewById(R.id.more);
-            header_more.setVisibility(View.VISIBLE);
-        }
+//        else if(item.getItemId()==R.id.btn_expand_collapse)
+//        {
+//            item.getActionView().animate().rotationBy(180).start();
+//            LinearLayout header_more = navigationView.getHeaderView(0).findViewById(R.id.more);
+//            header_more.setVisibility(View.VISIBLE);
+//        }
 
         /*else if(item.getItemId()==R.id.search_home)
         {
