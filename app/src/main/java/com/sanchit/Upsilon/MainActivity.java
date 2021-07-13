@@ -777,7 +777,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     public void displayCoursesInRecycler(){
-        coursesAdapter = new CoursesAdapter1(courseArrayList,((Upsilon)getApplication()).getAPI() , ((Upsilon)getApplication()).getToken());
+        coursesAdapter = new CoursesAdapter1(courseArrayList,((Upsilon)getApplication()).getAPI() , ((Upsilon)getApplication()).getToken() , ((Upsilon)getApplication()).getUser());
         coursesAdapter1 = new CoursesAdapter(courseArrayList1,((Upsilon)getApplication()).getUser().get_Id() , ((Upsilon)getApplication()).getUser().getMyCourses());
         coursesAdapter2 = new CoursesAdapter(courseArrayList2,((Upsilon)getApplication()).getUser().get_Id(), ((Upsilon)getApplication()).getUser().getMyCourses());
 
@@ -1207,7 +1207,7 @@ since the dispatchTouchEvent might dispatch your touch event to this function ag
     }
 
     public void initRecyclerView(RecyclerView recyclerView, ArrayList<CourseFinal> list) {
-        coursesAdapter1_1 = new CoursesAdapter1(list);
+        coursesAdapter1_1 = new CoursesAdapter1(list,((Upsilon)getApplication()).getAPI() , ((Upsilon)getApplication()).getToken() , ((Upsilon) getApplication()).getUser());
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getApplicationContext(), linearLayoutManager.getOrientation());
         recyclerView.setLayoutManager(linearLayoutManager);

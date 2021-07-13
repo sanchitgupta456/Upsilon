@@ -87,6 +87,7 @@ public class CoursesAdapter extends RecyclerView.Adapter<CoursesAdapter.ViewHold
             public void onClick(View view) {
         if(course.getTutorId().equals(userId))
         {
+            Log.v("Adapter","Teacher");
             Intent intent = new Intent(holder.itemView.getContext(), TeacherViewCourseActivity.class);
             intent.putExtra("Course", (Serializable) course);
             holder.itemView.getContext().startActivity(intent);
@@ -98,7 +99,9 @@ public class CoursesAdapter extends RecyclerView.Adapter<CoursesAdapter.ViewHold
             for(i=0;i<myCourses.size();i++) {
                 {
                     try {
+
                         if (((String) myCourses.get(i)).equals((String) course.get_id())) {
+                            Log.v("Adapter","Student");
                             Intent intent = new Intent(holder.itemView.getContext(), RegisteredStudentViewCourse.class);
                             intent.putExtra("Course", (Serializable) course);
                             holder.itemView.getContext().startActivity(intent);
@@ -110,6 +113,7 @@ public class CoursesAdapter extends RecyclerView.Adapter<CoursesAdapter.ViewHold
                 }
             }
             if (i == myCourses.size()) {
+
                 Intent intent = new Intent(holder.itemView.getContext(), ViewCourseActivity.class);
                 intent.putExtra("Course", (Serializable) course);
                 holder.itemView.getContext().startActivity(intent);

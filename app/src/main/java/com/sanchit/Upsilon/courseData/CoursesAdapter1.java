@@ -31,6 +31,7 @@ import com.sanchit.Upsilon.RegisteredStudentViewCourse;
 import com.sanchit.Upsilon.TeacherViewCourseActivity;
 import com.sanchit.Upsilon.Upsilon;
 import com.sanchit.Upsilon.ViewCourseActivity;
+import com.sanchit.Upsilon.userData.User;
 import com.sanchit.Upsilon.userData.UserLocation;
 
 import org.bson.Document;
@@ -46,7 +47,6 @@ import java.util.Map;
 import io.realm.mongodb.App;
 import io.realm.mongodb.AppConfiguration;
 import io.realm.mongodb.RealmResultTask;
-import io.realm.mongodb.User;
 import io.realm.mongodb.mongo.MongoClient;
 import io.realm.mongodb.mongo.MongoCollection;
 import io.realm.mongodb.mongo.MongoDatabase;
@@ -64,24 +64,36 @@ public class CoursesAdapter1 extends RecyclerView.Adapter<CoursesAdapter1.ViewHo
     private String API;
     private Application application;
     private String Token;
+    User user;
 
-    public CoursesAdapter1(List<CourseFinal>_courseList)
-    {
-        this.courseList = _courseList;
-    }
 
-    public CoursesAdapter1(List<CourseFinal>_courseList,String _API)
-    {
-        this.courseList = _courseList;
-        this.API = _API;
-    }
+//    public CoursesAdapter1(List<CourseFinal>_courseList)
+//    {
+//        this.courseList = _courseList;
+//    }
+//
+//    public CoursesAdapter1(List<CourseFinal>_courseList,String _API)
+//    {
+//        this.courseList = _courseList;
+//        this.API = _API;
+//    }
+//
+//    public CoursesAdapter1(List<CourseFinal>_courseList,String _API , String _Token)
+//    {
+//        this.courseList = _courseList;
+//        this.API = _API;
+//        this.Token = _Token;
+//    }
 
-    public CoursesAdapter1(List<CourseFinal>_courseList,String _API , String _Token)
+    public CoursesAdapter1(List<CourseFinal>_courseList,String _API , String _Token , User _user)
     {
         this.courseList = _courseList;
         this.API = _API;
         this.Token = _Token;
+        this.user = _user;
+        myCourses = user.getMyCourses();
     }
+
 
 
     @Override
@@ -106,7 +118,6 @@ public class CoursesAdapter1 extends RecyclerView.Adapter<CoursesAdapter1.ViewHo
         //Document userLoc = new Document();
 
         holder.ll.setVisibility(View.GONE);
-
         holder.toggle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -251,15 +262,40 @@ public class CoursesAdapter1 extends RecyclerView.Adapter<CoursesAdapter1.ViewHo
 
 //                Log.v("Id",course.getTutorId());
 //                Log.v("Id",user.getId());
-                if(course.getTutorId().equals("1"))
+                if(course.getTutorId().equals(user.get_Id()))
                 {
-                    Log.v("Id","matched");
+                    Log.v("Adapter","Teacher");
                     Intent intent = new Intent(holder.itemView.getContext(), TeacherViewCourseActivity.class);
                     intent.putExtra("Course", (Serializable) course);
                     holder.itemView.getContext().startActivity(intent);
                 }
                 else
                 {
+
+                    int i=0;
+                    for(i=0;i<myCourses.size();i++) {
+                        {
+                            try {
+
+                                if (((String) myCourses.get(i)).equals((String) course.get_id())) {
+                                    Log.v("Adapter","Student");
+                                    Intent intent = new Intent(holder.itemView.getContext(), RegisteredStudentViewCourse.class);
+                                    intent.putExtra("Course", (Serializable) course);
+                                    holder.itemView.getContext().startActivity(intent);
+                                    break;
+                                }
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                    if (i == myCourses.size()) {
+
+                        Intent intent = new Intent(holder.itemView.getContext(), ViewCourseActivity.class);
+                        intent.putExtra("Course", (Serializable) course);
+                        holder.itemView.getContext().startActivity(intent);
+                    }
+                }
 
                     //Blank query to find every single course in db
                     //TODO: Modify query to look for user preferred course IDs
@@ -311,7 +347,7 @@ public class CoursesAdapter1 extends RecyclerView.Adapter<CoursesAdapter1.ViewHo
 //                    });
 
 
-                }
+
             }
         });
 

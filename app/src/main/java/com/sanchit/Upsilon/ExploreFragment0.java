@@ -320,7 +320,7 @@ public class ExploreFragment0 extends Fragment {
 
     public void initRecyclerView(RecyclerView recyclerView, ArrayList<CourseFinal> list) {
         Log.d(TAG, "initRecyclerView: now displaying " + recyclerView.getId());
-        CoursesAdapter1 coursesAdapter1 = new CoursesAdapter1(list,((Upsilon)getActivity().getApplication()).getAPI() , ((Upsilon)getActivity().getApplication()).getToken());
+        CoursesAdapter1 coursesAdapter1 = new CoursesAdapter1(list,((Upsilon)getActivity().getApplication()).getAPI() , ((Upsilon)getActivity().getApplication()).getToken() , ((Upsilon) getActivity().getApplication()).getUser());
         linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(coursesAdapter1);
@@ -382,7 +382,6 @@ public class ExploreFragment0 extends Fragment {
 
     public void findLocation(){
         progressBar.setVisibility(View.VISIBLE);
-//        Log.v("UserLoc",((Upsilon)getActivity().getApplication()).getUser().getUserLocation().toString());
         if(((Upsilon)getActivity().getApplication()).getUser().getUserLocation() != null)
         {
                         progressBar.setVisibility(View.GONE);

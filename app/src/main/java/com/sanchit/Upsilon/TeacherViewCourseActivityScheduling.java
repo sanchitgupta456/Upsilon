@@ -32,6 +32,7 @@ import com.google.gson.GsonBuilder;
 import com.sanchit.Upsilon.classData.ScheduleAdapter;
 import com.sanchit.Upsilon.classData.ScheduledClass;
 import com.sanchit.Upsilon.courseData.Course;
+import com.sanchit.Upsilon.courseData.CourseFinal;
 
 
 import org.bson.Document;
@@ -59,7 +60,7 @@ public class TeacherViewCourseActivityScheduling extends Fragment implements Sch
     String appID = "upsilon-ityvn";
     int year,month,day;
     private RecyclerView recyclerView;
-    Course course;
+    CourseFinal course;
     private ArrayList<ScheduledClass> classes = new ArrayList<>();
     View dialogView;
     AlertDialog alertDialog;
@@ -84,15 +85,15 @@ public class TeacherViewCourseActivityScheduling extends Fragment implements Sch
         //alertDialog = new AlertDialog.Builder(Objects.requireNonNull(getApplicationContext())).create();
         alertDialog = new AlertDialog.Builder(getActivity()).create();
 
-        course = (Course) getArguments().get("Course");
+        course = (CourseFinal) getArguments().get("Course");
         FloatingActionButton btnAdd = (FloatingActionButton) view.findViewById(R.id.btnAddClass);
-        app = new App(new AppConfiguration.Builder(appID)
-                .build());
-        User user = app.currentUser();
-
-        mongoClient = user.getMongoClient("mongodb-atlas");
-        mongoDatabase = mongoClient.getDatabase("Upsilon");
-        MongoCollection<org.bson.Document> mongoCollection  = mongoDatabase.getCollection("CourseData");
+//        app = new App(new AppConfiguration.Builder(appID)
+//                .build());
+//        User user = app.currentUser();
+//
+//        mongoClient = user.getMongoClient("mongodb-atlas");
+//        mongoDatabase = mongoClient.getDatabase("Upsilon");
+//        MongoCollection<org.bson.Document> mongoCollection  = mongoDatabase.getCollection("CourseData");
         getClasses();
 
         adapter.setClickListener(this);
@@ -116,52 +117,52 @@ public class TeacherViewCourseActivityScheduling extends Fragment implements Sch
                     editText.requestFocus();
                 }
                 else {
-                    BasicBSONList scheduledClasses = course.getScheduledClasses();
-                    if(scheduledClasses==null)
-                    {
-                        scheduledClasses=new BasicBSONList();
-                    }
-                    Document scheduledClass = new Document();
-
-                    scheduledClass.append("ClassName",ClassName);
-                    String[] monthNames = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
-                    scheduledClass.append("Month",String.valueOf(monthNames[datePicker.getMonth()]));
-                    scheduledClass.append("Date",String.valueOf(datePicker.getDayOfMonth()));
-
-                    Calendar calendar = new GregorianCalendar(datePicker.getYear(),
-                            datePicker.getMonth(),
-                            datePicker.getDayOfMonth(),
-                            timePicker.getHour(),
-                            timePicker.getMinute());
-                    long time = calendar.getTimeInMillis();
-
-                    Calendar cal = Calendar.getInstance(Locale.ENGLISH);
-                    cal.setTimeInMillis(time);
-                    String date = DateFormat.format("hh:mm a", cal).toString();
-                    scheduledClass.append("Time",date);
-                    scheduledClasses.add(scheduledClass);
-                    //nextClass.setText(date);
-                    classes.add(new ScheduledClass(ClassName,String.valueOf(datePicker.getDayOfMonth()),String.valueOf(monthNames[datePicker.getMonth()]),date));
-                    adapter.notifyDataSetChanged();
-                    alertDialog.dismiss();
-
-                    UpdateOptions updateOptions = new UpdateOptions();
-                    updateOptions.upsert(true);
-                    course.setScheduledClasses(scheduledClasses);
-                    course.setNextLectureOn(String.valueOf(time));
-                    gsonBuilder = new GsonBuilder();
-                    gson = gsonBuilder.create();
-                    String json = gson.toJson(course, Course.class);
-                    Document document = Document.parse(json);
-                    //document.append("nextLectureOn",String.valueOf(time));
-
-                    mongoCollection.updateOne(new Document("courseId", course.getCourseId()), document).getAsync(result -> {
-                        if (result.isSuccess()) {
-                            Log.v("Schedule", "Class Scheduled");
-                        } else {
-                            Log.v("Schedule", "Error" + result.getError().toString());
-                        }
-                    });
+//                    BasicBSONList scheduledClasses = course.getScheduledClasses();
+//                    if(scheduledClasses==null)
+//                    {
+//                        scheduledClasses=new BasicBSONList();
+//                    }
+//                    Document scheduledClass = new Document();
+//
+//                    scheduledClass.append("ClassName",ClassName);
+//                    String[] monthNames = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
+//                    scheduledClass.append("Month",String.valueOf(monthNames[datePicker.getMonth()]));
+//                    scheduledClass.append("Date",String.valueOf(datePicker.getDayOfMonth()));
+//
+//                    Calendar calendar = new GregorianCalendar(datePicker.getYear(),
+//                            datePicker.getMonth(),
+//                            datePicker.getDayOfMonth(),
+//                            timePicker.getHour(),
+//                            timePicker.getMinute());
+//                    long time = calendar.getTimeInMillis();
+//
+//                    Calendar cal = Calendar.getInstance(Locale.ENGLISH);
+//                    cal.setTimeInMillis(time);
+//                    String date = DateFormat.format("hh:mm a", cal).toString();
+//                    scheduledClass.append("Time",date);
+//                    scheduledClasses.add(scheduledClass);
+//                    //nextClass.setText(date);
+//                    classes.add(new ScheduledClass(ClassName,String.valueOf(datePicker.getDayOfMonth()),String.valueOf(monthNames[datePicker.getMonth()]),date));
+//                    adapter.notifyDataSetChanged();
+//                    alertDialog.dismiss();
+//
+//                    UpdateOptions updateOptions = new UpdateOptions();
+//                    updateOptions.upsert(true);
+//                    course.setScheduledClasses(scheduledClasses);
+//                    course.setNextLectureOn(String.valueOf(time));
+//                    gsonBuilder = new GsonBuilder();
+//                    gson = gsonBuilder.create();
+//                    String json = gson.toJson(course, Course.class);
+//                    Document document = Document.parse(json);
+//                    //document.append("nextLectureOn",String.valueOf(time));
+//
+//                    mongoCollection.updateOne(new Document("courseId", course.getCourseId()), document).getAsync(result -> {
+//                        if (result.isSuccess()) {
+//                            Log.v("Schedule", "Class Scheduled");
+//                        } else {
+//                            Log.v("Schedule", "Error" + result.getError().toString());
+//                        }
+//                    });
                 }
             }});
 
@@ -185,32 +186,32 @@ public class TeacherViewCourseActivityScheduling extends Fragment implements Sch
     }
     public void getClasses() {
         //get classes :
-        BasicBSONList scheduledClasses = course.getScheduledClasses();
-        if(scheduledClasses==null)
-        {
-            scheduledClasses=new BasicBSONList();
-        }
-        for(int i=0;i<scheduledClasses.size();i++)
-        {
-            try {
-                Object scheduled = (Object) scheduledClasses.get(i);
-                Log.v("scheduled", String.valueOf(scheduled));
-                LinkedHashMap Class = (LinkedHashMap) scheduled;
-                classes.add(new ScheduledClass(Class.get("ClassName").toString(), Class.get("Date").toString(), Class.get("Month").toString(), Class.get("Time").toString()));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        /* this is for test */
-        /* begin test */
-        Log.d(TAG, "getClasses: getting entries");
-        /*classes.add(new ScheduledClass("Getting Started with Python!", "7", "December", "08:00 AM"));
-        classes.add(new ScheduledClass("Knowing Syntax Better!", "8", "December", "09:00 AM"));
-        classes.add(new ScheduledClass("Data Types in Python", "9", "December", "08:00 AM"));
-        classes.add(new ScheduledClass("Lists in Python", "10", "December", "10:00 AM"));
-        classes.add(new ScheduledClass("Functions", "11", "December", "08:00 AM"));
-        classes.add(new ScheduledClass("Object Oriented Programming!", "13", "December", "09:00 AM"));*/
-        course = (Course) getArguments().get("Course");
+//        BasicBSONList scheduledClasses = course.getScheduledClasses();
+//        if(scheduledClasses==null)
+//        {
+//            scheduledClasses=new BasicBSONList();
+//        }
+//        for(int i=0;i<scheduledClasses.size();i++)
+//        {
+//            try {
+//                Object scheduled = (Object) scheduledClasses.get(i);
+//                Log.v("scheduled", String.valueOf(scheduled));
+//                LinkedHashMap Class = (LinkedHashMap) scheduled;
+//                classes.add(new ScheduledClass(Class.get("ClassName").toString(), Class.get("Date").toString(), Class.get("Month").toString(), Class.get("Time").toString()));
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//        }
+//        /* this is for test */
+//        /* begin test */
+//        Log.d(TAG, "getClasses: getting entries");
+//        /*classes.add(new ScheduledClass("Getting Started with Python!", "7", "December", "08:00 AM"));
+//        classes.add(new ScheduledClass("Knowing Syntax Better!", "8", "December", "09:00 AM"));
+//        classes.add(new ScheduledClass("Data Types in Python", "9", "December", "08:00 AM"));
+//        classes.add(new ScheduledClass("Lists in Python", "10", "December", "10:00 AM"));
+//        classes.add(new ScheduledClass("Functions", "11", "December", "08:00 AM"));
+//        classes.add(new ScheduledClass("Object Oriented Programming!", "13", "December", "09:00 AM"));*/
+        course = (CourseFinal) getArguments().get("Course");
         
 
         initRecyclerView();

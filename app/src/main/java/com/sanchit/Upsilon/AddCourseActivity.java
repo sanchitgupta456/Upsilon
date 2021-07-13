@@ -1,6 +1,7 @@
 package com.sanchit.Upsilon;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -38,6 +39,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.cloudinary.android.MediaManager;
 import com.cloudinary.android.callback.ErrorInfo;
 import com.cloudinary.android.callback.UploadCallback;
@@ -55,16 +62,25 @@ import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.gson.Gson;
 import com.sanchit.Upsilon.courseData.Course;
+import com.sanchit.Upsilon.courseData.CourseLocation;
 import com.sanchit.Upsilon.courseLocationMap.MapsActivity;
 import com.sanchit.Upsilon.ui.login.LoginActivity;
 
 import org.bson.Document;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.json.simple.JSONArray;
+
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.UUID;
+
 import io.realm.mongodb.App;
 import io.realm.mongodb.AppConfiguration;
 import io.realm.mongodb.User;
@@ -105,13 +121,20 @@ public class AddCourseActivity extends AppCompatActivity implements AdapterView.
     boolean[] isCheckedCategories;
     ArrayList<String> categories_chosen = new ArrayList<>();
     Double latitude,longitude;
-    private final Document courseLocation = new Document();
+    CourseLocation courseLocation = new CourseLocation();
     private String college;
+
+    private RequestQueue queue;
+    private String API ;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_course);
+
+        queue = Volley.newRequestQueue(getApplicationContext());
+        API = ((Upsilon)this.getApplication()).getAPI();
+
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setElevation(0);
         getSupportActionBar().setTitle(R.string.add_course_details);
@@ -292,38 +315,122 @@ public class AddCourseActivity extends AppCompatActivity implements AdapterView.
                         mode = "Offline";
                     }
                     //Object object = new CourseReview("Hi",5,"Hello");
-                    courseReviews = new ArrayList();
-                    Document test = new Document().append("review", "A Step for bringing Knowledge down the years of College").append("reviewRating", 5).append("reviewAuthorId", user.getId());
-                    courseReviews.add(test);
+//                    courseReviews = new ArrayList();
+//                    Document test = new Document().append("review", "A Step for bringing Knowledge down the years of College").append("reviewRating", 5).append("reviewAuthorId", user.getId());
+//                    courseReviews.add(test);
                     //courseReviews.add(2,object);
                     //courseReviews.put("hello",object);
                 /*course.setRatingAuthorId("h");
                 course.setReview("fd");
                 course.setReviewRating(1.23);
                 courseReviews.add(course);*/
-                    Document courseDetails = new Document();
-                    Double rating =5.0;
-                    courseDetails.append("_partitionkey", "_partitionKey");
-                    courseDetails.append("courseName", courseName);
-                    courseDetails.append("tutorId", user.getId());
-                    courseDetails.append("courseDescription", courseDescription);
-                    courseDetails.append("coursePreReq", "");
-                    courseDetails.append("courseRating", rating);
-                    courseDetails.append("courseMode", mode);
-                    courseDetails.append("courseFees", fees);
-                    courseDetails.append("courseImage", "balh");
-                    courseDetails.append("instructorLocation", "Here");
-                    //courseDetails.append("courseDurationMeasure","hours");
-                    courseDetails.append("numberOfStudentsEnrolled", 0);
-                    courseDetails.append("courseDuration", courseDuration);
-                    //courseDetails.append("numberOfBatches",numOfBatches);
-                    courseDetails.append("courseReviews", courseReviews);
-                    courseDetails.append("courseImageCounter", 0);
-                    courseDetails.append("courseLocation", courseLocation);
-                    courseDetails.append("numberOfReviews", 0);
-                    courseDetails.append("courseCategories", categories_chosen);
-                    courseDetails.append("registrationsOpen",true);
-                    courseDetails.append("tutorCollege",college);
+//                    Document courseDetails = new Document();
+//                    Double rating =5.0;
+//                    courseDetails.append("_partitionkey", "_partitionKey");
+//                    courseDetails.append("courseName", courseName);
+//                    courseDetails.append("tutorId", user.getId());
+//                    courseDetails.append("courseDescription", courseDescription);
+//                    courseDetails.append("coursePreReq", "");
+//                    courseDetails.append("courseRating", rating);
+//                    courseDetails.append("courseMode", mode);
+//                    courseDetails.append("courseFees", fees);
+//                    courseDetails.append("courseImage", "balh");
+//                    courseDetails.append("instructorLocation", "Here");
+//                    //courseDetails.append("courseDurationMeasure","hours");
+//                    courseDetails.append("numberOfStudentsEnrolled", 0);
+//                    courseDetails.append("courseDuration", courseDuration);
+//                    //courseDetails.append("numberOfBatches",numOfBatches);
+//                    courseDetails.append("courseReviews", courseReviews);
+//                    courseDetails.append("courseImageCounter", 0);
+//                    courseDetails.append("courseLocation", courseLocation);
+//                    courseDetails.append("numberOfReviews", 0);
+//                    courseDetails.append("courseCategories", categories_chosen);
+//                    courseDetails.append("registrationsOpen",true);
+//                    courseDetails.append("tutorCollege",college);
+                    try {
+                                String requestId = MediaManager.get().upload(CourseImageUrl)
+                                        .unsigned("preset1")
+                                        .option("resource_type", "image")
+                                        .option("folder", "Upsilon/Courses/".concat(((Upsilon)getApplication()).getUser().get_Id()).concat(UUID.randomUUID().toString()))
+                                        .option("public_id", "CourseImage " + 0)
+                                        .callback(new UploadCallback() {
+                                            @Override
+                                            public void onStart(String requestId) {
+                                            }
+
+                                            @RequiresApi(api = Build.VERSION_CODES.N)
+                                            @Override
+                                            public void onProgress(String requestId, long bytes, long totalBytes) {
+                                                progressBar.setProgress(Math.toIntExact((bytes / totalBytes) * 100));
+                                            }
+
+                                            @Override
+                                            public void onSuccess(String requestId, Map resultData) {
+                                                try {
+                                                    Gson gson = new Gson();
+                                                    JSONObject jsonObject= new JSONObject();
+                                                    jsonObject.put("courseCategories", JSONArray.toJSONString(categories_chosen));
+                                                    jsonObject.put("courseDescription",courseDescription);
+                                                    jsonObject.put("courseMode",mode);
+                                                    jsonObject.put("courseName",courseName);
+                                                    jsonObject.put("coursePreReq",null);
+                                                    jsonObject.put("numberOfBatches",1);
+                                                    jsonObject.put("courseDuration",courseDuration);
+                                                    jsonObject.put("courseFees",fees);
+                                                    jsonObject.put("courseImage",CourseImageUrl);
+                                                    jsonObject.put("courseLocation",gson.toJson(courseLocation));
+
+                                                    JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, API + "/createCourse", jsonObject,
+                                                            new Response.Listener<JSONObject>() {
+                                                                @Override
+                                                                public void onResponse(JSONObject response) {
+                                                                    try {
+                                                                        Log.d("Created Course", String.valueOf(response.get("_id")));
+                                                                        Intent intent = new Intent(AddCourseActivity.this, AddCourseActivityContinued.class);
+                                                                        intent.putExtra("InsertedDocument", String.valueOf(response.get("_id")));
+                                                                        intent.putExtra("fees", fees);
+                                                                        startActivity(intent);
+                                                                    } catch (JSONException e) {
+                                                                        e.printStackTrace();
+                                                                    }
+
+                                                                }
+                                                            },
+                                                            new Response.ErrorListener() {
+                                                                @SuppressLint("LongLogTag")
+                                                                @Override
+                                                                public void onErrorResponse(VolleyError error) {
+                                                                    Log.d("ErrorCreatingCourse", error.toString());
+                                                                }
+                                                            }
+                                                    ) {
+                                                        @Override
+                                                        public Map<String, String> getHeaders() {
+                                                            Map<String, String> params = new HashMap<String, String>();
+                                                            params.put("token", ((Upsilon) getApplication()).getToken());
+                                                            return params;
+                                                        }
+                                                    };
+                                                    queue.add(jsonRequest);
+                                                } catch (JSONException e) {
+                                                    e.printStackTrace();
+                                                }
+                                            }
+
+                                            @Override
+                                            public void onError(String requestId, ErrorInfo error) {
+
+                                            }
+
+                                            @Override
+                                            public void onReschedule(String requestId, ErrorInfo error) {
+
+                                            }
+                                        })
+                                        .dispatch();
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
 
                 /*Intent intent = new Intent(AddCourseActivity.this,AddCourseActivityContinued.class);
                 intent.putExtra("courseDetails",courseDetails.toJson().toString());
@@ -397,7 +504,7 @@ public class AddCourseActivity extends AppCompatActivity implements AdapterView.
 //                            Log.v("User", result.getError().toString());
 //                        }
 //                    });
-                }
+                    }
             }
         });
     }
@@ -463,8 +570,8 @@ public class AddCourseActivity extends AppCompatActivity implements AdapterView.
                 latitude = data.getDoubleExtra("latitude",0);
                 longitude = data.getDoubleExtra("longitude",0);
                 Log.v("CourseLocationSet", String.valueOf(latitude+longitude));
-                courseLocation.append("latitude",latitude);
-                courseLocation.append("longitude",longitude);
+                courseLocation.setLatitude(latitude);
+                courseLocation.setLongitude(longitude);
             }
             else if (requestCode == 1235) {
                 Intent intent = new Intent(AddCourseActivity.this, MapsActivity.class);

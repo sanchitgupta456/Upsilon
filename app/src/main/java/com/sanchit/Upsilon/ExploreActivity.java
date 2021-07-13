@@ -370,7 +370,7 @@ public class ExploreActivity extends AppCompatActivity {
 
     public void initRecyclerView(RecyclerView recyclerView, ArrayList<CourseFinal> list) {
         Log.d(TAG, "initRecyclerView: now displaying " + recyclerView.getId());
-        CoursesAdapter1 coursesAdapter1 = new CoursesAdapter1(list);
+        CoursesAdapter1 coursesAdapter1 = new CoursesAdapter1(list ,((Upsilon)getApplication()).getAPI() , ((Upsilon)getApplication()).getToken() , ((Upsilon) getApplication()).getUser());
         linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(coursesAdapter1);

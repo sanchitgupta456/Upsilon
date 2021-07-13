@@ -35,6 +35,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.sanchit.Upsilon.courseData.Course;
+import com.sanchit.Upsilon.courseData.CourseFinal;
 import com.sanchit.Upsilon.ui.login.LoginActivity;
 import com.squareup.picasso.Picasso;
 
@@ -61,7 +62,7 @@ public class TeacherViewCourseActivity extends AppCompatActivity implements Bott
     private static final String TAG = "TeacherViewCourse";
 
     String appID = "upsilon-ityvn";
-    Course course;
+    CourseFinal course;
     //private ImageView courseImage;
     //private TextView rating,enrolled,nextClass, courseName;
     private TextView courseName;
@@ -85,7 +86,7 @@ public class TeacherViewCourseActivity extends AppCompatActivity implements Bott
         super.onCreate(savedInstanceState);
         setContentView(R.layout.teachers_viewof_course);
         Intent intent = getIntent();
-        course = (Course) intent.getSerializableExtra("Course");
+        course = (CourseFinal) intent.getSerializableExtra("Course");
 
         fragmentContainer = (FrameLayout) findViewById(R.id.course_teacher_frame);
 

@@ -2,6 +2,7 @@
 
 package com.sanchit.Upsilon;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -22,9 +23,16 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.gson.GsonBuilder;
 import com.sanchit.Upsilon.courseData.Course;
+import com.sanchit.Upsilon.courseData.CourseFinal;
 import com.sanchit.Upsilon.courseData.CourseReview;
 import com.sanchit.Upsilon.courseData.CourseReviewAdapter;
 import com.sanchit.Upsilon.courseData.CoursesAdapter;
@@ -34,9 +42,13 @@ import com.squareup.picasso.Picasso;
 import org.bson.Document;
 import org.bson.types.BasicBSONList;
 import org.bson.types.ObjectId;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Objects;
 
 import io.realm.mongodb.App;
@@ -47,6 +59,8 @@ import io.realm.mongodb.mongo.MongoClient;
 import io.realm.mongodb.mongo.MongoCollection;
 import io.realm.mongodb.mongo.MongoDatabase;
 import io.realm.mongodb.mongo.iterable.MongoCursor;
+
+import static io.realm.Realm.getApplicationContext;
 
 public class ViewCourseActivity extends AppCompatActivity {
 
@@ -61,7 +75,7 @@ public class ViewCourseActivity extends AppCompatActivity {
     private Button RegisterButton;
     String appID = "upsilon-ityvn";
     App app;
-    Course course;
+    CourseFinal course;
     MongoClient mongoClient;
     MongoDatabase mongoDatabase;
     RecyclerView reviewsRecyclerView,introductoryRecyclerView;
@@ -71,6 +85,8 @@ public class ViewCourseActivity extends AppCompatActivity {
     ArrayList<String> introductoryImages = new ArrayList<String>();
     ArrayList<String> introductoryVideos = new ArrayList<String>();
     ArrayList<String> myCourses = new ArrayList<>();
+    private RequestQueue queue;
+    private String API ;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -78,6 +94,8 @@ public class ViewCourseActivity extends AppCompatActivity {
         setContentView(R.layout.activity_view_course);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setElevation(0);
+        queue = Volley.newRequestQueue(getApplicationContext());
+        API = ((Upsilon)getApplication()).getAPI();
         ActionBarView = getSupportActionBar().getCustomView();
         CourseName = (TextView) findViewById(R.id.textCourseCoverCard);
         CourseImage = (ImageView) findViewById(R.id.imageCourseCoverCard);
@@ -92,17 +110,17 @@ public class ViewCourseActivity extends AppCompatActivity {
         CourseLocation = (ImageButton) findViewById(R.id.location_view_course);
         TeacherInfo = (ImageButton) findViewById(R.id.view_course_tutor_info);
         RegisterButton = (Button) findViewById(R.id.view_course_register);
-
-        app = new App(new AppConfiguration.Builder(appID)
-                .build());
-        User user = app.currentUser();
-
-        mongoClient = user.getMongoClient("mongodb-atlas");
-        mongoDatabase = mongoClient.getDatabase("Upsilon");
-        MongoCollection<Document> mongoCollection  = mongoDatabase.getCollection("UserData");
+//
+//        app = new App(new AppConfiguration.Builder(appID)
+//                .build());
+//        User user = app.currentUser();
+//
+//        mongoClient = user.getMongoClient("mongodb-atlas");
+//        mongoDatabase = mongoClient.getDatabase("Upsilon");
+//        MongoCollection<Document> mongoCollection  = mongoDatabase.getCollection("UserData");
 
         Intent intent = getIntent();
-        course = (Course)intent.getSerializableExtra("Course");
+        course = (CourseFinal)intent.getSerializableExtra("Course");
 
         TeacherInfo.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -113,7 +131,7 @@ public class ViewCourseActivity extends AppCompatActivity {
             }
         });
 
-        if(course.getTutorId().equals(user.getId()))
+        if(course.getTutorId().equals(((Upsilon)getApplication()).getUser().get_Id()))
         {
             RegisterButton.setVisibility(View.INVISIBLE);
         }
@@ -128,76 +146,131 @@ public class ViewCourseActivity extends AppCompatActivity {
             public void onClick(View v) {
                 releaseExoPlayer(courseIntroductoryMaterialAdapter.exoPlayer);
                 Intent intent = new Intent(ViewCourseActivity.this,RegisterCourseActivity.class);
-                String id = course.getCourseId();
-                Log.v("ViewCourse", String.valueOf(course.getCourseId()));
+                String id = course.get_id();
+                Log.v("ViewCourse", String.valueOf(course.get_id()));
                 intent.putExtra("course",course);
                 startActivity(intent);
             }
         });
-
-        initialise();
-
         Log.v("Course","Hello");
         Log.v("courseReview", String.valueOf(course.getCourseReviews().getClass()));
 
         getCourseReviews();
+        initialise();
         getCourseIntroductoryContent();
 
-        Document queryFilter  = new Document("userid",course.getTutorId());
-
-        RealmResultTask<MongoCursor<Document>> findTask = mongoCollection.find(queryFilter).iterator();
-
-        findTask.getAsync(task -> {
-            if (task.isSuccess()) {
-                MongoCursor<Document> results = task.get();
-                if(!results.hasNext())
-                {
-                    Log.v("ViewCourse","Couldnt Find The Tutor");
-                }
-                else
-                {
-                    Log.v("User", "successfully found the Tutor");
-
-                }
-                while (results.hasNext()) {
-                    //Log.v("EXAMPLE", results.next().toString());
-                    Document currentDoc = results.next();
-                    CourseTutorName.setText("Course By "+ currentDoc.getString("name"));
-                    /*myCourses = (ArrayList<String>) currentDoc.get("myCourses");
-                    if(myCourses==null)
-                    {
-
-                    }
-                    else
-                    {
-                        for(int i=0;i<myCourses.size();i++)
-                        {
-                            if(myCourses.get(i).equals(course.getCourseId()))
+        try {
+            Log.v("courseId",course.get_id());
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("courseId",course.get_id());
+            JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, API+"/tutorNameLoc",jsonObject,
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            Log.d("FetchTutorNameLoc", response.toString());
+                            if(course.getCourseMode().equals("Offline"))
                             {
-                                RegisterButton.setVisibility(View.INVISIBLE);
+                                try {
+//                                    holder.textTutorTvShow.setText(response.getString("tutorName"));
+                                    if(response.get("courseDistance").equals(null))
+                                    {
+//                                        holder.textDistanceTvShow.setText(R.string.error_not_enabled_location);
+                                    }
+                                    else
+                                    {
+//                                        holder.textDistanceTvShow.setText(new StringBuilder().append("About ")
+//                                                .append(String.format("%.2f",response.get("courseDistance")))
+//                                                .append(" kilometers from your location").toString());
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                            else
+                            {
+                                try {
+                                    CourseTutorName.setText(response.getString("tutorName"));
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
                             }
                         }
-                    }*/
-
-                    Log.v("User",currentDoc.getString("userid"));
+                    },
+                    new Response.ErrorListener() {
+                        @SuppressLint("LongLogTag")
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Log.d("ErrorFetchingTutorNameLoc", error.toString());
+                        }
+                    }
+            ){
+                @Override
+                public Map<String, String> getHeaders() {
+                    Map<String, String> params = new HashMap<String, String>();
+                    params.put("token", ((Upsilon)getApplication()).getToken());
+                    return params;
                 }
-            } else {
-                Log.v("User","Failed to complete search");
-            }
-        });
+            };
+            queue.add(jsonRequest);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
-        /*BackButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                releaseExoPlayer(courseIntroductoryMaterialAdapter.exoPlayer);
-                finish();
-            }
-        });*/
+//        Document queryFilter  = new Document("userid",course.getTutorId());
+
+//        RealmResultTask<MongoCursor<Document>> findTask = mongoCollection.find(queryFilter).iterator();
+
+//        findTask.getAsync(task -> {
+//            if (task.isSuccess()) {
+//                MongoCursor<Document> results = task.get();
+//                if(!results.hasNext())
+//                {
+//                    Log.v("ViewCourse","Couldnt Find The Tutor");
+//                }
+//                else
+//                {
+//                    Log.v("User", "successfully found the Tutor");
+//
+//                }
+//                while (results.hasNext()) {
+//                    //Log.v("EXAMPLE", results.next().toString());
+//                    Document currentDoc = results.next();
+//                    CourseTutorName.setText("Course By "+ currentDoc.getString("name"));
+//                    /*myCourses = (ArrayList<String>) currentDoc.get("myCourses");
+//                    if(myCourses==null)
+//                    {
+//
+//                    }
+//                    else
+//                    {
+//                        for(int i=0;i<myCourses.size();i++)
+//                        {
+//                            if(myCourses.get(i).equals(course.getCourseId()))
+//                            {
+//                                RegisterButton.setVisibility(View.INVISIBLE);
+//                            }
+//                        }
+//                    }*/
+//
+//                    Log.v("User",currentDoc.getString("userid"));
+//                }
+//            } else {
+//                Log.v("User","Failed to complete search");
+//            }
+//        });
+
+//        BackButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                releaseExoPlayer(courseIntroductoryMaterialAdapter.exoPlayer);
+//                finish();
+//            }
+//        });
 
         CourseName.setText(course.getCourseName());
         Objects.requireNonNull(getSupportActionBar()).setTitle(course.getCourseName());
         CourseRating.setStepSize(0.01f);
-        CourseRating.setRating((float) course.getCourseRating());
+        CourseRating.setRating(Float.parseFloat(course.getCourseRating().toString()));
         CourseDescription.setText(course.getCourseDescription());
         CourseMode.setText(course.getCourseMode());
         if(course.getCourseMode().equals("Online"))
@@ -213,29 +286,31 @@ public class ViewCourseActivity extends AppCompatActivity {
 
     public void getCourseReviews()
     {
-        BasicBSONList courseReviews = course.getCourseReviews();
-        for(int counter=0;counter<courseReviews.size();counter++)
-        {
-            Object courseReview = (Object) courseReviews.get(counter);
-            LinkedHashMap courseReview1 = (LinkedHashMap) courseReview;
-            CourseReview courseReview2 = null;
-            try {
-                courseReview2 = new CourseReview(courseReview1.get("review").toString(), (Double) courseReview1.get("reviewRating"),courseReview1.get("reviewAuthorId").toString(),courseReview1.get("reviewName").toString());
-            } catch (Exception e) {
-                try {
-                    Log.v("counting","count");
-                    courseReview2 = new CourseReview(courseReview1.get("review").toString(), (Double) courseReview1.get("reviewRating"),courseReview1.get("reviewAuthorId").toString());
-                } catch (Exception exception) {
-                    exception.printStackTrace();
-                }
-                e.printStackTrace();
-            }
-            courseReviewsArrayList.add(courseReview2);
-            courseReviewAdapter.notifyDataSetChanged();
-            Log.v("test", (String) courseReview1.get("review"));
-        }
-        Log.v("courseReview", String.valueOf(course.getCourseReviews().getClass()));
-        Log.v("courseReviews", String.valueOf(course.getCourseReviews()));
+        courseReviewsArrayList = course.getCourseReviews();
+
+////        BasicBSONList courseReviews = course.getCourseReviews();
+//        for(int counter=0;counter<courseReviews.size();counter++)
+//        {
+//            Object courseReview = (Object) courseReviews.get(counter);
+//            LinkedHashMap courseReview1 = (LinkedHashMap) courseReview;
+//            CourseReview courseReview2 = null;
+//            try {
+//                courseReview2 = new CourseReview(courseReview1.get("review").toString(), (Double) courseReview1.get("reviewRating"),courseReview1.get("reviewAuthorId").toString(),courseReview1.get("reviewName").toString());
+//            } catch (Exception e) {
+//                try {
+//                    Log.v("counting","count");
+//                    courseReview2 = new CourseReview(courseReview1.get("review").toString(), (Double) courseReview1.get("reviewRating"),courseReview1.get("reviewAuthorId").toString());
+//                } catch (Exception exception) {
+//                    exception.printStackTrace();
+//                }
+//                e.printStackTrace();
+//            }
+//            courseReviewsArrayList.add(courseReview2);
+//            courseReviewAdapter.notifyDataSetChanged();
+//            Log.v("test", (String) courseReview1.get("review"));
+//        }
+//        Log.v("courseReview", String.valueOf(course.getCourseReviews().getClass()));
+//        Log.v("courseReviews", String.valueOf(course.getCourseReviews()));
     }
 
     public void getCourseIntroductoryContent()
@@ -265,7 +340,6 @@ public class ViewCourseActivity extends AppCompatActivity {
     {
 
         courseReviewAdapter = new CourseReviewAdapter(courseReviewsArrayList);
-
         reviewsRecyclerView.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false));
         reviewsRecyclerView.setItemAnimator(new DefaultItemAnimator());
         reviewsRecyclerView.setAdapter(courseReviewAdapter);
