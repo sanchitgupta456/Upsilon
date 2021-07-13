@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager.widget.ViewPager;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -20,10 +21,25 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.squareup.picasso.Picasso;
 
 import org.bson.Document;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.json.simple.JSONArray;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import io.realm.mongodb.App;
 import io.realm.mongodb.AppConfiguration;
@@ -52,18 +68,22 @@ public class TeacherDataSetupActivity extends AppCompatActivity {
     private User user;
     private RelativeLayout relativeLayout;
     private String AccountNumber,IfscCode,MobileNumber,UpiId;
+    private RequestQueue queue;
+    private String API ;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_teacher_data_setup);
-        app = new App(new AppConfiguration.Builder(appID).build());
-        user = app.currentUser();
-        mongoClient = user.getMongoClient("mongodb-atlas");
-        mongoDatabase = mongoClient.getDatabase("Upsilon");
-        mongoCollection  = mongoDatabase.getCollection("UserData");
-        mongoCollection1  = mongoDatabase.getCollection("TeacherPaymentData");
+//        app = new App(new AppConfiguration.Builder(appID).build());
+//        user = app.currentUser();
+//        mongoClient = user.getMongoClient("mongodb-atlas");
+//        mongoDatabase = mongoClient.getDatabase("Upsilon");
+//        mongoCollection  = mongoDatabase.getCollection("UserData");
+//        mongoCollection1  = mongoDatabase.getCollection("TeacherPaymentData");
+        queue = Volley.newRequestQueue(getApplicationContext());
+        API = ((Upsilon)this.getApplication()).getAPI();
 
 
         relativeLayout = (RelativeLayout) findViewById(R.id.teacher_data_setup_layout);
@@ -126,67 +146,109 @@ public class TeacherDataSetupActivity extends AppCompatActivity {
     }
 
     public void putData(){
-        Document queryFilter  = new Document("userid",user.getId());
-
-        RealmResultTask<MongoCursor<Document>> findTask = mongoCollection.find(queryFilter).iterator();
-
-        findTask.getAsync(task -> {
-            if (task.isSuccess()) {
-                MongoCursor<Document> results = task.get();
-                if(!results.hasNext())
-                {
-                    Document document = new Document();
-                    document = results.next();
-                    document.append("teacherSetup",true);
-                    document.append("userid",user.getId());
-                    document.append("specialities",model0.getSpecialities().getValue());
-                    document.append("qualifications",model1.getExperience().getValue());
-                    document.append("experience",model1.getExperience().getValue());
-                    mongoCollection.insertOne(document)
-                            .getAsync(result -> {
-                                if (result.isSuccess()) {
-                                    Log.v("EXAMPLE", "Inserted custom user data document. _id of inserted document: "
-                                            + result.get().getInsertedId());
-                                    goToSetupActivity();
-                                } else {
-                                    Snackbar.make(relativeLayout,"An error occured . Please signIn again",Snackbar.LENGTH_LONG).show();
-                                    Log.e("EXAMPLE", "Unable to insert custom user data. Error: " + result.getError());
-                                }
-                            });
-                }
-                else
-                {
-                    Document document = new Document();
-                    document = results.next();
-                    document.append("teacherSetup",true);
-                    document.append("specialities",model0.getSpecialities().getValue());
-                    document.append("qualifications",model0.getQualifications().getValue());
-                    document.append("experience",model1.getExperience().getValue());
-                    mongoCollection.updateOne(new Document("userid",user.getId()),
-                            document)
-                            .getAsync(result -> {
-                                if (result.isSuccess()) {
-                                    Log.v("EXAMPLE", "Inserted custom user data document. _id of inserted document: "
-                                            + result.get().getModifiedCount());
-                                    startActivity(new Intent(TeacherDataSetupActivity.this, MainActivity.class));
-                                } else {
-                                    Snackbar.make(relativeLayout,"An error occured . Please signIn again",Snackbar.LENGTH_LONG).show();
-                                    Log.e("EXAMPLE", "Unable to insert custom user data. Error: " + result.getError());
-                                }
-                            });
-                }
-
-            } else {
-                Snackbar.make(relativeLayout,"An error occured . Please signIn again",Snackbar.LENGTH_LONG).show();
-                Log.v("User","Failed to complete search");
-            }
-        });
+//        Document queryFilter  = new Document("userid",user.getId());
+//
+//        RealmResultTask<MongoCursor<Document>> findTask = mongoCollection.find(queryFilter).iterator();
+//
+//        findTask.getAsync(task -> {
+//            if (task.isSuccess()) {
+//                MongoCursor<Document> results = task.get();
+//                if(!results.hasNext())
+//                {
+//                    Document document = new Document();
+//                    document = results.next();
+//                    document.append("teacherSetup",true);
+//                    document.append("userid",user.getId());
+//                    document.append("specialities",model0.getSpecialities().getValue());
+//                    document.append("qualifications",model1.getExperience().getValue());
+//                    document.append("experience",model1.getExperience().getValue());
+//                    mongoCollection.insertOne(document)
+//                            .getAsync(result -> {
+//                                if (result.isSuccess()) {
+//                                    Log.v("EXAMPLE", "Inserted custom user data document. _id of inserted document: "
+//                                            + result.get().getInsertedId());
+//                                    goToSetupActivity();
+//                                } else {
+//                                    Snackbar.make(relativeLayout,"An error occured . Please signIn again",Snackbar.LENGTH_LONG).show();
+//                                    Log.e("EXAMPLE", "Unable to insert custom user data. Error: " + result.getError());
+//                                }
+//                            });
+//                }
+//                else
+//                {
+//                    Document document = new Document();
+//                    document = results.next();
+//                    document.append("teacherSetup",true);
+//                    document.append("specialities",model0.getSpecialities().getValue());
+//                    document.append("qualifications",model0.getQualifications().getValue());
+//                    document.append("experience",model1.getExperience().getValue());
+//                    mongoCollection.updateOne(new Document("userid",user.getId()),
+//                            document)
+//                            .getAsync(result -> {
+//                                if (result.isSuccess()) {
+//                                    Log.v("EXAMPLE", "Inserted custom user data document. _id of inserted document: "
+//                                            + result.get().getModifiedCount());
+//                                    startActivity(new Intent(TeacherDataSetupActivity.this, MainActivity.class));
+//                                } else {
+//                                    Snackbar.make(relativeLayout,"An error occured . Please signIn again",Snackbar.LENGTH_LONG).show();
+//                                    Log.e("EXAMPLE", "Unable to insert custom user data. Error: " + result.getError());
+//                                }
+//                            });
+//                }
+//
+//            } else {
+//                Snackbar.make(relativeLayout,"An error occured . Please signIn again",Snackbar.LENGTH_LONG).show();
+//                Log.v("User","Failed to complete search");
+//            }
+//        });
 
         AccountNumber = model2.getAccount_number().getValue();
         IfscCode = model2.getIfsc_code().getValue();
         MobileNumber = model2.getMobile_number().getValue();
         UpiId = model2.getUpi_id().getValue();
-        RealmResultTask<MongoCursor<Document>> findTask1 = mongoCollection1.find(queryFilter).iterator();
+
+        try {
+            JSONObject jsonObject = new JSONObject();
+
+            jsonObject.put("specialities", JSONArray.toJSONString(model0.getSpecialities().getValue()));
+            jsonObject.put("qualifications",JSONArray.toJSONString(model0.getQualifications().getValue()));
+            jsonObject.put("experience",JSONArray.toJSONString(model1.getExperience().getValue()));
+            jsonObject.put("accountNumber",model2.getAccount_number().getValue());
+            jsonObject.put("ifscCode",model2.getIfsc_code().getValue());
+            jsonObject.put("phone",model2.getMobile_number().getValue());
+            jsonObject.put("upiId",model2.getUpi_id().getValue());
+            JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, API+"/becomeTeacher",jsonObject,
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            Log.d("BecomingTeacher", response.toString());
+                                    startActivity(new Intent(TeacherDataSetupActivity.this, MainActivity.class));
+
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @SuppressLint("LongLogTag")
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Log.d("ErrorBecomingTeacher", error.toString());
+                                                                Snackbar.make(relativeLayout,"Please try again later",Snackbar.LENGTH_LONG).show();
+
+                        }
+                    }
+            ){
+                @Override
+                public Map<String, String> getHeaders() {
+                    Map<String, String> params = new HashMap<String, String>();
+                    params.put("token", ((Upsilon)getApplication()).getToken());
+                    return params;
+                }
+            };
+            queue.add(jsonRequest);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+//        RealmResultTask<MongoCursor<Document>> findTask1 = mongoCollection1.find(queryFilter).iterator();
 
         if(UpiId==null || UpiId.isEmpty())
         {
@@ -203,97 +265,97 @@ public class TeacherDataSetupActivity extends AppCompatActivity {
             }
             else
             {
-                findTask1.getAsync(result -> {
-                    if(result.isSuccess())
-                    {
-                        MongoCursor<Document> results = result.get();
-                        if(results.hasNext())
-                        {
-                            Document payment = results.next();
-//                            accountNumber.setText(payment.getString("accountNumber"));
-//                            ifscCode.setText(payment.getString("ifscCode"));
-//                            mobileNumber.setText(payment.getString("mobileNumber"));
-//                            upiId.setText(payment.getString("UpiId"));
-                            payment.append("accountNumber",AccountNumber);
-                            payment.append("ifscCode",IfscCode);
-                            payment.append("mobileNumber",MobileNumber);
-                            payment.append("UpiId",UpiId);
-
-                            mongoCollection1.updateOne(new Document("userid",user.getId()),payment).getAsync(result1 -> {
-                                if(result1.isSuccess())
-                                {
-                                    startActivity(new Intent(TeacherDataSetupActivity.this, MainActivity.class));
-                                }
-                                else
-                                {
-                                    Snackbar.make(relativeLayout,"Please try again later",Snackbar.LENGTH_LONG).show();
-                                }
-                            });
-                        }
-                        else
-                        {
-                            mongoCollection1.insertOne(new Document("userid", user.getId()).append("accountNumber", AccountNumber).append("ifscCode", IfscCode).append("mobileNumber", MobileNumber).append("UpiId", UpiId).append("WalletAmountToBePaid",0)).getAsync(result1 -> {
-                                if (result1.isSuccess()) {
-                                    startActivity(new Intent(TeacherDataSetupActivity.this, MainActivity.class));
-                                } else {
-                                    Snackbar.make(relativeLayout,"Please try again later",Snackbar.LENGTH_LONG).show();
-                                }
-                            });
-                        }
-                    }
-                    else
-                    {
-
-                    }
-                });
+//                findTask1.getAsync(result -> {
+//                    if(result.isSuccess())
+//                    {
+//                        MongoCursor<Document> results = result.get();
+//                        if(results.hasNext())
+//                        {
+//                            Document payment = results.next();
+////                            accountNumber.setText(payment.getString("accountNumber"));
+////                            ifscCode.setText(payment.getString("ifscCode"));
+////                            mobileNumber.setText(payment.getString("mobileNumber"));
+////                            upiId.setText(payment.getString("UpiId"));
+//                            payment.append("accountNumber",AccountNumber);
+//                            payment.append("ifscCode",IfscCode);
+//                            payment.append("mobileNumber",MobileNumber);
+//                            payment.append("UpiId",UpiId);
+//
+//                            mongoCollection1.updateOne(new Document("userid",user.getId()),payment).getAsync(result1 -> {
+//                                if(result1.isSuccess())
+//                                {
+//                                    startActivity(new Intent(TeacherDataSetupActivity.this, MainActivity.class));
+//                                }
+//                                else
+//                                {
+//                                    Snackbar.make(relativeLayout,"Please try again later",Snackbar.LENGTH_LONG).show();
+//                                }
+//                            });
+//                        }
+//                        else
+//                        {
+//                            mongoCollection1.insertOne(new Document("userid", user.getId()).append("accountNumber", AccountNumber).append("ifscCode", IfscCode).append("mobileNumber", MobileNumber).append("UpiId", UpiId).append("WalletAmountToBePaid",0)).getAsync(result1 -> {
+//                                if (result1.isSuccess()) {
+//                                    startActivity(new Intent(TeacherDataSetupActivity.this, MainActivity.class));
+//                                } else {
+//                                    Snackbar.make(relativeLayout,"Please try again later",Snackbar.LENGTH_LONG).show();
+//                                }
+//                            });
+//                        }
+//                    }
+//                    else
+//                    {
+//
+//                    }
+//                });
 
             }
         }
         else {
-            findTask1.getAsync(result -> {
-                if(result.isSuccess())
-                {
-                    MongoCursor<Document> results = result.get();
-                    if(results.hasNext())
-                    {
-                        Document payment = results.next();
-//                        accountNumber.setText(payment.getString("accountNumber"));
-//                        ifscCode.setText(payment.getString("ifscCode"));
-//                        mobileNumber.setText(payment.getString("mobileNumber"));
-//                        upiId.setText(payment.getString("UpiId"));
-                        payment.append("accountNumber",AccountNumber);
-                        payment.append("ifscCode",IfscCode);
-                        payment.append("mobileNumber",MobileNumber);
-                        payment.append("UpiId",UpiId);
-
-                        mongoCollection1.updateOne(new Document("userid",user.getId()),payment).getAsync(result1 -> {
-                            if(result1.isSuccess())
-                            {
-                                startActivity(new Intent(TeacherDataSetupActivity.this, MainActivity.class));
-
-                            }
-                            else
-                            {
-                                Snackbar.make(relativeLayout,"Please try again later",Snackbar.LENGTH_LONG).show();
-                            }
-                        });
-                    }
-                    else
-                    {
-                        mongoCollection1.insertOne(new Document("userid", user.getId()).append("accountNumber", AccountNumber).append("ifscCode", IfscCode).append("mobileNumber", MobileNumber).append("UpiId", UpiId).append("WalletAmountToBePaid",0)).getAsync(result1 -> {
-                            if (result1.isSuccess()) {
-                                startActivity(new Intent(TeacherDataSetupActivity.this, MainActivity.class));
-                            } else {
-                                Snackbar.make(relativeLayout,"Please try again later",Snackbar.LENGTH_LONG).show();
-                            }
-                        });
-                    }
-                }
-                else
-                {
-                    Snackbar.make(relativeLayout,"Please try again later",Snackbar.LENGTH_LONG).show();
-                }
-            });
+//            findTask1.getAsync(result -> {
+//                if(result.isSuccess())
+//                {
+//                    MongoCursor<Document> results = result.get();
+//                    if(results.hasNext())
+//                    {
+//                        Document payment = results.next();
+////                        accountNumber.setText(payment.getString("accountNumber"));
+////                        ifscCode.setText(payment.getString("ifscCode"));
+////                        mobileNumber.setText(payment.getString("mobileNumber"));
+////                        upiId.setText(payment.getString("UpiId"));
+//                        payment.append("accountNumber",AccountNumber);
+//                        payment.append("ifscCode",IfscCode);
+//                        payment.append("mobileNumber",MobileNumber);
+//                        payment.append("UpiId",UpiId);
+//
+//                        mongoCollection1.updateOne(new Document("userid",user.getId()),payment).getAsync(result1 -> {
+//                            if(result1.isSuccess())
+//                            {
+//                                startActivity(new Intent(TeacherDataSetupActivity.this, MainActivity.class));
+//
+//                            }
+//                            else
+//                            {
+//                                Snackbar.make(relativeLayout,"Please try again later",Snackbar.LENGTH_LONG).show();
+//                            }
+//                        });
+//                    }
+//                    else
+//                    {
+//                        mongoCollection1.insertOne(new Document("userid", user.getId()).append("accountNumber", AccountNumber).append("ifscCode", IfscCode).append("mobileNumber", MobileNumber).append("UpiId", UpiId).append("WalletAmountToBePaid",0)).getAsync(result1 -> {
+//                            if (result1.isSuccess()) {
+//                                startActivity(new Intent(TeacherDataSetupActivity.this, MainActivity.class));
+//                            } else {
+//                                Snackbar.make(relativeLayout,"Please try again later",Snackbar.LENGTH_LONG).show();
+//                            }
+//                        });
+//                    }
+//                }
+//                else
+//                {
+//                    Snackbar.make(relativeLayout,"Please try again later",Snackbar.LENGTH_LONG).show();
+//                }
+//            });
         }
         //get data from model0, model1 and model2 using getter and then getValue
         //eg. model0.getSpecialities().getValue()

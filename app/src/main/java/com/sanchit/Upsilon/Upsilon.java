@@ -32,7 +32,7 @@ import io.realm.Realm;
 
 public class Upsilon extends Application {
 
-    String API = "https://upsilonbackend.herokuapp.com";
+    String API = "http://192.168.0.107:3000";
     String Token = null;
     private RequestQueue queue;
     ArrayList<String> interests = new ArrayList<>();

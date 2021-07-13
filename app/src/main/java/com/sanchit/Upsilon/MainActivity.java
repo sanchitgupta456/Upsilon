@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -72,7 +73,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import io.realm.mongodb.App;
@@ -266,7 +269,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             startActivity(intent);
         }
         else {
-//            updateMenu();
+            updateMenu();
 //            getCourseData();
 //
 //            Log.v("RefreshToken",app.currentUser().getRefreshToken().toString());
@@ -843,21 +846,24 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }*/
 
     private void signOut() {
-        User user = app.currentUser();
-        LoginManager.getInstance().logOut();
-        user.logOutAsync(new App.Callback<User>() {
-            @Override
-            public void onResult(App.Result<User> result) {
-                if(result.isSuccess())
-                {
-                    startActivity(new Intent(MainActivity.this,LoginActivity.class));
-                }
-                else
-                {
-
-                }
-            }
-        });
+//        User user = app.currentUser();
+//        LoginManager.getInstance().logOut();
+//        user.logOutAsync(new App.Callback<User>() {
+//            @Override
+//            public void onResult(App.Result<User> result) {
+//                if(result.isSuccess())
+//                {
+//                    startActivity(new Intent(MainActivity.this,LoginActivity.class));
+//                }
+//                else
+//                {
+//
+//                }
+//            }
+//        });
+        ((Upsilon)getApplication()).setToken(null);
+        ((Upsilon)getApplication()).setUserLocation(null);
+        startActivity(new Intent(MainActivity.this,LoginActivity.class));
     }
 
     @Override
@@ -1147,56 +1153,93 @@ since the dispatchTouchEvent might dispatch your touch event to this function ag
     private void updateMenu()
     {
         try {
-            User user = app.currentUser();
-            mongoClient = user.getMongoClient("mongodb-atlas");
-            mongoDatabase = mongoClient.getDatabase("Upsilon");
-            MongoCollection<Document> mongoCollection  = mongoDatabase.getCollection("UserData");
-
-            //Blank query to find every single course in db
-            //TODO: Modify query to look for user preferred course IDs
-            Document queryFilter  = new Document("userid",user.getId());
-
-            RealmResultTask<MongoCursor<Document>> findTask = mongoCollection.find(queryFilter).iterator();
-
-            findTask.getAsync(task -> {
-                if (task.isSuccess()) {
-                    MongoCursor<Document> results = task.get();
-                    while (results.hasNext()) {
-                        //Log.v("EXAMPLE", results.next().toString());
-                        Document currentDoc = results.next();
-                            /*if(currentDoc.get("profilePicture") ==null)
-                            {
-                                goToSetupActivity();
+            JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.GET, API+"/isTeacher",new JSONObject(),
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            Log.d("FetchingisTeacher", response.toString());
+                            try {
+                                if(response.getBoolean("isTeacher"))
+                                {
+                                    navigationView.getMenu().clear();
+                                    navigationView.inflateMenu(R.menu.home_drawer_menu);
+                                }
+                                else
+                                {
+                                    navigationView.getMenu().clear();
+                                    navigationView.inflateMenu(R.menu.home_drawer_menu_1);
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
                             }
-                            if(currentDoc.get("username") == null)
-                            {
-                                goToSetupActivity();
-                            }*/
-                        try {
-                            if(currentDoc==null || currentDoc.get("teacherSetup")==null)
-                            {
-                                navigationView.getMenu().clear();
-                                navigationView.inflateMenu(R.menu.home_drawer_menu_1);
-                            }
-                            else if(currentDoc.get("teacherSetup").equals(true))
-                            {
-                                navigationView.getMenu().clear();
-                                navigationView.inflateMenu(R.menu.home_drawer_menu);
-                            }
-                            else
-                            {
-                                navigationView.getMenu().clear();
-                                navigationView.inflateMenu(R.menu.home_drawer_menu_1);
-                            }
-                        } catch (Exception e) {
-                            e.printStackTrace();
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @SuppressLint("LongLogTag")
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Log.d("ErrorFetchingisTeacher", error.toString());
                         }
                     }
-                } else {
-                    Snackbar.make(drawerLayout,"An error occured . Please signIn again",Snackbar.LENGTH_LONG).show();
-                    Log.v("User","Failed to complete search");
+            ){
+                @Override
+                public Map<String, String> getHeaders() {
+                    Map<String, String> params = new HashMap<String, String>();
+                    params.put("token", ((Upsilon)getApplication()).getToken());
+                    return params;
                 }
-            });
+            };
+            queue.add(jsonRequest);
+//            User user = app.currentUser();
+//            mongoClient = user.getMongoClient("mongodb-atlas");
+//            mongoDatabase = mongoClient.getDatabase("Upsilon");
+//            MongoCollection<Document> mongoCollection  = mongoDatabase.getCollection("UserData");
+//
+//            //Blank query to find every single course in db
+//            //TODO: Modify query to look for user preferred course IDs
+//            Document queryFilter  = new Document("userid",user.getId());
+//
+//            RealmResultTask<MongoCursor<Document>> findTask = mongoCollection.find(queryFilter).iterator();
+//
+//            findTask.getAsync(task -> {
+//                if (task.isSuccess()) {
+//                    MongoCursor<Document> results = task.get();
+//                    while (results.hasNext()) {
+//                        //Log.v("EXAMPLE", results.next().toString());
+//                        Document currentDoc = results.next();
+//                            /*if(currentDoc.get("profilePicture") ==null)
+//                            {
+//                                goToSetupActivity();
+//                            }
+//                            if(currentDoc.get("username") == null)
+//                            {
+//                                goToSetupActivity();
+//                            }*/
+//                        try {
+//                            if(currentDoc==null || currentDoc.get("teacherSetup")==null)
+//                            {
+//                                navigationView.getMenu().clear();
+//                                navigationView.inflateMenu(R.menu.home_drawer_menu_1);
+//                            }
+//                            else if(currentDoc.get("teacherSetup").equals(true))
+//                            {
+//                                navigationView.getMenu().clear();
+//                                navigationView.inflateMenu(R.menu.home_drawer_menu);
+//                            }
+//                            else
+//                            {
+//                                navigationView.getMenu().clear();
+//                                navigationView.inflateMenu(R.menu.home_drawer_menu_1);
+//                            }
+//                        } catch (Exception e) {
+//                            e.printStackTrace();
+//                        }
+//                    }
+//                } else {
+//                    Snackbar.make(drawerLayout,"An error occured . Please signIn again",Snackbar.LENGTH_LONG).show();
+//                    Log.v("User","Failed to complete search");
+//                }
+//            });
         } catch (Exception e) {
             e.printStackTrace();
         }
