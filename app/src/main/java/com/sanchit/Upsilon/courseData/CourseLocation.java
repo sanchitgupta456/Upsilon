@@ -1,6 +1,8 @@
 package com.sanchit.Upsilon.courseData;
 
-public class CourseLocation {
+import java.io.Serializable;
+
+public class CourseLocation extends Object implements Serializable {
     Double latitude;
     Double longitude;
 

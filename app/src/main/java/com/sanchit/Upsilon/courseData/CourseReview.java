@@ -1,8 +1,10 @@
 package com.sanchit.Upsilon.courseData;
 
+import java.io.Serializable;
+
 import io.realm.RealmObject;
 
-public class CourseReview extends Object {
+public class CourseReview extends Object implements Serializable {
 
     private String review;
     private double reviewRating;

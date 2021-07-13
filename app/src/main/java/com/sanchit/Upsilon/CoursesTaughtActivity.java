@@ -20,6 +20,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 import com.sanchit.Upsilon.courseData.Course;
+import com.sanchit.Upsilon.courseData.CourseFinal;
 import com.sanchit.Upsilon.courseData.CoursesAdapter;
 import com.sanchit.Upsilon.ui.login.LoginActivity;
 
@@ -41,7 +42,7 @@ public class CoursesTaughtActivity extends AppCompatActivity {
     RecyclerView recyclerView, recyclerView1;
     CoursesAdapter coursesAdapter;
     TeachingStatListAdapter statListAdapter;
-    ArrayList<Course> courseArrayList = new ArrayList<Course>();
+    ArrayList<CourseFinal> courseArrayList = new ArrayList<CourseFinal>();
     ArrayList<TeachingStatData> teachingStatDataArrayList = new ArrayList<TeachingStatData>();
     App app;
     MongoClient mongoClient;
@@ -123,7 +124,7 @@ public class CoursesTaughtActivity extends AppCompatActivity {
                         gson = gsonBuilder.create();
 
                         try {
-                            Course course = gson.fromJson(currentDoc.toJson(),Course.class);
+                            CourseFinal course = gson.fromJson(currentDoc.toJson(),CourseFinal.class);
                             if(course.getTutorId().toString().equals(user.getId().toString()))
                             {
                                 courseArrayList.add(course);

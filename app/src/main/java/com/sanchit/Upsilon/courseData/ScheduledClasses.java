@@ -1,8 +1,9 @@
 package com.sanchit.Upsilon.courseData;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class ScheduledClasses {
+public class ScheduledClasses extends Object implements Serializable {
     private String ClassName;
     private long Date;
     private ArrayList<String> images;

@@ -2,9 +2,10 @@ package com.sanchit.Upsilon.courseData;
 
 import com.sanchit.Upsilon.classData.ScheduledClass;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class CourseFinal {
+public class CourseFinal extends Object implements Serializable {
     private ArrayList<String> courseCategories;
     private String coursePreReq;
     private ArrayList<CourseReview> courseReviews;

@@ -69,6 +69,7 @@ import com.sanchit.Upsilon.ui.login.SignUpActivity;
 import com.squareup.picasso.Picasso;
 
 import org.bson.Document;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -115,8 +116,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     CoursesAdapter coursesAdapter1;
     CoursesAdapter coursesAdapter2;
     ArrayList<CourseFinal> courseArrayList = new ArrayList<>();
-    ArrayList<Course> courseArrayList1 = new ArrayList<>();
-    ArrayList<Course> courseArrayList2 = new ArrayList<>();
+    ArrayList<CourseFinal> courseArrayList1 = new ArrayList<>();
+    ArrayList<CourseFinal> courseArrayList2 = new ArrayList<>();
     ArrayList<Course> searchResultsList = new ArrayList<>();
     App app;
     MongoClient mongoClient;
@@ -270,7 +271,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
         else {
             updateMenu();
-//            getCourseData();
+            getCourseData();
 //
 //            Log.v("RefreshToken",app.currentUser().getRefreshToken().toString());
 //            //operationPURGE(user);
@@ -418,40 +419,117 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     public void getCourseData(){
 
-        progressBar.setVisibility(View.VISIBLE);
+
         courseArrayList = new ArrayList<>();
         courseArrayList1 = new ArrayList<>();
         courseArrayList2 = new ArrayList<>();
 
-        displayCoursesInRecycler();
+
 // an authenticated user is required to access a MongoDB instance
 
             if (((Upsilon)this.getApplication()).getToken() != null) {
+                progressBar.setVisibility(View.VISIBLE);
+                JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.GET, API+"/myCourses",new JSONObject(),
+                            new Response.Listener<JSONObject>() {
+                                @Override
+                                public void onResponse(JSONObject response) {
+                                    Log.d("FetchMyCourses", response.toString());
+                                    courseArrayList1 = new ArrayList<CourseFinal>();
+                                    try {
+                                        JSONArray jsonArray = (JSONArray) response.get("courses");
+                                        Log.v("array",String.valueOf(jsonArray));
+                                        for(int i=0;i<jsonArray.length();i++)
+                                        {
+                                            JSONObject jsonObject = (JSONObject) jsonArray.get(i);
+                                            Gson gson= new Gson();
+                                            CourseFinal course = gson.fromJson(jsonObject.toString(),CourseFinal.class);
+                                            courseArrayList1.add(course);
+//                                            coursesAdapter1.notifyDataSetChanged();
+                                            frame1.setVisibility(View.VISIBLE);
+                                            Log.v("course",String.valueOf(course.getCourseReviews()));
+                                        }
+                                        progressBar.setVisibility(GONE);
+                                        displayCoursesInRecycler();
 
-                JSONObject jsonBody = new JSONObject();
-                JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, API+"/signup",jsonBody,
-                        new Response.Listener<JSONObject>() {
-                            @Override
-                            public void onResponse(JSONObject response) {
-                                Log.d("Response", response.toString());
-                                try {
-                                    ((Upsilon)getApplication()).setToken(response.getString("token"));
-                                    Log.v(TAG, "Successfully authenticated using an email and password.");
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
+//                                        initRecyclerView(recyclerView, list);
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                        progressBar.setVisibility(GONE);
+                                    }
+                                }
+                            },
+                            new Response.ErrorListener() {
+                                @SuppressLint("LongLogTag")
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+                                    Log.d("ErrorFetchingMyCourses", error.toString());
+                                    progressBar.setVisibility(GONE);
                                 }
                             }
-                        },
-                        new Response.ErrorListener() {
-                            @Override
-                            public void onErrorResponse(VolleyError error) {
-                                Log.d("Error response", error.toString());
-                                Log.v(TAG, "Fetch Courses FAILED!");
-                                Log.e(TAG, error.toString());
-                            }
+                    ){
+                        @Override
+                        public Map<String, String> getHeaders() {
+                            Map<String, String> params = new HashMap<String, String>();
+                            params.put("token", ((Upsilon)getApplication()).getToken());
+                            return params;
                         }
-                );
-                queue.add(jsonRequest);
+                    };
+                    queue.add(jsonRequest);
+                progressBar.setVisibility(View.VISIBLE);
+                JSONObject jsonObject = new JSONObject();
+                try {
+                    jsonObject.put("index",0);
+                    jsonObject.put("filter","Rating");
+                    JsonObjectRequest jsonRequest1 = new JsonObjectRequest(Request.Method.POST, API+"/paging",jsonObject,
+                            new Response.Listener<JSONObject>() {
+                                @Override
+                                public void onResponse(JSONObject response) {
+                                    Log.d("FetchMyCourses", response.toString());
+                                    courseArrayList = new ArrayList<CourseFinal>();
+                                    try {
+                                        JSONArray jsonArray = (JSONArray) response.get("courses");
+                                        Log.v("array",String.valueOf(jsonArray));
+                                        for(int i=0;i<jsonArray.length();i++)
+                                        {
+                                            JSONObject jsonObject = (JSONObject) jsonArray.get(i);
+                                            Gson gson= new Gson();
+                                            CourseFinal course = gson.fromJson(jsonObject.toString(),CourseFinal.class);
+                                            courseArrayList.add(course);
+//                                            coursesAdapter.notifyDataSetChanged();
+                                            frame.setVisibility(View.VISIBLE);
+                                            Log.v("course",String.valueOf(course.getCourseReviews()));
+
+                                        }
+                                        progressBar.setVisibility(GONE);
+                                        displayCoursesInRecycler();
+
+    //                                        initRecyclerView(recyclerView, list);
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                        progressBar.setVisibility(GONE);
+                                    }
+                                }
+                            },
+                            new Response.ErrorListener() {
+                                @SuppressLint("LongLogTag")
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+                                    Log.d("ErrorFetchingMyCourses", error.toString());
+                                    progressBar.setVisibility(GONE);
+                                }
+                            }
+                    ){
+                        @Override
+                        public Map<String, String> getHeaders() {
+                            Map<String, String> params = new HashMap<String, String>();
+                            params.put("token", ((Upsilon)getApplication()).getToken());
+                            return params;
+                        }
+                    };
+                    queue.add(jsonRequest1);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
 
 //                final User user = app.currentUser();
 //                assert user != null;
@@ -698,9 +776,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     public void displayCoursesInRecycler(){
-        coursesAdapter = new CoursesAdapter1(courseArrayList);
-        coursesAdapter1 = new CoursesAdapter(courseArrayList1);
-        coursesAdapter2 = new CoursesAdapter(courseArrayList2);
+        coursesAdapter = new CoursesAdapter1(courseArrayList,((Upsilon)getApplication()).getAPI() , ((Upsilon)getApplication()).getToken());
+        coursesAdapter1 = new CoursesAdapter(courseArrayList1,((Upsilon)getApplication()).getUser().get_Id() , ((Upsilon)getApplication()).getUser().getMyCourses());
+        coursesAdapter2 = new CoursesAdapter(courseArrayList2,((Upsilon)getApplication()).getUser().get_Id(), ((Upsilon)getApplication()).getUser().getMyCourses());
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         LinearLayoutManager layoutManager1 = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
@@ -862,7 +940,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 //            }
 //        });
         ((Upsilon)getApplication()).setToken(null);
-        ((Upsilon)getApplication()).setUserLocation(null);
+        ((Upsilon)getApplication()).user.setUserLocation(null);
         startActivity(new Intent(MainActivity.this,LoginActivity.class));
     }
 

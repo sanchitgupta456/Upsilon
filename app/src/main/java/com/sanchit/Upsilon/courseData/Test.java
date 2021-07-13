@@ -1,4 +1,6 @@
 package com.sanchit.Upsilon.courseData;
 
-public class Test {
+import java.io.Serializable;
+
+public class Test extends Object implements Serializable {
 }

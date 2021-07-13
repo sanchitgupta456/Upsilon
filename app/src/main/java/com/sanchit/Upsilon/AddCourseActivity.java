@@ -135,26 +135,26 @@ public class AddCourseActivity extends AppCompatActivity implements AdapterView.
 
         //spinner = (Spinner) findViewById(R.id.courseDurationMeasureSpinner);
 
-        app = new App(new AppConfiguration.Builder(appID)
-                .build());
-        user = app.currentUser();
-        mongoClient = user.getMongoClient("mongodb-atlas");
-        mongoDatabase = mongoClient.getDatabase("Upsilon");
-        MongoCollection<Document> mongoCollection  = mongoDatabase.getCollection("CourseData");
-        MongoCollection<Document> mongoCollection1  = mongoDatabase.getCollection("ForumData");
-        MongoCollection<Document> mongoCollection2  = mongoDatabase.getCollection("UserData");
-
-        mongoCollection2.findOne(new Document("userid",user.getId())).getAsync(result -> {
-            if(result.isSuccess())
-            {
-                Document userdata = result.get();
-                college = userdata.getString("college");
-            }
-            else
-            {
-
-            }
-        });
+//        app = new App(new AppConfiguration.Builder(appID)
+//                .build());
+//        user = app.currentUser();
+//        mongoClient = user.getMongoClient("mongodb-atlas");
+//        mongoDatabase = mongoClient.getDatabase("Upsilon");
+//        MongoCollection<Document> mongoCollection  = mongoDatabase.getCollection("CourseData");
+//        MongoCollection<Document> mongoCollection1  = mongoDatabase.getCollection("ForumData");
+//        MongoCollection<Document> mongoCollection2  = mongoDatabase.getCollection("UserData");
+//
+//        mongoCollection2.findOne(new Document("userid",user.getId())).getAsync(result -> {
+//            if(result.isSuccess())
+//            {
+//                Document userdata = result.get();
+//                college = userdata.getString("college");
+//            }
+//            else
+//            {
+//
+//            }
+//        });
 
 
 
@@ -328,75 +328,75 @@ public class AddCourseActivity extends AppCompatActivity implements AdapterView.
                 /*Intent intent = new Intent(AddCourseActivity.this,AddCourseActivityContinued.class);
                 intent.putExtra("courseDetails",courseDetails.toJson().toString());
                 startActivity(intent);*/
-                    mongoCollection.insertOne(courseDetails).getAsync(result -> {
-                        if (result.isSuccess()) {
-                            String id = String.valueOf(result.get().getInsertedId().asObjectId().getValue());
-                            Log.v("Added Course", id);
-                            try {
-                                String requestId = MediaManager.get().upload(CourseImageUrl)
-                                        .unsigned("preset1")
-                                        .option("resource_type", "image")
-                                        .option("folder", "Upsilon/Courses/".concat(id))
-                                        .option("public_id", "CourseImage " + 0)
-                                        .callback(new UploadCallback() {
-                                            @Override
-                                            public void onStart(String requestId) {
-                                            }
-
-                                            @RequiresApi(api = Build.VERSION_CODES.N)
-                                            @Override
-                                            public void onProgress(String requestId, long bytes, long totalBytes) {
-                                                progressBar.setProgress(Math.toIntExact((bytes / totalBytes) * 100));
-                                            }
-
-                                            @Override
-                                            public void onSuccess(String requestId, Map resultData) {
-
-                                                mongoCollection1.insertOne(new Document("courseId", result.get().getInsertedId())).getAsync(result2 -> {
-                                                    if (result2.isSuccess()) {
-                                                        Log.v("Course", "Successfully Created Forum");
-                                                    } else {
-                                                        Log.v("Course", result2.getError().toString());
-                                                    }
-                                                });
-
-                                                courseDetails.append("courseImage", resultData.get("url").toString());
-                                                mongoCollection.updateOne(new Document("_id", result.get().getInsertedId()), courseDetails).getAsync(result1 -> {
-                                                    if (result1.isSuccess()) {
-                                                        progressBar.setProgress(100);
-                                                        progressBar.setVisibility(View.INVISIBLE);
-                                                        Log.v("EXAMPLE", "Inserted custom user data document. _id of inserted document: "
-                                                                + result1.get().getModifiedCount());
-                                                        Log.v("AddCourse", "Updated Image Successfully");
-                                                        Intent intent = new Intent(AddCourseActivity.this, AddCourseActivityContinued.class);
-                                                        intent.putExtra("InsertedDocument", result.get().getInsertedId().asObjectId().getValue().toString());
-                                                        intent.putExtra("fees", fees);
-                                                        startActivity(intent);
-                                                    } else {
-                                                        Log.v("AddCourse", result1.getError().toString());
-                                                    }
-                                                });
-                                            }
-
-                                            @Override
-                                            public void onError(String requestId, ErrorInfo error) {
-
-                                            }
-
-                                            @Override
-                                            public void onReschedule(String requestId, ErrorInfo error) {
-
-                                            }
-                                        })
-                                        .dispatch();
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                            //Toast.makeText(getApplicationContext(),"Successfully Added The Course",Toast.LENGTH_LONG).show();
-                        } else {
-                            Log.v("User", result.getError().toString());
-                        }
-                    });
+//                    mongoCollection.insertOne(courseDetails).getAsync(result -> {
+//                        if (result.isSuccess()) {
+//                            String id = String.valueOf(result.get().getInsertedId().asObjectId().getValue());
+//                            Log.v("Added Course", id);
+//                            try {
+//                                String requestId = MediaManager.get().upload(CourseImageUrl)
+//                                        .unsigned("preset1")
+//                                        .option("resource_type", "image")
+//                                        .option("folder", "Upsilon/Courses/".concat(id))
+//                                        .option("public_id", "CourseImage " + 0)
+//                                        .callback(new UploadCallback() {
+//                                            @Override
+//                                            public void onStart(String requestId) {
+//                                            }
+//
+//                                            @RequiresApi(api = Build.VERSION_CODES.N)
+//                                            @Override
+//                                            public void onProgress(String requestId, long bytes, long totalBytes) {
+//                                                progressBar.setProgress(Math.toIntExact((bytes / totalBytes) * 100));
+//                                            }
+//
+//                                            @Override
+//                                            public void onSuccess(String requestId, Map resultData) {
+//
+//                                                mongoCollection1.insertOne(new Document("courseId", result.get().getInsertedId())).getAsync(result2 -> {
+//                                                    if (result2.isSuccess()) {
+//                                                        Log.v("Course", "Successfully Created Forum");
+//                                                    } else {
+//                                                        Log.v("Course", result2.getError().toString());
+//                                                    }
+//                                                });
+//
+//                                                courseDetails.append("courseImage", resultData.get("url").toString());
+//                                                mongoCollection.updateOne(new Document("_id", result.get().getInsertedId()), courseDetails).getAsync(result1 -> {
+//                                                    if (result1.isSuccess()) {
+//                                                        progressBar.setProgress(100);
+//                                                        progressBar.setVisibility(View.INVISIBLE);
+//                                                        Log.v("EXAMPLE", "Inserted custom user data document. _id of inserted document: "
+//                                                                + result1.get().getModifiedCount());
+//                                                        Log.v("AddCourse", "Updated Image Successfully");
+//                                                        Intent intent = new Intent(AddCourseActivity.this, AddCourseActivityContinued.class);
+//                                                        intent.putExtra("InsertedDocument", result.get().getInsertedId().asObjectId().getValue().toString());
+//                                                        intent.putExtra("fees", fees);
+//                                                        startActivity(intent);
+//                                                    } else {
+//                                                        Log.v("AddCourse", result1.getError().toString());
+//                                                    }
+//                                                });
+//                                            }
+//
+//                                            @Override
+//                                            public void onError(String requestId, ErrorInfo error) {
+//
+//                                            }
+//
+//                                            @Override
+//                                            public void onReschedule(String requestId, ErrorInfo error) {
+//
+//                                            }
+//                                        })
+//                                        .dispatch();
+//                            } catch (Exception e) {
+//                                e.printStackTrace();
+//                            }
+//                            //Toast.makeText(getApplicationContext(),"Successfully Added The Course",Toast.LENGTH_LONG).show();
+//                        } else {
+//                            Log.v("User", result.getError().toString());
+//                        }
+//                    });
                 }
             }
         });

@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.sanchit.Upsilon.classData.ScheduleAdapter;
 import com.sanchit.Upsilon.classData.ScheduledClass;
 import com.sanchit.Upsilon.courseData.Course;
+import com.sanchit.Upsilon.courseData.CourseFinal;
 
 import org.bson.types.BasicBSONList;
 
@@ -36,7 +37,7 @@ import static android.content.ContentValues.TAG;
 public class RegisteredStudentViewCourseScheduleFragment extends Fragment implements ScheduleAdapter.ItemClickListener {
 
     ArrayList<ScheduledClass> classes = new ArrayList<>();
-    private Course course;
+    private CourseFinal course;
     RecyclerView recyclerView;
     ScheduleAdapter adapter;
     CardView alter;
@@ -47,19 +48,19 @@ public class RegisteredStudentViewCourseScheduleFragment extends Fragment implem
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_active_course_schedule,null);
-        course = (Course) getArguments().get("Course");
+        course = (CourseFinal) getArguments().get("Course");
         TextView nextLecture = view.findViewById(R.id.textDateTimeNextLecture);
         TextView meetLink = view.findViewById(R.id.meetingLink);
         Calendar cal = Calendar.getInstance(Locale.ENGLISH);
-        cal.setTimeInMillis(Long.parseLong(course.getNextLectureOn()));
+//        cal.setTimeInMillis(Long.parseLong(course.getNextLectureOn()));
         String date = DateFormat.format("dd-MM-yyyy HH:mm:ss", cal).toString();
         nextLecture.setText(date);
-        meetLink.setText(course.getMeetLink());
+//        meetLink.setText(course.getMeetLink());
         recyclerView = (RecyclerView) view.findViewById(R.id.classSchedule);
         alter = (CardView) view.findViewById(R.id.alter);
         refresh = (Button) view.findViewById(R.id.btnRefresh);
         loading = (LinearLayout) view.findViewById(R.id.llProgress);
-        getClasses();
+//        getClasses();
         adapter = new ScheduleAdapter(getContext(), classes);
         adapter.setClickListener(this);
         LinearLayoutManager manager = new LinearLayoutManager(getContext());
@@ -80,23 +81,23 @@ public class RegisteredStudentViewCourseScheduleFragment extends Fragment implem
 
     public void getClasses() {
         //get classes :
-        BasicBSONList scheduledClasses = course.getScheduledClasses();
-        if(scheduledClasses==null)
-        {
-            scheduledClasses=new BasicBSONList();
-        }
-        for(int i=0;i<scheduledClasses.size();i++)
-        {
-            try {
-                Object scheduled = (Object) scheduledClasses.get(i);
-                Log.v("scheduled", String.valueOf(scheduled));
-                LinkedHashMap Class = (LinkedHashMap) scheduled;
-                classes.add(new ScheduledClass(Class.get("ClassName").toString(), Class.get("Date").toString(), Class.get("Month").toString(), Class.get("Time").toString()));
-                adapter.notifyDataSetChanged();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
+//        BasicBSONList scheduledClasses = course.getScheduledClasses();
+//        if(scheduledClasses==null)
+//        {
+//            scheduledClasses=new BasicBSONList();
+//        }
+//        for(int i=0;i<scheduledClasses.size();i++)
+//        {
+//            try {
+//                Object scheduled = (Object) scheduledClasses.get(i);
+//                Log.v("scheduled", String.valueOf(scheduled));
+//                LinkedHashMap Class = (LinkedHashMap) scheduled;
+//                classes.add(new ScheduledClass(Class.get("ClassName").toString(), Class.get("Date").toString(), Class.get("Month").toString(), Class.get("Time").toString()));
+//                adapter.notifyDataSetChanged();
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//        }
         loading.setVisibility(View.INVISIBLE);
         /* this is for test */
         /* begin test */

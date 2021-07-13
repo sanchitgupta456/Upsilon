@@ -17,7 +17,10 @@ import com.android.volley.toolbox.Volley;
 import com.cloudinary.android.MediaManager;
 import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
+import com.google.gson.Gson;
+import com.sanchit.Upsilon.courseData.CourseFinal;
 import com.sanchit.Upsilon.ui.login.LoginActivity;
+import com.sanchit.Upsilon.userData.User;
 import com.sanchit.Upsilon.userData.UserLocation;
 
 import org.json.JSONArray;
@@ -36,7 +39,7 @@ public class Upsilon extends Application {
     String Token = null;
     private RequestQueue queue;
     ArrayList<String> interests = new ArrayList<>();
-    UserLocation userLocation = null;
+    User user;
 
     public ArrayList<String> getInterests() {
         return interests;
@@ -72,32 +75,20 @@ public class Upsilon extends Application {
     }
 
     public void initialise() {
-        fetchUserLocation();
+        fetchProfile();
     }
 
-    public UserLocation getUserLocation() {
-        return userLocation;
-    }
-
-    public void setUserLocation(UserLocation userLocation) {
-        this.userLocation = userLocation;
-    }
-
-    public void fetchUserLocation() {
-        JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.GET, API+"/userLocation",new JSONObject(),
+    public void fetchProfile() {
+        JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.GET, API+"/me",new JSONObject(),
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
                         Log.d("FetchUserLocation", response.toString());
-                        userLocation = new UserLocation();
-                        try {
-                            userLocation.setLatitude((Double) Double.parseDouble(response.get("latitude").toString()));
-                            userLocation.setLongitude((Double) Double.parseDouble(response.get("longitude").toString()));
-                            Log.v("UserLocationResponse",userLocation.toString());
-                        } catch (JSONException e) {
-                            userLocation = null;
-                            e.printStackTrace();
-                        }
+                        user = new User();
+                        Gson gson= new Gson();
+                        User user = gson.fromJson(String.valueOf(response),User.class);
+                        setUser(user);
+                        Log.v("User",user.getUserLocation().getLatitude().toString());
                     }
                 },
                 new Response.ErrorListener() {
@@ -108,13 +99,13 @@ public class Upsilon extends Application {
                     }
                 }
         ){
-        @Override
-        public Map<String, String> getHeaders() {
-            Map<String, String> params = new HashMap<String, String>();
-            params.put("token", Token);
-            return params;
-        }
-    };
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("token", Token);
+                return params;
+            }
+        };
         queue.add(jsonRequest);
     }
 
@@ -122,6 +113,14 @@ public class Upsilon extends Application {
 
 //        JSONObject jsonBody = new JSONObject();
         fetchInterests();
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public void fetchInterests() {

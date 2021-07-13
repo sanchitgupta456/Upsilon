@@ -382,10 +382,11 @@ public class ExploreFragment0 extends Fragment {
 
     public void findLocation(){
         progressBar.setVisibility(View.VISIBLE);
-        if(((Upsilon)getActivity().getApplication()).getUserLocation() != null)
+//        Log.v("UserLoc",((Upsilon)getActivity().getApplication()).getUser().getUserLocation().toString());
+        if(((Upsilon)getActivity().getApplication()).getUser().getUserLocation() != null)
         {
                         progressBar.setVisibility(View.GONE);
-                        Log.v("ExploreFragment0","userLoc is not null"+String.valueOf(((Upsilon)getActivity().getApplication()).getUserLocation()));
+                        Log.v("ExploreFragment0","userLoc is not null"+String.valueOf(((Upsilon)getActivity().getApplication()).user.getUserLocation()));
                         recyclerView.setVisibility(View.VISIBLE);
                         alter.setVisibility(View.GONE);
                         llLoader.setVisibility(View.INVISIBLE);
@@ -454,8 +455,9 @@ public class ExploreFragment0 extends Fragment {
                             Log.d("UpdatingUserLocation", response.toString());
                             llLoader.setVisibility(View.INVISIBLE);
 //                                    performSearch();
-                                    alter.setVisibility(View.GONE);
-                            ((Upsilon)getActivity().getApplication()).fetchUserLocation();
+                            alter.setVisibility(View.GONE);
+                            ((Upsilon)getActivity().getApplication()).user.setUserLocation(new UserLocation(Double.parseDouble(userLocation.get("latitude").toString()),Double.parseDouble(userLocation.get("longitude").toString())));
+                            ((Upsilon)getActivity().getApplication()).fetchProfile();
                             performSearch();
                                     recyclerView.setVisibility(View.VISIBLE);
                         }

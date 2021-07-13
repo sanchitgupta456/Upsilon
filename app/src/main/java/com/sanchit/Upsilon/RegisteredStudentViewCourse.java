@@ -20,6 +20,7 @@ import androidx.fragment.app.Fragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.snackbar.Snackbar;
 import com.sanchit.Upsilon.courseData.Course;
+import com.sanchit.Upsilon.courseData.CourseFinal;
 import com.squareup.picasso.Picasso;
 
 import org.bson.Document;
@@ -41,7 +42,7 @@ public class RegisteredStudentViewCourse extends AppCompatActivity implements Bo
 
     private FrameLayout fragmentContainer;
     private BottomNavigationView bottomNavigationView;
-    private Course course;
+    private CourseFinal course;
     //private TextView courseName;
     //private ImageButton btnBack;
     View actionBar;
@@ -57,7 +58,7 @@ public class RegisteredStudentViewCourse extends AppCompatActivity implements Bo
         setContentView(R.layout.activity_active_course_main);
 
         Intent intent = getIntent();
-        course = (Course) intent.getSerializableExtra("Course");
+        course = (CourseFinal) intent.getSerializableExtra("Course");
 
         fragmentContainer = (FrameLayout) findViewById(R.id.student_registered_frame);
 
@@ -189,46 +190,46 @@ public class RegisteredStudentViewCourse extends AppCompatActivity implements Bo
         else if (item.getItemId()==R.id.menuItemUnregister)
         {
 
-            app = new App(new AppConfiguration.Builder(appID)
-                    .build());
-            User user = app.currentUser();
-            mongoClient = user.getMongoClient("mongodb-atlas");
-            mongoDatabase = mongoClient.getDatabase("Upsilon");
-            MongoCollection<Document> mongoCollection  = mongoDatabase.getCollection("DropRequests");
-
-            Document queryFilter  = new Document("userid",user.getId()).append("courseId",course.getCourseId());
-
-            RealmResultTask<MongoCursor<Document>> findTask = mongoCollection.find(queryFilter).iterator();
-
-            findTask.getAsync(task -> {
-                if (task.isSuccess()) {
-                    MongoCursor<Document> results = task.get();
-                    if(!results.hasNext())
-                    {
-                        mongoCollection.insertOne(
-                                new Document("userid", user.getId()).append("courseId",course.getCourseId()).append("timeStamp",System.currentTimeMillis()))
-                                .getAsync(result -> {
-                                    if (result.isSuccess()) {
-                                        Toast.makeText(getApplicationContext(),"Your request has been registered",Toast.LENGTH_LONG).show();
-                                        Log.v("EXAMPLE", "Inserted custom user data document. _id of inserted document: "
-                                                + result.get().getInsertedId());
-                                    } else {
-                                        Toast.makeText(getApplicationContext(),"Error registering request . Please try again later",Toast.LENGTH_LONG).show();
-                                        Log.e("EXAMPLE", "Unable to insert custom user data. Error: " + result.getError());
-                                    }
-                                });
-                    }
-                    else
-                    {
-                        Toast.makeText(getApplicationContext(),"Your request has already been registered",Toast.LENGTH_LONG).show();
-                        Log.v("User", "successfully found the user");
-//                        getCourseData();
-                    }
-
-                } else {
-                    Log.v("User","Failed to complete search"+task.getError());
-                }
-            });
+//            app = new App(new AppConfiguration.Builder(appID)
+//                    .build());
+//            User user = app.currentUser();
+//            mongoClient = user.getMongoClient("mongodb-atlas");
+//            mongoDatabase = mongoClient.getDatabase("Upsilon");
+//            MongoCollection<Document> mongoCollection  = mongoDatabase.getCollection("DropRequests");
+//
+//            Document queryFilter  = new Document("userid",user.getId()).append("courseId",course.getCourseId());
+//
+//            RealmResultTask<MongoCursor<Document>> findTask = mongoCollection.find(queryFilter).iterator();
+//
+//            findTask.getAsync(task -> {
+//                if (task.isSuccess()) {
+//                    MongoCursor<Document> results = task.get();
+//                    if(!results.hasNext())
+//                    {
+//                        mongoCollection.insertOne(
+//                                new Document("userid", user.getId()).append("courseId",course.getCourseId()).append("timeStamp",System.currentTimeMillis()))
+//                                .getAsync(result -> {
+//                                    if (result.isSuccess()) {
+//                                        Toast.makeText(getApplicationContext(),"Your request has been registered",Toast.LENGTH_LONG).show();
+//                                        Log.v("EXAMPLE", "Inserted custom user data document. _id of inserted document: "
+//                                                + result.get().getInsertedId());
+//                                    } else {
+//                                        Toast.makeText(getApplicationContext(),"Error registering request . Please try again later",Toast.LENGTH_LONG).show();
+//                                        Log.e("EXAMPLE", "Unable to insert custom user data. Error: " + result.getError());
+//                                    }
+//                                });
+//                    }
+//                    else
+//                    {
+//                        Toast.makeText(getApplicationContext(),"Your request has already been registered",Toast.LENGTH_LONG).show();
+//                        Log.v("User", "successfully found the user");
+////                        getCourseData();
+//                    }
+//
+//                } else {
+//                    Log.v("User","Failed to complete search"+task.getError());
+//                }
+//            });
             //unregister the course if registration happened < 7 days before, else do not
         }
         else if (item.getItemId()==R.id.menuItemRefresh)
