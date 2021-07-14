@@ -48,6 +48,7 @@ import com.sanchit.Upsilon.MainActivity;
 import com.sanchit.Upsilon.R;
 import com.sanchit.Upsilon.Terms;
 import com.sanchit.Upsilon.Upsilon;
+import com.sanchit.Upsilon.UserDataSetupActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -447,7 +448,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                             ((Upsilon)getApplication()).setToken(response.getString("token"));
                             Log.v(TAG, "Successfully authenticated using an email and password.");
                             ((Upsilon)getApplication()).initialise();
-                            goToMainActivity();
+                            startActivity(new Intent(SignUpActivity.this, UserDataSetupActivity.class));
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

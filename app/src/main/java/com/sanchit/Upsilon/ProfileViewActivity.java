@@ -62,69 +62,69 @@ public class ProfileViewActivity extends AppCompatActivity {
 //        NumberOfCoursesTaught = (TextView) findViewById(R.id.profileNumCoursesTaught);
         profileImage = (CircleImageView) findViewById(R.id.imgProfileImage);
         progressBar = (ProgressBar) findViewById(R.id.loadingUserProfile);
-        app = new App(new AppConfiguration.Builder(appID)
-                .build());
-
-        User user = app.currentUser();
-        Document queryfilter = new Document("userid",user.getId());
-
-        mongoClient = user.getMongoClient("mongodb-atlas");
-        mongoDatabase = mongoClient.getDatabase("Upsilon");
-        MongoCollection<Document> mongoCollection  = mongoDatabase.getCollection("UserData");
-
-        //Blank query to find every single course in db
-        //TODO: Modify query to look for user preferred course IDs
-        Document queryFilter  = new Document("userid",user.getId());
-
-        RealmResultTask<MongoCursor<Document>> findTask = mongoCollection.find(queryFilter).iterator();
-
-        findTask.getAsync(task -> {
-            progressBar.setVisibility(View.VISIBLE);
-            if (task.isSuccess()) {
-                MongoCursor<Document> results = task.get();
-                if(!results.hasNext())
-                {
-                    /*mongoCollection.insertOne(
-                            new Document("userid", user.getId()).append("favoriteColor", "pink"))
-                            .getAsync(result -> {
-                                if (result.isSuccess()) {
-                                    Log.v("EXAMPLE", "Inserted custom user data document. _id of inserted document: "
-                                            + result.get().getInsertedId());
-                                    //goToSetupActivity();
-                                } else {
-                                    Log.e("EXAMPLE", "Unable to insert custom user data. Error: " + result.getError());
-                                }
-                            });*/
-                }
-                else
-                {
-                    Log.v("User", "successfully found the user");
-                    //getCourseData();
-                }
-                while (results.hasNext()) {
-                    //Log.v("EXAMPLE", results.next().toString());
-                    Document currentDoc = results.next();
-                    try {
-                        UserName.setText(currentDoc.getString("name"));
-                        PhoneNumber.setText(currentDoc.getString("phonenumber"));
-                        Email.setText(user.getProfile().getEmail());
-                        Log.v("Email","Hello" + user.getProfile().toString());
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    try {
-                        Picasso.with(getApplicationContext()).load(currentDoc.getString("profilePicUrl")).into(profileImage);
-                        Log.v("ProfilePic",currentDoc.getString("profilePicUrl"));
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    Log.v("User",currentDoc.getString("userid"));
-                }
-            } else {
-                Log.v("User","Failed to complete search");
-            }
-            progressBar.setVisibility(View.GONE);
-        });
+//        app = new App(new AppConfiguration.Builder(appID)
+//                .build());
+//
+//        User user = app.currentUser();
+//        Document queryfilter = new Document("userid",user.getId());
+//
+//        mongoClient = user.getMongoClient("mongodb-atlas");
+//        mongoDatabase = mongoClient.getDatabase("Upsilon");
+//        MongoCollection<Document> mongoCollection  = mongoDatabase.getCollection("UserData");
+//
+//        //Blank query to find every single course in db
+//        //TODO: Modify query to look for user preferred course IDs
+//        Document queryFilter  = new Document("userid",user.getId());
+//
+//        RealmResultTask<MongoCursor<Document>> findTask = mongoCollection.find(queryFilter).iterator();
+//
+//        findTask.getAsync(task -> {
+//            progressBar.setVisibility(View.VISIBLE);
+//            if (task.isSuccess()) {
+//                MongoCursor<Document> results = task.get();
+//                if(!results.hasNext())
+//                {
+//                    /*mongoCollection.insertOne(
+//                            new Document("userid", user.getId()).append("favoriteColor", "pink"))
+//                            .getAsync(result -> {
+//                                if (result.isSuccess()) {
+//                                    Log.v("EXAMPLE", "Inserted custom user data document. _id of inserted document: "
+//                                            + result.get().getInsertedId());
+//                                    //goToSetupActivity();
+//                                } else {
+//                                    Log.e("EXAMPLE", "Unable to insert custom user data. Error: " + result.getError());
+//                                }
+//                            });*/
+//                }
+//                else
+//                {
+//                    Log.v("User", "successfully found the user");
+//                    //getCourseData();
+//                }
+//                while (results.hasNext()) {
+//                    //Log.v("EXAMPLE", results.next().toString());
+//                    Document currentDoc = results.next();
+//                    try {
+//                        UserName.setText(currentDoc.getString("name"));
+//                        PhoneNumber.setText(currentDoc.getString("phonenumber"));
+//                        Email.setText(user.getProfile().getEmail());
+//                        Log.v("Email","Hello" + user.getProfile().toString());
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                    }
+//                    try {
+//                        Picasso.with(getApplicationContext()).load(currentDoc.getString("profilePicUrl")).into(profileImage);
+//                        Log.v("ProfilePic",currentDoc.getString("profilePicUrl"));
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                    }
+//                    Log.v("User",currentDoc.getString("userid"));
+//                }
+//            } else {
+//                Log.v("User","Failed to complete search");
+//            }
+//            progressBar.setVisibility(View.GONE);
+//        });
 
         update.setOnClickListener(new View.OnClickListener() {
             @Override

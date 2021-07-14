@@ -6,13 +6,14 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
+import com.sanchit.Upsilon.userData.User;
+import com.sanchit.Upsilon.userData.UserLocation;
 
 import org.bson.Document;
 
 import java.util.ArrayList;
 
 import io.realm.mongodb.App;
-import io.realm.mongodb.User;
 import io.realm.mongodb.mongo.MongoClient;
 import io.realm.mongodb.mongo.MongoDatabase;
 
@@ -28,7 +29,7 @@ public class UserDataViewModel extends ViewModel {
         city.setValue("world");
         pincode.setValue("-1");
         phonenumber.setValue("0");
-        userLocation.setValue(new Document());
+        userLocation.setValue(new UserLocation());
     }
 
     private MutableLiveData<ArrayList<String>> interests = new MutableLiveData<>();
@@ -45,11 +46,11 @@ public class UserDataViewModel extends ViewModel {
     //private final int REQUEST_FINE_LOCATION = 1234;
     //private FusedLocationProviderClient fusedLocationProviderClient;
 
-    public void setUserLocation(Document userLocation) {
+    public void setUserLocation(UserLocation userLocation) {
         this.userLocation.setValue(userLocation);
     }
 
-    private MutableLiveData<Document> userLocation = new MutableLiveData<>();
+    private MutableLiveData<UserLocation> userLocation = new MutableLiveData<>();
 
     public MutableLiveData<String> getCollege() {
         return College;
@@ -115,7 +116,7 @@ public class UserDataViewModel extends ViewModel {
         this.phonenumber.setValue(phonenumber);
     }
 
-    public Document getUserLocation() {
+    public UserLocation getUserLocation() {
         return userLocation.getValue();
     }
 

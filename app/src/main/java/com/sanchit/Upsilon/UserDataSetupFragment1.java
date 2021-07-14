@@ -84,6 +84,7 @@ public class UserDataSetupFragment1 extends Fragment implements InterestCardAdap
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_user_data_setup1, container, false);
+        viewModel = new ViewModelProvider(requireActivity()).get(UserDataViewModel.class);
         //addInterests = (Button) view.findViewById(R.id.addInterest);
         //searchView = (SearchView)findViewById(R.id.searchInterests);
         //text = (EditText) view.findViewById(R.id.textEnterInterests);
@@ -91,9 +92,9 @@ public class UserDataSetupFragment1 extends Fragment implements InterestCardAdap
         grid = (RecyclerView) view.findViewById(R.id.gridInterests);
         //group.removeAllViews();
 
-        app = new App(new AppConfiguration.Builder(appID)
-                .build());
-        user = app.currentUser();
+//        app = new App(new AppConfiguration.Builder(appID)
+//                .build());
+//        user = app.currentUser();
         setupGrid();
         interests = new ArrayList<>();
         viewModel.setInterests(interests);
@@ -219,35 +220,42 @@ public class UserDataSetupFragment1 extends Fragment implements InterestCardAdap
 
     public void getListOfInterestsData() {
         Log.v("UserDataSetupFragment1","Getting Interest Data");
-        mongoClient = user.getMongoClient("mongodb-atlas");
-        mongoDatabase = mongoClient.getDatabase("Upsilon");
-        MongoCollection<Document> mongoCollection = mongoDatabase.getCollection("Utility");
-        Document queryFilter = new Document("field","interests");
-        RealmResultTask<MongoCursor<Document>> findTask = mongoCollection.find(queryFilter).iterator();
-
-        findTask.getAsync(task->{
-            if(task.isSuccess())
-            {
-                MongoCursor<Document> results = task.get();
-                try {
-                    Document result = results.next();
-                    ArrayList<String> temporary = (ArrayList<String>) result.get("interests");
+        ArrayList<String> temporary = (ArrayList<String>) ((Upsilon)getActivity().getApplication()).getInterests();
                     for(String s:temporary)
                     {
                         Log.v("UserDataSetupFragment1",s);
                         list.add(new Interest(s));
-                        adapter.notifyDataSetChanged();
                     }
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-            else
-            {
-                Log.v("UserDataSetupFragment1","Error"+task.getError().toString());
-            }
-        });
+//
+//        mongoClient = user.getMongoClient("mongodb-atlas");
+//        mongoDatabase = mongoClient.getDatabase("Upsilon");
+//        MongoCollection<Document> mongoCollection = mongoDatabase.getCollection("Utility");
+//        Document queryFilter = new Document("field","interests");
+//        RealmResultTask<MongoCursor<Document>> findTask = mongoCollection.find(queryFilter).iterator();
+//
+//        findTask.getAsync(task->{
+//            if(task.isSuccess())
+//            {
+//                MongoCursor<Document> results = task.get();
+//                try {
+//                    Document result = results.next();
+//                    ArrayList<String> temporary = (ArrayList<String>) result.get("interests");
+//                    for(String s:temporary)
+//                    {
+//                        Log.v("UserDataSetupFragment1",s);
+//                        list.add(new Interest(s));
+//                        adapter.notifyDataSetChanged();
+//                    }
+//
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//            else
+//            {
+//                Log.v("UserDataSetupFragment1","Error"+task.getError().toString());
+//            }
+//        });
         //TODO: Get data for list (type: ArrayList<Interest> here)
         //
         //See: Interest class and other details.

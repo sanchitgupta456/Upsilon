@@ -18,6 +18,7 @@ import com.cloudinary.android.MediaManager;
 import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import com.sanchit.Upsilon.courseData.CourseFinal;
 import com.sanchit.Upsilon.ui.login.LoginActivity;
 import com.sanchit.Upsilon.userData.User;
@@ -84,11 +85,16 @@ public class Upsilon extends Application {
                     @Override
                     public void onResponse(JSONObject response) {
                         Log.d("FetchUserLocation", response.toString());
-                        user = new User();
-                        Gson gson= new Gson();
-                        User user = gson.fromJson(String.valueOf(response),User.class);
-                        setUser(user);
-                        Log.v("User",user.getUserLocation().getLatitude().toString());
+                        try {
+                            user = new User();
+                            Gson gson= new Gson();
+                            User user = gson.fromJson(String.valueOf(response),User.class);
+                            setUser(user);
+                        } catch (JsonSyntaxException e) {
+                            fetchProfile();
+                            e.printStackTrace();
+                        }
+//                        Log.v("User",user.getUserLocation().getLatitude().toString());
                     }
                 },
                 new Response.ErrorListener() {

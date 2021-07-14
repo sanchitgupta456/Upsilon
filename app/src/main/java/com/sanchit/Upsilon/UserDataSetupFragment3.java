@@ -34,6 +34,7 @@ import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.sanchit.Upsilon.userData.UserLocation;
 
 import org.bson.Document;
 
@@ -67,7 +68,7 @@ public class UserDataSetupFragment3 extends Fragment implements AdapterView.OnIt
     private final int REQUEST_FINE_LOCATION = 1234;
     FusedLocationProviderClient fusedLocationProviderClient;
     private String College;
-    private Document userLocation = new Document();
+    private UserLocation userLocation = new UserLocation();
 
     UserDataViewModel viewModel;
 
@@ -100,14 +101,14 @@ public class UserDataSetupFragment3 extends Fragment implements AdapterView.OnIt
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.simple_expandable_list_item_custom, Colleges);
         selectYourCollege.setAdapter(adapter);
         //selectYourCollege.setOnItemClickListener(this::onItemSelected);
-        /*
-        selectYourCollege.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int pos, long l) {
-                College = selectYourCollege.getItemAtPosition(pos).toString();
-                viewModel.setCollege(College);
-            }
-        });*/
+
+//        selectYourCollege.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> adapterView, View view, int pos, long l) {
+//                College = selectYourCollege.getItemAtPosition(pos).toString();
+//                viewModel.setCollege(College);
+//            }
+//        });
 
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireContext());
         locationbutton.setOnClickListener(new View.OnClickListener() {
@@ -121,12 +122,12 @@ public class UserDataSetupFragment3 extends Fragment implements AdapterView.OnIt
             }
         });
 
-        app = new App(new AppConfiguration.Builder(appID)
-                .build());
-        user = app.currentUser();
-        mongoClient = user.getMongoClient("mongodb-atlas");
-        mongoDatabase = mongoClient.getDatabase("Upsilon");
-        MongoCollection<Document> mongoCollection = mongoDatabase.getCollection("UserData");
+//        app = new App(new AppConfiguration.Builder(appID)
+//                .build());
+//        user = app.currentUser();
+//        mongoClient = user.getMongoClient("mongodb-atlas");
+//        mongoDatabase = mongoClient.getDatabase("Upsilon");
+//        MongoCollection<Document> mongoCollection = mongoDatabase.getCollection("UserData");
 
         City.addTextChangedListener(new TextWatcher() {
             @Override
@@ -287,8 +288,8 @@ public class UserDataSetupFragment3 extends Fragment implements AdapterView.OnIt
                         viewModel.setCity(addresses.get(0).getLocality());
                         Pincode.setText(addresses.get(0).getPostalCode());
                         viewModel.setPincode(addresses.get(0).getPostalCode());
-                        userLocation.append("lattitude",location.getLatitude());
-                        userLocation.append("longitude",location.getLongitude());
+                        userLocation.setLatitude(location.getLatitude());
+                        userLocation.setLongitude(location.getLongitude());
                         viewModel.setUserLocation(userLocation);
                         Log.v("Location",addresses.get(0).getPostalCode()+" "+addresses.get(0).getLocality()+" "+addresses.get(0).getSubLocality());
                     } catch (IOException e) {

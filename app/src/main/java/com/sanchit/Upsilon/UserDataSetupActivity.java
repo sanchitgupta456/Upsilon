@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager.widget.ViewPager;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,19 +17,32 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.cloudinary.android.MediaManager;
 import com.cloudinary.android.callback.ErrorInfo;
 import com.cloudinary.android.callback.UploadCallback;
 import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.gson.Gson;
 import com.sanchit.Upsilon.courseData.Course;
 import com.sanchit.Upsilon.ui.login.LoginActivity;
+import com.sanchit.Upsilon.userData.UserLocation;
 
 import org.bson.Document;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.json.simple.JSONArray;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.UUID;
 
 import io.realm.mongodb.App;
 import io.realm.mongodb.AppConfiguration;
@@ -59,12 +73,16 @@ public class UserDataSetupActivity extends AppCompatActivity {
     ArrayList<String> interests;
     String picturePath;
     String name;
+    private RequestQueue queue;
+    private String API ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_data_setup);
         Objects.requireNonNull(getSupportActionBar()).hide();
+        queue = Volley.newRequestQueue(getApplicationContext());
+        API = ((Upsilon)this.getApplication()).getAPI();
 
         viewPager = (ViewPager) findViewById(R.id.view_pager);
         progress = (HorizontalDotProgress) findViewById(R.id.dot_progress);
@@ -72,12 +90,12 @@ public class UserDataSetupActivity extends AppCompatActivity {
         next = (Button) findViewById(R.id.selectLaterNext);
         viewModel = new ViewModelProvider(this).get(UserDataViewModel.class);
 
-        app = new App(new AppConfiguration.Builder(appID)
-                .build());
-        User user = app.currentUser();
-        mongoClient = user.getMongoClient("mongodb-atlas");
-        mongoDatabase = mongoClient.getDatabase("Upsilon");
-        MongoCollection<Document> mongoCollection  = mongoDatabase.getCollection("UserData");
+//        app = new App(new AppConfiguration.Builder(appID)
+//                .build());
+//        User user = app.currentUser();
+//        mongoClient = user.getMongoClient("mongodb-atlas");
+//        mongoDatabase = mongoClient.getDatabase("Upsilon");
+//        MongoCollection<Document> mongoCollection  = mongoDatabase.getCollection("UserData");
 
         setupViewPager(viewPager);
 
@@ -201,39 +219,39 @@ public class UserDataSetupActivity extends AppCompatActivity {
         //name = viewModel.getName().getValue();
         picturePath = viewModel.getPicturePath().getValue();
 
-        app = new App(new AppConfiguration.Builder(appID)
-                .build());
-        User user = app.currentUser();
-        mongoClient = user.getMongoClient("mongodb-atlas");
-        mongoDatabase = mongoClient.getDatabase("Upsilon");
-        MongoCollection<Document> mongoCollection  = mongoDatabase.getCollection("UserData");
-        Document queryFilter  = new Document("userid",user.getId());
+//        app = new App(new AppConfiguration.Builder(appID)
+//                .build());
+//        User user = app.currentUser();
+//        mongoClient = user.getMongoClient("mongodb-atlas");
+//        mongoDatabase = mongoClient.getDatabase("Upsilon");
+//        MongoCollection<Document> mongoCollection  = mongoDatabase.getCollection("UserData");
+//        Document queryFilter  = new Document("userid",user.getId());
 
-        RealmResultTask<MongoCursor<Document>> findTask = mongoCollection.find(queryFilter).iterator();
+//        RealmResultTask<MongoCursor<Document>> findTask = mongoCollection.find(queryFilter).iterator();
 
-        findTask.getAsync(task -> {
-            if(task.isSuccess()) {
-                MongoCursor<Document> results = task.get();
-                Document result = results.next();
-                int[] counter = new int[]{0};
-                try {
-                    if (result.getInteger("profilePicCounter") == null)
-                    {
-                        counter = new int[]{0};
-                    }
-                    else
-                    {
-                        counter = new int[]{result.getInteger("profilePicCounter")};
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                int[] finalCounter = counter;
+//        findTask.getAsync(task -> {
+//            if(task.isSuccess()) {
+//                MongoCursor<Document> results = task.get();
+//                Document result = results.next();
+//                int[] counter = new int[]{0};
+//                try {
+//                    if (result.getInteger("profilePicCounter") == null)
+//                    {
+//                        counter = new int[]{0};
+//                    }
+//                    else
+//                    {
+//                        counter = new int[]{result.getInteger("profilePicCounter")};
+//                    }
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+//                int[] finalCounter = counter;
                 String requestId = MediaManager.get().upload(picturePath)
                         .unsigned("preset1")
                         .option("resource_type", "image")
                         .option("folder", "Upsilon/".concat(user.getId()).concat("/"))
-                        .option("public_id", "profilePic" + counter[0])
+                        .option("public_id", "profilePic" + UUID.randomUUID().toString())
                         .callback(new UploadCallback() {
                             @Override
                             public void onStart(String requestId) {
@@ -249,63 +267,106 @@ public class UserDataSetupActivity extends AppCompatActivity {
 
                                 Log.v("User", resultData.toString());
                                 Log.v("User", requestId);
-                                finalCounter[0]++;
                                 //name = Name.getText().toString();
 
                                 //Blank query to find every single course in db
                                 //TODO: Modify query to look for user preferred course IDs
-                                Document queryFilter = new Document("userid", user.getId());
-
-                                RealmResultTask<MongoCursor<Document>> findTask = mongoCollection.find(queryFilter).iterator();
-
-                                findTask.getAsync(task -> {
-                                    if (task.isSuccess()) {
-                                        MongoCursor<Document> results = task.get();
-                                        if (!results.hasNext()) {
-                                            mongoCollection.insertOne(
-                                                    new Document("userid", user.getId()).append("profilePicCounter", 0).append("favoriteColor", "pink").append("profilePicUrl", resultData.get("url").toString()))
-                                                    .getAsync(result -> {
-                                                        if (result.isSuccess()) {
-                                                            Log.v("EXAMPLE", "Inserted custom user data document. _id of inserted document: "
-                                                                    + result.get().getInsertedId());
-                                                            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                                                            startActivity(intent);
-                                                        } else {
-                                                            Log.e("EXAMPLE", "Unable to insert custom user data. Error: " + result.getError());
-                                                        }
-                                                    });
-                                        } else {
-                                            Document userdata = results.next();
-                                            userdata.append("profilePicCounter", finalCounter[0]);
-                                            userdata.append("profilePicUrl", resultData.get("url").toString());
-
-                                            mongoCollection.updateOne(
-                                                    new Document("userid", user.getId()), (userdata))
-                                                    .getAsync(result -> {
-                                                        if (result.isSuccess()) {
-                                                            Log.v("EXAMPLE", "Updated custom user data document. _id of inserted document: "
-                                                                    + result.get().getModifiedCount());
-                                                            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                                                            startActivity(intent);
-                                                        } else {
-                                                            Log.e("EXAMPLE", "Unable to insert custom user data. Error: " + result.getError());
-                                                        }
-                                                    });
+                                try {
+                                    JSONObject jsonObject = new JSONObject();
+                                    jsonObject.put("img",resultData.get("url").toString());
+                                    jsonObject.put("interests", JSONArray.toJSONString(viewModel.getInterests().getValue()));
+                                    jsonObject.put("name", viewModel.getName().getValue());
+                                    jsonObject.put("city", viewModel.getCity().getValue());
+                                    jsonObject.put("pincode", viewModel.getPincode().getValue());
+                                    jsonObject.put("phonenumber", viewModel.getPhonenumber().getValue());
+                                    jsonObject.put("college",viewModel.getCollege().getValue());
+                                    jsonObject.put("userLocation",viewModel.getUserLocation());
+                                    JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, API+"/updateProfile",jsonObject,
+                                            new Response.Listener<JSONObject>() {
+                                                @Override
+                                                public void onResponse(JSONObject response) {
+                                                    Log.d("FetchUserLocation", response.toString());
+                                                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                                                    startActivity(intent);
+    //                        Log.v("User",user.getUserLocation().getLatitude().toString());
+                                                }
+                                            },
+                                            new Response.ErrorListener() {
+                                                @SuppressLint("LongLogTag")
+                                                @Override
+                                                public void onErrorResponse(VolleyError error) {
+                                                    Log.d("ErrorFetchingUserLocation", error.toString());
+                                                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                                                    startActivity(intent);
+                                                }
+                                            }
+                                    ){
+                                        @Override
+                                        public Map<String, String> getHeaders() {
+                                            Map<String, String> params = new HashMap<String, String>();
+                                            params.put("token", ((Upsilon)getApplication()).getToken());
+                                            return params;
                                         }
-                                        while (results.hasNext()) {
-                                            //Log.v("EXAMPLE", results.next().toString());
-                                            Document currentDoc = results.next();
-                                            Log.v("User", currentDoc.getString("userid"));
-                                        }
-                                    } else {
-                                        Log.v("User", "Failed to complete search");
-                                    }
-                                });
+                                    };
+                                    queue.add(jsonRequest);
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                                    startActivity(intent);
+                                }
+//                                Document queryFilter = new Document("userid", user.getId());
+//
+//                                RealmResultTask<MongoCursor<Document>> findTask = mongoCollection.find(queryFilter).iterator();
+//
+//                                findTask.getAsync(task -> {
+//                                    if (task.isSuccess()) {
+//                                        MongoCursor<Document> results = task.get();
+//                                        if (!results.hasNext()) {
+//                                            mongoCollection.insertOne(
+//                                                    new Document("userid", user.getId()).append("profilePicCounter", 0).append("favoriteColor", "pink").append("profilePicUrl", resultData.get("url").toString()))
+//                                                    .getAsync(result -> {
+//                                                        if (result.isSuccess()) {
+//                                                            Log.v("EXAMPLE", "Inserted custom user data document. _id of inserted document: "
+//                                                                    + result.get().getInsertedId());
+//                                                            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+//                                                            startActivity(intent);
+//                                                        } else {
+//                                                            Log.e("EXAMPLE", "Unable to insert custom user data. Error: " + result.getError());
+//                                                        }
+//                                                    });
+//                                        } else {
+//                                            Document userdata = results.next();
+//                                            userdata.append("profilePicCounter", finalCounter[0]);
+//                                            userdata.append("profilePicUrl", resultData.get("url").toString());
+//
+//                                            mongoCollection.updateOne(
+//                                                    new Document("userid", user.getId()), (userdata))
+//                                                    .getAsync(result -> {
+//                                                        if (result.isSuccess()) {
+//                                                            Log.v("EXAMPLE", "Updated custom user data document. _id of inserted document: "
+//                                                                    + result.get().getModifiedCount());
+//                                                            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+//                                                            startActivity(intent);
+//                                                        } else {
+//                                                            Log.e("EXAMPLE", "Unable to insert custom user data. Error: " + result.getError());
+//                                                        }
+//                                                    });
+//                                        }
+//                                        while (results.hasNext()) {
+//                                            //Log.v("EXAMPLE", results.next().toString());
+//                                            Document currentDoc = results.next();
+//                                            Log.v("User", currentDoc.getString("userid"));
+//                                        }
+//                                    } else {
+//                                        Log.v("User", "Failed to complete search");
+//                                    }
+//                                });
                             }
 
                             @Override
                             public void onError(String requestId, ErrorInfo error) {
-
+                                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                                startActivity(intent);
                             }
 
                             @Override
@@ -314,131 +375,175 @@ public class UserDataSetupActivity extends AppCompatActivity {
                             }
                         })
                         .dispatch();
-            }
-        });
+//            }
+//        });
     }
 
     void uploadDefault(){
-        app = new App(new AppConfiguration.Builder(appID)
-                .build());
-        User user = app.currentUser();
-        mongoClient = user.getMongoClient("mongodb-atlas");
-        mongoDatabase = mongoClient.getDatabase("Upsilon");
-        MongoCollection<Document> mongoCollection  = mongoDatabase.getCollection("UserData");
-        Document queryFilter  = new Document("userid",user.getId());
-
-        RealmResultTask<MongoCursor<Document>> findTask = mongoCollection.find(queryFilter).iterator();
-
-        findTask.getAsync(task -> {
-            String name =viewModel.getName().getValue();
-            //String defaultUrl = viewModel.getDefaultUrl();
-            if(task.isSuccess()) {
-                MongoCursor<Document> results = task.get();
-
-                if (!results.hasNext()) {
-                    mongoCollection.insertOne(
-                            new Document("userid", user.getId()).append("profilePicCounter", 0).append("favoriteColor", "pink").append("profilePicUrl", defaultUrl))
-                            .getAsync(result -> {
-                                if (result.isSuccess()) {
-                                    Log.v("EXAMPLE", "Inserted custom user data document. _id of inserted document: "
-                                            + result.get().getInsertedId());
-                                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                                    startActivity(intent);
-                                } else {
-                                    Log.e("EXAMPLE", "Unable to insert custom user data. Error: " + result.getError());
-                                }
-                            });
-                } else {
-                    Document userdata = results.next();
-                    userdata.append("name", name);
-                    userdata.append("profilePicCounter", 0);
-                    userdata.append("profilePicUrl", defaultUrl);
-
-                    mongoCollection.updateOne(
-                            new Document("userid", user.getId()), (userdata))
-                            .getAsync(result -> {
-                                if (result.isSuccess()) {
-                                    Log.v("EXAMPLE", "Inserted custom user data document. _id of inserted document: "
-                                            + result.get().getModifiedCount());
-                                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                                    startActivity(intent);
-                                } else {
-                                    Log.e("EXAMPLE", "Unable to insert custom user data. Error: " + result.getError());
-                                }
-                            });
+        try {
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("img",defaultUrl);
+            jsonObject.put("interests", JSONArray.toJSONString(viewModel.getInterests().getValue()));
+            jsonObject.put("name", viewModel.getName().getValue());
+            jsonObject.put("city", viewModel.getCity().getValue());
+            jsonObject.put("pincode", viewModel.getPincode().getValue());
+            jsonObject.put("phonenumber", viewModel.getPhonenumber().getValue());
+            jsonObject.put("college",viewModel.getCollege().getValue());
+            jsonObject.put("latitude",viewModel.getUserLocation().getLatitude());
+            jsonObject.put("longitude",viewModel.getUserLocation().getLongitude());
+            JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, API+"/updateProfile",jsonObject,
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            Log.d("FetchUserLocation", response.toString());
+                            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                            startActivity(intent);
+                            //                        Log.v("User",user.getUserLocation().getLatitude().toString());
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @SuppressLint("LongLogTag")
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Log.d("ErrorFetchingUserLocation", error.toString());
+                            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                            startActivity(intent);
+                        }
+                    }
+            ){
+                @Override
+                public Map<String, String> getHeaders() {
+                    Map<String, String> params = new HashMap<String, String>();
+                    params.put("token", ((Upsilon)getApplication()).getToken());
+                    return params;
                 }
-            }
-        });
+            };
+            queue.add(jsonRequest);
+        } catch (JSONException e) {
+            e.printStackTrace();
+            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+            startActivity(intent);
+        }
+//        app = new App(new AppConfiguration.Builder(appID)
+//                .build());
+//        User user = app.currentUser();
+//        mongoClient = user.getMongoClient("mongodb-atlas");
+//        mongoDatabase = mongoClient.getDatabase("Upsilon");
+//        MongoCollection<Document> mongoCollection  = mongoDatabase.getCollection("UserData");
+//        Document queryFilter  = new Document("userid",user.getId());
+//
+//        RealmResultTask<MongoCursor<Document>> findTask = mongoCollection.find(queryFilter).iterator();
+//
+//        findTask.getAsync(task -> {
+//            String name =viewModel.getName().getValue();
+//            //String defaultUrl = viewModel.getDefaultUrl();
+//            if(task.isSuccess()) {
+//                MongoCursor<Document> results = task.get();
+//
+//                if (!results.hasNext()) {
+//                    mongoCollection.insertOne(
+//                            new Document("userid", user.getId()).append("profilePicCounter", 0).append("favoriteColor", "pink").append("profilePicUrl", defaultUrl))
+//                            .getAsync(result -> {
+//                                if (result.isSuccess()) {
+//                                    Log.v("EXAMPLE", "Inserted custom user data document. _id of inserted document: "
+//                                            + result.get().getInsertedId());
+//                                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+//                                    startActivity(intent);
+//                                } else {
+//                                    Log.e("EXAMPLE", "Unable to insert custom user data. Error: " + result.getError());
+//                                }
+//                            });
+//                } else {
+//                    Document userdata = results.next();
+//                    userdata.append("name", name);
+//                    userdata.append("profilePicCounter", 0);
+//                    userdata.append("profilePicUrl", defaultUrl);
+//
+//                    mongoCollection.updateOne(
+//                            new Document("userid", user.getId()), (userdata))
+//                            .getAsync(result -> {
+//                                if (result.isSuccess()) {
+//                                    Log.v("EXAMPLE", "Inserted custom user data document. _id of inserted document: "
+//                                            + result.get().getModifiedCount());
+//                                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+//                                    startActivity(intent);
+//                                } else {
+//                                    Log.e("EXAMPLE", "Unable to insert custom user data. Error: " + result.getError());
+//                                }
+//                            });
+//                }
+//            }
+//        });
     }
 
     public void uploadData() {
-        app = new App(new AppConfiguration.Builder(appID)
-                .build());
-        User user = app.currentUser();
-        mongoClient = user.getMongoClient("mongodb-atlas");
-        mongoDatabase = mongoClient.getDatabase("Upsilon");
-        MongoCollection<Document> mongoCollection  = mongoDatabase.getCollection("UserData");
-        Document queryFilter  = new Document("userid",user.getId());
-        RealmResultTask<MongoCursor<Document>> findTask = mongoCollection.find(queryFilter).iterator();
-
-
-
-        findTask.getAsync(task -> {
-            if (task.isSuccess()) {
-                MongoCursor<Document> results = task.get();
-                if (!results.hasNext()) {
-                    mongoCollection.insertOne(
-                            new Document("userid", user.getId())
-                                    .append("myCourses", myCourses)
-                                    .append("profilePicCounter", 0)
-                                    .append("favoriteColor", "pink")
-                                    .append("interests", viewModel.getInterests().getValue())
-                                    .append("name", viewModel.getName().getValue())
-                                    .append("city", viewModel.getCity().getValue())
-                                    .append("pincode", viewModel.getPincode().getValue())
-                                    .append("phonenumber", viewModel.getPhonenumber().getValue())
-                                    .append("college",viewModel.getCollege().getValue())
-                                    .append("userLocation",viewModel.getUserLocation()))
-                            .getAsync(result -> {
-                                if (result.isSuccess()) {
-                                    Log.v("EXAMPLE", "Inserted custom user data document. _id of inserted document: "
-                                            + result.get().getInsertedId());
-                                } else {
-                                    Log.e("EXAMPLE", "Unable to insert custom user data. Error: " + result.getError());
-                                }
-                            });
-                } else {
-                    Document userdata = results.next();
-                    userdata.append("interests", viewModel.getInterests().getValue())
-                            .append("profilePicCounter", 0)
-                            .append("myCourses", myCourses)
-                            .append("name", viewModel.getName().getValue())
-                            .append("city", viewModel.getCity().getValue())
-                            .append("pincode", viewModel.getPincode().getValue())
-                            .append("phonenumber", viewModel.getPhonenumber().getValue())
-                            .append("college",viewModel.getCollege().getValue())
-                            .append("userLocation",viewModel.getUserLocation());
-
-                    mongoCollection.updateOne(
-                            new Document("userid", user.getId()), (userdata))
-                            .getAsync(result -> {
-                                if (result.isSuccess()) {
-                                    Log.v("EXAMPLE", "Inserted custom user data document. _id of inserted document: "
-                                            + result.get().getModifiedCount());
-                                } else {
-                                    Log.e("EXAMPLE", "Unable to insert custom user data. Error: " + result.getError());
-                                }
-                            });
-                }
-                while (results.hasNext()) {
-                    //Log.v("EXAMPLE", results.next().toString());
-                    Document currentDoc = results.next();
-                    Log.v("User", currentDoc.getString("userid"));
-                }
-            } else {
-                Log.v("User", "Failed to complete search");
-            }
-        });
+//        app = new App(new AppConfiguration.Builder(appID)
+//                .build());
+//        User user = app.currentUser();
+//        mongoClient = user.getMongoClient("mongodb-atlas");
+//        mongoDatabase = mongoClient.getDatabase("Upsilon");
+//        MongoCollection<Document> mongoCollection  = mongoDatabase.getCollection("UserData");
+//        Document queryFilter  = new Document("userid",user.getId());
+//        RealmResultTask<MongoCursor<Document>> findTask = mongoCollection.find(queryFilter).iterator();
+//
+//
+//
+//        findTask.getAsync(task -> {
+//            if (task.isSuccess()) {
+//                MongoCursor<Document> results = task.get();
+//                if (!results.hasNext()) {
+//                    mongoCollection.insertOne(
+//                            new Document("userid", user.getId())
+//                                    .append("myCourses", myCourses)
+//                                    .append("profilePicCounter", 0)
+//                                    .append("favoriteColor", "pink")
+//                                    .append("interests", viewModel.getInterests().getValue())
+//                                    .append("name", viewModel.getName().getValue())
+//                                    .append("city", viewModel.getCity().getValue())
+//                                    .append("pincode", viewModel.getPincode().getValue())
+//                                    .append("phonenumber", viewModel.getPhonenumber().getValue())
+//                                    .append("college",viewModel.getCollege().getValue())
+//                                    .append("userLocation",viewModel.getUserLocation()))
+//                            .getAsync(result -> {
+//                                if (result.isSuccess()) {
+//                                    Log.v("EXAMPLE", "Inserted custom user data document. _id of inserted document: "
+//                                            + result.get().getInsertedId());
+//                                } else {
+//                                    Log.e("EXAMPLE", "Unable to insert custom user data. Error: " + result.getError());
+//                                }
+//                            });
+//                } else {
+//                    Document userdata = results.next();
+//                    userdata.append("interests", viewModel.getInterests().getValue())
+//                            .append("profilePicCounter", 0)
+//                            .append("myCourses", myCourses)
+//                            .append("name", viewModel.getName().getValue())
+//                            .append("city", viewModel.getCity().getValue())
+//                            .append("pincode", viewModel.getPincode().getValue())
+//                            .append("phonenumber", viewModel.getPhonenumber().getValue())
+//                            .append("college",viewModel.getCollege().getValue())
+//                            .append("userLocation",viewModel.getUserLocation());
+//
+//                    mongoCollection.updateOne(
+//                            new Document("userid", user.getId()), (userdata))
+//                            .getAsync(result -> {
+//                                if (result.isSuccess()) {
+//                                    Log.v("EXAMPLE", "Inserted custom user data document. _id of inserted document: "
+//                                            + result.get().getModifiedCount());
+//                                } else {
+//                                    Log.e("EXAMPLE", "Unable to insert custom user data. Error: " + result.getError());
+//                                }
+//                            });
+//                }
+//                while (results.hasNext()) {
+//                    //Log.v("EXAMPLE", results.next().toString());
+//                    Document currentDoc = results.next();
+//                    Log.v("User", currentDoc.getString("userid"));
+//                }
+//            } else {
+//                Log.v("User", "Failed to complete search");
+//            }
+//        });
     }
 
     //out of use methods
@@ -446,74 +551,74 @@ public class UserDataSetupActivity extends AppCompatActivity {
         String city = viewModel.getCity().getValue();
         String pincode = viewModel.getPincode().getValue();
         String phonenumber = viewModel.getPhonenumber().getValue();
-        Document userLocation = viewModel.getUserLocation();
+        UserLocation userLocation = viewModel.getUserLocation();
         String college = viewModel.getCollege().getValue();
 
-        app = new App(new AppConfiguration.Builder(appID)
-                .build());
-        User user = app.currentUser();
-        mongoClient = user.getMongoClient("mongodb-atlas");
-        mongoDatabase = mongoClient.getDatabase("Upsilon");
-        MongoCollection<Document> mongoCollection  = mongoDatabase.getCollection("UserData");
-        Document queryFilter  = new Document("userid",user.getId());
-
-        if (city.length() == 0){
-            city = "world";
-        }
-
-        if (pincode.length() == 0){
-            pincode = "-1";
-        }
-
-        /*if (college == "None"){
-            selectYourCollege.requestFocus();
-            Toast toast = Toast.makeText(getApplicationContext(), "Please select a campus!", Toast.LENGTH_SHORT);
-            toast.show();
-            return;
-        }*/
-
-        RealmResultTask<MongoCursor<Document>> findTask = mongoCollection.find(queryFilter).iterator();
-
-        String finalCity = city;
-        String finalPincode = pincode;
-        findTask.getAsync(task -> {
-            if (task.isSuccess()) {
-                MongoCursor<Document> results = task.get();
-                if (!results.hasNext()) {
-                    mongoCollection.insertOne(
-                            new Document("userid", user.getId()).append("favoriteColor", "pink").append("city", finalCity).append("pincode", finalPincode).append("phonenumber", phonenumber).append("college",college).append("userLocation",userLocation))
-                            .getAsync(result -> {
-                                if (result.isSuccess()) {
-                                    Log.v("EXAMPLE", "Inserted custom user data document. _id of inserted document: "
-                                            + result.get().getInsertedId());
-                                } else {
-                                    Log.e("EXAMPLE", "Unable to insert custom user data. Error: " + result.getError());
-                                }
-                            });
-                } else {
-                    Document userdata = results.next();
-                    userdata.append("city", finalCity).append("pincode", finalPincode).append("phonenumber", phonenumber).append("college",college).append("userLocation",userLocation);
-
-                    mongoCollection.updateOne(
-                            new Document("userid", user.getId()), (userdata))
-                            .getAsync(result -> {
-                                if (result.isSuccess()) {
-                                    Log.v("EXAMPLE", "Inserted custom user data document. _id of inserted document: "
-                                            + result.get().getModifiedCount());
-                                } else {
-                                    Log.e("EXAMPLE", "Unable to insert custom user data. Error: " + result.getError());
-                                }
-                            });
-                }
-                while (results.hasNext()) {
-                    //Log.v("EXAMPLE", results.next().toString());
-                    Document currentDoc = results.next();
-                    Log.v("User", currentDoc.getString("userid"));
-                }
-            } else {
-                Log.v("User", "Failed to complete search");
-            }
-        });
+//        app = new App(new AppConfiguration.Builder(appID)
+//                .build());
+//        User user = app.currentUser();
+//        mongoClient = user.getMongoClient("mongodb-atlas");
+//        mongoDatabase = mongoClient.getDatabase("Upsilon");
+//        MongoCollection<Document> mongoCollection  = mongoDatabase.getCollection("UserData");
+//        Document queryFilter  = new Document("userid",user.getId());
+//
+//        if (city.length() == 0){
+//            city = "world";
+//        }
+//
+//        if (pincode.length() == 0){
+//            pincode = "-1";
+//        }
+//
+//        /*if (college == "None"){
+//            selectYourCollege.requestFocus();
+//            Toast toast = Toast.makeText(getApplicationContext(), "Please select a campus!", Toast.LENGTH_SHORT);
+//            toast.show();
+//            return;
+//        }*/
+//
+//        RealmResultTask<MongoCursor<Document>> findTask = mongoCollection.find(queryFilter).iterator();
+//
+//        String finalCity = city;
+//        String finalPincode = pincode;
+//        findTask.getAsync(task -> {
+//            if (task.isSuccess()) {
+//                MongoCursor<Document> results = task.get();
+//                if (!results.hasNext()) {
+//                    mongoCollection.insertOne(
+//                            new Document("userid", user.getId()).append("favoriteColor", "pink").append("city", finalCity).append("pincode", finalPincode).append("phonenumber", phonenumber).append("college",college).append("userLocation",userLocation))
+//                            .getAsync(result -> {
+//                                if (result.isSuccess()) {
+//                                    Log.v("EXAMPLE", "Inserted custom user data document. _id of inserted document: "
+//                                            + result.get().getInsertedId());
+//                                } else {
+//                                    Log.e("EXAMPLE", "Unable to insert custom user data. Error: " + result.getError());
+//                                }
+//                            });
+//                } else {
+//                    Document userdata = results.next();
+//                    userdata.append("city", finalCity).append("pincode", finalPincode).append("phonenumber", phonenumber).append("college",college).append("userLocation",userLocation);
+//
+//                    mongoCollection.updateOne(
+//                            new Document("userid", user.getId()), (userdata))
+//                            .getAsync(result -> {
+//                                if (result.isSuccess()) {
+//                                    Log.v("EXAMPLE", "Inserted custom user data document. _id of inserted document: "
+//                                            + result.get().getModifiedCount());
+//                                } else {
+//                                    Log.e("EXAMPLE", "Unable to insert custom user data. Error: " + result.getError());
+//                                }
+//                            });
+//                }
+//                while (results.hasNext()) {
+//                    //Log.v("EXAMPLE", results.next().toString());
+//                    Document currentDoc = results.next();
+//                    Log.v("User", currentDoc.getString("userid"));
+//                }
+//            } else {
+//                Log.v("User", "Failed to complete search");
+//            }
+//        });
 
 
         //Intent intent = new Intent(getApplicationContext(), MainActivity.class);
@@ -522,58 +627,58 @@ public class UserDataSetupActivity extends AppCompatActivity {
     public void putInterests(){
         ArrayList<String> interests = viewModel.getInterests().getValue();
 
-        app = new App(new AppConfiguration.Builder(appID)
-                .build());
-        User user = app.currentUser();
-        mongoClient = user.getMongoClient("mongodb-atlas");
-        mongoDatabase = mongoClient.getDatabase("Upsilon");
-        MongoCollection<Document> mongoCollection = mongoDatabase.getCollection("UserData");
-        for (String s : interests) {
-            Log.d(TAG, "onClick: interests: " + s);
-        }
-        Document queryFilter = new Document("userid", user.getId());
-
-        RealmResultTask<MongoCursor<Document>> findTask = mongoCollection.find(queryFilter).iterator();
-
-        findTask.getAsync(task -> {
-            if (task.isSuccess()) {
-                MongoCursor<Document> results = task.get();
-                if (!results.hasNext()) {
-                    mongoCollection.insertOne(
-                            new Document("userid", user.getId()).append("myCourses", myCourses).append("profilePicCounter", 0).append("favoriteColor", "pink").append("interests", interests))
-                            .getAsync(result -> {
-                                if (result.isSuccess()) {
-                                    Log.v("EXAMPLE", "Inserted custom user data document. _id of inserted document: "
-                                            + result.get().getInsertedId());
-                                } else {
-                                    Log.e("EXAMPLE", "Unable to insert custom user data. Error: " + result.getError());
-                                }
-                            });
-                } else {
-                    Document userdata = results.next();
-                    userdata.append("interests", interests);
-                    userdata.append("profilePicCounter", 0);
-                    userdata.append("myCourses", myCourses);
-
-                    mongoCollection.updateOne(
-                            new Document("userid", user.getId()), (userdata))
-                            .getAsync(result -> {
-                                if (result.isSuccess()) {
-                                    Log.v("EXAMPLE", "Inserted custom user data document. _id of inserted document: "
-                                            + result.get().getModifiedCount());
-                                } else {
-                                    Log.e("EXAMPLE", "Unable to insert custom user data. Error: " + result.getError());
-                                }
-                            });
-                }
-                while (results.hasNext()) {
-                    //Log.v("EXAMPLE", results.next().toString());
-                    Document currentDoc = results.next();
-                    Log.v("User", currentDoc.getString("userid"));
-                }
-            } else {
-                Log.v("User", "Failed to complete search");
-            }
-        });
+//        app = new App(new AppConfiguration.Builder(appID)
+//                .build());
+//        User user = app.currentUser();
+//        mongoClient = user.getMongoClient("mongodb-atlas");
+//        mongoDatabase = mongoClient.getDatabase("Upsilon");
+//        MongoCollection<Document> mongoCollection = mongoDatabase.getCollection("UserData");
+//        for (String s : interests) {
+//            Log.d(TAG, "onClick: interests: " + s);
+//        }
+//        Document queryFilter = new Document("userid", user.getId());
+//
+//        RealmResultTask<MongoCursor<Document>> findTask = mongoCollection.find(queryFilter).iterator();
+//
+//        findTask.getAsync(task -> {
+//            if (task.isSuccess()) {
+//                MongoCursor<Document> results = task.get();
+//                if (!results.hasNext()) {
+//                    mongoCollection.insertOne(
+//                            new Document("userid", user.getId()).append("myCourses", myCourses).append("profilePicCounter", 0).append("favoriteColor", "pink").append("interests", interests))
+//                            .getAsync(result -> {
+//                                if (result.isSuccess()) {
+//                                    Log.v("EXAMPLE", "Inserted custom user data document. _id of inserted document: "
+//                                            + result.get().getInsertedId());
+//                                } else {
+//                                    Log.e("EXAMPLE", "Unable to insert custom user data. Error: " + result.getError());
+//                                }
+//                            });
+//                } else {
+//                    Document userdata = results.next();
+//                    userdata.append("interests", interests);
+//                    userdata.append("profilePicCounter", 0);
+//                    userdata.append("myCourses", myCourses);
+//
+//                    mongoCollection.updateOne(
+//                            new Document("userid", user.getId()), (userdata))
+//                            .getAsync(result -> {
+//                                if (result.isSuccess()) {
+//                                    Log.v("EXAMPLE", "Inserted custom user data document. _id of inserted document: "
+//                                            + result.get().getModifiedCount());
+//                                } else {
+//                                    Log.e("EXAMPLE", "Unable to insert custom user data. Error: " + result.getError());
+//                                }
+//                            });
+//                }
+//                while (results.hasNext()) {
+//                    //Log.v("EXAMPLE", results.next().toString());
+//                    Document currentDoc = results.next();
+//                    Log.v("User", currentDoc.getString("userid"));
+//                }
+//            } else {
+//                Log.v("User", "Failed to complete search");
+//            }
+//        });
     }
 }
