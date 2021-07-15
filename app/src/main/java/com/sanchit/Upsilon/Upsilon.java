@@ -37,6 +37,7 @@ import io.realm.Realm;
 public class Upsilon extends Application {
 
     String API = "http://192.168.0.107:3000";
+//    String API = "https://upsilonbackend.herokuapp.com";
     String Token = null;
     private RequestQueue queue;
     ArrayList<String> interests = new ArrayList<>();
@@ -84,7 +85,7 @@ public class Upsilon extends Application {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        Log.d("FetchUserLocation", response.toString());
+                        Log.d("FetchUser", response.toString());
                         try {
                             user = new User();
                             Gson gson= new Gson();

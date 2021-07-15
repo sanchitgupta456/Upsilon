@@ -113,6 +113,8 @@ public class AddCourseActivity extends AppCompatActivity implements AdapterView.
     private static final int RESULT_LOAD_IMAGE = 1;
     private static final int WRITE_PERMISSION = 0x01;
     private static final int SECOND_ACTIVITY_REQUEST_CODE = 0;
+    private final String defaultUrl = "https://res.cloudinary.com/upsilon175/image/upload/v1626337087/lightlogo2_g4olr1.png";
+
 
     private ProgressBar progressBar;
     View bar;
@@ -419,7 +421,55 @@ public class AddCourseActivity extends AppCompatActivity implements AdapterView.
 
                                             @Override
                                             public void onError(String requestId, ErrorInfo error) {
+                                                try {
+                                                    Gson gson = new Gson();
+                                                    JSONObject jsonObject= new JSONObject();
+                                                    jsonObject.put("courseCategories", JSONArray.toJSONString(categories_chosen));
+                                                    jsonObject.put("courseDescription",courseDescription);
+                                                    jsonObject.put("courseMode",mode);
+                                                    jsonObject.put("courseName",courseName);
+                                                    jsonObject.put("coursePreReq",null);
+                                                    jsonObject.put("numberOfBatches",1);
+                                                    jsonObject.put("courseDuration",courseDuration);
+                                                    jsonObject.put("courseFees",fees);
+                                                    jsonObject.put("courseImage",defaultUrl);
+                                                    jsonObject.put("courseLocation",gson.toJson(courseLocation));
 
+                                                    JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, API + "/createCourse", jsonObject,
+                                                            new Response.Listener<JSONObject>() {
+                                                                @Override
+                                                                public void onResponse(JSONObject response) {
+                                                                    try {
+                                                                        Log.d("Created Course", String.valueOf(response.get("_id")));
+                                                                        Intent intent = new Intent(AddCourseActivity.this, AddCourseActivityContinued.class);
+                                                                        intent.putExtra("InsertedDocument", String.valueOf(response.get("_id")));
+                                                                        intent.putExtra("fees", fees);
+                                                                        startActivity(intent);
+                                                                    } catch (JSONException e) {
+                                                                        e.printStackTrace();
+                                                                    }
+
+                                                                }
+                                                            },
+                                                            new Response.ErrorListener() {
+                                                                @SuppressLint("LongLogTag")
+                                                                @Override
+                                                                public void onErrorResponse(VolleyError error) {
+                                                                    Log.d("ErrorCreatingCourse", error.toString());
+                                                                }
+                                                            }
+                                                    ) {
+                                                        @Override
+                                                        public Map<String, String> getHeaders() {
+                                                            Map<String, String> params = new HashMap<String, String>();
+                                                            params.put("token", ((Upsilon) getApplication()).getToken());
+                                                            return params;
+                                                        }
+                                                    };
+                                                    queue.add(jsonRequest);
+                                                } catch (JSONException e) {
+                                                    e.printStackTrace();
+                                                }
                                             }
 
                                             @Override
@@ -430,7 +480,56 @@ public class AddCourseActivity extends AppCompatActivity implements AdapterView.
                                         .dispatch();
                             } catch (Exception e) {
                                 e.printStackTrace();
-                            }
+                        try {
+                            Gson gson = new Gson();
+                            JSONObject jsonObject= new JSONObject();
+                            jsonObject.put("courseCategories", JSONArray.toJSONString(categories_chosen));
+                            jsonObject.put("courseDescription",courseDescription);
+                            jsonObject.put("courseMode",mode);
+                            jsonObject.put("courseName",courseName);
+                            jsonObject.put("coursePreReq",null);
+                            jsonObject.put("numberOfBatches",1);
+                            jsonObject.put("courseDuration",courseDuration);
+                            jsonObject.put("courseFees",fees);
+                            jsonObject.put("courseImage",defaultUrl);
+                            jsonObject.put("courseLocation",gson.toJson(courseLocation));
+
+                            JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, API + "/createCourse", jsonObject,
+                                    new Response.Listener<JSONObject>() {
+                                        @Override
+                                        public void onResponse(JSONObject response) {
+                                            try {
+                                                Log.d("Created Course", String.valueOf(response.get("_id")));
+                                                Intent intent = new Intent(AddCourseActivity.this, AddCourseActivityContinued.class);
+                                                intent.putExtra("InsertedDocument", String.valueOf(response.get("_id")));
+                                                intent.putExtra("fees", fees);
+                                                startActivity(intent);
+                                            } catch (JSONException e) {
+                                                e.printStackTrace();
+                                            }
+
+                                        }
+                                    },
+                                    new Response.ErrorListener() {
+                                        @SuppressLint("LongLogTag")
+                                        @Override
+                                        public void onErrorResponse(VolleyError error) {
+                                            Log.d("ErrorCreatingCourse", error.toString());
+                                        }
+                                    }
+                            ) {
+                                @Override
+                                public Map<String, String> getHeaders() {
+                                    Map<String, String> params = new HashMap<String, String>();
+                                    params.put("token", ((Upsilon) getApplication()).getToken());
+                                    return params;
+                                }
+                            };
+                            queue.add(jsonRequest);
+                        } catch (JSONException jsonException) {
+                            jsonException.printStackTrace();
+                        }
+                    }
 
                 /*Intent intent = new Intent(AddCourseActivity.this,AddCourseActivityContinued.class);
                 intent.putExtra("courseDetails",courseDetails.toJson().toString());

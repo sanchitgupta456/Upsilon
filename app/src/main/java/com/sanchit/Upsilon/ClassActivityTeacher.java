@@ -131,10 +131,10 @@ public class ClassActivityTeacher extends AppCompatActivity implements View.OnCl
             return;
         }
         Objects.requireNonNull(getSupportActionBar()).setTitle(scheduledClass.getClassName());
-        String dateString = scheduledClass.getMonth() + " " + scheduledClass.getDay();
+        String dateString = scheduledClass.getMonth() + " " + scheduledClass.getDate();
         date.setText(dateString);
         start_time.setText(scheduledClass.getTime());
-        end_time.setText(scheduledClass.getEndTime());
+//        end_time.setText(scheduledClass.getEndTime());
 
         addVideo.setOnClickListener(new View.OnClickListener() {
             @Override

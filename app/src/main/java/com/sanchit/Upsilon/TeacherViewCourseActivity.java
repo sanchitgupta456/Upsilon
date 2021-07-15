@@ -34,14 +34,17 @@ import androidx.fragment.app.Fragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.sanchit.Upsilon.classData.ScheduledClass;
 import com.sanchit.Upsilon.courseData.Course;
 import com.sanchit.Upsilon.courseData.CourseFinal;
+import com.sanchit.Upsilon.courseData.ScheduledClasses;
 import com.sanchit.Upsilon.ui.login.LoginActivity;
 import com.squareup.picasso.Picasso;
 
 import org.bson.Document;
 
 import java.sql.Time;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -215,5 +218,22 @@ public class TeacherViewCourseActivity extends AppCompatActivity implements Bott
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        super.onActivityResult(requestCode, resultCode, data);
+        // check if the request code is same as what is passed  here it is 2
+        if(requestCode==2)
+        {
+            course = (CourseFinal) data.getSerializableExtra("course");
+            //do the things u wanted
+        }
+    }
+
+    public void setClasses(ArrayList<ScheduledClass> classes)
+    {
+        course.setScheduledClasses(classes);
     }
 }

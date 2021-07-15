@@ -1219,7 +1219,13 @@ since the dispatchTouchEvent might dispatch your touch event to this function ag
     @Override
     protected void onResume() {
         updateMenu();
+        getCourseData();
         super.onResume();
+    }
+
+    @Override
+    public void onBackPressed() {
+        moveTaskToBack(true);
     }
 
 //    @Override

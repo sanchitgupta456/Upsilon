@@ -4,27 +4,20 @@ import java.io.Serializable;
 
 public class ScheduledClass implements Serializable {
     String className;
-    String day;
+    long timestamp;
+    String date;
     String month;
     String time;
-    String endTime;
+
+    public ScheduledClass(String className, long timestamp, String date, String month, String time) {
+        this.className = className;
+        this.date = date;
+        this.month = month;
+        this.timestamp = timestamp;
+        this.time = time;
+    }
 
     public ScheduledClass() {
-    }
-
-    public String getEndTime() {
-        return endTime;
-    }
-
-    public void setEndTime(String endTime) {
-        this.endTime = endTime;
-    }
-
-    public ScheduledClass(String className, String day, String month, String time) {
-        this.className = className;
-        this.day = day;
-        this.month = month;
-        this.time = time;
     }
 
     public String getClassName() {
@@ -35,12 +28,12 @@ public class ScheduledClass implements Serializable {
         this.className = className;
     }
 
-    public String getDay() {
-        return day;
+    public String getDate() {
+        return date;
     }
 
-    public void setDay(String day) {
-        this.day = day;
+    public void setDate(String date) {
+        this.date = date;
     }
 
     public String getMonth() {
@@ -49,6 +42,14 @@ public class ScheduledClass implements Serializable {
 
     public void setMonth(String month) {
         this.month = month;
+    }
+
+    public long getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(long timestamp) {
+        this.timestamp = timestamp;
     }
 
     public String getTime() {

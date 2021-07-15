@@ -1,6 +1,7 @@
 
 package com.sanchit.Upsilon;
 
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Build;
@@ -26,6 +27,12 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -33,21 +40,25 @@ import com.sanchit.Upsilon.classData.ScheduleAdapter;
 import com.sanchit.Upsilon.classData.ScheduledClass;
 import com.sanchit.Upsilon.courseData.Course;
 import com.sanchit.Upsilon.courseData.CourseFinal;
+import com.sanchit.Upsilon.userData.User;
 
 
 import org.bson.Document;
 import org.bson.types.BasicBSONList;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Objects;
 
 import io.realm.mongodb.App;
 import io.realm.mongodb.AppConfiguration;
-import io.realm.mongodb.User;
 import io.realm.mongodb.mongo.MongoClient;
 import io.realm.mongodb.mongo.MongoCollection;
 import io.realm.mongodb.mongo.MongoDatabase;
@@ -70,6 +81,9 @@ public class TeacherViewCourseActivityScheduling extends Fragment implements Sch
     private Gson gson;
     private GsonBuilder gsonBuilder;
     private ScheduleAdapter adapter;
+    private RequestQueue queue;
+    private String API ;
+
 
     @Nullable
     @Override
@@ -81,10 +95,11 @@ public class TeacherViewCourseActivityScheduling extends Fragment implements Sch
         dialogView = View.inflate(getActivity(), R.layout.date_time_picker, null);
         TimePicker tp = dialogView.findViewById(R.id.time_picker);
         tp.setIs24HourView(true);
+        queue = Volley.newRequestQueue(getApplicationContext());
+        API = ((Upsilon)getActivity().getApplication()).getAPI();
 
         //alertDialog = new AlertDialog.Builder(Objects.requireNonNull(getApplicationContext())).create();
         alertDialog = new AlertDialog.Builder(getActivity()).create();
-
         course = (CourseFinal) getArguments().get("Course");
         FloatingActionButton btnAdd = (FloatingActionButton) view.findViewById(R.id.btnAddClass);
 //        app = new App(new AppConfiguration.Builder(appID)
@@ -117,6 +132,73 @@ public class TeacherViewCourseActivityScheduling extends Fragment implements Sch
                     editText.requestFocus();
                 }
                 else {
+                    Calendar calendar = new GregorianCalendar(datePicker.getYear(),
+                            datePicker.getMonth(),
+                            datePicker.getDayOfMonth(),
+                            timePicker.getHour(),
+                            timePicker.getMinute());
+                    long time = calendar.getTimeInMillis();
+                    Log.v("time", String.valueOf(time));
+                    if(time < System.currentTimeMillis())
+                    {
+                        Animation shake = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.shake);
+                        editText.startAnimation(shake);
+                        editText.setError("Cannot schedule a class in past");
+                        editText.requestFocus();
+                    }
+                    else
+                    {
+                        String[] monthNames = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
+                        Calendar cal = Calendar.getInstance(Locale.ENGLISH);
+                        cal.setTimeInMillis(time);
+                        String timef = DateFormat.format("hh:mm a", cal).toString();
+                        try {
+                            JSONObject jsonObject = new JSONObject();
+                            jsonObject.put("className",ClassName);
+                            jsonObject.put("timestamp",time);
+                            jsonObject.put("date",String.valueOf(datePicker.getDayOfMonth()));
+                            jsonObject.put("month",String.valueOf(monthNames[datePicker.getMonth()]));
+                            jsonObject.put("time",timef);
+                            jsonObject.put("courseId",course.get_id());
+                            JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, API+"/scheduleClass",jsonObject,
+                                    new Response.Listener<JSONObject>() {
+                                        @Override
+                                        public void onResponse(JSONObject response) {
+                                            Log.d("FetchingisTeacher", response.toString());
+//                                            ((Upsilon)getActivity().getApplication()).fetchProfile();
+                                            classes.add(new ScheduledClass(ClassName,time,String.valueOf(datePicker.getDayOfMonth()),String.valueOf(monthNames[datePicker.getMonth()]) ,timef));
+                                            adapter.notifyDataSetChanged();
+                                            alertDialog.dismiss();
+                                            ((TeacherViewCourseActivity)getActivity()).setClasses(classes);
+
+//                                            Intent intent=new Intent();
+//                                            intent.putExtra("course",course);
+//                                            setResult(2,intent);
+//                                            finish();//finishing activity
+                                        }
+                                    },
+                                    new Response.ErrorListener() {
+                                        @SuppressLint("LongLogTag")
+                                        @Override
+                                        public void onErrorResponse(VolleyError error) {
+                                            Log.d("ErrorFetchingisTeacher", error.toString());
+                                            Toast.makeText(getApplicationContext(),"Failed to Schedule Class. Please try again later",Toast.LENGTH_LONG).show();
+                                            alertDialog.dismiss();
+                                        }
+                                    }
+                            ){
+                                @Override
+                                public Map<String, String> getHeaders() {
+                                    Map<String, String> params = new HashMap<String, String>();
+                                    params.put("token", ((Upsilon)getActivity().getApplication()).getToken());
+                                    return params;
+                                }
+                            };
+                            queue.add(jsonRequest);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
 //                    BasicBSONList scheduledClasses = course.getScheduledClasses();
 //                    if(scheduledClasses==null)
 //                    {
@@ -185,6 +267,9 @@ public class TeacherViewCourseActivityScheduling extends Fragment implements Sch
         //add a class : to be completed
     }
     public void getClasses() {
+//        course = (CourseFinal) getArguments().get("Course");
+        Log.v("classes",String.valueOf(course.getScheduledClasses()));
+        classes = course.getScheduledClasses();
         //get classes :
 //        BasicBSONList scheduledClasses = course.getScheduledClasses();
 //        if(scheduledClasses==null)
@@ -211,8 +296,6 @@ public class TeacherViewCourseActivityScheduling extends Fragment implements Sch
 //        classes.add(new ScheduledClass("Lists in Python", "10", "December", "10:00 AM"));
 //        classes.add(new ScheduledClass("Functions", "11", "December", "08:00 AM"));
 //        classes.add(new ScheduledClass("Object Oriented Programming!", "13", "December", "09:00 AM"));*/
-        course = (CourseFinal) getArguments().get("Course");
-        
 
         initRecyclerView();
         /* end test */

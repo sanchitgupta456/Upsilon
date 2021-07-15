@@ -58,7 +58,7 @@ public class CourseReviewAdapter extends RecyclerView.Adapter<CourseReviewAdapte
         } catch (Exception e) {
             e.printStackTrace();
         }
-        Log.v("Adapter",courseReviews.getReview());
+//        Log.v("Adapter",courseReviews.getReview());
         //holder.imgTvShow.setImageResource(course.getCardImgID());
         holder.ll.setOnClickListener(new View.OnClickListener() {
             @Override

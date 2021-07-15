@@ -44,9 +44,9 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.className.setText(mClasses.get(position).className);
-        holder.day.setText(mClasses.get(position).day);
+        holder.day.setText(mClasses.get(position).date);
         holder.month.setText(mClasses.get(position).month);
-        holder.time.setText(mClasses.get(position).time);
+        holder.time.setText(String.valueOf(mClasses.get(position).time));
         holder.cv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

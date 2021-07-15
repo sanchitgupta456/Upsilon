@@ -226,6 +226,11 @@ public class UserDataSetupFragment1 extends Fragment implements InterestCardAdap
                         Log.v("UserDataSetupFragment1",s);
                         list.add(new Interest(s));
                     }
+                    if(temporary.size()==0)
+                    {
+                        ((Upsilon)getActivity().getApplication()).getInterests();
+                        setupGrid();
+                    }
 //
 //        mongoClient = user.getMongoClient("mongodb-atlas");
 //        mongoDatabase = mongoClient.getDatabase("Upsilon");

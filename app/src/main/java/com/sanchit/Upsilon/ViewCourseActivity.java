@@ -4,6 +4,7 @@ package com.sanchit.Upsilon;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -168,32 +169,12 @@ public class ViewCourseActivity extends AppCompatActivity {
                         @Override
                         public void onResponse(JSONObject response) {
                             Log.d("FetchTutorNameLoc", response.toString());
-                            if(course.getCourseMode().equals("Offline"))
-                            {
-                                try {
-//                                    holder.textTutorTvShow.setText(response.getString("tutorName"));
-                                    if(response.get("courseDistance").equals(null))
-                                    {
-//                                        holder.textDistanceTvShow.setText(R.string.error_not_enabled_location);
-                                    }
-                                    else
-                                    {
-//                                        holder.textDistanceTvShow.setText(new StringBuilder().append("About ")
-//                                                .append(String.format("%.2f",response.get("courseDistance")))
-//                                                .append(" kilometers from your location").toString());
-                                    }
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
+                            try {
+                                CourseTutorName.setText(response.getString("tutorName"));
+                            } catch (JSONException e) {
+                                e.printStackTrace();
                             }
-                            else
-                            {
-                                try {
-                                    CourseTutorName.setText(response.getString("tutorName"));
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-                            }
+
                         }
                     },
                     new Response.ErrorListener() {
@@ -277,6 +258,17 @@ public class ViewCourseActivity extends AppCompatActivity {
         {
             CourseLocation.setVisibility(View.INVISIBLE);
         }
+        CourseLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String strUri = "http://maps.google.com/maps?q=loc:" + course.getCourseLocation().getLatitude() + "," + course.getCourseLocation().getLongitude() + " (" + "Course Location" + ")";
+                Intent intent = new Intent(android.content.Intent.ACTION_VIEW, Uri.parse(strUri));
+
+                intent.setClassName("com.google.android.apps.maps", "com.google.android.maps.MapsActivity");
+
+                startActivity(intent);
+            }
+        });
         CourseCost.setText("Rs. " +String.valueOf(course.getCourseFees()));
         CourseDuration.setText(course.getCourseDuration() + " Class Hours");
         Picasso.with(getApplicationContext()).load(course.getCourseImage()).fit().centerInside().into(CourseImage);
