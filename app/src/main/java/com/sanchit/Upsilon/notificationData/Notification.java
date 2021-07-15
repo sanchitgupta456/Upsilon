@@ -1,6 +1,8 @@
 package com.sanchit.Upsilon.notificationData;
 
-public class Notification {
+import java.io.Serializable;
+
+public class Notification extends Object implements Serializable {
     private String time, date, announcement;
 
     public Notification(String time, String date, String announcement) {

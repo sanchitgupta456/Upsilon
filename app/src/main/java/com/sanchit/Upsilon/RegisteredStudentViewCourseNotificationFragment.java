@@ -36,7 +36,6 @@ public class RegisteredStudentViewCourseNotificationFragment extends Fragment {
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(), RecyclerView.VERTICAL, true));
         adapter.notifyDataSetChanged();
-
         return view;
     }
 
@@ -44,19 +43,19 @@ public class RegisteredStudentViewCourseNotificationFragment extends Fragment {
         //TODO: get the notifications
 
         /* test code start */
-        notifications.add(new Notification("14-12-2021", "07 00 AM", "Greetings! We will have pur first class today. Best."));
-        notifications.add(new Notification("14-12-2021", "07 00 AM", "Greetings! We will have pur first class today. Best."));
-        notifications.add(new Notification("14-12-2021", "07 00 AM", "Greetings! We will have pur first class today. Best."));
-        notifications.add(new Notification("14-12-2021", "07 00 AM", "Greetings! We will have pur first class today. Best."));
-        notifications.add(new Notification("14-12-2021", "07 00 AM", "Greetings! We will have pur first class today. This is a long message"
-                +"This is a really long message" +
-                "Sure it is a long message" +
-                "Of course it is a long message" +
-                "Now this is getting longer and longer" +
-                "Yep, too long" +
-                "\n" +
-                "\tIdent your message to improve its look" +
-                "\n\nBest,\nUpsilon"));
+//        notifications.add(new Notification("14-12-2021", "07 00 AM", "Greetings! We will have pur first class today. Best."));
+//        notifications.add(new Notification("14-12-2021", "07 00 AM", "Greetings! We will have pur first class today. Best."));
+//        notifications.add(new Notification("14-12-2021", "07 00 AM", "Greetings! We will have pur first class today. Best."));
+//        notifications.add(new Notification("14-12-2021", "07 00 AM", "Greetings! We will have pur first class today. Best."));
+//        notifications.add(new Notification("14-12-2021", "07 00 AM", "Greetings! We will have pur first class today. This is a long message"
+//                +"This is a really long message" +
+//                "Sure it is a long message" +
+//                "Of course it is a long message" +
+//                "Now this is getting longer and longer" +
+//                "Yep, too long" +
+//                "\n" +
+//                "\tIdent your message to improve its look" +
+//                "\n\nBest,\nUpsilon"));
         /* test code ends */
     }
 }

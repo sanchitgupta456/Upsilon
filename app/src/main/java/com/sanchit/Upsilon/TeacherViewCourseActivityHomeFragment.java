@@ -20,6 +20,7 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -28,6 +29,12 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.sanchit.Upsilon.courseData.Course;
@@ -35,11 +42,16 @@ import com.sanchit.Upsilon.courseData.CourseFinal;
 import com.squareup.picasso.Picasso;
 
 import org.bson.Document;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Objects;
 
 import io.realm.mongodb.App;
@@ -50,6 +62,7 @@ import io.realm.mongodb.mongo.MongoCollection;
 import io.realm.mongodb.mongo.MongoDatabase;
 import io.realm.mongodb.mongo.options.UpdateOptions;
 
+import static android.content.ContentValues.TAG;
 import static io.realm.Realm.getApplicationContext;
 
 public class TeacherViewCourseActivityHomeFragment extends Fragment {
@@ -69,11 +82,15 @@ public class TeacherViewCourseActivityHomeFragment extends Fragment {
     MongoDatabase mongoDatabase;
     private Gson gson;
     private GsonBuilder gsonBuilder;
+    private RequestQueue queue;
+    private String API ;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.teachers_viewof_course_home,null);
         course = (CourseFinal) getArguments().get("Course");
+        queue = Volley.newRequestQueue(getApplicationContext());
+        API = ((Upsilon)getActivity().getApplication()).getAPI();
         /*
         dialogView = View.inflate(getActivity(), R.layout.date_time_picker, null);
         TimePicker tp = dialogView.findViewById(R.id.time_picker);
@@ -211,13 +228,58 @@ public class TeacherViewCourseActivityHomeFragment extends Fragment {
         dpDialog.show();
     }
     public void getStudents() {
-        students.add("Ram");
-        students.add("Ram");
-        students.add("Ram");
-        students.add("Ram");
-        students.add("Ram");
-        ArrayAdapter adapter = new ArrayAdapter<String>(getApplicationContext(),R.layout.course_student, students);
-        studentsList.setAdapter(adapter);
+//        students.add("Ram");
+//        students.add("Ram");
+//        students.add("Ram");
+//        students.add("Ram");
+//        students.add("Ram");
+        try {
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("courseId",course.get_id());
+            JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, API+"/getStudentsList",jsonObject,
+                    new Response.Listener<org.json.JSONObject>() {
+                        @Override
+                        public void onResponse(org.json.JSONObject response) {
+                            Log.d("Fetched Student List", response.toString());
+                            try {
+                                JSONArray jsonArray = response.getJSONArray("registeredStudentList");
+                                for(int i=0;i<jsonArray.length();i++)
+                                {
+                                    Log.v("student",String.valueOf(jsonArray.get(i)));
+                                    JSONObject jsonObject1 = (JSONObject) jsonArray.get(i);
+                                    Log.v("studentName",String.valueOf(jsonObject1.get("name")));
+                                    students.add(String.valueOf(jsonObject1.get("name")));
+                                }
+                                ArrayAdapter adapter = new ArrayAdapter<String>(getApplicationContext(),R.layout.course_student, students);
+                                studentsList.setAdapter(adapter);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+//                            Toast.makeText(getApplicationContext(),"Course Updated Successfully", Toast.LENGTH_LONG).show();
+//                                initRecyclerView(recyclerView, list);
+
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Log.d("Error response", error.toString());
+                            Log.v(TAG, "Fetch Student List FAILED!");
+                            Log.e(TAG, error.toString());
+                        }
+                    }
+            ){
+                @Override
+                public Map<String, String> getHeaders() {
+                    Map<String, String> params = new HashMap<String, String>();
+                    params.put("token", ((Upsilon)getActivity().getApplication()).getToken());
+                    return params;
+                }
+            };
+            queue.add(jsonRequest);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 }
 

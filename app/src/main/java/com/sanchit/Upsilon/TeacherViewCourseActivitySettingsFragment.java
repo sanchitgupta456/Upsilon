@@ -1,5 +1,7 @@
 package com.sanchit.Upsilon;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -88,6 +90,7 @@ public class TeacherViewCourseActivitySettingsFragment extends Fragment {
     private GsonBuilder gsonBuilder;
     private RequestQueue queue;
     private String API ;
+    private Button buttonLoc;
 
 
     @Nullable
@@ -107,6 +110,7 @@ public class TeacherViewCourseActivitySettingsFragment extends Fragment {
 //        MongoCollection<Document> mongoCollection  = mongoDatabase.getCollection("CourseData");
 
         courseImage = (ImageView) view.findViewById(R.id.imgCourseImage);
+        buttonLoc = (Button) view.findViewById(R.id.btn_loc);
         //textRatings = (TextView) view.findViewById(R.id.teacher_view_course_rating);
         //textEnrolled = (TextView) view.findViewById(R.id.teacher_view_course_enrolled);
         //textStartDate = (TextView) view.findViewById(R.id.teacher_view_course_start_date);
@@ -296,6 +300,24 @@ public class TeacherViewCourseActivitySettingsFragment extends Fragment {
 //                        Log.v("CourseUpdate",result.getError().toString());
 //                    }
 //                });
+            }
+        });
+
+        buttonLoc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(course.getCourseLocation()!=null && course.getCourseLocation().getLongitude()!=null)
+                {
+                    String strUri = "http://maps.google.com/maps?q=loc:" + course.getCourseLocation().getLatitude() + "," + course.getCourseLocation().getLongitude() + " (" + "Course Location" + ")";
+                    Intent intent = new Intent(android.content.Intent.ACTION_VIEW, Uri.parse(strUri));
+                    intent.setClassName("com.google.android.apps.maps", "com.google.android.maps.MapsActivity");
+                    startActivity(intent);
+                }
+                else
+                {
+                    Toast.makeText(getApplicationContext(),"Please Set the course Location Correctly",Toast.LENGTH_LONG).show();
+                }
+
             }
         });
 

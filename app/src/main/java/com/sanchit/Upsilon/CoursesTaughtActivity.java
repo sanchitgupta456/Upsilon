@@ -261,6 +261,12 @@ public class CoursesTaughtActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    protected void onResume() {
+        getCourseData();
+        super.onResume();
+    }
+
     public void getTeacherStatData() {
 
         JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.GET, API+"/stastic",new JSONObject(),

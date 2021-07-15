@@ -1,6 +1,7 @@
 package com.sanchit.Upsilon.courseData;
 
 import com.sanchit.Upsilon.classData.ScheduledClass;
+import com.sanchit.Upsilon.notificationData.Notification;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -30,6 +31,43 @@ public class CourseFinal extends Object implements Serializable {
     private ArrayList<String> IntroductoryContentDocuments;
     private String courseImage;
     private ArrayList<Lecture> lectures;
+    private ArrayList<Notification> notifications;
+
+    public ArrayList<Notification> getNotifications() {
+        return notifications;
+    }
+
+    public void setNotifications(ArrayList<Notification> notifications) {
+        this.notifications = notifications;
+    }
+
+    public CourseFinal(ArrayList<String> courseCategories, String coursePreReq, ArrayList<CourseReview> courseReviews, boolean registrationsOpen, ArrayList<ScheduledClass> scheduledClasses, ArrayList<Test> test, ArrayList<Assignment> assignments, String _id, String courseDescription, int courseDuration, int courseFees, CourseLocation courseLocation, String courseMode, Double courseRating, int numberOfBatches, int numberOfReviews, int numberOfStudentsEnrolled, String tutorId, String courseName, ArrayList<String> introductoryContentImages, ArrayList<String> introductoryContentVideos, ArrayList<String> introductoryContentDocuments, String courseImage, ArrayList<Lecture> lectures, ArrayList<Notification> notifications) {
+        this.courseCategories = courseCategories;
+        this.coursePreReq = coursePreReq;
+        this.courseReviews = courseReviews;
+        this.registrationsOpen = registrationsOpen;
+        this.scheduledClasses = scheduledClasses;
+        this.test = test;
+        this.assignments = assignments;
+        this._id = _id;
+        this.courseDescription = courseDescription;
+        this.courseDuration = courseDuration;
+        this.courseFees = courseFees;
+        this.courseLocation = courseLocation;
+        this.courseMode = courseMode;
+        this.courseRating = courseRating;
+        this.numberOfBatches = numberOfBatches;
+        this.numberOfReviews = numberOfReviews;
+        this.numberOfStudentsEnrolled = numberOfStudentsEnrolled;
+        this.tutorId = tutorId;
+        this.courseName = courseName;
+        IntroductoryContentImages = introductoryContentImages;
+        IntroductoryContentVideos = introductoryContentVideos;
+        IntroductoryContentDocuments = introductoryContentDocuments;
+        this.courseImage = courseImage;
+        this.lectures = lectures;
+        this.notifications = notifications;
+    }
 
     public CourseFinal() {
     }
