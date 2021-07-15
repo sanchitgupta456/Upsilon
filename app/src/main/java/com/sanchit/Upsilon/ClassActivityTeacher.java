@@ -15,6 +15,7 @@ import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.text.InputType;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.MenuItem;
@@ -37,6 +38,7 @@ import com.sanchit.Upsilon.classData.ScheduledClass;
 import com.sanchit.Upsilon.courseData.Course;
 import com.sanchit.Upsilon.courseData.IntroductoryContentAdapter;
 import com.sanchit.Upsilon.courseData.VideoResourceAdapter;
+import com.sanchit.Upsilon.pdfUpload.pdfPlayground;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -58,7 +60,7 @@ public class ClassActivityTeacher extends AppCompatActivity implements View.OnCl
 //    private Button mark, markTrue;
     private RecyclerView recyclerView;
 
-    private FloatingActionButton addVideo;
+    private FloatingActionButton addVideo, addDoc, addImage;
     private Button updateChange;
 
     View dialogView;
@@ -87,7 +89,9 @@ public class ClassActivityTeacher extends AppCompatActivity implements View.OnCl
         endTimeLayout = (TextInputLayout) findViewById(R.id.ll3);
         start_time = (TextInputEditText) findViewById(R.id.etStartTime);
         end_time = (TextInputEditText) findViewById(R.id.etEndTime);
-        addVideo = (FloatingActionButton) findViewById(R.id.btnAdd);
+        addVideo = (FloatingActionButton) findViewById(R.id.btnAddVideo);
+        addDoc = (FloatingActionButton) findViewById(R.id.btnAddDoc);
+        addImage = (FloatingActionButton) findViewById(R.id.btnAddImage);
         updateChange = (Button) findViewById(R.id.updateChange);
         recyclerView = (RecyclerView) findViewById(R.id.video_resources);
 
@@ -105,22 +109,58 @@ public class ClassActivityTeacher extends AppCompatActivity implements View.OnCl
 //                datePickerDialog.show();
 //            }
 //        });
-        dateLayout.setStartIconOnClickListener(new View.OnClickListener() {
+        View.OnClickListener dateListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 datePickerDialog.show();
             }
-        });
-        startTimeLayout.setStartIconOnClickListener(new View.OnClickListener() {
+        };
+        View.OnClickListener startTimeListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startTimePickerDialog.show();
             }
-        });
-        endTimeLayout.setStartIconOnClickListener(new View.OnClickListener() {
+        };
+        View.OnClickListener endTimeListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 endTimePickerDialog.show();
+            }
+        };
+        dateLayout.setStartIconOnClickListener(dateListener);
+        dateLayout.setOnClickListener(dateListener);
+        date.setOnClickListener(dateListener);
+        date.setInputType(InputType.TYPE_NULL);
+        dateLayout.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(hasFocus) {
+                    datePickerDialog.show();
+                }
+            }
+        });
+        startTimeLayout.setStartIconOnClickListener(startTimeListener);
+        startTimeLayout.setOnClickListener(startTimeListener);
+        start_time.setOnClickListener(startTimeListener);
+        start_time.setInputType(InputType.TYPE_NULL);
+        startTimeLayout.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(hasFocus) {
+                    startTimePickerDialog.show();
+                }
+            }
+        });
+        endTimeLayout.setStartIconOnClickListener(endTimeListener);
+        endTimeLayout.setOnClickListener(endTimeListener);
+        end_time.setInputType(InputType.TYPE_NULL);
+        end_time.setOnClickListener(endTimeListener);
+        endTimeLayout.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(hasFocus) {
+                    endTimePickerDialog.show();
+                }
             }
         });
 
@@ -140,6 +180,18 @@ public class ClassActivityTeacher extends AppCompatActivity implements View.OnCl
             @Override
             public void onClick(View v) {
                 //TODO: upload a video
+            }
+        });
+        addDoc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO: upload a document
+            }
+        });
+        addImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO: upload a image
             }
         });
 
