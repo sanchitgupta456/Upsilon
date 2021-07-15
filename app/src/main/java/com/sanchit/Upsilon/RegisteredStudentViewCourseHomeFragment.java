@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.sanchit.Upsilon.courseData.Course;
+import com.sanchit.Upsilon.courseData.CourseFinal;
 import com.sanchit.Upsilon.courseData.IntroductoryContentAdapter;
 
 import java.util.ArrayList;
@@ -23,7 +24,7 @@ import java.util.Locale;
 
 public class RegisteredStudentViewCourseHomeFragment extends Fragment {
 
-    private Course course;
+    private CourseFinal course;
     private RecyclerView introductoryRecyclerView;
     ArrayList<String> introductoryImages = new ArrayList<String>();
     ArrayList<String> introductoryVideos = new ArrayList<String>();
@@ -34,7 +35,7 @@ public class RegisteredStudentViewCourseHomeFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.activity_active_course_home,null);
-        course = (Course) getArguments().get("Course");
+        course = (CourseFinal) getArguments().get("Course");
         TextView courseDescription = (TextView) view.findViewById(R.id.textCourseDescription);
         introductoryRecyclerView = (RecyclerView) view.findViewById(R.id.listIntroductoryMaterial);
         courseDescription.setText(course.getCourseDescription());

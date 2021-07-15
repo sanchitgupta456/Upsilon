@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.sanchit.Upsilon.courseData.CourseFinal;
 import com.sanchit.Upsilon.notificationData.Notification;
 import com.sanchit.Upsilon.notificationData.NotificationAdapter;
 
@@ -22,12 +23,14 @@ public class RegisteredStudentViewCourseNotificationFragment extends Fragment {
     RecyclerView recyclerView;
     ArrayList<Notification> notifications = new ArrayList<>();
     NotificationAdapter adapter;
+    CourseFinal course;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.teachers_viewof_course_notifications,null);
         recyclerView = (RecyclerView) view.findViewById(R.id.listNotifications);
+        course = (CourseFinal) getArguments().get("Course");
 
         //TODO: get the notifications
         getNotifications();
@@ -41,6 +44,7 @@ public class RegisteredStudentViewCourseNotificationFragment extends Fragment {
 
     public void getNotifications() {
         //TODO: get the notifications
+        notifications = course.getNotifications();
 
         /* test code start */
 //        notifications.add(new Notification("14-12-2021", "07 00 AM", "Greetings! We will have pur first class today. Best."));

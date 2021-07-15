@@ -60,7 +60,7 @@ public class RegisteredStudentViewCourseScheduleFragment extends Fragment implem
         alter = (CardView) view.findViewById(R.id.alter);
         refresh = (Button) view.findViewById(R.id.btnRefresh);
         loading = (LinearLayout) view.findViewById(R.id.llProgress);
-//        getClasses();
+        getClasses();
         adapter = new ScheduleAdapter(getContext(), classes);
         adapter.setClickListener(this);
         LinearLayoutManager manager = new LinearLayoutManager(getContext());
@@ -69,17 +69,20 @@ public class RegisteredStudentViewCourseScheduleFragment extends Fragment implem
         recyclerView.setLayoutManager(manager);
         recyclerView.setAdapter(adapter);
         recyclerView.addItemDecoration(dividerItemDecoration);
+        loading.setVisibility(View.GONE);
         refresh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 loading.setVisibility(View.VISIBLE);
-                getClasses();
+                loading.setVisibility(View.GONE);
+//                getClasses();
             }
         });
         return view;
     }
 
     public void getClasses() {
+        classes = course.getScheduledClasses();
         //get classes :
 //        BasicBSONList scheduledClasses = course.getScheduledClasses();
 //        if(scheduledClasses==null)
@@ -98,7 +101,7 @@ public class RegisteredStudentViewCourseScheduleFragment extends Fragment implem
 //                e.printStackTrace();
 //            }
 //        }
-        loading.setVisibility(View.INVISIBLE);
+//        loading.setVisibility(View.INVISIBLE);
         /* this is for test */
         /* begin test */
         /*Log.d(TAG, "getClasses: getting entries");

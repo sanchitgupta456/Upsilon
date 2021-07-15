@@ -30,14 +30,14 @@ public class CourseReview extends Object implements Serializable {
         this.reviewName = reviewName;
     }
 
-    public CourseReview() {
-    }
-
-    public CourseReview(String review, Double reviewRating, String reviewAuthorId) {
-        this.review = review;
-        this.reviewRating = reviewRating;
-        this.reviewAuthorId = reviewAuthorId;
-    }
+//    public CourseReview() {
+//    }
+//
+//    public CourseReview(String review, Double reviewRating, String reviewAuthorId) {
+//        this.review = review;
+//        this.reviewRating = reviewRating;
+//        this.reviewAuthorId = reviewAuthorId;
+//    }
 
     public String getReview() {
         return review;

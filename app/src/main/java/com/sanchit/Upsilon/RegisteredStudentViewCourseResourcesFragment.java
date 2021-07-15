@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.sanchit.Upsilon.courseData.Course;
+import com.sanchit.Upsilon.courseData.CourseFinal;
 import com.sanchit.Upsilon.courseData.CourseResourcesAdapter;
 import com.sanchit.Upsilon.courseData.IntroductoryContentAdapter;
 
@@ -26,7 +27,7 @@ public class RegisteredStudentViewCourseResourcesFragment extends Fragment {
     private CourseResourcesAdapter resourcesAdapter;
     ArrayList<String> introductoryImages = new ArrayList<String>();
     ArrayList<String> introductoryVideos = new ArrayList<String>();
-    Course course;
+    CourseFinal course;
 
     @Nullable
     @Override
@@ -37,8 +38,8 @@ public class RegisteredStudentViewCourseResourcesFragment extends Fragment {
         courseResources.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false));
         courseResources.setItemAnimator(new DefaultItemAnimator());
         //resourcesAdapter = new IntroductoryContentAdapter(introductoryImages,introductoryVideos);
-        course = (Course) getArguments().get("Course");
-        Log.v("CourseResources",course.getCourseId());
+        course = (CourseFinal) getArguments().get("Course");
+        Log.v("CourseResources",course.get_id());
         introductoryImages = course.getIntroductoryContentImages();
         introductoryVideos = course.getIntroductoryContentVideos();
         //resourcesAdapter.notifyDataSetChanged();

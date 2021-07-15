@@ -56,12 +56,9 @@ public class RegisteredStudentViewCourse extends AppCompatActivity implements Bo
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_active_course_main);
-
         Intent intent = getIntent();
         course = (CourseFinal) intent.getSerializableExtra("Course");
-
         fragmentContainer = (FrameLayout) findViewById(R.id.student_registered_frame);
-
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(course.getCourseName());
         actionBar = getSupportActionBar().getCustomView();
@@ -71,14 +68,8 @@ public class RegisteredStudentViewCourse extends AppCompatActivity implements Bo
 
         loadFragment(new RegisteredStudentViewCourseScheduleFragment());
 
-
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(RegisteredStudentViewCourse.this);
-
-
-
-
-
     }
         /*
         btnBack.setOnClickListener(new View.OnClickListener() {
@@ -178,7 +169,6 @@ public class RegisteredStudentViewCourse extends AppCompatActivity implements Bo
             Log.v("RegisteredStudent","Notifications");
             Bundle bundle = new Bundle();
             bundle.putSerializable("Course",course);
-
             Fragment fragment = new RegisteredStudentViewCourseNotificationFragment();
             fragment.setArguments(bundle);
             loadFragment(fragment);

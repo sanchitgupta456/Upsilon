@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.sanchit.Upsilon.courseData.Course;
+import com.sanchit.Upsilon.courseData.CourseFinal;
 import com.sanchit.Upsilon.ui.assignment.AssignmentAdapter;
 import com.sanchit.Upsilon.ui.assignment.AssignmentAdapterCompleted;
 import com.sanchit.Upsilon.ui.assignment.AssignmentStudentData;
@@ -28,14 +29,14 @@ public class AssignmentsActivity extends AppCompatActivity {
     AssignmentAdapter.ItemClickListener listener1;
     AssignmentAdapterCompleted.ItemClickListener listener2;
 
-    Course course;
+    CourseFinal course;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_assignments);
 
-        course = (Course) getIntent().getSerializableExtra("Course");
+        course = (CourseFinal) getIntent().getSerializableExtra("Course");
 
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(course.getCourseName());

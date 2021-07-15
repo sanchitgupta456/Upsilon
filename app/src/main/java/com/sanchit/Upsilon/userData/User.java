@@ -5,10 +5,57 @@ import java.util.ArrayList;
 public class User {
     String email;
     String username;
+    ArrayList<String> interests;
     String _id;
     UserLocation userLocation;
     ArrayList<String> myCourses;
     String role;
+    String phone;
+    String pincode;
+
+    public ArrayList<String> getInterests() {
+        return interests;
+    }
+
+    public void setInterests(ArrayList<String> interests) {
+        this.interests = interests;
+    }
+
+    public String get_id() {
+        return _id;
+    }
+
+    public void set_id(String _id) {
+        this._id = _id;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getPincode() {
+        return pincode;
+    }
+
+    public void setPincode(String pincode) {
+        this.pincode = pincode;
+    }
+
+    public User(String email, String username, ArrayList<String> interests, String _id, UserLocation userLocation, ArrayList<String> myCourses, String role, String phone, String pincode) {
+        this.email = email;
+        this.username = username;
+        this.interests = interests;
+        this._id = _id;
+        this.userLocation = userLocation;
+        this.myCourses = myCourses;
+        this.role = role;
+        this.phone = phone;
+        this.pincode = pincode;
+    }
 
     public User(String email, String username, String _id, UserLocation userLocation, ArrayList<String> myCourses, String role) {
         this.email = email;
