@@ -31,6 +31,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.sanchit.Upsilon.courseData.Course;
+import com.sanchit.Upsilon.courseData.CourseFinal;
 import com.squareup.picasso.Picasso;
 
 import org.bson.Document;
@@ -56,7 +57,7 @@ public class TeacherViewCourseActivityHomeFragment extends Fragment {
     int year,month,day;
     Button ScheduleClass, UpdateLink;
     private EditText meetLink;
-    private Course course;
+    private CourseFinal course;
     View dialogView;
     AlertDialog alertDialog;
 
@@ -72,7 +73,7 @@ public class TeacherViewCourseActivityHomeFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.teachers_viewof_course_home,null);
-        course = (Course) getArguments().get("Course");
+        course = (CourseFinal) getArguments().get("Course");
         /*
         dialogView = View.inflate(getActivity(), R.layout.date_time_picker, null);
         TimePicker tp = dialogView.findViewById(R.id.time_picker);
@@ -81,13 +82,13 @@ public class TeacherViewCourseActivityHomeFragment extends Fragment {
         //alertDialog = new AlertDialog.Builder(Objects.requireNonNull(getApplicationContext())).create();
         alertDialog = new AlertDialog.Builder(getActivity()).create();
         */
-        app = new App(new AppConfiguration.Builder(appID)
-                .build());
-        User user = app.currentUser();
-
-        mongoClient = user.getMongoClient("mongodb-atlas");
-        mongoDatabase = mongoClient.getDatabase("Upsilon");
-        MongoCollection<Document> mongoCollection  = mongoDatabase.getCollection("CourseData");
+//        app = new App(new AppConfiguration.Builder(appID)
+//                .build());
+//        User user = app.currentUser();
+//
+//        mongoClient = user.getMongoClient("mongodb-atlas");
+//        mongoDatabase = mongoClient.getDatabase("Upsilon");
+//        MongoCollection<Document> mongoCollection  = mongoDatabase.getCollection("CourseData");
         /*
         ScheduleClass = (Button) view.findViewById(R.id.btnScheduleClass);
         UpdateLink = (Button) view.findViewById(R.id.btnUpdateLink); //yet to be set up

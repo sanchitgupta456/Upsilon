@@ -26,6 +26,7 @@ import com.google.gson.GsonBuilder;
 import com.sanchit.Upsilon.ForumData.MessageAdapter;
 import com.sanchit.Upsilon.ForumData.Messages;
 import com.sanchit.Upsilon.courseData.Course;
+import com.sanchit.Upsilon.courseData.CourseFinal;
 
 import org.bson.Document;
 
@@ -60,7 +61,7 @@ public class TeacherViewCourseActivityForumFragment extends Fragment {
 
     private String saveCurrentTime,saveCurrentDate;
     private String checker="",myUrl="";
-    private Course course;
+    private CourseFinal course;
 
     String appID = "upsilon-ityvn";
     App app;
@@ -95,13 +96,13 @@ public class TeacherViewCourseActivityForumFragment extends Fragment {
         userMessageList.setLayoutManager(linearLayoutManager1);
         userMessageList.setAdapter(messageAdapter);
 
-        app = new App(new AppConfiguration.Builder(appID)
-                .build());
-        user = app.currentUser();
-        mongoClient = user.getMongoClient("mongodb-atlas");
-        mongoDatabase = mongoClient.getDatabase("Upsilon");
+//        app = new App(new AppConfiguration.Builder(appID)
+//                .build());
+//        user = app.currentUser();
+//        mongoClient = user.getMongoClient("mongodb-atlas");
+//        mongoDatabase = mongoClient.getDatabase("Upsilon");
 
-        course = (Course) getArguments().get("Course");
+        course = (CourseFinal) getArguments().get("Course");
 
         sendMessageButton = (ImageButton) view.findViewById(R.id.send_message_btn1);
 
@@ -150,108 +151,108 @@ public class TeacherViewCourseActivityForumFragment extends Fragment {
             messageList1.add(messages);
             messageAdapter.notifyDataSetChanged();
 
-            mongoClient = user.getMongoClient("mongodb-atlas");
-            mongoDatabase = mongoClient.getDatabase("Upsilon");
-
-            MongoCollection<Document> mongoCollection  = mongoDatabase.getCollection("ForumData");
-            MongoCollection<Document> mongoCollection1  = mongoDatabase.getCollection("ForumData");
-
-            //Blank query to find every single course in db
-            //TODO: Modify query to look for user preferred course IDs
-            Document queryFilter  = new Document("courseId",course.getCourseId());
-
-            RealmResultTask<MongoCursor<Document>> findTask = mongoCollection.find(queryFilter).iterator();
-
-            findTask.getAsync(task -> {
-                if (task.isSuccess()) {
-                    Log.v("Example","Starting");
-                    MongoCursor<Document> results = task.get();
-                    Log.v("Example",results.toString());
-                    if(results.hasNext())
-                    {
-                        while (results.hasNext()) {
-                            Log.v("Example","Found");
-
-                            //Log.v("EXAMPLE", results.next().toString());
-                            Document currentDoc = results.next();
-                            messageList = (ArrayList) currentDoc.get("Messages");
-
-                            if(messageList==null)
-                            {
-                                messageList = new ArrayList();
-                                //Document test = new Document().append("review","This is a test review").append("reviewRating",2.75).append("reviewAuthorId",user.getId());
-                            }
-                            Document document = new Document();
-                            gsonBuilder = new GsonBuilder();
-                            gson = gsonBuilder.create();
-
-                            String object = gson.toJson(messages,Messages.class);
-                            document = Document.parse(object);
-                            messageList.add(document);
-                            currentDoc.remove("Messages");
-                            currentDoc.append("Messages",messageList);
-                            mongoCollection.updateOne(new Document("courseId",course.getCourseId()),currentDoc).getAsync(result -> {
-                                if(result.isSuccess())
-                                {
-                                    getMessages();
-                                    Log.v("Message","Message Sent");
-                                }
-                                else
-                                {
-                                    Log.v("Message","Error"+result.getError());
-                                }
-                            });
-
-                        }
-                    }
-                    else
-                    {
-                        messageList = new ArrayList();
-                        Document courseDoc = new Document();
-                        gsonBuilder = new GsonBuilder();
-                        gson = gsonBuilder.create();
-
-                        String object = gson.toJson(messages,Messages.class);
-                        Document document = Document.parse(object);
-                        messageList.add(document);
-
-                        Document document1 = new Document("courseId",course.getCourseId()).append("Messages",messageList);
-                        mongoCollection.insertOne(document1).getAsync(result -> {
-                            if(result.isSuccess())
-                            {
-                                getMessages();
-                                Log.v("Message","Message Sent");
-                            }
-                            else
-                            {
-                                Log.v("Message","Error"+result.getError());
-                            }
-                        });
-                    }
-                } else {
-                    messageList = new ArrayList();
-                    Document courseDoc = new Document();
-                    gsonBuilder = new GsonBuilder();
-                    gson = gsonBuilder.create();
-
-                    String object = gson.toJson(messages,Messages.class);
-                    Document document = Document.parse(object);
-                    messageList.add(document);
-
-                    Document document1 = new Document("courseId",course.getCourseId()).append("Messages",messageList);
-                    mongoCollection.insertOne(document1).getAsync(result -> {
-                        if(result.isSuccess())
-                        {
-                            getMessages();
-                            Log.v("Message","Message Sent");
-                        }
-                        else
-                        {
-                            Log.v("Message","Error"+result.getError());
-                        }
-                    });
-                }
-            });
+//            mongoClient = user.getMongoClient("mongodb-atlas");
+//            mongoDatabase = mongoClient.getDatabase("Upsilon");
+//
+//            MongoCollection<Document> mongoCollection  = mongoDatabase.getCollection("ForumData");
+//            MongoCollection<Document> mongoCollection1  = mongoDatabase.getCollection("ForumData");
+//
+//            //Blank query to find every single course in db
+//            //TODO: Modify query to look for user preferred course IDs
+//            Document queryFilter  = new Document("courseId",course.getCourseId());
+//
+//            RealmResultTask<MongoCursor<Document>> findTask = mongoCollection.find(queryFilter).iterator();
+//
+//            findTask.getAsync(task -> {
+//                if (task.isSuccess()) {
+//                    Log.v("Example","Starting");
+//                    MongoCursor<Document> results = task.get();
+//                    Log.v("Example",results.toString());
+//                    if(results.hasNext())
+//                    {
+//                        while (results.hasNext()) {
+//                            Log.v("Example","Found");
+//
+//                            //Log.v("EXAMPLE", results.next().toString());
+//                            Document currentDoc = results.next();
+//                            messageList = (ArrayList) currentDoc.get("Messages");
+//
+//                            if(messageList==null)
+//                            {
+//                                messageList = new ArrayList();
+//                                //Document test = new Document().append("review","This is a test review").append("reviewRating",2.75).append("reviewAuthorId",user.getId());
+//                            }
+//                            Document document = new Document();
+//                            gsonBuilder = new GsonBuilder();
+//                            gson = gsonBuilder.create();
+//
+//                            String object = gson.toJson(messages,Messages.class);
+//                            document = Document.parse(object);
+//                            messageList.add(document);
+//                            currentDoc.remove("Messages");
+//                            currentDoc.append("Messages",messageList);
+//                            mongoCollection.updateOne(new Document("courseId",course.getCourseId()),currentDoc).getAsync(result -> {
+//                                if(result.isSuccess())
+//                                {
+//                                    getMessages();
+//                                    Log.v("Message","Message Sent");
+//                                }
+//                                else
+//                                {
+//                                    Log.v("Message","Error"+result.getError());
+//                                }
+//                            });
+//
+//                        }
+//                    }
+//                    else
+//                    {
+//                        messageList = new ArrayList();
+//                        Document courseDoc = new Document();
+//                        gsonBuilder = new GsonBuilder();
+//                        gson = gsonBuilder.create();
+//
+//                        String object = gson.toJson(messages,Messages.class);
+//                        Document document = Document.parse(object);
+//                        messageList.add(document);
+//
+//                        Document document1 = new Document("courseId",course.getCourseId()).append("Messages",messageList);
+//                        mongoCollection.insertOne(document1).getAsync(result -> {
+//                            if(result.isSuccess())
+//                            {
+//                                getMessages();
+//                                Log.v("Message","Message Sent");
+//                            }
+//                            else
+//                            {
+//                                Log.v("Message","Error"+result.getError());
+//                            }
+//                        });
+//                    }
+//                } else {
+//                    messageList = new ArrayList();
+//                    Document courseDoc = new Document();
+//                    gsonBuilder = new GsonBuilder();
+//                    gson = gsonBuilder.create();
+//
+//                    String object = gson.toJson(messages,Messages.class);
+//                    Document document = Document.parse(object);
+//                    messageList.add(document);
+//
+//                    Document document1 = new Document("courseId",course.getCourseId()).append("Messages",messageList);
+//                    mongoCollection.insertOne(document1).getAsync(result -> {
+//                        if(result.isSuccess())
+//                        {
+//                            getMessages();
+//                            Log.v("Message","Message Sent");
+//                        }
+//                        else
+//                        {
+//                            Log.v("Message","Error"+result.getError());
+//                        }
+//                    });
+//                }
+//            });
         }
     }
 
@@ -262,44 +263,44 @@ public class TeacherViewCourseActivityForumFragment extends Fragment {
             messageList1.clear();
         }
 
-        mongoClient = user.getMongoClient("mongodb-atlas");
-        mongoDatabase = mongoClient.getDatabase("Upsilon");
-
-        MongoCollection<Document> mongoCollection  = mongoDatabase.getCollection("ForumData");
-
-        //Blank query to find every single course in db
-        //TODO: Modify query to look for user preferred course IDs
-        Document queryFilter  = new Document("courseId",course.getCourseId());
-
-        RealmResultTask<MongoCursor<Document>> findTask = mongoCollection.find(queryFilter).iterator();
-
-        findTask.getAsync(task -> {
-            if (task.isSuccess()) {
-                Log.v("Example","Starting");
-                MongoCursor<Document> results = task.get();
-                Log.v("Example",results.toString());
-                if(results.hasNext())
-                {
-                    while (results.hasNext()) {
-                        Log.v("Example","Found");
-                        //Log.v("EXAMPLE", results.next().toString());
-                        Document currentDoc = results.next();
-                        messageList = (ArrayList) currentDoc.get("Messages");
-
-                        //BasicBSONList messages = (BasicBSONList) currentDoc.get("Messages");
-                        for(int counter=0;counter<messageList.size();counter++)
-                        {
-                            Document message = (Document) messageList.get(counter);
-                            Messages message2 = new Messages(message.get("from").toString(),message.get("message").toString(),message.get("type").toString(),message.get("time").toString(),message.get("date").toString());
-                            messageList1.add(message2);
-                            messageAdapter.notifyDataSetChanged();
-                            Log.v("test", (String) message.get("message"));
-                        }
-                        userMessageList.scrollToPosition(messageList.size()-1);
-                    }
-                }
-            }
-        });
+//        mongoClient = user.getMongoClient("mongodb-atlas");
+//        mongoDatabase = mongoClient.getDatabase("Upsilon");
+//
+//        MongoCollection<Document> mongoCollection  = mongoDatabase.getCollection("ForumData");
+//
+//        //Blank query to find every single course in db
+//        //TODO: Modify query to look for user preferred course IDs
+//        Document queryFilter  = new Document("courseId",course.getCourseId());
+//
+//        RealmResultTask<MongoCursor<Document>> findTask = mongoCollection.find(queryFilter).iterator();
+//
+//        findTask.getAsync(task -> {
+//            if (task.isSuccess()) {
+//                Log.v("Example","Starting");
+//                MongoCursor<Document> results = task.get();
+//                Log.v("Example",results.toString());
+//                if(results.hasNext())
+//                {
+//                    while (results.hasNext()) {
+//                        Log.v("Example","Found");
+//                        //Log.v("EXAMPLE", results.next().toString());
+//                        Document currentDoc = results.next();
+//                        messageList = (ArrayList) currentDoc.get("Messages");
+//
+//                        //BasicBSONList messages = (BasicBSONList) currentDoc.get("Messages");
+//                        for(int counter=0;counter<messageList.size();counter++)
+//                        {
+//                            Document message = (Document) messageList.get(counter);
+//                            Messages message2 = new Messages(message.get("from").toString(),message.get("message").toString(),message.get("type").toString(),message.get("time").toString(),message.get("date").toString());
+//                            messageList1.add(message2);
+//                            messageAdapter.notifyDataSetChanged();
+//                            Log.v("test", (String) message.get("message"));
+//                        }
+//                        userMessageList.scrollToPosition(messageList.size()-1);
+//                    }
+//                }
+//            }
+//        });
 
 
     }

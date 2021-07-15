@@ -14,26 +14,40 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.sanchit.Upsilon.courseData.Course;
+import com.sanchit.Upsilon.courseData.CourseFinal;
 import com.squareup.picasso.Picasso;
 
 import org.bson.BsonDocument;
 import org.bson.Document;
-import org.cloudinary.json.JSONObject;
 import org.cloudinary.json.JSONString;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
+import java.util.Timer;
 
 import io.realm.mongodb.App;
 import io.realm.mongodb.AppConfiguration;
@@ -66,26 +80,31 @@ public class TeacherViewCourseActivitySettingsFragment extends Fragment {
     App app;
     String appID = "upsilon-ityvn";
 
-    private Course course;
+    private CourseFinal course;
 
     MongoClient mongoClient;
     MongoDatabase mongoDatabase;
     private Gson gson;
     private GsonBuilder gsonBuilder;
+    private RequestQueue queue;
+    private String API ;
+
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         Log.d(TAG, "onCreateView: started");
         View view = inflater.inflate(R.layout.teachers_viewof_course_settings, container, false);
-        course = (Course) getArguments().get("Course");
-        app = new App(new AppConfiguration.Builder(appID)
-                .build());
-        User user = app.currentUser();
-
-        mongoClient = user.getMongoClient("mongodb-atlas");
-        mongoDatabase = mongoClient.getDatabase("Upsilon");
-        MongoCollection<Document> mongoCollection  = mongoDatabase.getCollection("CourseData");
+        course = (CourseFinal) getArguments().get("Course");
+        queue = Volley.newRequestQueue(getApplicationContext());
+        API = ((Upsilon)getActivity().getApplication()).getAPI();
+//        app = new App(new AppConfiguration.Builder(appID)
+//                .build());
+//        User user = app.currentUser();
+//
+//        mongoClient = user.getMongoClient("mongodb-atlas");
+//        mongoDatabase = mongoClient.getDatabase("Upsilon");
+//        MongoCollection<Document> mongoCollection  = mongoDatabase.getCollection("CourseData");
 
         courseImage = (ImageView) view.findViewById(R.id.imgCourseImage);
         //textRatings = (TextView) view.findViewById(R.id.teacher_view_course_rating);
@@ -131,10 +150,10 @@ public class TeacherViewCourseActivitySettingsFragment extends Fragment {
         }
         if (course.getCourseFees()==0){
             //isCourseFree.setChecked(true);
-            etFee.setText("Rs. 0");
+            etFee.setText("0");
         } else {
             //isCourseFree.setChecked(false);
-            etFee.setText("Rs. " + course.getCourseFees());
+            etFee.setText(course.getCourseFees());
         }
 
         name = des = dur = fee = false;
@@ -226,20 +245,57 @@ public class TeacherViewCourseActivitySettingsFragment extends Fragment {
                 }
                 //TODO: Update in backend
                 course.setRegistrationsOpen(enableRegistrations.isChecked());
-                Document queryFilter = new Document().append("courseId",course.getCourseId());
-                gsonBuilder = new GsonBuilder();
-                gson = gsonBuilder.create();
-                BsonDocument coursedoc = BsonDocument.parse(gson.toJson(course));
-                mongoCollection.updateOne(queryFilter,coursedoc).getAsync(result -> {
-                    if(result.isSuccess())
-                    {
-                        Log.v("CourseUpdate","Updated Successfully");
-                    }
-                    else
-                    {
-                        Log.v("CourseUpdate",result.getError().toString());
-                    }
-                });
+                org.json.JSONObject jsonBody = new org.json.JSONObject();
+                Gson gson= new Gson();
+
+                try {
+                    jsonBody.put("courseId",course.get_id());
+                    jsonBody.put("course1",gson.toJson(course));
+                    JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, API+"/updateCourseInfo",jsonBody,
+                            new Response.Listener<org.json.JSONObject>() {
+                                @Override
+                                public void onResponse(org.json.JSONObject response) {
+                                    Log.d("Response", response.toString());
+                                    Toast.makeText(getApplicationContext(),"Course Updated Successfully", Toast.LENGTH_LONG).show();
+//                                initRecyclerView(recyclerView, list);
+
+                                }
+                            },
+                            new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+                                    Log.d("Error response", error.toString());
+                                    Log.v(TAG, "Fetch Courses FAILED!");
+                                    Log.e(TAG, error.toString());
+                                }
+                            }
+                    ){
+                        @Override
+                        public Map<String, String> getHeaders() {
+                            Map<String, String> params = new HashMap<String, String>();
+                            params.put("token", ((Upsilon)getActivity().getApplication()).getToken());
+                            return params;
+                        }
+                    };
+                    queue.add(jsonRequest);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+//                Document queryFilter = new Document().append("courseId",course.getCourseId());
+//                gsonBuilder = new GsonBuilder();
+//                gson = gsonBuilder.create();
+//                BsonDocument coursedoc = BsonDocument.parse(gson.toJson(course));
+//                mongoCollection.updateOne(queryFilter,coursedoc).getAsync(result -> {
+//                    if(result.isSuccess())
+//                    {
+//                        Log.v("CourseUpdate","Updated Successfully");
+//                    }
+//                    else
+//                    {
+//                        Log.v("CourseUpdate",result.getError().toString());
+//                    }
+//                });
             }
         });
 
