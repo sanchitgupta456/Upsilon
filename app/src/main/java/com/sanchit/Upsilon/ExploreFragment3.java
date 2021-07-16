@@ -12,7 +12,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
@@ -24,8 +28,13 @@ import com.sanchit.Upsilon.courseSearching.SearchQuery;
 import com.sanchit.Upsilon.courseSearching.rankBy;
 
 import org.bson.Document;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import io.realm.mongodb.App;
 import io.realm.mongodb.AppConfiguration;
@@ -53,6 +62,7 @@ public class ExploreFragment3 extends Fragment {
     SearchQuery searchQuery = new SearchQuery();
     private RequestQueue queue;
     private String API ;
+//    ArrayList<String> selectedTags = new ArrayList<>();
 
 
     ArrayList<CourseFinal> list = new ArrayList<>();
@@ -82,45 +92,169 @@ public class ExploreFragment3 extends Fragment {
 //        mongoClient = user.getMongoClient("mongodb-atlas");
 //        mongoDatabase = mongoClient.getDatabase("Upsilon");
 //        MongoCollection<Document> mongoCollection  = mongoDatabase.getCollection("CourseData");
-
 //        searchQuery.setRankMethod(sortCriteria);
 //        searchForCourses(query);
+        performSearch();
+
 
         return view;
-
     }
+    public void performSearch() {
+//        progressBar.setVisibility(View.VISIBLE);
+        JSONObject jsonBody = new JSONObject();
+        try {
+            jsonBody.put("index",0);
+            jsonBody.put("filter","Mode");
+            Gson gson = new Gson();
+            jsonBody.put("tags",gson.toJson(new ArrayList<>()));
+            JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, API+"/paging",jsonBody,
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            Log.d("Response", response.toString());
+                            list = new ArrayList<CourseFinal>();
+                            try {
+                                JSONArray jsonArray = (JSONArray) response.get("courses");
+                                Log.v("array",String.valueOf(jsonArray));
+                                for(int i=0;i<jsonArray.length();i++)
+                                {
+                                    JSONObject jsonObject = (JSONObject) jsonArray.get(i);
+                                    Gson gson= new Gson();
+                                    CourseFinal course = gson.fromJson(jsonObject.toString(),CourseFinal.class);
+                                    list.add(course);
+                                    Log.v("course",String.valueOf(course.getCourseReviews()));
+                                }
+                                initRecyclerView(recyclerView, list);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+//                                initRecyclerView(recyclerView, list);
+
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Log.d("Error response", error.toString());
+                            Log.v(TAG, "Fetch Courses FAILED!");
+                            Log.e(TAG, error.toString());
+                        }
+                    }
+            ){
+                @Override
+                public Map<String, String> getHeaders() {
+                    Map<String, String> params = new HashMap<String, String>();
+                    params.put("token", ((Upsilon)getActivity().getApplication()).getToken());
+                    return params;
+                }
+            };
+            queue.add(jsonRequest);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+//        llLoader.setVisibility(View.VISIBLE);
+//        mongoClient = user.getMongoClient("mongodb-atlas");
+//        mongoDatabase = mongoClient.getDatabase("Upsilon");
+//        MongoCollection<Document> mongoCollection  = mongoDatabase.getCollection("UserData");
+//        if(userdata.get("userLocation")!=null) {
+//            recyclerView.setVisibility(View.VISIBLE);
+//            alter.setVisibility(View.GONE);
+//        }
+//        else
+//        {
+//            recyclerView.setVisibility(View.GONE);
+//            alter.setVisibility(View.VISIBLE);
+//            return;
+//        }
+
+        //Blank query to find every single user in db
+//        Document queryFilter  = new Document("userid", user.getId());
+//
+//        RealmResultTask<MongoCursor<Document>> findTask = mongoCollection.find(queryFilter).iterator();
+//
+//        findTask.getAsync(task -> {
+//            if (task.isSuccess()) {
+//                MongoCursor<Document> results = task.get();
+//                int i = 0;
+//                while (results.hasNext()) {
+//                    //Log.v("EXAMPLE", results.next().toString());
+//                    Document currentDoc = results.next();
+//                    Document userLoc = (Document) currentDoc.get("userLocation");
+//                    Log.v("UserLocation", String.valueOf(currentDoc.get("userLocation")));
+//                    if(currentDoc.get("userLocation")!=null && ((Document) currentDoc.get("userLocation")).get("lattitude")!=null) {
+//                        searchQuery.searchForCourse(app, mongoDatabase, getContext(), adapter, recyclerView, 10, userLoc);
+//                        list = new ArrayList<>();
+//                        list.clear();
+////                        list = searchQuery.getSearchResultsList();
+//                        Log.d(TAG, "performSearch: list after search: size: " + list.size());
+//                        Log.v("COURSEDISTANCE", "START!");
+////                        for (int p = 0; p < list.size(); p++){
+////                            Log.v("COURSEDISTANCE", list.get(p).getCourseName());
+////                            Log.v("COURSEDISTANCE", Double.toString(searchQuery.getCourseDistance(list.get(p), userLoc)));
+////                        }
+//                    }
+//                    else
+//                    {
+//                        Snackbar.make(requireView(),"Please add Your Location in UserData to search courses near you",1).show();
+//                    }
+//                    if(!results.hasNext())
+//                    {
+//                        progressBar.setVisibility(View.GONE);
+////                        llLoader.setVisibility(View.GONE);
+//                    }
+//                }
+//            } else {
+////                llLoader.setVisibility(View.INVISIBLE);
+//                progressBar.setVisibility(View.GONE);
+//                Log.v("User","Failed to complete search");
+//            }
+//        });
+////        list = searchQuery.getSearchResultsList();
+//
+//        initRecyclerView(recyclerView,list);
+    }
+//
+//    public void initRecyclerView(RecyclerView recyclerView, ArrayList<CourseFinal> list) {
+//        Log.d(TAG, "initRecyclerView: now displaying " + recyclerView.getId());
+//        CoursesAdapter1 coursesAdapter1 = new CoursesAdapter1(list,((Upsilon)getActivity().getApplication()).getAPI() , ((Upsilon)getActivity().getApplication()).getToken() , ((Upsilon) getActivity().getApplication()).getUser());
+//        linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+//        recyclerView.setLayoutManager(linearLayoutManager);
+//        recyclerView.setAdapter(coursesAdapter1);
+//        Log.d(TAG, "initRecyclerView: display success! Displayed " + list.size() + " items");
+//    }
+
     public void searchForCourses(String query){
         this.query = query;
         searchQuery.setQuery(query);
-        mongoClient = user.getMongoClient("mongodb-atlas");
-        mongoDatabase = mongoClient.getDatabase("Upsilon");
-        MongoCollection<Document> mongoCollection  = mongoDatabase.getCollection("UserData");
-
-        //Blank query to find every single user in db
-        Document queryFilter  = new Document("userid", user.getId());
-
-        RealmResultTask<MongoCursor<Document>> findTask = mongoCollection.find(queryFilter).iterator();
-
-        findTask.getAsync(task -> {
-            if (task.isSuccess()) {
-                MongoCursor<Document> results = task.get();
-                int i = 0;
-                while (results.hasNext()) {
-                    //Log.v("EXAMPLE", results.next().toString());
-                    Document currentDoc = results.next();
-                    Document userLoc = (Document) currentDoc.get("userLocation");
-                    if(userLoc!=null) {
-                        searchQuery.searchForCourse(app, mongoDatabase, getContext(), adapter, recyclerView, 10, userLoc);
-                    }
-                    else
-                    {
-                        Snackbar.make(getView(),"Please setup your location to view courses near you",Snackbar.LENGTH_LONG).show();
-                    }
-                }
-            } else {
-                Log.v("User","Failed to complete search");
-            }
-        });
+//        mongoClient = user.getMongoClient("mongodb-atlas");
+//        mongoDatabase = mongoClient.getDatabase("Upsilon");
+//        MongoCollection<Document> mongoCollection  = mongoDatabase.getCollection("UserData");
+//
+//        //Blank query to find every single user in db
+//        Document queryFilter  = new Document("userid", user.getId());
+//
+//        RealmResultTask<MongoCursor<Document>> findTask = mongoCollection.find(queryFilter).iterator();
+//
+//        findTask.getAsync(task -> {
+//            if (task.isSuccess()) {
+//                MongoCursor<Document> results = task.get();
+//                int i = 0;
+//                while (results.hasNext()) {
+//                    //Log.v("EXAMPLE", results.next().toString());
+//                    Document currentDoc = results.next();
+//                    Document userLoc = (Document) currentDoc.get("userLocation");
+//                    if(userLoc!=null) {
+//                        searchQuery.searchForCourse(app, mongoDatabase, getContext(), adapter, recyclerView, 10, userLoc);
+//                    }
+//                    else
+//                    {
+//                        Snackbar.make(getView(),"Please setup your location to view courses near you",Snackbar.LENGTH_LONG).show();
+//                    }
+//                }
+//            } else {
+//                Log.v("User","Failed to complete search");
+//            }
+//        });
 //        list = searchQuery.getSearchResultsList();
         initRecyclerView(recyclerView,list);
     }
@@ -137,34 +271,34 @@ public class ExploreFragment3 extends Fragment {
         this.query = _searchQuery.getKeywords();
         searchQuery.setQuery(query);
         searchQuery.setSelectedTags(_searchQuery.getSelectedTags());
-        mongoClient = user.getMongoClient("mongodb-atlas");
-        mongoDatabase = mongoClient.getDatabase("Upsilon");
-        MongoCollection<Document> mongoCollection  = mongoDatabase.getCollection("UserData");
-
-        //Blank query to find every single user in db
-        Document queryFilter  = new Document("userid", user.getId());
-
-        RealmResultTask<MongoCursor<Document>> findTask = mongoCollection.find(queryFilter).iterator();
-
-        findTask.getAsync(task -> {
-            if (task.isSuccess()) {
-                MongoCursor<Document> results = task.get();
-                int i = 0;
-                while (results.hasNext()) {
-                    //Log.v("EXAMPLE", results.next().toString());
-                    Document currentDoc = results.next();
-                    Document userLoc = (Document) currentDoc.get("userLocation");if(userLoc!=null) {
-                        searchQuery.searchForCourse(app, mongoDatabase, getContext(), adapter, recyclerView, 10, userLoc);
-                    }
-                    else
-                    {
-                        Snackbar.make(getView(),"Please setup your location to view courses near you",Snackbar.LENGTH_LONG).show();
-                    }
-                }
-            } else {
-                Log.v("User","Failed to complete search");
-            }
-        });
+//        mongoClient = user.getMongoClient("mongodb-atlas");
+//        mongoDatabase = mongoClient.getDatabase("Upsilon");
+//        MongoCollection<Document> mongoCollection  = mongoDatabase.getCollection("UserData");
+//
+//        //Blank query to find every single user in db
+//        Document queryFilter  = new Document("userid", user.getId());
+//
+//        RealmResultTask<MongoCursor<Document>> findTask = mongoCollection.find(queryFilter).iterator();
+//
+//        findTask.getAsync(task -> {
+//            if (task.isSuccess()) {
+//                MongoCursor<Document> results = task.get();
+//                int i = 0;
+//                while (results.hasNext()) {
+//                    //Log.v("EXAMPLE", results.next().toString());
+//                    Document currentDoc = results.next();
+//                    Document userLoc = (Document) currentDoc.get("userLocation");if(userLoc!=null) {
+//                        searchQuery.searchForCourse(app, mongoDatabase, getContext(), adapter, recyclerView, 10, userLoc);
+//                    }
+//                    else
+//                    {
+//                        Snackbar.make(getView(),"Please setup your location to view courses near you",Snackbar.LENGTH_LONG).show();
+//                    }
+//                }
+//            } else {
+//                Log.v("User","Failed to complete search");
+//            }
+//        });
 //        list = searchQuery.getSearchResultsList();
         initRecyclerView(recyclerView,list);
     }

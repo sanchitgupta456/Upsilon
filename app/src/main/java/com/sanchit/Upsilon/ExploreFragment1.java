@@ -95,7 +95,7 @@ public class ExploreFragment1 extends Fragment {
 
 //        searchQuery.setRankMethod(sortCriteria);
 //        searchForCourses(query);
-        performSearch();
+        performSearch(new ArrayList<>());
         return view;
 
     }
@@ -104,21 +104,43 @@ public class ExploreFragment1 extends Fragment {
         this.query = _searchQuery.getKeywords();
         searchQuery.setQuery(query);
         searchQuery.setSelectedTags(_searchQuery.getSelectedTags());
-        performSearch();
+        ArrayList<String> selectedTags = new ArrayList<>();
+//        for(int i=0;i<_searchQuery.getSelectedTags().size();i++)
+//        {
+//            if(_searchQuery.getSelectedTags().get(i).booleanValue()==true)
+//            {
+//                selectedTags.add(_searchQuery.getSelectedTags().get(i).toString());
+//            }
+//        }
+        for ( String key : _searchQuery.getSelectedTags().keySet() ) {
+            selectedTags.add(key);
+        }
+        Log.v("Tags", String.valueOf(selectedTags));
+        performSearch(selectedTags);
     }
 
-    public void searchForCourses(String query) {
-        this.query = query;
-        searchQuery.setQuery(query);
-        performSearch();
-    }
+//    public void searchForCourses(String query) {
+//        this.query = query;
+//        searchQuery.setQuery(query);
+//        performSearch();
+//    }
 
-    public void performSearch() {
+    public void performSearch(ArrayList<String> selectedTags) {
 
         JSONObject jsonBody = new JSONObject();
         try {
+            Gson gson = new Gson();
             jsonBody.put("index",10);
             jsonBody.put("filter","Rating");
+            jsonBody.put("tags",gson.toJson(selectedTags));
+//            if(selectedTags.size()==0)
+//            {
+//                jsonBody.put("tags",gson.toJson(selectedTags));
+//            }
+//            else
+//            {
+//                jsonBody.put("tags",gson.toJson(selectedTags));
+//            }
             JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, API+"/paging",jsonBody,
                     new Response.Listener<JSONObject>() {
                         @Override

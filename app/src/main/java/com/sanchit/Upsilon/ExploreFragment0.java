@@ -3,7 +3,6 @@ package com.sanchit.Upsilon;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.location.Address;
@@ -17,7 +16,6 @@ import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -50,13 +48,10 @@ import com.google.android.gms.location.LocationSettingsResult;
 import com.google.android.gms.location.LocationSettingsStatusCodes;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.sanchit.Upsilon.courseData.Course;
 import com.sanchit.Upsilon.courseData.CourseFinal;
 import com.sanchit.Upsilon.courseData.CoursesAdapter1;
-import com.sanchit.Upsilon.courseLocationMap.MapsActivity;
 import com.sanchit.Upsilon.courseSearching.SearchQuery;
 import com.sanchit.Upsilon.courseSearching.rankBy;
 import com.sanchit.Upsilon.userData.UserLocation;
@@ -72,16 +67,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Objects;
 
 import io.realm.mongodb.App;
-import io.realm.mongodb.AppConfiguration;
-import io.realm.mongodb.RealmResultTask;
 import io.realm.mongodb.User;
 import io.realm.mongodb.mongo.MongoClient;
-import io.realm.mongodb.mongo.MongoCollection;
 import io.realm.mongodb.mongo.MongoDatabase;
-import io.realm.mongodb.mongo.iterable.MongoCursor;
 
 import static io.realm.Realm.getApplicationContext;
 
@@ -104,6 +94,7 @@ public class ExploreFragment0 extends Fragment {
     SearchQuery searchQuery = new SearchQuery();
     Document userLocation;
     ProgressBar progressBar;
+    ArrayList<String> selectedTags = new ArrayList<>();
 
     ArrayList<CourseFinal> list = new ArrayList<>();
     private RequestQueue queue;
@@ -198,19 +189,39 @@ public class ExploreFragment0 extends Fragment {
         this.query = _searchQuery.getKeywords();
         searchQuery.setQuery(query);
         searchQuery.setSelectedTags(_searchQuery.getSelectedTags());
+        selectedTags = new ArrayList<>();
+//        for(int i=0;i<_searchQuery.getSelectedTags().size();i++)
+//        {
+//            if(_searchQuery.getSelectedTags().get(i).booleanValue()==true)
+//            {
+//                selectedTags.add(_searchQuery.getSelectedTags().get(i).toString());
+//            }
+//        }
+        for ( String key : _searchQuery.getSelectedTags().keySet() ) {
+            selectedTags.add(key);
+        }
+        Log.v("Tags", String.valueOf(selectedTags));
         performSearch();
+
     }
-    public void searchForCourses(String query){
-        this.query = query;
-        searchQuery.setQuery(query);
-        performSearch();
-    }
+//    public void searchForCourses(String query){
+//        this.query = query;
+//        searchQuery.setQuery(query);
+//        performSearch(selectedTags);
+//    }
     public void performSearch() {
+        if(selectedTags==null)
+        {
+            selectedTags = new ArrayList<>();
+        }
         progressBar.setVisibility(View.VISIBLE);
         JSONObject jsonBody = new JSONObject();
+        Gson gson = new Gson();
         try {
             jsonBody.put("index",0);
             jsonBody.put("filter","Distance");
+            jsonBody.put("tags",gson.toJson(selectedTags));
+
             JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, API+"/paging",jsonBody,
                     new Response.Listener<JSONObject>() {
                         @Override

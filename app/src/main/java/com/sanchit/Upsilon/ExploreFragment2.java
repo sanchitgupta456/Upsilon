@@ -3,7 +3,6 @@ package com.sanchit.Upsilon;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -18,16 +17,13 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.sanchit.Upsilon.courseData.Course;
 import com.sanchit.Upsilon.courseData.CourseFinal;
 import com.sanchit.Upsilon.courseData.CoursesAdapter1;
 import com.sanchit.Upsilon.courseSearching.SearchQuery;
 import com.sanchit.Upsilon.courseSearching.rankBy;
 
-import org.bson.Document;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -37,13 +33,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import io.realm.mongodb.App;
-import io.realm.mongodb.AppConfiguration;
-import io.realm.mongodb.RealmResultTask;
 import io.realm.mongodb.User;
 import io.realm.mongodb.mongo.MongoClient;
-import io.realm.mongodb.mongo.MongoCollection;
 import io.realm.mongodb.mongo.MongoDatabase;
-import io.realm.mongodb.mongo.iterable.MongoCursor;
 
 import static io.realm.Realm.getApplicationContext;
 
@@ -62,7 +54,6 @@ public class ExploreFragment2 extends Fragment {
     SearchQuery searchQuery = new SearchQuery();
     private RequestQueue queue;
     private String API ;
-
     ArrayList<CourseFinal> list = new ArrayList<>();
 
     public rankBy sortCriteria = rankBy.PRICE;
@@ -93,7 +84,7 @@ public class ExploreFragment2 extends Fragment {
 
 //        searchQuery.setRankMethod(sortCriteria);
 //        searchForCourses(query);
-        performSearch();
+        performSearch(new ArrayList<>());
         return view;
 
     }
@@ -110,19 +101,33 @@ public class ExploreFragment2 extends Fragment {
         this.query = _searchQuery.getKeywords();
         searchQuery.setQuery(query);
         searchQuery.setSelectedTags(_searchQuery.getSelectedTags());
-        performSearch();
+        ArrayList<String> selectedTags = new ArrayList<>();
+//        for(int i=0;i<_searchQuery.getSelectedTags().size();i++)
+//        {
+//            if(_searchQuery.getSelectedTags().get(i).booleanValue()==true)
+//            {
+//                selectedTags.add(_searchQuery.getSelectedTags().get(i).toString());
+//            }
+//        }
+        for ( String key : _searchQuery.getSelectedTags().keySet() ) {
+            selectedTags.add(key);
+        }
+        Log.v("Tags", String.valueOf(selectedTags));
+        performSearch(selectedTags);
     }
-    public void searchForCourses(String query){
-        this.query = query;
-        searchQuery.setQuery(query);
-        performSearch();
-    }
-    public void performSearch() {
+//    public void searchForCourses(String query){
+//        this.query = query;
+//        searchQuery.setQuery(query);
+//        performSearch(selectedTags);
+//    }
+    public void performSearch(ArrayList<String> selectedTags) {
 
         JSONObject jsonBody = new JSONObject();
         try {
             jsonBody.put("index",0);
             jsonBody.put("filter","Fees");
+            Gson gson = new Gson();
+            jsonBody.put("tags",gson.toJson(selectedTags));
             JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, API+"/paging",jsonBody,
                     new Response.Listener<JSONObject>() {
                         @Override
