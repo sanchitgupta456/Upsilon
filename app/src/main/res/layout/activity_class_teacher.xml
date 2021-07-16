@@ -173,22 +173,15 @@
 <!--            </RelativeLayout>-->
 <!--        </androidx.cardview.widget.CardView>-->
 <!--    </FrameLayout>-->
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/colorWhite"
-        android:elevation="8dp"
         android:text="@string/save"
-        android:letterSpacing="0.3"
         android:layout_centerHorizontal="true"
         android:id="@+id/updateChange"
         android:clickable="true"
         android:focusable="true"
-        android:background="@drawable/btn_blue"
-        android:backgroundTint="@color/button_green"
         android:layout_below="@id/ll3"
-        android:paddingVertical="10dp"
-        android:paddingHorizontal="25dp"
         />
     <TextView
         android:layout_width="match_parent"

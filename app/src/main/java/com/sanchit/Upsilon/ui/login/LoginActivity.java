@@ -67,6 +67,7 @@ import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.sanchit.Upsilon.MainActivity;
 import com.sanchit.Upsilon.R;
@@ -124,7 +125,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
          */
         final TextInputEditText usernameEditText = findViewById(R.id.username);
         final TextInputEditText passwordEditText = findViewById(R.id.password);
-        Button loginButton = findViewById(R.id.login);
+        MaterialButton loginButton = findViewById(R.id.login);
         fbloginButton = findViewById(R.id.login_button);
         final TextView signUpButton = (TextView) findViewById(R.id.signUp);
         loadingProgressBar = findViewById(R.id.loading);
