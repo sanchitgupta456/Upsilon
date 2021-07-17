@@ -12,6 +12,7 @@
         <item name="android:textColorSecondary">@color/colorBlack</item>
         <item name="android:navigationBarColor">@color/colorPrimaryDark</item>
     </style>
+
     <style name="AppTheme.NoActionBar" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
@@ -25,6 +26,8 @@
         <item name="android:colorPrimary">@color/colorPrimary</item>
         <item name="android:colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="android:colorAccent">@color/colorAccent</item>
+
+        <item name="materialButtonStyle">@style/ButtonStyle</item>
     </style>
 
     <style name="ActionBarStyle" parent="Widget.AppCompat.ActionBar.Solid">
@@ -32,6 +35,7 @@
         <item name="android:elevation">0dp</item>
         <item name="drawableTint">@color/colorWhite</item>
     </style>
+
     <style name="TextStyle" parent="TextAppearance.AppCompat">
         <item name="android:textColor">@color/colorPrimaryDark</item>
     </style>
@@ -43,6 +47,7 @@
         <item name="colorPrimaryDark">#112E2E</item>
         <item name="colorAccent">#85F3CC</item>
     </style>
+
     <style name="ActionBarStyle.Green" parent="Widget.AppCompat.ActionBar">
         <item name="android:background">#112E2E</item>
         <item name="android:elevation">0dp</item>
@@ -52,9 +57,23 @@
         <item name="colorAccent">@color/colorPrimary</item>
     </style>
 
-<!--    <style name="CustomTextInputLayout">-->
-<!--        <item name="colorAccent">@color/colorPrimary</item>-->
-<!--        &lt;!&ndash; rest also we will add, if need be &ndash;&gt;-->
-<!--    </style>-->
+    <style name="Widget.AppTheme.MyView" parent="">
+        <item name="android:background">@color/gray_400</item>
+        <item name="exampleColor">@color/light_blue_400</item>
+    </style>
 
+    <!--    <style name="CustomTextInputLayout">-->
+    <!--        <item name="colorAccent">@color/colorPrimary</item>-->
+    <!--        &lt;!&ndash; rest also we will add, if need be &ndash;&gt;-->
+    <!--    </style>-->
+
+
+    <!-- Material theme customisations -->
+    <style name="ButtonStyle" parent="Widget.MaterialComponents.Button">
+        <item name="backgroundTint">@color/button_green</item>
+        <item name="rippleColor">@color/ripple_green</item>
+        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:letterSpacing">0.3</item>
+        <item name="elevation">8dp</item>
+    </style>
 </resources>

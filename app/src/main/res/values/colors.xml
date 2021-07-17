@@ -18,4 +18,9 @@
     <color name="GreyDark">#555555</color>
     <color name="colorPrimaryLight">#0D003153</color>
     <color name="button_green">#00C853</color>
+    <color name="ripple_green">#00642A</color>
+    <color name="light_blue_400">#FF29B6F6</color>
+    <color name="light_blue_600">#FF039BE5</color>
+    <color name="gray_400">#FFBDBDBD</color>
+    <color name="gray_600">#FF757575</color>
 </resources>
