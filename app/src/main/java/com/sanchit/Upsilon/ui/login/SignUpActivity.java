@@ -41,6 +41,7 @@ import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.sanchit.Upsilon.Interest.Interest;
@@ -106,7 +107,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         emailLayout = findViewById(R.id.ll1);
         passwordLayout = findViewById(R.id.ll2);
         confirmPasswordLayout = findViewById(R.id.ll3);
-        final Button signUpButton = findViewById(R.id.signupBtn);
+        final MaterialButton signUpButton = findViewById(R.id.signupBtn);
 //        final CheckBox checkBox;
         checkBox = findViewById(R.id.accept_tc);
         final TextView linkTC = findViewById(R.id.link_tc);

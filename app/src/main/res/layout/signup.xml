@@ -216,25 +216,19 @@
                 </LinearLayout>
             </ScrollView>
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/signupBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="12dp"
                 android:layout_marginTop="24dp"
                 android:layout_marginRight="12dp"
-                android:background="@drawable/btn_blue"
-                android:textColor="@color/colorWhite"
-                android:letterSpacing="0.1"
-                android:enabled="true"
                 android:text="@string/sign_up_text"
                 android:layout_below="@id/scroll"
                 android:layout_centerHorizontal="true"
-                android:backgroundTint="#00C853"
-                android:paddingHorizontal="24dp"
                 android:clickable="true"
                 android:focusable="true"
-                android:elevation="4dp"/>
+                style="@style/ButtonStyle"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
