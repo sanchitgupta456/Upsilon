@@ -103,6 +103,7 @@ public class ExploreFragment0 extends Fragment {
     public rankBy sortCriteria = rankBy.LOC;
 
     String query = "";
+    String regex="";
     public ExploreFragment0(String string) {
         query = string;
     }
@@ -190,6 +191,7 @@ public class ExploreFragment0 extends Fragment {
         searchQuery.setQuery(query);
         searchQuery.setSelectedTags(_searchQuery.getSelectedTags());
         selectedTags = new ArrayList<>();
+        regex = _searchQuery.getKeywords();
 //        for(int i=0;i<_searchQuery.getSelectedTags().size();i++)
 //        {
 //            if(_searchQuery.getSelectedTags().get(i).booleanValue()==true)
@@ -221,7 +223,8 @@ public class ExploreFragment0 extends Fragment {
             jsonBody.put("index",0);
             jsonBody.put("filter","Distance");
             jsonBody.put("tags",gson.toJson(selectedTags));
-
+            jsonBody.put("regex",regex);
+            Log.v("regex",regex);
             JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, API+"/paging",jsonBody,
                     new Response.Listener<JSONObject>() {
                         @Override
@@ -239,6 +242,7 @@ public class ExploreFragment0 extends Fragment {
                                     list.add(course);
                                     Log.v("course",String.valueOf(course.getCourseReviews()));
                                 }
+                                progressBar.setVisibility(View.GONE);
                                 initRecyclerView(recyclerView, list);
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -253,6 +257,7 @@ public class ExploreFragment0 extends Fragment {
                             Log.d("Error response", error.toString());
                             Log.v(TAG, "Fetch Courses FAILED!");
                             Log.e(TAG, error.toString());
+                            progressBar.setVisibility(View.GONE);
                         }
                     }
             ){

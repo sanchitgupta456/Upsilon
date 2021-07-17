@@ -157,6 +157,7 @@ public class ExploreActivity extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String newText) {
+//                Log.v("Search Query",newText);
                 searchQuery.setQuery(newText);
                 searchForCourses(searchQuery);
                 return false;
@@ -164,6 +165,7 @@ public class ExploreActivity extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextSubmit(String query) {
+//                Log.v("Search Query",query);
                 searchQuery.setQuery(query);
                 searchForCourses(searchQuery);
                 return false;

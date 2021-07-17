@@ -95,7 +95,7 @@ public class ExploreFragment1 extends Fragment {
 
 //        searchQuery.setRankMethod(sortCriteria);
 //        searchForCourses(query);
-        performSearch(new ArrayList<>());
+        performSearch(new ArrayList<>() , "");
         return view;
 
     }
@@ -105,6 +105,8 @@ public class ExploreFragment1 extends Fragment {
         searchQuery.setQuery(query);
         searchQuery.setSelectedTags(_searchQuery.getSelectedTags());
         ArrayList<String> selectedTags = new ArrayList<>();
+        String regex = _searchQuery.getKeywords();
+        Log.v("Query",regex);
 //        for(int i=0;i<_searchQuery.getSelectedTags().size();i++)
 //        {
 //            if(_searchQuery.getSelectedTags().get(i).booleanValue()==true)
@@ -116,7 +118,7 @@ public class ExploreFragment1 extends Fragment {
             selectedTags.add(key);
         }
         Log.v("Tags", String.valueOf(selectedTags));
-        performSearch(selectedTags);
+        performSearch(selectedTags , regex);
     }
 
 //    public void searchForCourses(String query) {
@@ -125,7 +127,7 @@ public class ExploreFragment1 extends Fragment {
 //        performSearch();
 //    }
 
-    public void performSearch(ArrayList<String> selectedTags) {
+    public void performSearch(ArrayList<String> selectedTags,String regex) {
 
         JSONObject jsonBody = new JSONObject();
         try {
@@ -133,6 +135,7 @@ public class ExploreFragment1 extends Fragment {
             jsonBody.put("index",10);
             jsonBody.put("filter","Rating");
             jsonBody.put("tags",gson.toJson(selectedTags));
+            jsonBody.put("regex",regex);
 //            if(selectedTags.size()==0)
 //            {
 //                jsonBody.put("tags",gson.toJson(selectedTags));

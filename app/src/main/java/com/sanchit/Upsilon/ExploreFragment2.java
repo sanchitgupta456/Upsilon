@@ -84,7 +84,7 @@ public class ExploreFragment2 extends Fragment {
 
 //        searchQuery.setRankMethod(sortCriteria);
 //        searchForCourses(query);
-        performSearch(new ArrayList<>());
+        performSearch(new ArrayList<>(),"");
         return view;
 
     }
@@ -102,6 +102,7 @@ public class ExploreFragment2 extends Fragment {
         searchQuery.setQuery(query);
         searchQuery.setSelectedTags(_searchQuery.getSelectedTags());
         ArrayList<String> selectedTags = new ArrayList<>();
+        String regex = _searchQuery.getKeywords();
 //        for(int i=0;i<_searchQuery.getSelectedTags().size();i++)
 //        {
 //            if(_searchQuery.getSelectedTags().get(i).booleanValue()==true)
@@ -113,14 +114,14 @@ public class ExploreFragment2 extends Fragment {
             selectedTags.add(key);
         }
         Log.v("Tags", String.valueOf(selectedTags));
-        performSearch(selectedTags);
+        performSearch(selectedTags,regex);
     }
 //    public void searchForCourses(String query){
 //        this.query = query;
 //        searchQuery.setQuery(query);
 //        performSearch(selectedTags);
 //    }
-    public void performSearch(ArrayList<String> selectedTags) {
+    public void performSearch(ArrayList<String> selectedTags,String regex) {
 
         JSONObject jsonBody = new JSONObject();
         try {
@@ -128,6 +129,7 @@ public class ExploreFragment2 extends Fragment {
             jsonBody.put("filter","Fees");
             Gson gson = new Gson();
             jsonBody.put("tags",gson.toJson(selectedTags));
+            jsonBody.put("regex",regex);
             JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, API+"/paging",jsonBody,
                     new Response.Listener<JSONObject>() {
                         @Override

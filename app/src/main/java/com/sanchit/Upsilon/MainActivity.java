@@ -859,6 +859,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             @Override
             public boolean onQueryTextChange(String newText) {
+                Log.v("text",newText);
+                performSearch(newText);
                 //Log.e("onQueryTextChange", "called");
                 /*if(!newText.equals("")) {
 
@@ -873,17 +875,72 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             @Override
             public boolean onQueryTextSubmit(String query) {
-                searchQuery.setQuery(query);
-                searchQuery.setRankMethod(rankBy.RATING);
+//                searchQuery.setQuery(query);
+//                searchQuery.setRankMethod(rankBy.RATING);
 //                initRecyclerView(recyclerViewSearchResults, searchResultsList);
-                searchQuery.searchForCourse(app, mongoDatabase,MainActivity.this,  coursesAdapter1_1, recyclerViewSearchResults, 10, userLoc);
+//                searchQuery.searchForCourse(app, mongoDatabase,MainActivity.this,  coursesAdapter1_1, recyclerViewSearchResults, 10, userLoc);
                 return false;
             }
         });
         return true;
     }
 
-    @Override
+    public void performSearch(String regex) {
+//        progressBar.setVisibility(View.VISIBLE);
+        JSONObject jsonBody = new JSONObject();
+        try {
+            jsonBody.put("index", 0);
+            jsonBody.put("filter", "Rating");
+            Gson gson = new Gson();
+            jsonBody.put("tags", gson.toJson(new ArrayList<>()));
+            jsonBody.put("regex", regex);
+            JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, API + "/paging", jsonBody,
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            Log.d("Response", response.toString());
+                            ArrayList<CourseFinal> list = new ArrayList<CourseFinal>();
+                            try {
+                                JSONArray jsonArray = (JSONArray) response.get("courses");
+                                Log.v("array", String.valueOf(jsonArray));
+                                for (int i = 0; i < jsonArray.length(); i++) {
+                                    JSONObject jsonObject = (JSONObject) jsonArray.get(i);
+                                    Gson gson = new Gson();
+                                    CourseFinal course = gson.fromJson(jsonObject.toString(), CourseFinal.class);
+                                    list.add(course);
+                                    Log.v("course", String.valueOf(course.getCourseReviews()));
+                                }
+                                initRecyclerView(recyclerViewSearchResults, list);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+//                                initRecyclerView(recyclerView, list);
+
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Log.d("Error response", error.toString());
+                            Log.v(TAG, "Fetch Courses FAILED!");
+                            Log.e(TAG, error.toString());
+                        }
+                    }
+            ) {
+                @Override
+                public Map<String, String> getHeaders() {
+                    Map<String, String> params = new HashMap<String, String>();
+                    params.put("token", ((Upsilon)getApplication()).getToken());
+                    return params;
+                }
+            };
+            queue.add(jsonRequest);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+        @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if(toggle.onOptionsItemSelected(item)){
             return true;

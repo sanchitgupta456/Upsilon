@@ -107,6 +107,7 @@ public class ExploreFragment3 extends Fragment {
             jsonBody.put("filter","Mode");
             Gson gson = new Gson();
             jsonBody.put("tags",gson.toJson(new ArrayList<>()));
+            jsonBody.put("regex","");
             JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, API+"/paging",jsonBody,
                     new Response.Listener<JSONObject>() {
                         @Override
