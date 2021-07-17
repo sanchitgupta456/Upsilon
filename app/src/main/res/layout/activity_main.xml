@@ -8,7 +8,6 @@
     tools:context=".MainActivity"
     android:id="@+id/drawer_layout"
     tools:openDrawer="left"
-    android:background="@color/colorPrimaryLight"
     android:fitsSystemWindows="true"
     android:theme="@style/AppTheme">
 
@@ -46,7 +45,9 @@
                         android:background="#FAFAFA"
                         android:fitsSystemWindows="true"
                         android:elevation="?attr/actionBarSize"
-                        android:paddingBottom="5dp">
+                        android:paddingTop="5dp"
+                        android:paddingHorizontal="5dp"
+                        android:paddingBottom="10dp">
                         <TextView
                             android:id="@+id/textYourCurrentCourses"
                             android:layout_width="wrap_content"
@@ -55,7 +56,7 @@
                             android:text="@string/resume_learning"
                             android:layout_marginTop="5dp"
                             android:textSize="@dimen/text_margin"
-                            android:textColor="@color/colorPrimary"
+                            android:textColor="@color/quantum_pinkA200"
                             android:paddingVertical="5dp"
                             android:paddingHorizontal="10dp"
                             android:typeface="sans" />
@@ -84,7 +85,9 @@
                         android:background="#FAFAFA"
                         android:fitsSystemWindows="true"
                         android:elevation="?attr/actionBarSize"
-                        android:paddingBottom="5dp">
+                        android:paddingTop="5dp"
+                        android:paddingHorizontal="5dp"
+                        android:paddingBottom="10dp">
                         <TextView
                             android:id="@+id/textRecommendedCoursesList"
                             android:layout_width="wrap_content"
@@ -92,7 +95,7 @@
                             android:gravity="center_vertical"
                             android:text="@string/recommended_for_you"
                             android:textSize="@dimen/text_margin"
-                            android:textColor="@color/colorPrimary"
+                            android:textColor="@color/quantum_amber900"
                             android:paddingVertical="5dp"
                             android:paddingHorizontal="10dp"
                             android:typeface="sans"/>
@@ -145,7 +148,8 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:padding="5dp">
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -156,7 +160,9 @@
                                 android:gravity="center_vertical"
                                 android:text="@string/explore"
                                 android:textSize="@dimen/text_margin"
-                                android:textColor="@color/colorPrimary"
+                                android:textColor="@color/ripple_green"
+                                android:textStyle="bold"
+                                android:letterSpacing="0.1"
                                 android:paddingVertical="5dp"
                                 android:paddingHorizontal="10dp"
                                 android:typeface="sans"
@@ -169,14 +175,14 @@
                                 android:layout_height="wrap_content"
                                 android:text="@string/see_more"
                                 android:textSize="@dimen/text_margin"
-                                android:textColor="@color/colorPrimary"
+                                android:textColor="@color/quantum_orange900"
                                 android:paddingVertical="5dp"
                                 android:paddingHorizontal="10dp"
                                 android:typeface="sans"
                                 android:clickable="true"
                                 android:focusable="true"
                                 android:drawablePadding="@dimen/activity_horizontal_margin"
-                                app:drawableTint="@color/colorPrimary"
+                                app:drawableTint="@color/quantum_orange900"
                                 app:drawableEndCompat="@drawable/next"/>
                         </LinearLayout>
                         <androidx.recyclerview.widget.RecyclerView
