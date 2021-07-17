@@ -30,6 +30,7 @@ import android.widget.Toast;
 import com.cloudinary.android.MediaManager;
 import com.cloudinary.android.callback.ErrorInfo;
 import com.cloudinary.android.callback.UploadCallback;
+import com.google.android.material.textfield.TextInputEditText;
 
 import org.bson.Document;
 
@@ -51,7 +52,7 @@ import static android.app.Activity.RESULT_OK;
 public class UserDataSetupFragment2 extends Fragment {
 
     String appID = "upsilon-ityvn";
-    EditText Name;
+    TextInputEditText Name;
     String name;
     int flag=0;
     App app;
@@ -81,7 +82,7 @@ public class UserDataSetupFragment2 extends Fragment {
         View view = inflater.inflate(R.layout.fragment_user_data_setup2, container, false);
         requestWritePermission();
 
-        Name = (EditText) view.findViewById(R.id.userNameHolder);
+        Name = (TextInputEditText) view.findViewById(R.id.userNameHolder);
         profilepic = (CircleImageView) view.findViewById(R.id.profilePhoto);
         viewModel = new ViewModelProvider(requireActivity()).get(UserDataViewModel.class);
 

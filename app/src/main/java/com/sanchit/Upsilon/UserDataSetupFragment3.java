@@ -34,6 +34,7 @@ import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.textfield.TextInputEditText;
 import com.sanchit.Upsilon.userData.UserLocation;
 
 import org.bson.Document;
@@ -59,7 +60,7 @@ import static io.realm.Realm.getApplicationContext;
 public class UserDataSetupFragment3 extends Fragment implements AdapterView.OnItemSelectedListener {
     String appID = "upsilon-ityvn";
     CircleImageView locationbutton;
-    EditText City, Pincode, PhoneNumber;
+    TextInputEditText City, Pincode, PhoneNumber;
     String city, pincode, phonenumber;
     App app;
     User user;
@@ -87,9 +88,9 @@ public class UserDataSetupFragment3 extends Fragment implements AdapterView.OnIt
                              Bundle savedInstanceState) {
         View view;
         view = inflater.inflate(R.layout.fragment_user_data_setup3, container, false);
-        City = (EditText) view.findViewById(R.id.cityNameHolder);
-        Pincode = (EditText) view.findViewById(R.id.pincodeHolder);
-        PhoneNumber = (EditText) view.findViewById(R.id.contactNumberHolder);
+        City = (TextInputEditText) view.findViewById(R.id.cityNameHolder);
+        Pincode = (TextInputEditText) view.findViewById(R.id.pincodeHolder);
+        PhoneNumber = (TextInputEditText) view.findViewById(R.id.contactNumberHolder);
         locationbutton = (CircleImageView) view.findViewById(R.id.user_data_setup_google_location);
         AppCompatSpinner selectYourCollege = (AppCompatSpinner) view.findViewById(R.id.spinnerUserCollege);
         viewModel = new ViewModelProvider(requireActivity()).get(UserDataViewModel.class);
@@ -98,7 +99,7 @@ public class UserDataSetupFragment3 extends Fragment implements AdapterView.OnIt
         College = "None";
         viewModel.setCollege(College);
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.simple_expandable_list_item_custom, Colleges);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.support_simple_spinner_dropdown_item, Colleges);
         selectYourCollege.setAdapter(adapter);
         //selectYourCollege.setOnItemClickListener(this::onItemSelected);
 

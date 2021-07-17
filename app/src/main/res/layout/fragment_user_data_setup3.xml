@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
+    android:theme="@style/MaterialTheme"
     tools:context=".UserDataSetupFragment3">
     <ProgressBar
         android:id="@+id/loadingSetUp3"
@@ -43,43 +44,80 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/textSelectYourCollege"
                 android:dropDownWidth="wrap_content"
-                android:backgroundTint="@color/colorPrimary"
-                tools:listitem="@layout/simple_spinner_dark_text_color"/>
+                tools:listitem="@layout/support_simple_spinner_dropdown_item"/>
 
-            <EditText
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:hint="@string/enter_city"
+                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+                android:id="@+id/ll1"
                 android:layout_below="@id/spinnerUserCollege"
+                android:layout_marginStart="24dp"
+                android:layout_marginEnd="24dp"
+                android:layout_marginTop="24dp">
+            <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/cityNameHolder"
                 android:inputType="text"
-                android:layout_marginTop="@dimen/activity_vertical_margin"
-                android:layout_marginStart="72dp"
-                android:layout_marginEnd="72dp"
-                android:hint="@string/enter_city"
-                android:textColor="@color/colorBlack"
-                android:gravity="center"
-                android:layout_centerInParent="true"
-                android:background="@drawable/text_view_login"
-                android:backgroundTint="@color/colorBlack"
-                android:padding="10dp"
-                android:autofillHints="cityName" />
-            <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/cityNameHolder"
+                android:textSize="16sp"
+                android:textColor="@color/colorBlack"
+                android:selectAllOnFocus="true"/>
+            </com.google.android.material.textfield.TextInputLayout>
+<!--            <EditText-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_below="@id/spinnerUserCollege"-->
+<!--                android:id="@+id/cityNameHolder"-->
+<!--                android:inputType="text"-->
+<!--                android:layout_marginTop="@dimen/activity_vertical_margin"-->
+<!--                android:layout_marginStart="72dp"-->
+<!--                android:layout_marginEnd="72dp"-->
+<!--                android:hint="@string/enter_city"-->
+<!--                android:textColor="@color/colorBlack"-->
+<!--                android:gravity="center"-->
+<!--                android:layout_centerInParent="true"-->
+<!--                android:background="@drawable/text_view_login"-->
+<!--                android:backgroundTint="@color/colorBlack"-->
+<!--                android:padding="10dp"-->
+<!--                android:autofillHints="cityName" />-->
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/enter_pincode"
+                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+                android:id="@+id/ll2"
+                android:layout_below="@id/ll1"
+                android:layout_marginStart="24dp"
+                android:layout_marginEnd="24dp"
+                android:layout_marginTop="24dp">
+            <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/pincodeHolder"
                 android:inputType="number"
-                android:layout_marginTop="8dp"
-                android:layout_marginStart="72dp"
-                android:layout_marginEnd="72dp"
-                android:hint="@string/enter_pincode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
                 android:textColor="@color/colorBlack"
-                android:gravity="center"
-                android:layout_centerInParent="true"
-                android:background="@drawable/text_view_login"
-                android:backgroundTint="@color/colorBlack"
-                android:padding="10dp"
-                android:autofillHints="pincode" />
+                android:selectAllOnFocus="true"/>
+            </com.google.android.material.textfield.TextInputLayout>
+<!--            <EditText-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_below="@id/cityNameHolder"-->
+<!--                android:id="@+id/pincodeHolder"-->
+<!--                android:inputType="number"-->
+<!--                android:layout_marginTop="8dp"-->
+<!--                android:layout_marginStart="72dp"-->
+<!--                android:layout_marginEnd="72dp"-->
+<!--                android:hint="@string/enter_pincode"-->
+<!--                android:textColor="@color/colorBlack"-->
+<!--                android:gravity="center"-->
+<!--                android:layout_centerInParent="true"-->
+<!--                android:background="@drawable/text_view_login"-->
+<!--                android:backgroundTint="@color/colorBlack"-->
+<!--                android:padding="10dp"-->
+<!--                android:autofillHints="pincode" />-->
 
             <TextView
                 android:layout_width="match_parent"
@@ -88,7 +126,7 @@
                 android:textColor="@color/colorBlack"
                 android:textSize="@dimen/text_margin"
                 android:gravity="center"
-                android:layout_below="@id/pincodeHolder"
+                android:layout_below="@id/ll2"
                 android:layout_margin="4dp"
                 android:id="@+id/textSetupTitle5" />
 
@@ -125,7 +163,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/linearLayoutSetupMaps"
-                android:textColor="@color/colorPrimary"
+                android:textColor="@color/quantum_orange900"
                 android:text="@string/why_should_i_share_my_location"
                 android:textStyle="italic"
                 android:gravity="center"
@@ -137,33 +175,52 @@
                 android:layout_centerInParent="true"
                 android:padding="3dp"
                 app:drawableStartCompat="@drawable/info_icon_dark"
-                android:drawableTint="@color/colorPrimary"/>
+                app:drawableTint="@color/quantum_orange900" />
 
-
-            <EditText
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:hint="@string/enter_contact_number"
+                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+                android:id="@+id/ll3"
                 android:layout_below="@id/textSetupTitle6"
+                android:layout_marginStart="24dp"
+                android:layout_marginEnd="24dp"
+                android:layout_marginTop="24dp">
+            <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/contactNumberHolder"
                 android:inputType="phone"
-                android:layout_marginTop="36dp"
-                android:layout_marginStart="72dp"
-                android:layout_marginEnd="72dp"
-                android:hint="@string/enter_contact_number"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
                 android:textColor="@color/colorBlack"
-                android:gravity="center"
-                android:layout_centerInParent="true"
-                android:background="@drawable/text_view_login"
-                android:backgroundTint="@color/colorBlack"
-                android:padding="10dp"
-                android:autofillHints="phone_number" />
+                android:selectAllOnFocus="true"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+<!--            <EditText-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_below="@id/textSetupTitle6"-->
+<!--                android:id="@+id/contactNumberHolder"-->
+<!--                android:inputType="phone"-->
+<!--                android:layout_marginTop="36dp"-->
+<!--                android:layout_marginStart="72dp"-->
+<!--                android:layout_marginEnd="72dp"-->
+<!--                android:hint="@string/enter_contact_number"-->
+<!--                android:textColor="@color/colorBlack"-->
+<!--                android:gravity="center"-->
+<!--                android:layout_centerInParent="true"-->
+<!--                android:background="@drawable/text_view_login"-->
+<!--                android:backgroundTint="@color/colorBlack"-->
+<!--                android:padding="10dp"-->
+<!--                android:autofillHints="phone_number" />-->
 
             <TextView
                 android:id="@+id/textSetupTitle7"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/contactNumberHolder"
-                android:textColor="@color/colorPrimary"
+                android:layout_below="@id/ll3"
+                android:textColor="#00897B"
                 android:text="@string/we_never_share_these_details_without_your_permission"
                 android:textStyle="italic"
                 android:gravity="center"

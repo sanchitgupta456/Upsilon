@@ -144,7 +144,7 @@ public class UserDataSetupActivity extends AppCompatActivity {
                     case 2:
                         //putInterests();
                         view.setEnabled(false);
-                        next.setTextColor(getColor(R.color.colorBlue));
+                        next.setTextColor(getColor(R.color.colorGrey));
                         uploadData();
                         putProfile();
                         //putAddressAndPhone();
@@ -161,7 +161,7 @@ public class UserDataSetupActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 next.setEnabled(false);
-                next.setTextColor(getColor(R.color.colorBlue));
+                next.setTextColor(getColor(R.color.colorGrey));
                 uploadData();
                 putProfile();
             }

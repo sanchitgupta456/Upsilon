@@ -4,6 +4,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:theme="@style/MaterialTheme"
     tools:context=".UserDataSetupFragment2">
 
     <ProgressBar
@@ -24,35 +25,53 @@
         android:text="@string/tell_us_about_yourselves"
         android:textColor="@color/colorBlack"
         android:textSize="16sp"
-        android:textStyle="bold"
         android:layout_margin="@dimen/activity_vertical_margin"
         android:id="@+id/textSetupTitle3"
         android:layout_below="@id/loadingSetUp2"/>
 
-    <EditText
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/textSetupTitle3"
-        android:id="@+id/userNameHolder"
-        android:inputType="text"
-        android:layout_marginTop="36dp"
-        android:layout_marginStart="72dp"
-        android:layout_marginEnd="72dp"
         android:hint="@string/enter_your_name"
-        android:textColor="@color/colorBlack"
-        android:gravity="center"
-        android:layout_centerInParent="true"
-        android:background="@drawable/text_view_login"
-        android:backgroundTint="@color/colorBlack"
-        android:padding="10dp"
-        android:autofillHints="@string/username"
-        android:focusedByDefault="true"
-        android:selectAllOnFocus="true"/>
+        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+        android:id="@+id/ll1"
+        android:layout_below="@id/textSetupTitle3"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginTop="24dp">
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/userNameHolder"
+            android:inputType="text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textColor="@color/colorBlack"
+            android:selectAllOnFocus="true"/>
+    </com.google.android.material.textfield.TextInputLayout>
+<!--    <EditText-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_below="@id/textSetupTitle3"-->
+<!--        android:id="@+id/userNameHolder"-->
+<!--        android:inputType="text"-->
+<!--        android:layout_marginTop="36dp"-->
+<!--        android:layout_marginStart="72dp"-->
+<!--        android:layout_marginEnd="72dp"-->
+<!--        android:hint="@string/enter_your_name"-->
+<!--        android:textColor="@color/colorBlack"-->
+<!--        android:gravity="center"-->
+<!--        android:layout_centerInParent="true"-->
+<!--        android:background="@drawable/text_view_login"-->
+<!--        android:backgroundTint="@color/colorBlack"-->
+<!--        android:padding="10dp"-->
+<!--        android:autofillHints="@string/username"-->
+<!--        android:focusedByDefault="true"-->
+<!--        android:selectAllOnFocus="true"/>-->
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:layout_width="200dp"
         android:layout_height="200dp"
-        android:layout_below="@id/userNameHolder"
+        android:layout_below="@id/ll1"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="48dp"
         android:src="@drawable/default_person_image"
@@ -81,7 +100,7 @@
         android:textSize="@dimen/text_margin"
         android:layout_below="@id/promptOptionalPhoto"
         android:text="@string/your_name_and_photo_will_be_visible_to_your_teachers"
-        android:textColor="@color/colorPrimary"
+        android:textColor="@color/quantum_orange"
         android:gravity="center"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="5dp"
