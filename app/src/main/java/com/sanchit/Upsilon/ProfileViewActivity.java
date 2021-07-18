@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -17,6 +18,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.content.res.AppCompatResources;
 
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.squareup.picasso.Picasso;
 
@@ -40,7 +42,13 @@ public class ProfileViewActivity extends AppCompatActivity {
     CircleImageView profileImage;
     App app;
     String appID = "upsilon-ityvn";
-    Button update;
+    MaterialButton update;
+
+    LinearLayout locMain, locAlter;
+    TextView viewLoc;
+    MaterialButton changeLoc, setLoc;
+
+    MaterialButton btnCoursesTaught, btnCoursesEnrolled;
 
     MongoClient mongoClient;
     MongoDatabase mongoDatabase;
@@ -57,7 +65,15 @@ public class ProfileViewActivity extends AppCompatActivity {
         UserName = (TextInputEditText) findViewById(R.id.editTextUserName);
         PhoneNumber = (TextInputEditText) findViewById(R.id.editTextPhoneNumber);
         Email = (TextInputEditText) findViewById(R.id.editTextEmailId);
-        update = (Button) findViewById(R.id.updateChange);
+        update = (MaterialButton) findViewById(R.id.updateChange);
+        locMain = findViewById(R.id.loc_main);
+        locAlter = findViewById(R.id.alter_loc);
+        viewLoc = findViewById(R.id.view_location);
+        changeLoc = findViewById(R.id.changeLocation);
+        setLoc = findViewById(R.id.setupLocation);
+        btnCoursesEnrolled = findViewById(R.id.courses_enrolled);
+        btnCoursesTaught = findViewById(R.id.courses_taught);
+
 //        NumberOfCoursesTaken = (TextView) findViewById(R.id.profileNumCoursesTaken);
 //        NumberOfCoursesTaught = (TextView) findViewById(R.id.profileNumCoursesTaught);
         profileImage = (CircleImageView) findViewById(R.id.imgProfileImage);
@@ -133,6 +149,38 @@ public class ProfileViewActivity extends AppCompatActivity {
             }
         });
 
+        //TODO: if location services enabled, set visibility of locMain to visible and locAlter to gone; and also other way
+
+        //TODO: for all item clicks, alter visibility of progress bar to indicate process being done
+
+        changeLoc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO: show map; allow to choose a location. Current location as default.
+            }
+        });
+
+        setLoc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO: ask for permission for location, of not given. Enable location services.
+            }
+        });
+
+        btnCoursesTaught.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), CoursesTaughtActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        btnCoursesEnrolled.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO: go to a page where all courses learnt by you are displayed, current and past
+            }
+        });
 
     }
 

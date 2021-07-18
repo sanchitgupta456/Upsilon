@@ -4,7 +4,8 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:theme="@style/MaterialTheme"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/colorWhite">
     <ProgressBar
         android:id="@+id/loadingUserProfile"
         android:layout_width="wrap_content"
@@ -85,6 +86,96 @@
                     android:textSize="18sp"
                     android:textColor="@color/colorPrimary"/>
             </com.google.android.material.textfield.TextInputLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_margin="@dimen/activity_horizontal_margin"
+                android:id="@+id/loc_main">
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/activity_horizontal_margin"
+                    android:text="User Location"
+                    android:textColor="@color/quantum_cyan900"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    android:drawablePadding="@dimen/activity_horizontal_margin"
+                    android:id="@+id/view_location"
+                    android:layout_weight="1"
+                    android:layout_gravity="center_vertical"
+                    app:drawableStartCompat="@drawable/icon_location"
+                    app:drawableTint="@color/quantum_cyan900" />
+                <com.google.android.material.button.MaterialButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Change"
+                    android:id="@+id/changeLocation"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:layout_gravity="center_vertical" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_margin="@dimen/activity_horizontal_margin"
+                android:id="@+id/alter_loc"
+                android:visibility="gone">
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/activity_horizontal_margin"
+                    android:text="You have not set up your location services"
+                    android:textColor="@color/quantum_grey600"
+                    android:textStyle="bold"
+                    android:textSize="14sp"
+                    android:drawablePadding="@dimen/activity_horizontal_margin"
+                    android:layout_weight="1"
+                    android:layout_gravity="center_vertical"/>
+                <com.google.android.material.button.MaterialButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Get Started"
+                    android:letterSpacing="0"
+                    android:id="@+id/setupLocation"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:layout_gravity="center_vertical" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_margin="@dimen/activity_horizontal_margin"
+                android:id="@+id/links">
+                <com.google.android.material.button.MaterialButton
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="Courses I teach"
+                    android:id="@+id/courses_taught"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginHorizontal="15dp"
+                    android:drawableEnd="@drawable/next"
+                    android:paddingHorizontal="10dp"
+                    style="@style/StrokeButtonStyle"/>
+                <com.google.android.material.button.MaterialButton
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="My Enrolled Courses"
+                    android:id="@+id/courses_enrolled"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginHorizontal="15dp"
+                    android:paddingHorizontal="10dp"
+                    android:drawableEnd="@drawable/next"
+                    style="@style/StrokeButtonStyle"/>
+            </LinearLayout>
             <com.google.android.material.button.MaterialButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
