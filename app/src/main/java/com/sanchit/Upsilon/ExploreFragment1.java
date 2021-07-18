@@ -2,6 +2,7 @@ package com.sanchit.Upsilon;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -60,6 +61,7 @@ public class ExploreFragment1 extends Fragment {
     private Gson gson;
     private GsonBuilder gsonBuilder;
     RecyclerView recyclerView;
+    private boolean loading;
     SearchQuery searchQuery = new SearchQuery();
     private RequestQueue queue;
     private String API ;
@@ -84,6 +86,7 @@ public class ExploreFragment1 extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_explore1, container, false);
         recyclerView = (RecyclerView) view.findViewById(R.id.exploreList1);
+        loading = false;
         queue = Volley.newRequestQueue(getApplicationContext());
         API = ((Upsilon)getActivity().getApplication()).getAPI();
 
@@ -96,8 +99,41 @@ public class ExploreFragment1 extends Fragment {
 //        searchQuery.setRankMethod(sortCriteria);
 //        searchForCourses(query);
         performSearch(new ArrayList<>() , "");
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if(!loading) {
+                    //list is the course list currently being displayed
+                    if(linearLayoutManager.findLastCompletelyVisibleItemPosition()==list.size()-1){
+                        loadMore();
+                        adapter.notifyDataSetChanged();
+                    }
+                }
+            }
+        });
+
         return view;
 
+
+    }
+
+    public void loadOnce(){
+        loading = true;
+        //TODO: implement
+
+        //TODO: when load complete, set loading flag back to false
+    }
+    public void loadMore(){
+        loading = true;
+        //TODO: implement
+
+        //TODO: when load complete, set loading flag back to false
     }
 
     public void searchForCourses(SearchQuery _searchQuery) {
@@ -224,10 +260,10 @@ public class ExploreFragment1 extends Fragment {
 
     public void initRecyclerView(RecyclerView recyclerView, ArrayList<CourseFinal> list) {
         Log.d(TAG, "initRecyclerView: now displaying " + recyclerView.getId());
-        CoursesAdapter1 coursesAdapter1 = new CoursesAdapter1(list,((Upsilon)getActivity().getApplication()).getAPI() , ((Upsilon)getActivity().getApplication()).getToken() , ((Upsilon) getActivity().getApplication()).getUser());
+        adapter = new CoursesAdapter1(list,((Upsilon)getActivity().getApplication()).getAPI() , ((Upsilon)getActivity().getApplication()).getToken() , ((Upsilon) getActivity().getApplication()).getUser());
         linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(linearLayoutManager);
-        recyclerView.setAdapter(coursesAdapter1);
+        recyclerView.setAdapter(adapter);
         Log.d(TAG, "initRecyclerView: display success! Displayed " + list.size() + " items");
     }
 }

@@ -91,6 +91,7 @@ public class ExploreFragment0 extends Fragment {
     RecyclerView recyclerView;
     CardView alter;
     LinearLayout ll, llLoader;
+    private boolean loading;
     SearchQuery searchQuery = new SearchQuery();
     Document userLocation;
     ProgressBar progressBar;
@@ -121,6 +122,8 @@ public class ExploreFragment0 extends Fragment {
         Log.d(TAG, "onCreateView: started. 95");
         View view = inflater.inflate(R.layout.fragment_explore0, container, false);
         recyclerView = (RecyclerView) view.findViewById(R.id.exploreList0);
+        loading = false;
+        initRecyclerView(recyclerView, list);
         progressBar = (ProgressBar) view.findViewById(R.id.loadingExplore);
         alter = (CardView) view.findViewById(R.id.alter);
         ll = (LinearLayout) view.findViewById(R.id.linearLayoutSetupMaps);
@@ -183,7 +186,41 @@ public class ExploreFragment0 extends Fragment {
             alter.setVisibility(View.VISIBLE);
         }*/
 
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if(!loading) {
+                    //list is the course list currently being displayed
+                    if(linearLayoutManager.findLastCompletelyVisibleItemPosition()==list.size()-1){
+                        loadMore();
+                        adapter.notifyDataSetChanged();
+                    }
+                }
+            }
+        });
+
         return view;
+
+
+    }
+
+    public void loadOnce(){
+        loading = true;
+        //TODO: implement
+
+        //TODO: when load complete, set loading flag back to false
+    }
+    public void loadMore(){
+        loading = true;
+        //TODO: implement
+
+        //TODO: when load complete, set loading flag back to false
     }
 
     public void searchForCourses(SearchQuery _searchQuery){
@@ -336,10 +373,10 @@ public class ExploreFragment0 extends Fragment {
 
     public void initRecyclerView(RecyclerView recyclerView, ArrayList<CourseFinal> list) {
         Log.d(TAG, "initRecyclerView: now displaying " + recyclerView.getId());
-        CoursesAdapter1 coursesAdapter1 = new CoursesAdapter1(list,((Upsilon)getActivity().getApplication()).getAPI() , ((Upsilon)getActivity().getApplication()).getToken() , ((Upsilon) getActivity().getApplication()).getUser());
+        adapter = new CoursesAdapter1(list,((Upsilon)getActivity().getApplication()).getAPI() , ((Upsilon)getActivity().getApplication()).getToken() , ((Upsilon) getActivity().getApplication()).getUser());
         linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(linearLayoutManager);
-        recyclerView.setAdapter(coursesAdapter1);
+        recyclerView.setAdapter(adapter);
         Log.d(TAG, "initRecyclerView: display success! Displayed " + list.size() + " items");
     }
 
