@@ -1,3 +1,15 @@
+/************************************************
+ *
+ *  HORIZONTAL DOT PROGRESS
+ *
+ *  UI Component designed specifically for step-based progress, particularly useful when considering several pages and/or navigation back and forth.
+ *  This is sole property of the author.
+ *
+ *  AUTHOR: Vedant Saboo, Founding Member, Upsilon
+ *  VERSION: 1.0
+ *
+ ***********************************************/
+
 package com.sanchit.Upsilon;
 
 import android.content.Context;

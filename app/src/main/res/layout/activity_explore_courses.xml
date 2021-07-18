@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:theme="@style/MaterialTheme">
 
     <com.google.android.material.tabs.TabLayout
         android:layout_width="match_parent"
@@ -11,11 +12,9 @@
         android:elevation="10dp"
         app:tabMode="scrollable"
         android:id="@+id/tabLayout"
-        android:background="@color/colorPrimary"
-        app:tabTextColor="@color/colorWhite"
-        app:tabIndicatorHeight="5dp"
-        app:tabIndicatorColor="@color/colorLiteGrey"
-        android:isScrollContainer="true">
+        android:isScrollContainer="true"
+        style="@style/Widget.MaterialComponents.TabLayout.Colored"
+        app:tabBackground="@color/colorPrimary">
         <com.google.android.material.tabs.TabItem
             android:id="@+id/topFree"
             android:layout_width="wrap_content"
