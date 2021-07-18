@@ -99,7 +99,7 @@ public class UserDataSetupFragment3 extends Fragment implements AdapterView.OnIt
         College = "None";
         viewModel.setCollege(College);
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.support_simple_spinner_dropdown_item, Colleges);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.simple_expandable_list_item_custom, Colleges);
         selectYourCollege.setAdapter(adapter);
         //selectYourCollege.setOnItemClickListener(this::onItemSelected);
 

@@ -109,7 +109,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     RelativeLayout main;
     RecyclerView recyclerView,recyclerView1,recyclerView2,recyclerViewSearchResults;
-    CardView frame, frame1, frame2;
+    CardView frame, frame1, frame2, alter;
     CoursesAdapter1 coursesAdapter;
     CoursesAdapter1 searchResultsAdapter;
     CoursesAdapter1 coursesAdapter1_1;
@@ -189,7 +189,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         main = (RelativeLayout) findViewById(R.id.main);
         frame = (CardView) findViewById(R.id.ll);
         frame1 = (CardView) findViewById(R.id.frameCurrentCourseListView);
-        frame2 = (CardView) findViewById(R.id.frameRecommendedCourses);/*
+        frame2 = (CardView) findViewById(R.id.frameRecommendedCourses);
+        alter = findViewById(R.id.alter);
+        alter.setVisibility(GONE);
+        /*
         if(courseArrayList.size()==0){
             frame.setVisibility(View.GONE);
         } else {
@@ -738,6 +741,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 } else {
                     frame2.setVisibility(View.VISIBLE);
                 }
+//                if(courseArrayList.size()==0 && courseArrayList1.size()==0 && courseArrayList2.size()==0) {
+//                    alter.setVisibility(View.VISIBLE);
+//                } else {
+//                    alter.setVisibility(GONE);
+//                }
 //
 //
 //                MongoCollection<Document> mongoCollection1  = mongoDatabase.getCollection("UserData");

@@ -38,13 +38,13 @@
             <androidx.appcompat.widget.AppCompatSpinner
                 android:layout_marginStart="@dimen/activity_horizontal_margin"
                 android:layout_marginEnd="@dimen/activity_horizontal_margin"
-                android:gravity="center_horizontal"
+                android:gravity="center"
                 android:id="@+id/spinnerUserCollege"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/textSelectYourCollege"
                 android:dropDownWidth="wrap_content"
-                tools:listitem="@layout/support_simple_spinner_dropdown_item"/>
+                tools:listitem="@layout/simple_expandable_list_item_custom"/>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"

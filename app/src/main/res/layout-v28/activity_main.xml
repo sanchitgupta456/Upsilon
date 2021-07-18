@@ -201,8 +201,9 @@
                     android:layout_margin="10dp"
                     app:cardBackgroundColor="@color/colorWhite"
                     app:cardElevation="4dp"
-                    android:outlineSpotShadowColor="@color/ripple_green"
-                    android:outlineAmbientShadowColor="@color/ripple_green">
+                    android:outlineSpotShadowColor="@color/GreyDark"
+                    android:outlineAmbientShadowColor="@color/GreyDark"
+                    android:visibility="gone">
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent">
@@ -232,14 +233,15 @@
                                 android:text="Refresh"
                                 style="@style/ButtonStyle"/>
                         </LinearLayout>
-
+                        
                         <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
                             android:layout_below="@id/ll_alter"
                             android:layout_centerHorizontal="true"
-                            android:id="@+id/llProgress">
+                            android:id="@+id/llProgress"
+                            android:visibility="gone">
                             <ProgressBar
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"

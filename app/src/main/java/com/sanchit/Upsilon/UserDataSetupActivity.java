@@ -487,6 +487,9 @@ public class UserDataSetupActivity extends AppCompatActivity {
 //        RealmResultTask<MongoCursor<Document>> findTask = mongoCollection.find(queryFilter).iterator();
 //
 //
+//        if(viewModel.getName().toString().equals("User")) {
+//            viewModel.setName(user.getProfile().getEmail());
+//        }
 //
 //        findTask.getAsync(task -> {
 //            if (task.isSuccess()) {

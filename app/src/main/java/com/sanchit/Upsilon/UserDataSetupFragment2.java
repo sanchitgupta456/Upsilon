@@ -107,13 +107,15 @@ public class UserDataSetupFragment2 extends Fragment {
 
             public void afterTextChanged(Editable s) {
                 flag = 1;
-                name = Name.getText().toString();
+                name = s.toString();
                 if (name.length() == 0){
-                    Animation shake = AnimationUtils.loadAnimation(getContext(), R.anim.shake);
-                    Name.startAnimation(shake);
-                    Name.setText("");
-                    Name.setError("Please Enter a Name!");
-                    Name.requestFocus();
+//                    Animation shake = AnimationUtils.loadAnimation(getContext(), R.anim.shake);
+//                    Name.startAnimation(shake);
+//                    Name.setText("");
+//                    Name.setError("Please Enter a Name!");
+//                    Name.requestFocus();
+//                    return;
+                    name = "User";
                 }
                 viewModel.setName(name);
             }
@@ -124,13 +126,15 @@ public class UserDataSetupFragment2 extends Fragment {
             public void onTextChanged(CharSequence s, int start, int before,
                                       int count) {
                 flag = 1;
-                name = Name.getText().toString();
+                name = s.toString();
                 if (name.length() == 0){
-                    Animation shake = AnimationUtils.loadAnimation(getContext(), R.anim.shake);
-                    Name.startAnimation(shake);
-                    Name.setText("");
-                    Name.setError("Please Enter a Name!");
-                    Name.requestFocus();
+//                    Animation shake = AnimationUtils.loadAnimation(getContext(), R.anim.shake);
+//                    Name.startAnimation(shake);
+//                    Name.setText("");
+//                    Name.setError("Please Enter a Name!");
+//                    Name.requestFocus();
+//                    return;
+                    name = "User";
                 }
                 viewModel.setName(name);
             }
