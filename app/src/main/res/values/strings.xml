@@ -2,21 +2,21 @@
     <string name="app_name">Upsilon</string>
     <string name="aboutTitleText">About us.</string>
     <string name="aboutText">
-        <p>
+        <p align="justify">
         Upsilon is an organisation that glorifies the learning and teaching experience for everyone.
         </p>
         \n\n
-        <p>
+        <p align="justify">
         We at Upsilon are a group of IIT Madras students who have built this application that guides a student to learn from the best suitable teacher, either online or offline,
         and also helps the teachers reach the appropriate students.
         </p>
         \n\n
-        <p>
+        <p align="justify">
         We believe that the learning process should never be affected no matter what crisis befalls and hence, we provide Upsilon, a remedy to all the common problems faced by the
         educational system.
         </p>
         \n\n
-        <p>
+        <p align="justify">
         <b>What do we feature?</b>
         \n\n
         Trouble finding the right? We search for the best suited courses and compare them for you. Find the right teacher in the right medium to learn from.
@@ -27,23 +27,19 @@
         \n
         </p>
         \n\n
-        <p>
+        <p align="justify">
         <b>Meet our team</b>
         </p>
         \n\n
-        <p>
+        <p align="justify">
         Sanchit Gupta, Student in B Tech at the IIT Madras institute.
         </p>
-        \n
-        <p>
+        \n\n
+        <p align="justify">
         Vedant Saboo, Student in B Tech at the IIT Madras institute.
         </p>
-        \n
-        <p>
-        Saurav Kale, Student in B Tech at the IIT Madras institute.
-        </p>
         \n\n
-        <p>
+        <p align="justify">
         <b>Thanks for downloading the app!</b>
         </p>
     </string>

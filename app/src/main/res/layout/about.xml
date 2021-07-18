@@ -5,7 +5,7 @@
     tools:context=".AboutActivity"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimary">
+    android:background="@drawable/gradient_login_frame">
 
     <ImageView
         android:id="@+id/logo"
@@ -34,7 +34,8 @@
         android:layout_height="wrap_content"
         android:text="@string/aboutTitleText"
         android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-        android:textColor="@color/colorLiteGrey"
+        android:textColor="@color/colorWhite"
+        android:textStyle="bold"
         android:layout_below="@id/logoText"
         android:textSize="18sp"
         android:layout_marginHorizontal="20dp"
@@ -45,14 +46,16 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginHorizontal="15dp"
-        android:layout_below="@id/aboutTitle">
+        android:layout_below="@id/aboutTitle"
+        android:scrollIndicators="end"
+        android:scrollbarStyle="insideInset">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/aboutText"
             android:textSize="16sp"
-            android:textColor="@color/colorWhite" />
+            android:textColor="@color/colorWhite"/>
 
         <!-- contents? blah! -->
 
