@@ -4,9 +4,11 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -19,6 +21,7 @@ public class TeachingStatListAdapter extends RecyclerView.Adapter<TeachingStatLi
     //vars
     private ArrayList<TeachingStatData> mTeachingStatDataArrayList = new ArrayList<>();
     private Context mContext;
+    private static final int[] colors = {R.color.quantum_deeppurple800, R.color.quantum_amber900, R.color.quantum_cyan700};
 
     public TeachingStatListAdapter(Context context, ArrayList<TeachingStatData> TeachingStatDataArrayList) {
         mTeachingStatDataArrayList = TeachingStatDataArrayList;
@@ -38,6 +41,7 @@ public class TeachingStatListAdapter extends RecyclerView.Adapter<TeachingStatLi
 
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
+        holder.statCard.setBackgroundColor(mContext.getResources().getColor(colors[position % colors.length], mContext.getTheme()));
         if(mTeachingStatDataArrayList.get(position).getStatData()!=null && !mTeachingStatDataArrayList.get(position).getStatData().equals("null"))
         {
             holder.statData.setText(mTeachingStatDataArrayList.get(position).getStatData());
@@ -59,11 +63,13 @@ public class TeachingStatListAdapter extends RecyclerView.Adapter<TeachingStatLi
 
         TextView statData;
         TextView statField;
+        LinearLayout statCard;
 
         public ViewHolder(View itemView) {
             super(itemView);
             statData = itemView.findViewById(R.id.statData);
             statField = itemView.findViewById(R.id.statField);
+            statCard = itemView.findViewById(R.id.statCard);
         }
     }
 

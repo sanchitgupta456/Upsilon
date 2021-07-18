@@ -1,56 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_gravity="center_horizontal"
-    android:layout_margin="3dp"
+<androidx.cardview.widget.CardView
     android:id="@+id/courseCard1"
-    >
+    android:layout_width="180dp"
+    android:layout_height="160dp"
+    app:cardCornerRadius="10dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_gravity="center_horizontal">
 
+    <LinearLayout
+        android:id="@+id/statCard"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:background="@color/colorPrimary"
+        android:weightSum="100"
+        android:padding="10dp">
 
-    <androidx.cardview.widget.CardView
-
-        android:id="@+id/courseCard"
-        android:layout_width="180dp"
-        android:layout_height="160dp"
-        app:cardCornerRadius="10dp"
-        app:cardElevation="12dp"
-        android:background="@color/colorPrimary">
-
-        <LinearLayout
+        <TextView
+            android:id="@+id/statData"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
             android:gravity="center"
-            android:background="@color/colorPrimary"
-            android:weightSum="100">
+            android:textColor="@color/colorWhite"
+            android:autoSizeTextType="uniform"
+            android:maxLines="1"
+            android:typeface="sans"
+            android:textStyle="bold"
+            android:layout_weight="30"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/colorGrey"
+            />
+        <TextView
+            android:id="@+id/statField"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:textColor="@color/colorWhite"
+            android:autoSizeTextType="uniform"
+            android:autoSizeMinTextSize="10dp"
+            android:typeface="sans"
+            android:textStyle="bold"
+            android:layout_weight="70"/>
+    </LinearLayout>
 
-            <TextView
-                android:id="@+id/statData"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:textColor="@color/colorWhite"
-                android:textSize="64sp"
-                android:typeface="sans"
-                android:textStyle="bold"
-                android:layout_weight="30"/>
+</androidx.cardview.widget.CardView>
 
-            <TextView
-                android:id="@+id/statField"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:textColor="@color/colorWhite"
-                android:typeface="sans"
-                android:textStyle="bold"
-                android:layout_weight="70"/>
-        </LinearLayout>
-
-    </androidx.cardview.widget.CardView>
-
-
-</RelativeLayout>
 
