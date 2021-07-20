@@ -14,7 +14,8 @@
         android:id="@+id/tabLayout"
         android:isScrollContainer="true"
         style="@style/Widget.MaterialComponents.TabLayout.Colored"
-        app:tabBackground="@color/colorPrimary">
+        app:tabBackground="@color/colorPrimary"
+        android:backgroundTint="@color/colorPrimary">
         <com.google.android.material.tabs.TabItem
             android:id="@+id/topFree"
             android:layout_width="wrap_content"
