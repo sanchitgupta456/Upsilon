@@ -100,6 +100,7 @@ public class ExploreFragment0 extends Fragment {
     ArrayList<CourseFinal> list = new ArrayList<>();
     private RequestQueue queue;
     private String API ;
+private boolean allLoaded = false;
 
     public rankBy sortCriteria = rankBy.LOC;
 
@@ -197,9 +198,9 @@ public class ExploreFragment0 extends Fragment {
                 super.onScrolled(recyclerView, dx, dy);
                 if(!loading) {
                     //list is the course list currently being displayed
-                    if(linearLayoutManager.findLastCompletelyVisibleItemPosition()==list.size()-1){
+                    if(linearLayoutManager.findLastCompletelyVisibleItemPosition()==list.size()-2){
                         loadMore();
-                        adapter.notifyDataSetChanged();
+//                        adapter.notifyDataSetChanged();
                     }
                 }
             }
@@ -211,16 +212,19 @@ public class ExploreFragment0 extends Fragment {
     }
 
     public void loadOnce(){
+        Log.v("NearMe","Loading");
         loading = true;
-        //TODO: implement
-
-        //TODO: when load complete, set loading flag back to false
+        list = new ArrayList<CourseFinal>();
+        initRecyclerView(recyclerView, list);
+        performSearch();
     }
     public void loadMore(){
+        if(allLoaded)
+        {
+            return;
+        }
         loading = true;
-        //TODO: implement
-
-        //TODO: when load complete, set loading flag back to false
+        performSearch();
     }
 
     public void searchForCourses(SearchQuery _searchQuery){
@@ -240,8 +244,8 @@ public class ExploreFragment0 extends Fragment {
             selectedTags.add(key);
         }
         Log.v("Tags", String.valueOf(selectedTags));
-        performSearch();
-
+        list.clear();
+        loadOnce();
     }
 //    public void searchForCourses(String query){
 //        this.query = query;
@@ -257,7 +261,7 @@ public class ExploreFragment0 extends Fragment {
         JSONObject jsonBody = new JSONObject();
         Gson gson = new Gson();
         try {
-            jsonBody.put("index",0);
+            jsonBody.put("index",Integer.parseInt(String.valueOf(list.size()/5)));
             jsonBody.put("filter","Distance");
             jsonBody.put("tags",gson.toJson(selectedTags));
             jsonBody.put("regex",regex);
@@ -267,9 +271,13 @@ public class ExploreFragment0 extends Fragment {
                         @Override
                         public void onResponse(JSONObject response) {
                             Log.d("Response", response.toString());
-                            list = new ArrayList<CourseFinal>();
+//                            list = new ArrayList<CourseFinal>();
                             try {
                                 JSONArray jsonArray = (JSONArray) response.get("courses");
+                                if(jsonArray.length()==0)
+                                {
+                                    allLoaded=true;
+                                }
                                 Log.v("array",String.valueOf(jsonArray));
                                 for(int i=0;i<jsonArray.length();i++)
                                 {
@@ -277,11 +285,14 @@ public class ExploreFragment0 extends Fragment {
                                     Gson gson= new Gson();
                                     CourseFinal course = gson.fromJson(jsonObject.toString(),CourseFinal.class);
                                     list.add(course);
+                                    adapter.notifyDataSetChanged();
                                     Log.v("course",String.valueOf(course.getCourseReviews()));
                                 }
                                 progressBar.setVisibility(View.GONE);
-                                initRecyclerView(recyclerView, list);
+//                                initRecyclerView(recyclerView, list);
+                                loading = false;
                             } catch (JSONException e) {
+                                loading = false;
                                 e.printStackTrace();
                             }
 //                                initRecyclerView(recyclerView, list);
@@ -435,14 +446,14 @@ public class ExploreFragment0 extends Fragment {
 
     public void findLocation(){
         progressBar.setVisibility(View.VISIBLE);
-        if(((Upsilon)getActivity().getApplication()).getUser().getUserLocation() != null)
+        if(((Upsilon)getActivity().getApplication()).getUser().getUserLocation() != null && ((Upsilon)getActivity().getApplication()).getUser().getUserLocation().getLatitude() != null)
         {
                         progressBar.setVisibility(View.GONE);
                         Log.v("ExploreFragment0","userLoc is not null"+String.valueOf(((Upsilon)getActivity().getApplication()).user.getUserLocation()));
                         recyclerView.setVisibility(View.VISIBLE);
                         alter.setVisibility(View.GONE);
                         llLoader.setVisibility(View.INVISIBLE);
-                        performSearch();
+                        loadOnce();
         }
         else
         {
@@ -510,7 +521,7 @@ public class ExploreFragment0 extends Fragment {
                             alter.setVisibility(View.GONE);
                             ((Upsilon)getActivity().getApplication()).user.setUserLocation(new UserLocation(Double.parseDouble(userLocation.get("latitude").toString()),Double.parseDouble(userLocation.get("longitude").toString())));
                             ((Upsilon)getActivity().getApplication()).fetchProfile();
-                            performSearch();
+                            loadOnce();
                                     recyclerView.setVisibility(View.VISIBLE);
                         }
                     },

@@ -57,10 +57,13 @@ public class ExploreFragment2 extends Fragment {
     private RequestQueue queue;
     private String API ;
     ArrayList<CourseFinal> list = new ArrayList<>();
+    private boolean allLoaded = false;
 
     public rankBy sortCriteria = rankBy.PRICE;
 
     String query = "";
+    ArrayList<String> selectedTags;
+    String regex ="";
     public ExploreFragment2(String string) {
         query = string;
     }
@@ -78,7 +81,7 @@ public class ExploreFragment2 extends Fragment {
         loading = false;
         queue = Volley.newRequestQueue(getApplicationContext());
         API = ((Upsilon)getActivity().getApplication()).getAPI();
-
+        loadOnce();
 //        app = new App(new AppConfiguration.Builder(appID).build());
 //        user = app.currentUser();
 //        mongoClient = user.getMongoClient("mongodb-atlas");
@@ -87,7 +90,7 @@ public class ExploreFragment2 extends Fragment {
 
 //        searchQuery.setRankMethod(sortCriteria);
 //        searchForCourses(query);
-        performSearch(new ArrayList<>(),"");
+//        performSearch();
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
@@ -101,7 +104,7 @@ public class ExploreFragment2 extends Fragment {
                     //list is the course list currently being displayed
                     if(linearLayoutManager.findLastCompletelyVisibleItemPosition()==list.size()-1){
                         loadMore();
-                        adapter.notifyDataSetChanged();
+//                        adapter.notifyDataSetChanged();
                     }
                 }
             }
@@ -114,15 +117,17 @@ public class ExploreFragment2 extends Fragment {
 
     public void loadOnce(){
         loading = true;
-        //TODO: implement
-
-        //TODO: when load complete, set loading flag back to false
+        list = new ArrayList<CourseFinal>();
+        initRecyclerView(recyclerView, list);
+        performSearch();
     }
     public void loadMore(){
+        if(allLoaded)
+        {
+            return;
+        }
         loading = true;
-        //TODO: implement
-
-        //TODO: when load complete, set loading flag back to false
+        performSearch();
     }
 
     public void initRecyclerView(RecyclerView recyclerView, ArrayList<CourseFinal> list) {
@@ -137,8 +142,8 @@ public class ExploreFragment2 extends Fragment {
         this.query = _searchQuery.getKeywords();
         searchQuery.setQuery(query);
         searchQuery.setSelectedTags(_searchQuery.getSelectedTags());
-        ArrayList<String> selectedTags = new ArrayList<>();
-        String regex = _searchQuery.getKeywords();
+        selectedTags = new ArrayList<>();
+        regex = _searchQuery.getKeywords();
 //        for(int i=0;i<_searchQuery.getSelectedTags().size();i++)
 //        {
 //            if(_searchQuery.getSelectedTags().get(i).booleanValue()==true)
@@ -150,18 +155,19 @@ public class ExploreFragment2 extends Fragment {
             selectedTags.add(key);
         }
         Log.v("Tags", String.valueOf(selectedTags));
-        performSearch(selectedTags,regex);
+        list.clear();
+        loadOnce();
     }
 //    public void searchForCourses(String query){
 //        this.query = query;
 //        searchQuery.setQuery(query);
 //        performSearch(selectedTags);
 //    }
-    public void performSearch(ArrayList<String> selectedTags,String regex) {
+    public void performSearch() {
 
         JSONObject jsonBody = new JSONObject();
         try {
-            jsonBody.put("index",0);
+            jsonBody.put("index",Integer.parseInt(String.valueOf(list.size()/5)));
             jsonBody.put("filter","Fees");
             Gson gson = new Gson();
             jsonBody.put("tags",gson.toJson(selectedTags));
@@ -171,9 +177,13 @@ public class ExploreFragment2 extends Fragment {
                         @Override
                         public void onResponse(JSONObject response) {
                             Log.d("Response", response.toString());
-                            list = new ArrayList<CourseFinal>();
+//                            list = new ArrayList<CourseFinal>();
                             try {
                                 JSONArray jsonArray = (JSONArray) response.get("courses");
+                                if(jsonArray.length()==0)
+                                {
+                                    allLoaded=true;
+                                }
                                 Log.v("array",String.valueOf(jsonArray));
                                 for(int i=0;i<jsonArray.length();i++)
                                 {
@@ -181,13 +191,17 @@ public class ExploreFragment2 extends Fragment {
                                     Gson gson= new Gson();
                                     CourseFinal course = gson.fromJson(jsonObject.toString(),CourseFinal.class);
                                     list.add(course);
+                                    adapter.notifyDataSetChanged();
                                     Log.v("course",String.valueOf(course.getCourseReviews()));
                                 }
-                                initRecyclerView(recyclerView, list);
+//                                initRecyclerView(recyclerView, list);
+//                                initRecyclerView(recyclerView, list);
+                                loading = false;
                             } catch (JSONException e) {
+                                loading = false;
                                 e.printStackTrace();
                             }
-                                initRecyclerView(recyclerView, list);
+//                                initRecyclerView(recyclerView, list);
 
                         }
                     },

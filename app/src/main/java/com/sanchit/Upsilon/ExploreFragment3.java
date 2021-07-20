@@ -97,7 +97,7 @@ public class ExploreFragment3 extends Fragment {
 //        MongoCollection<Document> mongoCollection  = mongoDatabase.getCollection("CourseData");
 //        searchQuery.setRankMethod(sortCriteria);
 //        searchForCourses(query);
-        performSearch();
+        loadOnce();
 
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -112,7 +112,7 @@ public class ExploreFragment3 extends Fragment {
                     //list is the course list currently being displayed
                     if(linearLayoutManager.findLastCompletelyVisibleItemPosition()==list.size()-1){
                         loadMore();
-                        adapter.notifyDataSetChanged();
+//                        adapter.notifyDataSetChanged();
                     }
                 }
             }
@@ -125,21 +125,20 @@ public class ExploreFragment3 extends Fragment {
 
     public void loadOnce(){
         loading = true;
-        //TODO: implement
-
-        //TODO: when load complete, set loading flag back to false
+        list = new ArrayList<CourseFinal>();
+        initRecyclerView(recyclerView, list);
+        performSearch();
     }
     public void loadMore(){
         loading = true;
-        //TODO: implement
-
-        //TODO: when load complete, set loading flag back to false
+        performSearch();
     }
+
     public void performSearch() {
 //        progressBar.setVisibility(View.VISIBLE);
         JSONObject jsonBody = new JSONObject();
         try {
-            jsonBody.put("index",0);
+            jsonBody.put("index",Integer.parseInt(String.valueOf(list.size()/5)));
             jsonBody.put("filter","Mode");
             Gson gson = new Gson();
             jsonBody.put("tags",gson.toJson(new ArrayList<>()));
@@ -149,7 +148,7 @@ public class ExploreFragment3 extends Fragment {
                         @Override
                         public void onResponse(JSONObject response) {
                             Log.d("Response", response.toString());
-                            list = new ArrayList<CourseFinal>();
+//                            list = new ArrayList<CourseFinal>();
                             try {
                                 JSONArray jsonArray = (JSONArray) response.get("courses");
                                 Log.v("array",String.valueOf(jsonArray));
@@ -159,9 +158,10 @@ public class ExploreFragment3 extends Fragment {
                                     Gson gson= new Gson();
                                     CourseFinal course = gson.fromJson(jsonObject.toString(),CourseFinal.class);
                                     list.add(course);
+                                    adapter.notifyDataSetChanged();
                                     Log.v("course",String.valueOf(course.getCourseReviews()));
                                 }
-                                initRecyclerView(recyclerView, list);
+//                                initRecyclerView(recyclerView, list);
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }

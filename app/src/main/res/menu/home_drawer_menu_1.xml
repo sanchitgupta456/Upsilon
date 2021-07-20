@@ -14,9 +14,9 @@
         android:title="Upsilon Wallet"
         android:id="@+id/homeDrawerMenuItem6"/>
 
-    <item
-        android:title="TEST_DEBUG"
-        android:id="@+id/homeDrawerMenuItem7"/>
+<!--    <item-->
+<!--        android:title="TEST_DEBUG"-->
+<!--        android:id="@+id/homeDrawerMenuItem7"/>-->
 
     <item
         android:title="Setup Your Profile"

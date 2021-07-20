@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,8 +15,24 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+import com.google.gson.Gson;
+import com.sanchit.Upsilon.courseData.CourseFinal;
+
 import org.bson.Document;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.w3c.dom.Text;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import io.realm.mongodb.App;
 import io.realm.mongodb.AppConfiguration;
@@ -25,6 +42,8 @@ import io.realm.mongodb.mongo.MongoClient;
 import io.realm.mongodb.mongo.MongoCollection;
 import io.realm.mongodb.mongo.MongoDatabase;
 import io.realm.mongodb.mongo.iterable.MongoCursor;
+
+import static android.view.View.GONE;
 
 
 public class WalletActivity extends AppCompatActivity {
@@ -43,6 +62,8 @@ public class WalletActivity extends AppCompatActivity {
     Button EditPaymentDetails;
     Button Withdraw;
     Document paymentDetails;
+    private RequestQueue queue;
+    private String API ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,11 +81,56 @@ public class WalletActivity extends AppCompatActivity {
         EditPaymentDetails = (Button) findViewById(R.id.btn_edit_payment_details);
         Withdraw = (Button) findViewById(R.id.btn_withdraw_from_wallet);
         Amount = (TextView) findViewById(R.id.current_balance);
+        queue = Volley.newRequestQueue(getApplicationContext());
+        API = ((Upsilon)this.getApplication()).getAPI();
 //        accountnumber.setText(Accountnumber);
 //        ifsc.setText(Ifsc);
 //        mobile.setText(Mobile);
 //        upi.setText(Upi);
 //        amountdue.setText(AmountDue);
+        JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.GET, API+"/getPaymentDetails",new JSONObject(),
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Log.d("FetchMyCourses", response.toString());
+                        try {
+                            if(response.get("accountNumber")!=null)
+                            {
+                                try {
+                                    accountnumber.setText(response.get("accountNumber").toString());
+                                    ifsc.setText(response.get("ifscCode").toString());
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+
+                                try {
+                                    upi.setText(response.get("upiId").toString());
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                                mobile.setText(((Upsilon)getApplication()).getUser().getPhone());
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @SuppressLint("LongLogTag")
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("ErrorFetchingMyCourses", error.toString());
+                    }
+                }
+        ){
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("token", ((Upsilon)getApplication()).getToken());
+                return params;
+            }
+        };
+        queue.add(jsonRequest);
 
 
         EditPaymentDetails.setOnClickListener(new View.OnClickListener() {

@@ -284,7 +284,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 //            MongoCollection<Document> mongoCollection  = mongoDatabase.getCollection("UserData");
 //
 //            //Blank query to find every single course in db
-//            //TODO: Modify query to look for user preferred course IDs
 //            Document queryFilter  = new Document("userid",user.getId());
 //
 //            RealmResultTask<MongoCursor<Document>> findTask = mongoCollection.find(queryFilter).iterator();
@@ -1068,11 +1067,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             Intent intent = new Intent(MainActivity.this, WalletActivity.class);
             startActivity(intent);
         }
-        else if(id==R.id.homeDrawerMenuItem7)
-        {
-            Intent intent = new Intent(MainActivity.this, AssignmentsActivity.class);
-            startActivity(intent);
-        }
+//        else if(id==R.id.homeDrawerMenuItem7)
+//        {
+//            Intent intent = new Intent(MainActivity.this, AssignmentsActivity.class);
+//            startActivity(intent);
+//        }
         else if(id==R.id.homeDrawerMenuItem8)
         {
             Intent intent = new Intent(MainActivity.this, GetStartedAsTeacherActivity.class);

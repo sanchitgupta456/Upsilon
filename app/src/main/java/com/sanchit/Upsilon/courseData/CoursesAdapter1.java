@@ -66,6 +66,12 @@ public class CoursesAdapter1 extends RecyclerView.Adapter<CoursesAdapter1.ViewHo
     private String Token;
     User user;
 
+    public void updateList(List<CourseFinal> newlist) {
+        courseList.clear();
+        courseList.addAll(newlist);
+        this.notifyDataSetChanged();
+    }
+
 
 //    public CoursesAdapter1(List<CourseFinal>_courseList)
 //    {
