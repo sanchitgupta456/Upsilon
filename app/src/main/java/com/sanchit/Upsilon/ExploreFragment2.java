@@ -3,6 +3,7 @@ package com.sanchit.Upsilon;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -11,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -18,6 +20,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.material.button.MaterialButton;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.sanchit.Upsilon.courseData.CourseFinal;
@@ -62,6 +65,10 @@ public class ExploreFragment2 extends Fragment {
     public rankBy sortCriteria = rankBy.PRICE;
 
     String query = "";
+
+    CardView alter;
+    MaterialButton btnRefresh;
+    LinearLayout llRefreshProgress;
     ArrayList<String> selectedTags;
     String regex ="";
     public ExploreFragment2(String string) {
@@ -78,6 +85,19 @@ public class ExploreFragment2 extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_explore2, container, false);
         recyclerView = (RecyclerView)  view.findViewById(R.id.exploreList2);
+        alter = view.findViewById(R.id.alter);
+        btnRefresh = view.findViewById(R.id.btnRefresh);
+        llRefreshProgress = view.findViewById(R.id.llRefreshProgress);
+        alter.setVisibility(View.GONE);
+        llRefreshProgress.setVisibility(View.INVISIBLE);
+
+        btnRefresh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                llRefreshProgress.setVisibility(View.VISIBLE);
+                loadOnce();
+            }
+        });
         loading = false;
         queue = Volley.newRequestQueue(getApplicationContext());
         API = ((Upsilon)getActivity().getApplication()).getAPI();
@@ -100,6 +120,7 @@ public class ExploreFragment2 extends Fragment {
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
+                if(!allLoaded)
                 if(!loading) {
                     //list is the course list currently being displayed
                     if(linearLayoutManager.findLastCompletelyVisibleItemPosition()==list.size()-1){
@@ -197,8 +218,14 @@ public class ExploreFragment2 extends Fragment {
 //                                initRecyclerView(recyclerView, list);
 //                                initRecyclerView(recyclerView, list);
                                 loading = false;
+                                if(list.size() == 0) alter.setVisibility(View.VISIBLE);
+                                else alter.setVisibility(View.GONE);
+                                if(llRefreshProgress.getVisibility()==View.VISIBLE) llRefreshProgress.setVisibility(View.INVISIBLE);
                             } catch (JSONException e) {
                                 loading = false;
+                                if(list.size() == 0) alter.setVisibility(View.VISIBLE);
+                                else alter.setVisibility(View.GONE);
+                                if(llRefreshProgress.getVisibility()==View.VISIBLE) llRefreshProgress.setVisibility(View.INVISIBLE);
                                 e.printStackTrace();
                             }
 //                                initRecyclerView(recyclerView, list);

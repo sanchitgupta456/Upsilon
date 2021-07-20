@@ -274,4 +274,5 @@
     <string name="testPdfSource">
         https://file-examples-com.github.io/uploads/2017/10/file-sample_150kB.pdf
     </string>
+    <string name="whoops_no_courses_found">Whoops! No courses found!</string>
 </resources>

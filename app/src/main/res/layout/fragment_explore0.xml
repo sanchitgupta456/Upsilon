@@ -99,6 +99,6 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         tools:listitem="@layout/explore_course_recycler_card"
-        android:visibility="gone"/>
+        android:visibility="visible"/>
 
 </FrameLayout>

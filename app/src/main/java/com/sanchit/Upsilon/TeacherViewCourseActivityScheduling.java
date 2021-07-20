@@ -34,6 +34,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.sanchit.Upsilon.classData.ScheduleAdapter;
@@ -120,7 +121,7 @@ public class TeacherViewCourseActivityScheduling extends Fragment implements Sch
 
                 DatePicker datePicker = (DatePicker) dialogView.findViewById(R.id.date_picker);
                 TimePicker timePicker = (TimePicker) dialogView.findViewById(R.id.time_picker);
-                EditText editText = (EditText) dialogView.findViewById(R.id.class_name);
+                TextInputEditText editText = dialogView.findViewById(R.id.class_name);
                 String ClassName = editText.getText().toString();
                 timePicker.setIs24HourView(true);
 

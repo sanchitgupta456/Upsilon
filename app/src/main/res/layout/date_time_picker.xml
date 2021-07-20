@@ -1,8 +1,10 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:padding="8dp"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:theme="@style/MaterialTheme">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -10,42 +12,63 @@
         android:orientation="vertical"
         android:layout_marginBottom="@dimen/activity_vertical_margin">
 
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/enter_class_name"
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+            android:id="@+id/ll1"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginTop="24dp"
+            app:boxBackgroundColor="@color/transparent">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/class_name"
+                android:inputType="text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:textColor="@color/colorBlack"
+                android:selectAllOnFocus="true"
+                android:focusedByDefault="true"
+                android:imeOptions="actionDone"/>
+        </com.google.android.material.textfield.TextInputLayout>
+<!--    <EditText-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:hint="@string/enter_class_name"-->
+<!--        android:textSize="@dimen/text_margin"-->
+<!--        android:textColor="@color/colorPrimary"-->
+<!--        android:textStyle="bold"-->
+<!--        android:textAllCaps="true"-->
+<!--        android:textColorHint="@color/colorGrey"-->
+<!--        android:id="@+id/class_name"-->
+<!--        android:inputType="text"-->
+<!--        android:importantForAutofill="no"-->
+<!--        android:imeOptions="actionDone"/>-->
 
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/enter_class_name"
-        android:textSize="@dimen/text_margin"
-        android:textColor="@color/colorPrimary"
-        android:textStyle="bold"
-        android:textAllCaps="true"
-        android:textColorHint="@color/colorGrey"
-        android:id="@+id/class_name"
-        android:inputType="text"
-        android:importantForAutofill="no"
-        android:imeOptions="actionDone"/>
+        <DatePicker
+            android:theme="@style/DatePicker"
+            android:id="@+id/date_picker"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:datePickerMode="calendar"/>
 
-    <DatePicker
-        android:theme="@style/DatePicker"
-        android:id="@+id/date_picker"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        <TimePicker
+            android:theme="@style/DatePicker"
+            android:id="@+id/time_picker"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:timePickerMode="spinner"
+            android:layout_gravity="center"/>
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/date_time_set"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/set"
+            android:layout_marginBottom="10dp"/>
 
-    <TimePicker
-        android:theme="@style/DatePicker"
-        android:id="@+id/time_picker"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:timePickerMode="spinner"/>
-
-    <Button
-        android:id="@+id/date_time_set"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:paddingHorizontal="15dp"
-        android:text="@string/set"
-        android:textColor="@color/colorWhite"
-        android:background="@drawable/btn_blue"/>
     </LinearLayout>
 </ScrollView>

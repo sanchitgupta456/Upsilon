@@ -3,6 +3,7 @@ package com.sanchit.Upsilon;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -12,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -19,6 +21,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -74,6 +77,10 @@ public class ExploreFragment1 extends Fragment {
 
     String query = "";
 
+    CardView alter;
+    MaterialButton btnRefresh;
+    LinearLayout llRefreshProgress;
+
     public ExploreFragment1(String string) {
         query = string;
     }
@@ -88,10 +95,26 @@ public class ExploreFragment1 extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_explore1, container, false);
         recyclerView = (RecyclerView) view.findViewById(R.id.exploreList1);
+        alter = view.findViewById(R.id.alter);
+        btnRefresh = view.findViewById(R.id.btnRefresh);
+        llRefreshProgress = view.findViewById(R.id.llRefreshProgress);
+        alter.setVisibility(View.GONE);
+        llRefreshProgress.setVisibility(View.INVISIBLE);
+
+        btnRefresh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                llRefreshProgress.setVisibility(View.VISIBLE);
+                loadOnce();
+            }
+        });
         loading = false;
         queue = Volley.newRequestQueue(getApplicationContext());
         API = ((Upsilon)getActivity().getApplication()).getAPI();
         loadOnce();
+//        if(list==null || list.size() == 0) alter.setVisibility(View.VISIBLE);
+//        else alter.setVisibility(View.GONE);
+//        if(llRefreshProgress.getVisibility()==View.VISIBLE) llRefreshProgress.setVisibility(View.INVISIBLE);
 //        app = new App(new AppConfiguration.Builder(appID).build());
 //        user = app.currentUser();
 //        mongoClient = user.getMongoClient("mongodb-atlas");
@@ -208,9 +231,15 @@ public class ExploreFragment1 extends Fragment {
                                 }
 //                                initRecyclerView(recyclerView, list);
                                 loading=false;
+                                if(list.size() == 0) alter.setVisibility(View.VISIBLE);
+                                else alter.setVisibility(View.GONE);
+                                if(llRefreshProgress.getVisibility()==View.VISIBLE) llRefreshProgress.setVisibility(View.INVISIBLE);
                             } catch (JSONException e) {
                                 e.printStackTrace();
                                 loading=false;
+                                if(list.size() == 0) alter.setVisibility(View.VISIBLE);
+                                else alter.setVisibility(View.GONE);
+                                if(llRefreshProgress.getVisibility()==View.VISIBLE) llRefreshProgress.setVisibility(View.INVISIBLE);
                             }
 //                                initRecyclerView(recyclerView, list);
 
