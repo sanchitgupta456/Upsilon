@@ -34,7 +34,7 @@
         <activity
             android:name=".AssignmentActivity"
             android:label="@string/title_activity_assignment" />
-        <activity android:name=".AssignmentsActivity" />
+        <activity android:name=".RegisteredStudentViewCourseAssignmentsFragment" />
         <activity android:name=".PaymentLogActivity" />
         <activity android:name=".GetStartedAsTeacherActivity" />
         <activity android:name=".TeacherDataSetupActivity" />

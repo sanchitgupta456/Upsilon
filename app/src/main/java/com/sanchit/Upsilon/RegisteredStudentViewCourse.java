@@ -7,35 +7,18 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
-import android.widget.ImageButton;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.snackbar.Snackbar;
-import com.sanchit.Upsilon.courseData.Course;
 import com.sanchit.Upsilon.courseData.CourseFinal;
-import com.squareup.picasso.Picasso;
-
-import org.bson.Document;
-
-import java.util.List;
-import java.util.Objects;
 
 import io.realm.mongodb.App;
-import io.realm.mongodb.AppConfiguration;
-import io.realm.mongodb.RealmResultTask;
-import io.realm.mongodb.User;
 import io.realm.mongodb.mongo.MongoClient;
-import io.realm.mongodb.mongo.MongoCollection;
 import io.realm.mongodb.mongo.MongoDatabase;
-import io.realm.mongodb.mongo.iterable.MongoCursor;
 
 public class RegisteredStudentViewCourse extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
 
@@ -113,9 +96,9 @@ public class RegisteredStudentViewCourse extends AppCompatActivity implements Bo
             case R.id.bottomNavMenuTestsAssignments:
 //                fragment = new RegisteredStudentViewCourseATFragment();
 //                fragment.setArguments(bundle);
-                Intent intent = new Intent(getApplicationContext(), AssignmentsActivity.class);
-                intent.putExtra("Course", course);
-                startActivity(intent);
+//                Intent intent = new Intent(getApplicationContext(), RegisteredStudentViewCourseAssignmentsFragment.class);
+//                intent.putExtra("Course", course);
+//                startActivity(intent);
                 break;
 
             case R.id.bottomNavMenuSchedule:
@@ -155,9 +138,10 @@ public class RegisteredStudentViewCourse extends AppCompatActivity implements Bo
             finish();
         }
         if(item.getItemId() == R.id.assignments) {
-            Intent intent = new Intent(getApplicationContext(), AssignmentsActivity.class);
-            intent.putExtra("Course", course);
-            startActivity(intent);
+//            Intent intent = new Intent(getApplicationContext(), RegisteredStudentViewCourseAssignmentsFragment.class);
+//            intent.putExtra("Course", course);
+//            startActivity(intent);
+            loadFragment(new RegisteredStudentViewCourseAssignmentsFragment());
         }
         if(item.getItemId()==R.id.menuItemReview)
         {
