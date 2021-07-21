@@ -202,40 +202,51 @@
         android:layout_below="@id/text3"
         android:gravity="center"
         android:layout_centerHorizontal="true"
-        tools:listitem="@layout/video_resource_card"/>
+        tools:listitem="@layout/resource_card"/>
+<!--    <com.google.android.material.floatingactionbutton.FloatingActionButton-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:src="@drawable/icon_down"-->
+<!--        android:layout_margin="@dimen/activity_horizontal_margin"-->
+<!--        android:foregroundGravity="center"-->
+<!--        android:elevation="20dp"-->
+<!--        android:id="@+id/btnAdd"-->
+<!--        tools:ignore="ContentDescription"-->
+<!--        android:layout_alignParentEnd="true"/>-->
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_alignParentBottom="true"
+        android:orientation="vertical"
+        android:layout_alignParentEnd="true"
         android:weightSum="3"
-        android:gravity="center">
+        android:gravity="center"
+        android:layout_alignTop="@id/text3">
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_weight="1"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:src="@drawable/icon_doc"
-            android:layout_margin="@dimen/activity_horizontal_margin"
+            android:layout_margin="4dp"
             android:foregroundGravity="center"
             android:elevation="20dp"
             android:id="@+id/btnAddDoc"
             tools:ignore="ContentDescription" />
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_weight="1"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:src="@drawable/icon_image"
-            android:layout_margin="@dimen/activity_horizontal_margin"
+            android:layout_margin="4dp"
             android:foregroundGravity="center"
             android:elevation="20dp"
             android:id="@+id/btnAddImage"
             tools:ignore="ContentDescription" />
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_weight="1"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:src="@drawable/icon_video"
-            android:layout_margin="@dimen/activity_horizontal_margin"
+            android:layout_margin="4dp"
             android:foregroundGravity="center"
             android:elevation="20dp"
             android:id="@+id/btnAddVideo"

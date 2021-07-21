@@ -2,7 +2,6 @@ package com.sanchit.Upsilon;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -12,33 +11,22 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DatePickerDialog;
-import android.app.Dialog;
 import android.app.TimePickerDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
-import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.provider.Settings;
 import android.text.InputType;
-import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -48,7 +36,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.bumptech.glide.Glide;
 import com.cloudinary.android.MediaManager;
 import com.cloudinary.android.callback.ErrorInfo;
 import com.cloudinary.android.callback.UploadCallback;
@@ -56,17 +43,13 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.sanchit.Upsilon.classData.ScheduledClass;
-import com.sanchit.Upsilon.courseData.Course;
 import com.sanchit.Upsilon.courseData.CourseFinal;
-import com.sanchit.Upsilon.courseData.IntroductoryContentAdapter;
-import com.sanchit.Upsilon.courseData.VideoResourceAdapter;
+import com.sanchit.Upsilon.courseData.ResourceAdapter;
 import com.sanchit.Upsilon.pdfUpload.UriUtils;
-import com.sanchit.Upsilon.pdfUpload.pdfPlayground;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -75,8 +58,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
-
-import static io.realm.Realm.getApplicationContext;
 
 public class ClassActivityTeacher extends AppCompatActivity implements View.OnClickListener {
 
@@ -91,6 +72,7 @@ public class ClassActivityTeacher extends AppCompatActivity implements View.OnCl
 //    private LinearLayout progressBarAlter;
 //    private Button mark, markTrue;
     private RecyclerView recyclerView;
+    ResourceAdapter adapter;
 
     private FloatingActionButton addVideo, addDoc, addImage;
     private Button updateChange;
@@ -99,6 +81,8 @@ public class ClassActivityTeacher extends AppCompatActivity implements View.OnCl
     private SimpleDateFormat dateFormatter;
 
     private ArrayList<String> videos = new ArrayList<>();
+    private ArrayList<String> docs = new ArrayList<>();
+    private ArrayList<String> images = new ArrayList<>();
     private int startMonth;
     private int startYear;
     private int startDay;
@@ -226,7 +210,7 @@ public class ClassActivityTeacher extends AppCompatActivity implements View.OnCl
         String dateString = scheduledClass.getMonth() + " " + scheduledClass.getDate();
         date.setText(dateString);
         start_time.setText(scheduledClass.getTime());
-        Log.v("scheduled",scheduledClass.getEndtime());
+//        Log.v("scheduled",scheduledClass.getEndtime());
         end_time.setText(scheduledClass.getEndtime());
 
         addVideo.setOnClickListener(new View.OnClickListener() {
@@ -277,17 +261,17 @@ public class ClassActivityTeacher extends AppCompatActivity implements View.OnCl
             }
         });
 
-        VideoResourceAdapter adapter = new VideoResourceAdapter(videos);
+        adapter = new ResourceAdapter(videos, docs, images);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
         recyclerView.setAdapter(adapter);
 
-        getVideos();
+        getData();
         adapter.notifyDataSetChanged();
     }
 
-    public void getVideos() {
-        //TODO: fetch videos
+    public void getData() {
+        //TODO: fetch videos, docs and images
     }
 
     private void setDateTimeField() {
@@ -362,6 +346,8 @@ public class ClassActivityTeacher extends AppCompatActivity implements View.OnCl
                         int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
                         picturePath = cursor.getString(columnIndex);
                         picturePaths.add(picturePath);
+                        images.add(picturePath);
+                        adapter.notifyDataSetChanged();
                         cursor.close();
                     }
                     Log.v("Images", String.valueOf(picturePaths));
@@ -374,6 +360,8 @@ public class ClassActivityTeacher extends AppCompatActivity implements View.OnCl
                     int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
                     picturePath = cursor.getString(columnIndex);
                     picturePaths.add(picturePath);
+                    images.add(picturePath);
+                    adapter.notifyDataSetChanged();
                     cursor.close();
                 }
                 for (int i = 0; i < picturePaths.size(); i++)
@@ -459,6 +447,8 @@ public class ClassActivityTeacher extends AppCompatActivity implements View.OnCl
                         int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
                         videoPath = cursor.getString(columnIndex);
                         videoPaths.add(videoPath);
+                        videos.add(videoPath);
+                        adapter.notifyDataSetChanged();
                         cursor.close();
                     }
                     Log.v("Videos", String.valueOf(videoPaths));
@@ -472,6 +462,8 @@ public class ClassActivityTeacher extends AppCompatActivity implements View.OnCl
                     int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
                     videoPath = cursor.getString(columnIndex);
                     videoPaths.add(videoPath);
+                    videos.add(videoPath);
+                    adapter.notifyDataSetChanged();
                     cursor.close();
                 }
                 for (int i = 0; i < videoPaths.size(); i++)
@@ -552,6 +544,8 @@ public class ClassActivityTeacher extends AppCompatActivity implements View.OnCl
                         Uri selectedImage = data.getClipData().getItemAt(i).getUri();
                         String fullFilePath = UriUtils.getPathFromUri(this, selectedImage);
                         documentPaths.add(fullFilePath);
+                        docs.add(fullFilePath);
+                        adapter.notifyDataSetChanged();
                     }
                     Log.v("Videos", String.valueOf(documentPaths));
                 }
@@ -560,6 +554,8 @@ public class ClassActivityTeacher extends AppCompatActivity implements View.OnCl
                     Log.v("path", String.valueOf(fullFilePath));
 //                    documentPath = cursor.getString(columnIndex);
                     documentPaths.add(fullFilePath);
+                    docs.add(fullFilePath);
+                    adapter.notifyDataSetChanged();
                 }
                 Log.v("Paths", String.valueOf(documentPaths));
                 for (int i = 0; i < documentPaths.size(); i++)

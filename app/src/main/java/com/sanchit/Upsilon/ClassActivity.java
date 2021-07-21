@@ -15,13 +15,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.sanchit.Upsilon.classData.ScheduledClass;
 import com.sanchit.Upsilon.courseData.Course;
-import com.sanchit.Upsilon.courseData.IntroductoryContentAdapter;
-import com.sanchit.Upsilon.courseData.VideoResourceAdapter;
+import com.sanchit.Upsilon.courseData.ResourceAdapter;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -40,6 +38,8 @@ public class ClassActivity extends AppCompatActivity {
 
 //    private ArrayList<String> images;
     private ArrayList<String> videos = new ArrayList<>();
+    private ArrayList<String> docs = new ArrayList<>();
+    private ArrayList<String> images = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -96,17 +96,17 @@ public class ClassActivity extends AppCompatActivity {
         });
         //end of test code
 
-        VideoResourceAdapter adapter = new VideoResourceAdapter(videos);
+        ResourceAdapter adapter = new ResourceAdapter(videos, docs, images);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
         recyclerView.setAdapter(adapter);
 
-        getVideos();
+        getData();
         adapter.notifyDataSetChanged();
     }
 
-    public void getVideos() {
-        //TODO: fetch videos
+    public void getData() {
+        //TODO: fetch videos, docs and images
     }
 
     @Override

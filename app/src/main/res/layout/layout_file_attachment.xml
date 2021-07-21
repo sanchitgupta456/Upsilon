@@ -6,6 +6,7 @@
     android:layout_height="wrap_content"
     android:weightSum="100">
     <TextView
+        android:id="@+id/file_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="85"
@@ -21,6 +22,6 @@
         android:src="@drawable/icon_cloud_download"
         android:layout_weight="15"
         android:padding="5dp"
-        android:tint="@color/colorPrimary"
-        android:backgroundTint="@color/colorWhite"/>
+        android:backgroundTint="@color/colorWhite"
+        app:tint="@color/colorPrimary" />
 </LinearLayout>
