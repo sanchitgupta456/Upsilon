@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.util.Log;
@@ -34,6 +35,7 @@ import com.sanchit.Upsilon.R;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ResourceAdapter extends RecyclerView.Adapter<ResourceAdapter.ViewHolder>{
@@ -44,12 +46,12 @@ public class ResourceAdapter extends RecyclerView.Adapter<ResourceAdapter.ViewHo
 
     public SimpleExoPlayer exoPlayer;
 
-    List<String> VideoUrls;
-    List<String> ImageUrls;
-    List<String> DocUrls;
+    ArrayList<String> VideoUrls;
+    ArrayList<String> ImageUrls;
+    ArrayList<String> DocUrls;
     Context context;
 
-    public ResourceAdapter(List<String> videoUrls, List<String> imageUrls, List<String> docUrls) {
+    public ResourceAdapter(ArrayList<String> videoUrls, ArrayList<String> docUrls, ArrayList<String> imageUrls) {
         VideoUrls = videoUrls;
         ImageUrls = imageUrls;
         DocUrls = docUrls;
@@ -58,9 +60,6 @@ public class ResourceAdapter extends RecyclerView.Adapter<ResourceAdapter.ViewHo
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-
-
-        Log.v("Image","OnCreated");
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.resource_card,parent,false);
         ViewHolder viewHolder = new ViewHolder(view);
         context = parent.getContext();
@@ -70,9 +69,9 @@ public class ResourceAdapter extends RecyclerView.Adapter<ResourceAdapter.ViewHo
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-        Log.v("Adapter","Binded");
+        Log.v("Adapter","Binded" + position);
 
-        if(position<VideoUrls.size())
+        if(position < VideoUrls.size())
         {
             String videoUrl = VideoUrls.get(position);
             holder.videoPlayerView.setVisibility(View.VISIBLE);
@@ -142,14 +141,71 @@ public class ResourceAdapter extends RecyclerView.Adapter<ResourceAdapter.ViewHo
                 }
             });
         }
-        else if(position< VideoUrls.size() + DocUrls.size()) {
+        else if(position < VideoUrls.size() + DocUrls.size()) {
             String docUrl = DocUrls.get(position - VideoUrls.size());
+            Log.d(TAG, "onBindViewHolder: doc: " + docUrl);
             holder.videoPlayerView.setVisibility(View.GONE);
             holder.docAnchor.setVisibility(View.VISIBLE);
             holder.imageView.setVisibility(View.GONE);
             TextView tv = (TextView) holder.docAnchor.findViewById(R.id.file_name);
             tv.setText(docUrl);
             PDFView pdfView = (PDFView) holder.docAnchor.findViewById(R.id.thumbnail);
+            View.OnClickListener listener = new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Log.d(TAG, "onClick: working");
+
+                    //holder.IntroductoryContentVideo.start();
+                    //Toast.makeText(context,"The position is:"+position,Toast.LENGTH_SHORT).show();
+                    Dialog builder = new Dialog(context);
+                    builder.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                    builder.getWindow().setBackgroundDrawable(
+                            new ColorDrawable(Color.WHITE));
+                    builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                        @Override
+                        public void onDismiss(DialogInterface dialogInterface) {
+                            //nothing;
+                        }
+                    });
+                    ProgressDialog loadingBar = new ProgressDialog(builder.getContext());
+                    loadingBar.setTitle("Loading file");
+                    loadingBar.setMessage("Please wait while the file gets loaded...");
+                    loadingBar.show();
+                    PDFView pdfView1 = new PDFView(context.getApplicationContext(), null);
+                    //load file
+                    builder.addContentView(pdfView1, new RelativeLayout.LayoutParams(
+                            ViewGroup.LayoutParams.MATCH_PARENT,
+                            ViewGroup.LayoutParams.MATCH_PARENT));
+                    builder.show();
+                    Thread thread = new Thread(new Runnable() {
+
+                        @Override
+                        public void run() {
+                            try  {
+                                InputStream input = null;
+                                try {
+                                    input = new URL(docUrl).openStream();
+                                    pdfView1.fromStream(input).onLoad(new OnLoadCompleteListener() {
+                                        @Override
+                                        public void loadComplete(int nbPages) {
+                                            loadingBar.dismiss();
+
+                                        }
+                                    }).load();
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }                } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+
+                    thread.start();
+                }
+            };
+            holder.cv.setOnClickListener(listener);
+            pdfView.setOnClickListener(listener);
+            tv.setOnClickListener(listener);
             Thread thread = new Thread(new Runnable() {
 
                 @Override
@@ -173,59 +229,7 @@ public class ResourceAdapter extends RecyclerView.Adapter<ResourceAdapter.ViewHo
             });
 
             thread.start();
-            holder.cv.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Log.d(TAG, "onClick: working");
 
-                    //holder.IntroductoryContentVideo.start();
-                    //Toast.makeText(context,"The position is:"+position,Toast.LENGTH_SHORT).show();
-                    Dialog builder = new Dialog(context);
-                    builder.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                    builder.getWindow().setBackgroundDrawable(
-                            new ColorDrawable(android.graphics.Color.TRANSPARENT));
-                    builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
-                        @Override
-                        public void onDismiss(DialogInterface dialogInterface) {
-                            //nothing;
-                        }
-                    });
-                    ProgressDialog loadingBar = new ProgressDialog(builder.getOwnerActivity());
-                    loadingBar.setTitle("Loading file");
-                    loadingBar.setMessage("Please wait while the file gets loaded...");
-                    loadingBar.show();
-                    PDFView pdfView = new PDFView(context.getApplicationContext(), null);
-                    //load file
-                    Thread thread = new Thread(new Runnable() {
-
-                        @Override
-                        public void run() {
-                            try  {
-                                InputStream input = null;
-                                try {
-                                    input = new URL(docUrl).openStream();
-                                    pdfView.fromStream(input).onLoad(new OnLoadCompleteListener() {
-                                        @Override
-                                        public void loadComplete(int nbPages) {
-                                            loadingBar.dismiss();
-                                            builder.addContentView(pdfView, new RelativeLayout.LayoutParams(
-                                                    ViewGroup.LayoutParams.MATCH_PARENT,
-                                                    ViewGroup.LayoutParams.MATCH_PARENT));
-                                            builder.show();
-                                        }
-                                    }).load();
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                }                } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    });
-
-                    thread.start();
-
-                }
-            });
         } else {
             String imageUrl = ImageUrls.get(position - VideoUrls.size() - DocUrls.size());
             holder.videoPlayerView.setVisibility(View.GONE);
@@ -238,12 +242,11 @@ public class ResourceAdapter extends RecyclerView.Adapter<ResourceAdapter.ViewHo
 
     @Override
     public int getItemCount() {
-
-        if(VideoUrls==null)
-        {
-            return 0;
-        }
-        return VideoUrls.size();
+        int ret = 0;
+        if(VideoUrls != null) ret += VideoUrls.size();
+        if(DocUrls != null) ret += DocUrls.size();
+        if(ImageUrls != null) ret += ImageUrls.size();
+        return ret;
     }
 
 

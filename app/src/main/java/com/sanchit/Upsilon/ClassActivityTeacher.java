@@ -261,17 +261,22 @@ public class ClassActivityTeacher extends AppCompatActivity implements View.OnCl
             }
         });
 
+        docs.add("http://res.cloudinary.com/upsilon175/raw/upload/v1626886850/Upsilon/Courses/60f80d90368be92fc41ea044/1/Documents/Document60f80d90368be92fc41ea044108f0b3f36-e562-4070-b89a-7c628252da7a.pdf");
         adapter = new ResourceAdapter(videos, docs, images);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
         recyclerView.setAdapter(adapter);
+        Log.d(TAG, "onCreate: recycled " + docs.size() + " " + videos.size() + " " + docs.get(0));
 
-        getData();
-        adapter.notifyDataSetChanged();
+//        getData();
+//        adapter.notifyDataSetChanged();
     }
 
     public void getData() {
         //TODO: fetch videos, docs and images
+        docs.add("http://res.cloudinary.com/upsilon175/raw/upload/v1626886850/Upsilon/Courses/60f80d90368be92fc41ea044/1/Documents/Document60f80d90368be92fc41ea044108f0b3f36-e562-4070-b89a-7c628252da7a.pdf");
+        Log.d(TAG, "getData: ALERT!!! THIS IS REACHABLE!");
+        adapter.notifyDataSetChanged();
     }
 
     private void setDateTimeField() {
