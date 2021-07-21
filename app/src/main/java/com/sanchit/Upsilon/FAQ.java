@@ -43,7 +43,7 @@ public class FAQ extends AppCompatActivity {
         answers.add("To register a course, simply select it and click on register. It shows the price of the course, if it is not a free course and then takes you to the fee payment portal on clicking 'proceed to pay'. Make the payment, if the course is not free and you are instantly registered with the course.");
         answers.add("Yes! Anyone registered with Upsilon can teach a course. For teaching a paid course, you must fill out your payment details. You will be prompted if you have not done that the first time you offer a paid course.");
         answers.add("Yes! You can get a refund if applied for within 7 days of the course commencement. You must fill out a specific reason for a refund. You will be refunded back within two days into your Upsilon wallet.");
-        answers.add("Simply go to your wallet and click the withdraw button. Your withdraw request will be registered and the specific money will be transferred to your bank account within less than 2 days.");
+        answers.add("Simply go to your wallet and click the withdraw button. Your withdraw request will be registered and the specific money will be transferred to your bank account within less than 7 days.");
 
         initRecyclerViews();
     }

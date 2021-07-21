@@ -150,9 +150,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             StrictMode.setThreadPolicy(policy);
         }
 
-        //Realm.init(this); // context, usually an Activity or Application
-        App app = new App(new AppConfiguration.Builder(appID)
-                .build());
+//        //Realm.init(this); // context, usually an Activity or Application
+//        App app = new App(new AppConfiguration.Builder(appID)
+//                .build());
 
         ForgotPassword.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -161,32 +161,32 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 forgotpasswordemail = usernameEditText.getText().toString();
                 //app.getEmailPassword().sendResetPasswordEmail(forgotpasswordemail);
                 Log.v("Email",forgotpasswordemail);
-                app.getEmailPassword().sendResetPasswordEmailAsync(forgotpasswordemail,result -> {
-                    if(result.isSuccess())
-                    {
-                        loadingProgressBar.setVisibility(View.GONE);
-                        Toast.makeText(getApplicationContext(), "An email has been sent to you. Please go through it for further instructions.", Toast.LENGTH_LONG).show();
-                        Log.v("Result",result.toString());
-                        Log.v("Success","Success");
-                    }
-                    else
-                    {
-                        Log.v("Error",result.getError().toString());
-                        loadingProgressBar.setVisibility(View.GONE);
-                    }
-                });
-
-                app.getEmailPassword().resendConfirmationEmailAsync(forgotpasswordemail,result -> {
-                    if(result.isSuccess())
-                    {
-                        Log.v("Result",result.toString());
-                        Log.v("Success","Success");
-                    }
-                    else
-                    {
-                        Log.v("Error",result.getError().toString());
-                    }
-                });
+//                app.getEmailPassword().sendResetPasswordEmailAsync(forgotpasswordemail,result -> {
+//                    if(result.isSuccess())
+//                    {
+//                        loadingProgressBar.setVisibility(View.GONE);
+//                        Toast.makeText(getApplicationContext(), "An email has been sent to you. Please go through it for further instructions.", Toast.LENGTH_LONG).show();
+//                        Log.v("Result",result.toString());
+//                        Log.v("Success","Success");
+//                    }
+//                    else
+//                    {
+//                        Log.v("Error",result.getError().toString());
+//                        loadingProgressBar.setVisibility(View.GONE);
+//                    }
+//                });
+//
+//                app.getEmailPassword().resendConfirmationEmailAsync(forgotpasswordemail,result -> {
+//                    if(result.isSuccess())
+//                    {
+//                        Log.v("Result",result.toString());
+//                        Log.v("Success","Success");
+//                    }
+//                    else
+//                    {
+//                        Log.v("Error",result.getError().toString());
+//                    }
+//                });
             }
         });
 
@@ -199,14 +199,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 String accessToken = loginResult.getAccessToken().getToken().toString();
 
                 Credentials facebookCredentials  = Credentials.facebook(accessToken);
-                app.loginAsync(facebookCredentials, it -> {
-                    if (it.isSuccess()) {
-                        Log.v("AUTH", "Successfully logged in to MongoDB Realm using Facebook OAuth.");
-                        goToMainActivity();
-                    } else {
-                        Log.e("AUTH", "Failed to log in to MongoDB Realm", it.getError());
-                    }
-                });
+//                app.loginAsync(facebookCredentials, it -> {
+//                    if (it.isSuccess()) {
+//                        Log.v("AUTH", "Successfully logged in to MongoDB Realm using Facebook OAuth.");
+//                        goToMainActivity();
+//                    } else {
+//                        Log.e("AUTH", "Failed to log in to MongoDB Realm", it.getError());
+//                    }
+//                });
             }
 
             @Override

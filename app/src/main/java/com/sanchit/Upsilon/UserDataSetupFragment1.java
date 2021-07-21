@@ -230,7 +230,7 @@ public class UserDataSetupFragment1 extends Fragment implements InterestCardAdap
                     if(temporary.size()==0)
                     {
                         ((Upsilon)getActivity().getApplication()).getInterests();
-                        new CountDownTimer(5000, 1000) {
+                        new CountDownTimer(1000, 1000) {
                             public void onFinish() {
                                 setupGrid();
                             }

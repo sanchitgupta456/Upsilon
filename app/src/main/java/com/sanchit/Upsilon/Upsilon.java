@@ -2,6 +2,8 @@ package com.sanchit.Upsilon;
 
 import android.annotation.SuppressLint;
 import android.app.Application;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.util.ArrayMap;
 import android.util.Log;
 import android.view.View;
@@ -42,6 +44,8 @@ public class Upsilon extends Application {
     private RequestQueue queue;
     ArrayList<String> interests = new ArrayList<>();
     User user;
+    public static final String PREFS_NAME = "MyPrefsFile";
+
 
     public ArrayList<String> getInterests() {
         return interests;
@@ -77,7 +81,15 @@ public class Upsilon extends Application {
     }
 
     public void initialise() {
+        saveToken();
         fetchProfile();
+    }
+
+    private void saveToken() {
+        getApplicationContext().getSharedPreferences(PREFS_NAME,MODE_PRIVATE)
+                .edit()
+                .putString("token", Token)
+                .apply();
     }
 
     public void fetchProfile() {
@@ -118,6 +130,8 @@ public class Upsilon extends Application {
 
     private void startup() {
 
+        SharedPreferences pref = getApplicationContext().getSharedPreferences(PREFS_NAME,MODE_PRIVATE);
+        Token = pref.getString("token", null);
 //        JSONObject jsonBody = new JSONObject();
         fetchInterests();
     }
@@ -171,5 +185,6 @@ public class Upsilon extends Application {
     public void setToken(String token)
     {
         Token = token;
+        saveToken();
     }
 }
