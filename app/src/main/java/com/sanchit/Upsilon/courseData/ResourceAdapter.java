@@ -4,9 +4,11 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -16,6 +18,7 @@ import android.view.Window;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -30,6 +33,7 @@ import com.google.android.exoplayer2.MediaItem;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.ui.PlayerView;
+import com.sanchit.Upsilon.PDFViewActivity;
 import com.sanchit.Upsilon.R;
 
 import java.io.IOException;
@@ -155,52 +159,59 @@ public class ResourceAdapter extends RecyclerView.Adapter<ResourceAdapter.ViewHo
                 public void onClick(View v) {
                     Log.d(TAG, "onClick: working");
 
+                    Intent intent = new Intent(context, PDFViewActivity.class);
+                    intent.putExtra("docUrl", docUrl);
+                    context.startActivity(intent);
+
                     //holder.IntroductoryContentVideo.start();
                     //Toast.makeText(context,"The position is:"+position,Toast.LENGTH_SHORT).show();
-                    Dialog builder = new Dialog(context);
-                    builder.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                    builder.getWindow().setBackgroundDrawable(
-                            new ColorDrawable(Color.WHITE));
-                    builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
-                        @Override
-                        public void onDismiss(DialogInterface dialogInterface) {
-                            //nothing;
-                        }
-                    });
-                    ProgressDialog loadingBar = new ProgressDialog(builder.getContext());
-                    loadingBar.setTitle("Loading file");
-                    loadingBar.setMessage("Please wait while the file gets loaded...");
-                    loadingBar.show();
-                    PDFView pdfView1 = new PDFView(context.getApplicationContext(), null);
-                    //load file
-                    builder.addContentView(pdfView1, new RelativeLayout.LayoutParams(
-                            ViewGroup.LayoutParams.MATCH_PARENT,
-                            ViewGroup.LayoutParams.MATCH_PARENT));
-                    builder.show();
-                    Thread thread = new Thread(new Runnable() {
-
-                        @Override
-                        public void run() {
-                            try  {
-                                InputStream input = null;
-                                try {
-                                    input = new URL(docUrl).openStream();
-                                    pdfView1.fromStream(input).onLoad(new OnLoadCompleteListener() {
-                                        @Override
-                                        public void loadComplete(int nbPages) {
-                                            loadingBar.dismiss();
-
-                                        }
-                                    }).load();
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                }                } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    });
-
-                    thread.start();
+//                    Dialog builder = new Dialog(context);
+//                    builder.requestWindowFeature(Window.FEATURE_NO_TITLE);
+//                    builder.getWindow().setBackgroundDrawable(
+//                            new ColorDrawable(Color.WHITE));
+//                    builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
+//                        @Override
+//                        public void onDismiss(DialogInterface dialogInterface) {
+//                            //nothing;
+//                        }
+//                    });
+//
+//                    ProgressDialog loadingBar = new ProgressDialog(builder.getContext());
+//                    loadingBar.setTitle("Loading file");
+//                    loadingBar.setMessage("Please wait while the file gets loaded...");
+//                    loadingBar.show();
+//                    PDFView pdfView1 = new PDFView(builder.getContext(), null);
+////                    PopupWindow window = new PopupWindow(pdfView1);
+//
+//                    //load file
+//                    builder.addContentView(pdfView1, new RelativeLayout.LayoutParams(
+//                            ViewGroup.LayoutParams.MATCH_PARENT,
+//                            ViewGroup.LayoutParams.MATCH_PARENT));
+//                    builder.show();
+//                    Thread thread = new Thread(new Runnable() {
+//
+//                        @Override
+//                        public void run() {
+//                            try  {
+//                                InputStream input = null;
+//                                try {
+//                                    input = new URL(docUrl).openStream();
+//                                    pdfView1.fromStream(input).onLoad(new OnLoadCompleteListener() {
+//                                        @Override
+//                                        public void loadComplete(int nbPages) {
+//                                            loadingBar.dismiss();
+//
+//                                        }
+//                                    }).load();
+//                                } catch (IOException e) {
+//                                    e.printStackTrace();
+//                                }                } catch (Exception e) {
+//                                e.printStackTrace();
+//                            }
+//                        }
+//                    });
+//
+//                    thread.start();
                 }
             };
             holder.cv.setOnClickListener(listener);
