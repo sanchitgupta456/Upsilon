@@ -9,6 +9,25 @@ public class ScheduledClass implements Serializable {
     String month;
     String time;
     String endtime;
+    String id;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public ScheduledClass(String className, long timestamp, String date, String month, String time, String endtime, String id) {
+        this.className = className;
+        this.timestamp = timestamp;
+        this.date = date;
+        this.month = month;
+        this.time = time;
+        this.endtime = endtime;
+        this.id = id;
+    }
 
     public String getEndtime() {
         return endtime;

@@ -3,10 +3,14 @@ package com.sanchit.Upsilon;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
@@ -16,9 +20,12 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Environment;
 import android.provider.MediaStore;
+import android.provider.Settings;
 import android.text.InputType;
 import android.text.format.DateFormat;
 import android.util.Log;
@@ -35,30 +42,46 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
+import com.cloudinary.android.MediaManager;
+import com.cloudinary.android.callback.ErrorInfo;
+import com.cloudinary.android.callback.UploadCallback;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.sanchit.Upsilon.classData.ScheduledClass;
 import com.sanchit.Upsilon.courseData.Course;
+import com.sanchit.Upsilon.courseData.CourseFinal;
 import com.sanchit.Upsilon.courseData.IntroductoryContentAdapter;
 import com.sanchit.Upsilon.courseData.VideoResourceAdapter;
+import com.sanchit.Upsilon.pdfUpload.UriUtils;
 import com.sanchit.Upsilon.pdfUpload.pdfPlayground;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Objects;
+import java.util.UUID;
 
 import static io.realm.Realm.getApplicationContext;
 
 public class ClassActivityTeacher extends AppCompatActivity implements View.OnClickListener {
 
     private static final String TAG = "ClassActivityTeacher";
-    private Course course;
+    private CourseFinal course;
     private ScheduledClass scheduledClass;
     private TextInputLayout dateLayout, startTimeLayout, endTimeLayout;
     private TextInputEditText date;
@@ -86,12 +109,18 @@ public class ClassActivityTeacher extends AppCompatActivity implements View.OnCl
     private static int RESULT_LOAD_IMAGE = 1,RESULT_LOAD_VIDEO = 2,RESULT_LOAD_DOCUMENT=3;
     private static final int WRITE_PERMISSION = 0x01;
     String picturePath,videoPath,documentPath;
-    ArrayList<String> picturePaths;
+    ArrayList<String> picturePaths = new ArrayList<>();
     ArrayList<String> introductoryImageUrls;
-    ArrayList<String> videoPaths;
+    ArrayList<String> videoPaths = new ArrayList<>();
     ArrayList<String> introductoryVideoUrls;
-    ArrayList<String> documentPaths;
+    ArrayList<String> documentPaths = new ArrayList<>();
     ArrayList<String> introductoryDocumentUrls;
+    String id;
+    private static final int REQUEST_EXTERNAL_STORAGE = 1;
+    private static String[] PERMISSIONS_STORAGE = {
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,7 +133,8 @@ public class ClassActivityTeacher extends AppCompatActivity implements View.OnCl
         API = ((Upsilon)getApplication()).getAPI();
 
         Intent intent = getIntent();
-
+        scheduledClass = (ScheduledClass) intent.getSerializableExtra("ScheduledClass");
+        id = intent.getStringExtra("id");
         date = (TextInputEditText) findViewById(R.id.etDate);
         dateLayout = (TextInputLayout) findViewById(R.id.ll1);
         startTimeLayout = (TextInputLayout) findViewById(R.id.ll2);
@@ -202,6 +232,7 @@ public class ClassActivityTeacher extends AppCompatActivity implements View.OnCl
         addVideo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                videoPaths = new ArrayList<>();
                 Intent i = new Intent(
                         Intent.ACTION_PICK, MediaStore.Video.Media.EXTERNAL_CONTENT_URI);
                 i.setType("video/*");
@@ -212,16 +243,25 @@ public class ClassActivityTeacher extends AppCompatActivity implements View.OnCl
         addDoc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent();
-                intent.setType("*/*");
-                intent.setAction(Intent.ACTION_GET_CONTENT);
-                intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE,true);
-                startActivityForResult(Intent.createChooser(intent, "Select Document"), RESULT_LOAD_DOCUMENT);
+                documentPaths = new ArrayList<>();
+                requestWritePermission();
+                verifyStoragePermissions(ClassActivityTeacher.this);
+//                Intent i = new Intent(
+//                        Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+//                startActivityForResult(i, RESULT_LOAD_DOCUMENT);
+                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                // Update with mime types
+                intent.setType("application/pdf");
+                intent.addCategory(Intent.CATEGORY_OPENABLE);
+                intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
+
+                startActivityForResult(intent, RESULT_LOAD_DOCUMENT);
             }
         });
         addImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                picturePaths = new ArrayList<>();
                 Intent i = new Intent(
                         Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 i.setType("image/*");
@@ -289,16 +329,31 @@ public class ClassActivityTeacher extends AppCompatActivity implements View.OnCl
         },newCalendar.get(Calendar.HOUR), newCalendar.get(Calendar.MINUTE), true);
     }
 
+
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
-            if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && null != data) {
-                if(data.getClipData()!=null)
-                {
+            if(requestCode==100)
+            {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                        if(Environment.isExternalStorageManager())
+                        {
+
+                        }
+                        else
+                        {
+                            verifyStoragePermissions(ClassActivityTeacher.this);
+                        }
+                    }
+
+            }
+            else if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && null != data) {
+                if (data.getClipData() != null) {
                     int count = data.getClipData().getItemCount(); //evaluate the count before the for loop --- otherwise, the count is evaluated every loop.
-                    for(int i = 0; i < count; i++) {
+                    for (int i = 0; i < count; i++) {
                         Uri selectedImage = data.getClipData().getItemAt(i).getUri();
                         String[] filePathColumn = {MediaStore.Images.Media.DATA};
                         Cursor cursor = getContentResolver().query(selectedImage,
@@ -310,10 +365,9 @@ public class ClassActivityTeacher extends AppCompatActivity implements View.OnCl
                         cursor.close();
                     }
                     Log.v("Images", String.valueOf(picturePaths));
-                }
-                else if(data.getData()!=null) {
+                } else if (data.getData() != null) {
                     Uri selectedImage = data.getData();
-                    String[] filePathColumn = { MediaStore.Images.Media.DATA };
+                    String[] filePathColumn = {MediaStore.Images.Media.DATA};
                     Cursor cursor = getContentResolver().query(selectedImage,
                             filePathColumn, null, null, null);
                     cursor.moveToFirst();
@@ -322,6 +376,75 @@ public class ClassActivityTeacher extends AppCompatActivity implements View.OnCl
                     picturePaths.add(picturePath);
                     cursor.close();
                 }
+                for (int i = 0; i < picturePaths.size(); i++)
+                {
+                    String requestId = MediaManager.get().upload(picturePaths.get(i))
+                            .unsigned("preset1")
+                            .option("resource_type", "image")
+                            .option("folder", "Upsilon/Courses/"+id+"/"+scheduledClass.getId()+"/Images")
+                            .option("public_id", "Image"+id+scheduledClass.getId()+i+ UUID.randomUUID())
+                            .callback(new UploadCallback() {
+                                @Override
+                                public void onStart(String requestId) {
+
+                                }
+
+                                @Override
+                                public void onProgress(String requestId, long bytes, long totalBytes) {
+
+                                }
+
+                                @Override
+                                public void onSuccess(String requestId, Map resultData) {
+                                    try {
+                                        JSONObject jsonObject = new JSONObject();
+                                        jsonObject.put("url",resultData.get("url").toString());
+                                        jsonObject.put("id",scheduledClass.getId());
+                                        jsonObject.put("courseId",id);
+                                        JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, API+"/addImage",jsonObject,
+                                                new Response.Listener<JSONObject>() {
+                                                    @Override
+                                                    public void onResponse(JSONObject response) {
+                                                        Log.d("UploadingResource", response.toString());
+
+                                                    }
+                                                },
+                                                new Response.ErrorListener() {
+                                                    @SuppressLint("LongLogTag")
+                                                    @Override
+                                                    public void onErrorResponse(VolleyError error) {
+                                                        Log.d("ErrorUploadingResource", error.toString());
+
+                                                    }
+                                                }
+                                        ){
+                                            @Override
+                                            public Map<String, String> getHeaders() {
+                                                Map<String, String> params = new HashMap<String, String>();
+                                                params.put("token", ((Upsilon)getApplication()).getToken());
+                                                return params;
+                                            }
+                                        };
+                                        queue.add(jsonRequest);
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+
+
+                                }
+
+                                @Override
+                                public void onError(String requestId, ErrorInfo error) {
+
+                                }
+
+                                @Override
+                                public void onReschedule(String requestId, ErrorInfo error) {
+
+                                }
+                            }).dispatch();
+                }
+
             }
             else if (requestCode == RESULT_LOAD_VIDEO && resultCode == RESULT_OK && null != data) {
                 if(data.getClipData()!=null)
@@ -351,29 +474,163 @@ public class ClassActivityTeacher extends AppCompatActivity implements View.OnCl
                     videoPaths.add(videoPath);
                     cursor.close();
                 }
+                for (int i = 0; i < videoPaths.size(); i++)
+                {
+                    String requestId = MediaManager.get().upload(videoPaths.get(i))
+                            .unsigned("preset1")
+                            .option("resource_type", "video")
+                            .option("folder", "Upsilon/Courses/"+id+"/"+scheduledClass.getId()+"/Videos")
+                            .option("public_id", "Video"+id+scheduledClass.getId()+i+UUID.randomUUID())
+                            .callback(new UploadCallback() {
+                                @Override
+                                public void onStart(String requestId) {
+
+                                }
+
+                                @Override
+                                public void onProgress(String requestId, long bytes, long totalBytes) {
+
+                                }
+
+                                @Override
+                                public void onSuccess(String requestId, Map resultData) {
+                                    try {
+                                        JSONObject jsonObject = new JSONObject();
+                                        jsonObject.put("url",resultData.get("url").toString());
+                                        jsonObject.put("id",scheduledClass.getId());
+                                        jsonObject.put("courseId",id);
+                                        JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, API+"/addVideo",jsonObject,
+                                                new Response.Listener<JSONObject>() {
+                                                    @Override
+                                                    public void onResponse(JSONObject response) {
+                                                        Log.d("UploadingResource", response.toString());
+
+                                                    }
+                                                },
+                                                new Response.ErrorListener() {
+                                                    @SuppressLint("LongLogTag")
+                                                    @Override
+                                                    public void onErrorResponse(VolleyError error) {
+                                                        Log.d("ErrorUploadingResource", error.toString());
+
+                                                    }
+                                                }
+                                        ){
+                                            @Override
+                                            public Map<String, String> getHeaders() {
+                                                Map<String, String> params = new HashMap<String, String>();
+                                                params.put("token", ((Upsilon)getApplication()).getToken());
+                                                return params;
+                                            }
+                                        };
+                                        queue.add(jsonRequest);
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+
+
+                                }
+
+                                @Override
+                                public void onError(String requestId, ErrorInfo error) {
+
+                                }
+
+                                @Override
+                                public void onReschedule(String requestId, ErrorInfo error) {
+
+                                }
+                            }).dispatch();
+                }
             }
             else if (requestCode == RESULT_LOAD_DOCUMENT && resultCode == RESULT_OK && null != data) {
                 // Checking for selection multiple files or single.
-                if (data.getClipData() != null){
-
-                    // Getting the length of data and logging up the logs using index
-                    for (int index = 0; index < data.getClipData().getItemCount(); index++) {
-
-                        // Getting the URIs of the selected files and logging them into logcat at debug level
-                            /*Uri selectedImage = data.getClipData().getItemAt(index).getUri();
-                            String[] filePathColumn = {MediaStore.Images.Media.DATA};
-                            Cursor cursor = getContentResolver().query(selectedImage,
-                                    filePathColumn, null, null, null);
-                            cursor.moveToFirst();
-                            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-                            documentPath = cursor.getString(columnIndex);
-                            documentPaths.add(documentPath);
-                            cursor.close();*/
-                        Log.v("Documents", String.valueOf(documentPaths));
+                if(data.getClipData()!=null)
+                {
+                    int count = data.getClipData().getItemCount(); //evaluate the count before the for loop --- otherwise, the count is evaluated every loop.
+                    for(int i = 0; i < count; i++) {
+                        Uri selectedImage = data.getClipData().getItemAt(i).getUri();
+                        String fullFilePath = UriUtils.getPathFromUri(this, selectedImage);
+                        documentPaths.add(fullFilePath);
                     }
-                }else{ Uri uri = data.getData();
-                    Log.v("Documents", String.valueOf(documentPaths));
+                    Log.v("Videos", String.valueOf(documentPaths));
                 }
+                else if(data.getData()!=null) {
+                    String fullFilePath = UriUtils.getPathFromUri(this, data.getData());
+                    Log.v("path", String.valueOf(fullFilePath));
+//                    documentPath = cursor.getString(columnIndex);
+                    documentPaths.add(fullFilePath);
+                }
+                Log.v("Paths", String.valueOf(documentPaths));
+                for (int i = 0; i < documentPaths.size(); i++)
+                {
+                    String requestId = MediaManager.get().upload(documentPaths.get(i))
+                            .unsigned("preset1")
+                            .option("resource_type", "raw")
+                            .option("folder", "Upsilon/Courses/"+id+"/"+scheduledClass.getId()+"/Documents")
+                            .option("public_id", "Document"+id+scheduledClass.getId()+i+UUID.randomUUID())
+                            .callback(new UploadCallback() {
+                                @Override
+                                public void onStart(String requestId) {
+
+                                }
+
+                                @Override
+                                public void onProgress(String requestId, long bytes, long totalBytes) {
+
+                                }
+
+                                @Override
+                                public void onSuccess(String requestId, Map resultData) {
+                                    try {
+                                        JSONObject jsonObject = new JSONObject();
+                                        jsonObject.put("url",resultData.get("url").toString());
+                                        jsonObject.put("id",scheduledClass.getId());
+                                        jsonObject.put("courseId",id);
+                                        JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, API+"/addDocument",jsonObject,
+                                                new Response.Listener<JSONObject>() {
+                                                    @Override
+                                                    public void onResponse(JSONObject response) {
+                                                        Log.d("UploadingResource", response.toString());
+
+                                                    }
+                                                },
+                                                new Response.ErrorListener() {
+                                                    @SuppressLint("LongLogTag")
+                                                    @Override
+                                                    public void onErrorResponse(VolleyError error) {
+                                                        Log.d("ErrorUploadingResource", error.toString());
+
+                                                    }
+                                                }
+                                        ){
+                                            @Override
+                                            public Map<String, String> getHeaders() {
+                                                Map<String, String> params = new HashMap<String, String>();
+                                                params.put("token", ((Upsilon)getApplication()).getToken());
+                                                return params;
+                                            }
+                                        };
+                                        queue.add(jsonRequest);
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+
+
+                                }
+
+                                @Override
+                                public void onError(String requestId, ErrorInfo error) {
+
+                                }
+
+                                @Override
+                                public void onReschedule(String requestId, ErrorInfo error) {
+
+                                }
+                            }).dispatch();
+                }
+
           }
 //            adapter.notifyDataSetChanged();
         }
@@ -404,5 +661,49 @@ public class ClassActivityTeacher extends AppCompatActivity implements View.OnCl
             finish();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void requestWritePermission(){
+        if(checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)!= PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},WRITE_PERMISSION);
+        }
+    }
+
+    public void verifyStoragePermissions(Activity activity) {
+        // Check if we have write permission
+        int permission = ActivityCompat.checkSelfPermission(ClassActivityTeacher.this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+
+        if(Build.VERSION.SDK_INT == Build.VERSION_CODES.R)
+        {
+            if(Environment.isExternalStorageManager())
+            {
+
+            }
+            else
+            {
+                try {
+                    Intent intent = new Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION);
+                    intent.addCategory("android.intent.category.DEFAULT");
+                    intent.setData(Uri.parse(String.format("package:%s",getApplicationContext().getPackageName())));
+                    startActivityForResult(intent,100);
+                } catch (Exception e) {
+                    Intent intent = new Intent();
+                    intent.setAction(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION);
+                    startActivityForResult(intent,100);
+                }
+            }
+        }
+        if (permission != PackageManager.PERMISSION_GRANTED) {
+            // We don't have permission so prompt the user
+            ActivityCompat.requestPermissions(
+                    activity,
+                    PERMISSIONS_STORAGE,
+                    REQUEST_EXTERNAL_STORAGE
+            );
+        }
+        else
+        {
+            Log.v("Permission","Has Permission");
+        }
     }
 }

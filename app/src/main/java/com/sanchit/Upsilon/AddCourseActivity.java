@@ -379,7 +379,7 @@ public class AddCourseActivity extends AppCompatActivity implements AdapterView.
                                                     jsonObject.put("numberOfBatches",1);
                                                     jsonObject.put("courseDuration",courseDuration);
                                                     jsonObject.put("courseFees",fees);
-                                                    jsonObject.put("courseImage",CourseImageUrl);
+                                                    jsonObject.put("courseImage",resultData.get("url"));
                                                     jsonObject.put("courseLocation",gson.toJson(courseLocation));
 
                                                     JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, API + "/createCourse", jsonObject,

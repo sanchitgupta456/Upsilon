@@ -264,7 +264,7 @@
                 app:suffixText="Class Hours (Approx.)">
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/add_course_duration"
-                    android:inputType="textEmailAddress"
+                    android:inputType="number"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textSize="16sp"

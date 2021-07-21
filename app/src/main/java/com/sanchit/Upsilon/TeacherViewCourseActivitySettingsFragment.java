@@ -157,7 +157,7 @@ public class TeacherViewCourseActivitySettingsFragment extends Fragment {
             etFee.setText("0");
         } else {
             //isCourseFree.setChecked(false);
-            etFee.setText(course.getCourseFees());
+            etFee.setText(String.valueOf(course.getCourseFees()));
         }
 
         name = des = dur = fee = false;

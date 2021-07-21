@@ -57,6 +57,7 @@ import java.util.LinkedHashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
+import java.util.UUID;
 
 import io.realm.mongodb.App;
 import io.realm.mongodb.AppConfiguration;
@@ -165,17 +166,18 @@ public class TeacherViewCourseActivityScheduling extends Fragment implements Sch
                             jsonObject.put("time",timef);
                             jsonObject.put("endtime",endtime);
                             jsonObject.put("courseId",course.get_id());
+                            String id = String.valueOf(course.getScheduledClasses().size()+1);
+                            jsonObject.put("id",id);
                             JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, API+"/scheduleClass",jsonObject,
                                     new Response.Listener<JSONObject>() {
                                         @Override
                                         public void onResponse(JSONObject response) {
                                             Log.d("FetchingisTeacher", response.toString());
 //                                            ((Upsilon)getActivity().getApplication()).fetchProfile();
-                                            classes.add(new ScheduledClass(ClassName,time,String.valueOf(datePicker.getDayOfMonth()),String.valueOf(monthNames[datePicker.getMonth()]) ,timef,endtime));
+                                            classes.add(new ScheduledClass(ClassName,time,String.valueOf(datePicker.getDayOfMonth()),String.valueOf(monthNames[datePicker.getMonth()]) ,timef,endtime,id));
                                             adapter.notifyDataSetChanged();
                                             alertDialog.dismiss();
                                             ((TeacherViewCourseActivity)getActivity()).setClasses(classes);
-
 //                                            Intent intent=new Intent();
 //                                            intent.putExtra("course",course);
 //                                            setResult(2,intent);
@@ -334,6 +336,7 @@ public class TeacherViewCourseActivityScheduling extends Fragment implements Sch
         try {
             Intent intent = new Intent(getContext(), ClassActivityTeacher.class);
             intent.putExtra("ScheduledClass", classes.get(position));
+            intent.putExtra("id",course.get_id());
             requireContext().startActivity(intent);
         } catch (Exception e) {
             e.printStackTrace();
