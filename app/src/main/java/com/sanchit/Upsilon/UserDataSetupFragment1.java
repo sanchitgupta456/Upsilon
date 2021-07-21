@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -229,7 +230,14 @@ public class UserDataSetupFragment1 extends Fragment implements InterestCardAdap
                     if(temporary.size()==0)
                     {
                         ((Upsilon)getActivity().getApplication()).getInterests();
-                        setupGrid();
+                        new CountDownTimer(5000, 1000) {
+                            public void onFinish() {
+                                setupGrid();
+                            }
+                            public void onTick(long millisUntilFinished) {
+                                // millisUntilFinished    The amount of time until finished.
+                            }
+                        }.start();
                     }
 //
 //        mongoClient = user.getMongoClient("mongodb-atlas");

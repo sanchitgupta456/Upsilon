@@ -67,7 +67,7 @@ public class ClassActivity extends AppCompatActivity {
         getSupportActionBar().setTitle(scheduledClass.getClassName());
         date.setText(scheduledClass.getMonth() + " " + scheduledClass.getDate());
         start_time.setText(scheduledClass.getTime());
-//        end_time.setText(scheduledClass.getEndTime());
+        end_time.setText(scheduledClass.getEndtime());
 
         //attendance handling
 

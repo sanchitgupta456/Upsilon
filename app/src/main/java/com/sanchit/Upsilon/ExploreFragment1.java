@@ -134,9 +134,10 @@ public class ExploreFragment1 extends Fragment {
                 super.onScrolled(recyclerView, dx, dy);
                 if(!loading) {
                     //list is the course list currently being displayed
-                    if(linearLayoutManager.findLastCompletelyVisibleItemPosition()==list.size()-2){
+                    if(linearLayoutManager.findLastCompletelyVisibleItemPosition()==list.size()-1){
+                        loading = true;
                         loadMore();
-//                        adapter.notifyDataSetChanged();
+//                      adapter.notifyDataSetChanged();
                     }
                 }
             }
@@ -149,17 +150,16 @@ public class ExploreFragment1 extends Fragment {
 
     public void loadOnce(){
         loading = true;
-        list = new ArrayList<CourseFinal>();
-        initRecyclerView(recyclerView, list);
         performSearch();
     }
     public void loadMore(){
         if(allLoaded)
         {
+            loading = false;
             return;
         }
         loading = true;
-        performSearch();
+        performSearch1();
     }
 
     public void searchForCourses(SearchQuery _searchQuery) {
@@ -180,7 +180,6 @@ public class ExploreFragment1 extends Fragment {
             selectedTags.add(key);
         }
         Log.v("Tags", String.valueOf(selectedTags));
-        list.clear();
         loadOnce();
     }
 
@@ -191,6 +190,117 @@ public class ExploreFragment1 extends Fragment {
 //    }
 
     public void performSearch() {
+
+        Log.v("Index",String.valueOf(list.size()/5));
+        JSONObject jsonBody = new JSONObject();
+        try {
+            Gson gson = new Gson();
+            jsonBody.put("index",Integer.parseInt(String.valueOf(list.size()/5)));
+            jsonBody.put("filter","Rating");
+            jsonBody.put("tags",gson.toJson(selectedTags));
+            jsonBody.put("regex",regex);
+//            if(selectedTags.size()==0)
+//            {
+//                jsonBody.put("tags",gson.toJson(selectedTags));
+//            }
+//            else
+//            {
+//                jsonBody.put("tags",gson.toJson(selectedTags));
+//            }
+            JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, API+"/paging",jsonBody,
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            Log.d("Response", response.toString());
+                            list = new ArrayList<CourseFinal>();
+                            initRecyclerView(recyclerView, list);
+                            try {
+                                JSONArray jsonArray = (JSONArray) response.get("courses");
+                                if(jsonArray.length()==0)
+                                {
+                                    allLoaded=true;
+                                }
+                                Log.v("array",String.valueOf(jsonArray));
+                                for(int i=0;i<jsonArray.length();i++)
+                                {
+                                    JSONObject jsonObject = (JSONObject) jsonArray.get(i);
+                                    Gson gson= new Gson();
+                                    CourseFinal course = gson.fromJson(jsonObject.toString(),CourseFinal.class);
+                                    list.add(course);
+                                    adapter.notifyDataSetChanged();
+                                    Log.v("course",String.valueOf(course.getCourseReviews()));
+                                }
+//                                initRecyclerView(recyclerView, list);
+                                loading=false;
+                                if(list.size() == 0) alter.setVisibility(View.VISIBLE);
+                                else alter.setVisibility(View.GONE);
+                                if(llRefreshProgress.getVisibility()==View.VISIBLE) llRefreshProgress.setVisibility(View.INVISIBLE);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                                loading=false;
+                                if(list.size() == 0) alter.setVisibility(View.VISIBLE);
+                                else alter.setVisibility(View.GONE);
+                                if(llRefreshProgress.getVisibility()==View.VISIBLE) llRefreshProgress.setVisibility(View.INVISIBLE);
+                            }
+//                                initRecyclerView(recyclerView, list);
+
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Log.d("Error response", error.toString());
+                            Log.v(TAG, "Fetch Courses FAILED!");
+                            Log.e(TAG, error.toString());
+                        }
+                    }
+            ){
+                @Override
+                public Map<String, String> getHeaders() {
+                    Map<String, String> params = new HashMap<String, String>();
+                    params.put("token", ((Upsilon)getActivity().getApplication()).getToken());
+                    return params;
+                }
+            };
+            queue.add(jsonRequest);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+//        mongoClient = user.getMongoClient("mongodb-atlas");
+//        mongoDatabase = mongoClient.getDatabase("Upsilon");
+//        MongoCollection<Document> mongoCollection = mongoDatabase.getCollection("UserData");
+//
+//        //Blank query to find every single user in db
+//        Document queryFilter = new Document("userid", user.getId());
+//
+//        RealmResultTask<MongoCursor<Document>> findTask = mongoCollection.find(queryFilter).iterator();
+//
+//        findTask.getAsync(task -> {
+//            if (task.isSuccess()) {
+//                MongoCursor<Document> results = task.get();
+//                int i = 0;
+//                while (results.hasNext()) {
+//                    //Log.v("EXAMPLE", results.next().toString());
+//                    Document currentDoc = results.next();
+//                    Document userLoc = (Document) currentDoc.get("userLocation");
+//                    if(userLoc!=null) {
+//                        searchQuery.searchForCourse(app, mongoDatabase, getContext(), adapter, recyclerView, 10, userLoc);
+//                    }
+//                    else
+//                    {
+//                        Snackbar.make(getView(),"Please setup your location to view courses near you",Snackbar.LENGTH_LONG).show();
+//                    }
+//                }
+//            } else {
+//                Log.v("User", "Failed to complete search");
+//            }
+//        });
+//        list = searchQuery.getSearchResultsList();
+//        initRecyclerView(recyclerView, list);
+    }
+
+
+    public void performSearch1() {
 
         Log.v("Index",String.valueOf(list.size()/5));
         JSONObject jsonBody = new JSONObject();
@@ -231,16 +341,10 @@ public class ExploreFragment1 extends Fragment {
                                 }
 //                                initRecyclerView(recyclerView, list);
                                 loading=false;
-                                if(list.size() == 0) alter.setVisibility(View.VISIBLE);
-                                else alter.setVisibility(View.GONE);
-                                if(llRefreshProgress.getVisibility()==View.VISIBLE) llRefreshProgress.setVisibility(View.INVISIBLE);
                             } catch (JSONException e) {
                                 e.printStackTrace();
                                 loading=false;
-                                if(list.size() == 0) alter.setVisibility(View.VISIBLE);
-                                else alter.setVisibility(View.GONE);
-                                if(llRefreshProgress.getVisibility()==View.VISIBLE) llRefreshProgress.setVisibility(View.INVISIBLE);
-                            }
+                         }
 //                                initRecyclerView(recyclerView, list);
 
                         }

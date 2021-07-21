@@ -12,9 +12,13 @@ import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.provider.MediaStore;
 import android.text.InputType;
 import android.text.format.DateFormat;
 import android.util.Log;
@@ -29,7 +33,10 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
@@ -45,6 +52,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 import java.util.Objects;
+
+import static io.realm.Realm.getApplicationContext;
 
 public class ClassActivityTeacher extends AppCompatActivity implements View.OnClickListener {
 
@@ -72,6 +81,17 @@ public class ClassActivityTeacher extends AppCompatActivity implements View.OnCl
     private int startDay;
     DatePickerDialog datePickerDialog;
     TimePickerDialog startTimePickerDialog, endTimePickerDialog;
+    private RequestQueue queue;
+    private String API ;
+    private static int RESULT_LOAD_IMAGE = 1,RESULT_LOAD_VIDEO = 2,RESULT_LOAD_DOCUMENT=3;
+    private static final int WRITE_PERMISSION = 0x01;
+    String picturePath,videoPath,documentPath;
+    ArrayList<String> picturePaths;
+    ArrayList<String> introductoryImageUrls;
+    ArrayList<String> videoPaths;
+    ArrayList<String> introductoryVideoUrls;
+    ArrayList<String> documentPaths;
+    ArrayList<String> introductoryDocumentUrls;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,6 +100,8 @@ public class ClassActivityTeacher extends AppCompatActivity implements View.OnCl
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
         dateFormatter = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH);
+        queue = Volley.newRequestQueue(getApplicationContext());
+        API = ((Upsilon)getApplication()).getAPI();
 
         Intent intent = getIntent();
 
@@ -174,24 +196,37 @@ public class ClassActivityTeacher extends AppCompatActivity implements View.OnCl
         String dateString = scheduledClass.getMonth() + " " + scheduledClass.getDate();
         date.setText(dateString);
         start_time.setText(scheduledClass.getTime());
-//        end_time.setText(scheduledClass.getEndTime());
+        Log.v("scheduled",scheduledClass.getEndtime());
+        end_time.setText(scheduledClass.getEndtime());
 
         addVideo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO: upload a video
+                Intent i = new Intent(
+                        Intent.ACTION_PICK, MediaStore.Video.Media.EXTERNAL_CONTENT_URI);
+                i.setType("video/*");
+                i.putExtra(Intent.EXTRA_ALLOW_MULTIPLE,true);
+                startActivityForResult(i, RESULT_LOAD_VIDEO);
             }
         });
         addDoc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO: upload a document
+                Intent intent = new Intent();
+                intent.setType("*/*");
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE,true);
+                startActivityForResult(Intent.createChooser(intent, "Select Document"), RESULT_LOAD_DOCUMENT);
             }
         });
         addImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO: upload a image
+                Intent i = new Intent(
+                        Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                i.setType("image/*");
+                i.putExtra(Intent.EXTRA_ALLOW_MULTIPLE,true);
+                startActivityForResult(i, RESULT_LOAD_IMAGE);
             }
         });
 
@@ -227,7 +262,6 @@ public class ClassActivityTeacher extends AppCompatActivity implements View.OnCl
                 Calendar newDate = Calendar.getInstance();
                 newDate.set(year, monthOfYear, dayOfMonth);
                 date.setText(dateFormatter.format(newDate.getTime()));
-                //TODO: update in backend
             }
 
         },newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
@@ -240,7 +274,6 @@ public class ClassActivityTeacher extends AppCompatActivity implements View.OnCl
                 if(minute<10) timeString.append("0");
                 timeString.append(minute);
                 start_time.setText(timeString.toString());
-                //TODO: update in backend
             }
         },newCalendar.get(Calendar.HOUR), newCalendar.get(Calendar.MINUTE), true);
 
@@ -252,10 +285,110 @@ public class ClassActivityTeacher extends AppCompatActivity implements View.OnCl
                 if(minute<10) timeString.append("0");
                 timeString.append(minute);
                 end_time.setText(timeString.toString());
-                //TODO: update in backend
             }
         },newCalendar.get(Calendar.HOUR), newCalendar.get(Calendar.MINUTE), true);
+    }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && null != data) {
+                if(data.getClipData()!=null)
+                {
+                    int count = data.getClipData().getItemCount(); //evaluate the count before the for loop --- otherwise, the count is evaluated every loop.
+                    for(int i = 0; i < count; i++) {
+                        Uri selectedImage = data.getClipData().getItemAt(i).getUri();
+                        String[] filePathColumn = {MediaStore.Images.Media.DATA};
+                        Cursor cursor = getContentResolver().query(selectedImage,
+                                filePathColumn, null, null, null);
+                        cursor.moveToFirst();
+                        int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                        picturePath = cursor.getString(columnIndex);
+                        picturePaths.add(picturePath);
+                        cursor.close();
+                    }
+                    Log.v("Images", String.valueOf(picturePaths));
+                }
+                else if(data.getData()!=null) {
+                    Uri selectedImage = data.getData();
+                    String[] filePathColumn = { MediaStore.Images.Media.DATA };
+                    Cursor cursor = getContentResolver().query(selectedImage,
+                            filePathColumn, null, null, null);
+                    cursor.moveToFirst();
+                    int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                    picturePath = cursor.getString(columnIndex);
+                    picturePaths.add(picturePath);
+                    cursor.close();
+                }
+            }
+            else if (requestCode == RESULT_LOAD_VIDEO && resultCode == RESULT_OK && null != data) {
+                if(data.getClipData()!=null)
+                {
+                    int count = data.getClipData().getItemCount(); //evaluate the count before the for loop --- otherwise, the count is evaluated every loop.
+                    for(int i = 0; i < count; i++) {
+                        Uri selectedImage = data.getClipData().getItemAt(i).getUri();
+                        String[] filePathColumn = {MediaStore.Images.Media.DATA};
+                        Cursor cursor = getContentResolver().query(selectedImage,
+                                filePathColumn, null, null, null);
+                        cursor.moveToFirst();
+                        int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                        videoPath = cursor.getString(columnIndex);
+                        videoPaths.add(videoPath);
+                        cursor.close();
+                    }
+                    Log.v("Videos", String.valueOf(videoPaths));
+                }
+                else if(data.getData()!=null) {
+                    Uri selectedImage = data.getData();
+                    String[] filePathColumn = { MediaStore.Images.Media.DATA };
+                    Cursor cursor = getContentResolver().query(selectedImage,
+                            filePathColumn, null, null, null);
+                    cursor.moveToFirst();
+                    int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                    videoPath = cursor.getString(columnIndex);
+                    videoPaths.add(videoPath);
+                    cursor.close();
+                }
+            }
+            else if (requestCode == RESULT_LOAD_DOCUMENT && resultCode == RESULT_OK && null != data) {
+                // Checking for selection multiple files or single.
+                if (data.getClipData() != null){
+
+                    // Getting the length of data and logging up the logs using index
+                    for (int index = 0; index < data.getClipData().getItemCount(); index++) {
+
+                        // Getting the URIs of the selected files and logging them into logcat at debug level
+                            /*Uri selectedImage = data.getClipData().getItemAt(index).getUri();
+                            String[] filePathColumn = {MediaStore.Images.Media.DATA};
+                            Cursor cursor = getContentResolver().query(selectedImage,
+                                    filePathColumn, null, null, null);
+                            cursor.moveToFirst();
+                            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                            documentPath = cursor.getString(columnIndex);
+                            documentPaths.add(documentPath);
+                            cursor.close();*/
+                        Log.v("Documents", String.valueOf(documentPaths));
+                    }
+                }else{ Uri uri = data.getData();
+                    Log.v("Documents", String.valueOf(documentPaths));
+                }
+          }
+//            adapter.notifyDataSetChanged();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == WRITE_PERMISSION) {
+            if (grantResults[0] == PackageManager.PERMISSION_DENIED) {
+                Log.d("Hello", "Write Permission Failed");
+                Toast.makeText(this, "You must allow permission write external storage to your mobile device.", Toast.LENGTH_SHORT).show();
+                finish();
+            }
+        }
     }
 
     @Override

@@ -153,6 +153,9 @@ public class TeacherViewCourseActivityScheduling extends Fragment implements Sch
                         Calendar cal = Calendar.getInstance(Locale.ENGLISH);
                         cal.setTimeInMillis(time);
                         String timef = DateFormat.format("hh:mm a", cal).toString();
+                        cal.setTimeInMillis(time+3600000);
+                        String endtime = DateFormat.format("hh:mm a", cal).toString();
+
                         try {
                             JSONObject jsonObject = new JSONObject();
                             jsonObject.put("className",ClassName);
@@ -160,6 +163,7 @@ public class TeacherViewCourseActivityScheduling extends Fragment implements Sch
                             jsonObject.put("date",String.valueOf(datePicker.getDayOfMonth()));
                             jsonObject.put("month",String.valueOf(monthNames[datePicker.getMonth()]));
                             jsonObject.put("time",timef);
+                            jsonObject.put("endtime",endtime);
                             jsonObject.put("courseId",course.get_id());
                             JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, API+"/scheduleClass",jsonObject,
                                     new Response.Listener<JSONObject>() {
@@ -167,7 +171,7 @@ public class TeacherViewCourseActivityScheduling extends Fragment implements Sch
                                         public void onResponse(JSONObject response) {
                                             Log.d("FetchingisTeacher", response.toString());
 //                                            ((Upsilon)getActivity().getApplication()).fetchProfile();
-                                            classes.add(new ScheduledClass(ClassName,time,String.valueOf(datePicker.getDayOfMonth()),String.valueOf(monthNames[datePicker.getMonth()]) ,timef));
+                                            classes.add(new ScheduledClass(ClassName,time,String.valueOf(datePicker.getDayOfMonth()),String.valueOf(monthNames[datePicker.getMonth()]) ,timef,endtime));
                                             adapter.notifyDataSetChanged();
                                             alertDialog.dismiss();
                                             ((TeacherViewCourseActivity)getActivity()).setClasses(classes);

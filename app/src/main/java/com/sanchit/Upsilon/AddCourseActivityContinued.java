@@ -170,7 +170,7 @@ public class AddCourseActivityContinued extends AppCompatActivity {
                 intent.setType("*/*");
                 intent.setAction(Intent.ACTION_GET_CONTENT);
                 intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE,true);
-                startActivityForResult(Intent.createChooser(intent, "Select Picture"), RESULT_LOAD_DOCUMENT);
+                startActivityForResult(Intent.createChooser(intent, "Select Document"), RESULT_LOAD_DOCUMENT);
             }
         });
         nextButton.setOnClickListener(new View.OnClickListener() {
