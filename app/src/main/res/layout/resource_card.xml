@@ -15,30 +15,38 @@
         app:show_buffering="when_playing"
         app:resize_mode="fill"
         android:visibility="gone"/>
-    <FrameLayout
-        android:id="@+id/doc_anchor"
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="180dp">
-        <com.github.barteksc.pdfviewer.PDFView
+        android:layout_height="180dp"
+        android:elevation="4dp"
+        app:cardCornerRadius="8dp">
+        <FrameLayout
+            android:id="@+id/doc_anchor"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/thumbnail"/>
-        <TextView
-            android:id="@+id/file_name"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="@color/button_green"
-            android:layout_gravity="center_horizontal|bottom"
-            android:textColor="@color/colorWhite"
-            android:textAllCaps="true"
-            android:padding="10dp"
-            android:singleLine="true"
-            android:ellipsize="marquee"
-            android:textSize="16sp"
-            android:gravity="center_vertical"
-            android:drawablePadding="10dp"
-            app:drawableStartCompat="@drawable/icon_doc" />
-    </FrameLayout>
+            android:layout_height="180dp">
+            <com.github.barteksc.pdfviewer.PDFView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/thumbnail"
+                />
+            <TextView
+                android:id="@+id/file_name"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="#C2185B"
+                android:layout_gravity="center_horizontal|bottom"
+                android:textColor="@color/colorWhite"
+                android:textAllCaps="true"
+                android:padding="10dp"
+                android:singleLine="true"
+                android:ellipsize="marquee"
+                android:textSize="16sp"
+                android:gravity="center_vertical"
+                android:drawablePadding="10dp"
+                app:drawableStartCompat="@drawable/icon_doc" />
+        </FrameLayout>
+    </androidx.cardview.widget.CardView>
+
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="180dp"
