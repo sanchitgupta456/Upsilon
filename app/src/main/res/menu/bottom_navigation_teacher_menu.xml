@@ -26,8 +26,8 @@
         android:icon="@drawable/icon_forum"
         android:title="@string/Forum"/>
     <item
-        android:id="@+id/bottomNavMenuSettingsTeacher"
-        android:enabled="true"
-        android:icon="@drawable/icon_settings"
-        android:title="@string/settings"/>
+        android:title="Assignments"
+        android:id="@+id/assignments_tests"
+        android:icon="@drawable/icon_assignment"
+        />
 </menu>

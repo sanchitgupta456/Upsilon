@@ -88,6 +88,7 @@ public class TeacherViewCourseActivity extends AppCompatActivity implements Bott
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        setCheckable(true);
 
         Bundle bundle = new Bundle();
         bundle.putSerializable("Course",course);
@@ -114,8 +115,8 @@ public class TeacherViewCourseActivity extends AppCompatActivity implements Bott
                 fragment = new TeacherViewCourseActivityScheduling();
                 fragment.setArguments(bundle);
                 break;
-            case R.id.bottomNavMenuSettingsTeacher:
-                fragment = new TeacherViewCourseActivitySettingsFragment();
+            case R.id.assignments_tests:
+                fragment = new TeacherViewCourseActivityAssignmentsFragment();
                 fragment.setArguments(bundle);
                 break;
             default:
@@ -177,10 +178,12 @@ public class TeacherViewCourseActivity extends AppCompatActivity implements Bott
             fragment.setArguments(bundle);
             loadFragment(fragment);
             return true;
-        } else if (itemId == R.id.assignments_tests) {
+        } else if (itemId == R.id.bottomNavMenuSettingsTeacher) {
+            setCheckable(false);
+            setChecked(false);
             Bundle bundle = new Bundle();
             bundle.putSerializable("Course",course);
-            Fragment fragment = new TeacherViewCourseActivityAssignmentsFragment();
+            Fragment fragment = new TeacherViewCourseActivitySettingsFragment();
             fragment.setArguments(bundle);
             loadFragment(fragment);
             return true;
@@ -203,5 +206,17 @@ public class TeacherViewCourseActivity extends AppCompatActivity implements Bott
     public void setClasses(ArrayList<ScheduledClass> classes)
     {
         course.setScheduledClasses(classes);
+    }
+
+    public void setCheckable(boolean checkable) {
+        final Menu menu = bottomNavigationView.getMenu();
+        for(int i = 0; i < menu.size(); i++)
+            menu.getItem(i).setCheckable(checkable);
+    }
+
+    public void setChecked(boolean checked) {
+        final Menu menu = bottomNavigationView.getMenu();
+        for(int i = 0; i < menu.size(); i++)
+            menu.getItem(i).setChecked(checked);
     }
 }

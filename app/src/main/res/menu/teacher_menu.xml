@@ -8,9 +8,10 @@
         app:showAsAction="ifRoom"
         />
     <item
-        android:title="@string/assignments_and_tests"
-        android:id="@+id/assignments_tests"
-        />
+        android:id="@+id/bottomNavMenuSettingsTeacher"
+        android:enabled="true"
+        android:icon="@drawable/icon_settings"
+        android:title="@string/settings"/>
     <item
         android:title="@string/course_stats"
         android:id="@+id/course_stats"
