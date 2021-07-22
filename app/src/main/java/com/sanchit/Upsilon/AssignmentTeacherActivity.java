@@ -10,6 +10,7 @@ import android.view.MenuItem;
 
 import com.google.android.material.tabs.TabLayout;
 import com.sanchit.Upsilon.ui.assignment.AssignmentStudentData;
+import com.sanchit.Upsilon.ui.assignment.AssignmentTeacherData;
 
 import java.util.Objects;
 
@@ -17,14 +18,14 @@ public class AssignmentTeacherActivity extends AppCompatActivity {
 
     private static final String TAG = "Assignment";
 
-    AssignmentStudentData assignmentStudentData;
+    AssignmentTeacherData assignmentTeacherData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_assignments_teacher);
+        setContentView(R.layout.activity_assignment_teacher);
 
-        assignmentStudentData = (AssignmentStudentData)getIntent().getSerializableExtra("Assignment");
+        assignmentTeacherData = (AssignmentTeacherData) getIntent().getSerializableExtra("Assignment");
 
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 //        getSupportActionBar().setTitle("Assignment #");
@@ -36,17 +37,17 @@ public class AssignmentTeacherActivity extends AppCompatActivity {
 //        tabs.setupWithViewPager(viewPager);
 
         Bundle bundle = new Bundle();
-        bundle.putSerializable("Assignment",assignmentStudentData);
+        bundle.putSerializable("Assignment",assignmentTeacherData);
         Fragment fragment = new AssignmentContentFragment();
         fragment.setArguments(bundle);
         loadFragment(fragment);
-        getSupportActionBar().setTitle(assignmentStudentData.getName());
+        getSupportActionBar().setTitle(assignmentTeacherData.getName());
 
         tabs.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 Bundle bundle = new Bundle();
-                bundle.putSerializable("Assignment",assignmentStudentData);
+                bundle.putSerializable("Assignment",assignmentTeacherData);
 
                 Fragment fragment = new AssignmentContentFragment();
                 fragment.setArguments(bundle);
@@ -107,7 +108,7 @@ public class AssignmentTeacherActivity extends AppCompatActivity {
         //switching fragment
         if (fragment != null) {
             Bundle bundle = new Bundle();
-            bundle.putSerializable("Assignment",assignmentStudentData);
+            bundle.putSerializable("Assignment",assignmentTeacherData);
             fragment.setArguments(bundle);
             getSupportFragmentManager()
                     .beginTransaction()

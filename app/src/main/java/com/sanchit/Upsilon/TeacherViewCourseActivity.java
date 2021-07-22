@@ -1,32 +1,17 @@
 package com.sanchit.Upsilon;
 
-import android.app.ActionBar;
-import android.app.DatePickerDialog;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
-import android.text.format.DateFormat;
-import android.util.Log;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.TimePicker;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -35,31 +20,14 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.sanchit.Upsilon.classData.ScheduledClass;
-import com.sanchit.Upsilon.courseData.Course;
 import com.sanchit.Upsilon.courseData.CourseFinal;
-import com.sanchit.Upsilon.courseData.ScheduledClasses;
-import com.sanchit.Upsilon.ui.login.LoginActivity;
-import com.squareup.picasso.Picasso;
 
-import org.bson.Document;
-
-import java.sql.Time;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.Locale;
 import java.util.Objects;
 
 import io.realm.mongodb.App;
-import io.realm.mongodb.AppConfiguration;
-import io.realm.mongodb.User;
 import io.realm.mongodb.mongo.MongoClient;
-import io.realm.mongodb.mongo.MongoCollection;
 import io.realm.mongodb.mongo.MongoDatabase;
-import io.realm.mongodb.mongo.options.UpdateOptions;
-
-import static android.app.ActionBar.DISPLAY_SHOW_CUSTOM;
 
 public class TeacherViewCourseActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
     private static final String TAG = "TeacherViewCourse";
@@ -212,7 +180,7 @@ public class TeacherViewCourseActivity extends AppCompatActivity implements Bott
         } else if (itemId == R.id.assignments_tests) {
             Bundle bundle = new Bundle();
             bundle.putSerializable("Course",course);
-            Fragment fragment = new TeacherViewCourseActivityTestsFragment();
+            Fragment fragment = new TeacherViewCourseActivityAssignmentsFragment();
             fragment.setArguments(bundle);
             loadFragment(fragment);
             return true;

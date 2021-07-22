@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AssignmentsTeacherActivity">
+    tools:context=".TeacherViewCourseActivityAssignmentsFragment">
 
     <TextView
         android:layout_width="match_parent"
@@ -44,5 +44,16 @@
         android:layout_margin="10dp"
         android:layout_below="@id/textCompleted"
         tools:listitem="@layout/assignment_card_completed"/>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="@dimen/activity_horizontal_margin"
+        style="@style/FloatingButtonStyle"
+        android:src="@drawable/add_icon_48"
+        android:tint="@color/colorWhite"
+        android:id="@+id/new_assignment"/>
 
 </RelativeLayout>

@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AssignmentContentFragment">
+    tools:context=".AssignmentContentTeacherFragment">
 
 
     <com.github.barteksc.pdfviewer.PDFView
@@ -25,6 +25,13 @@
             android:indeterminate="true"/>
     </FrameLayout>
 
-
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
+        android:layout_margin="@dimen/activity_horizontal_margin"
+        style="@style/FloatingButtonStyle"
+        android:src="@drawable/edit_icon"
+        android:id="@+id/edit_content"/>
 
 </FrameLayout>

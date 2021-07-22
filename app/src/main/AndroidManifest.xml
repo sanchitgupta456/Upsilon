@@ -26,7 +26,6 @@
         android:usesCleartextTraffic="true">
         <activity android:name=".PDFViewActivity"></activity>
         <activity android:name=".AssignmentTeacherActivity" />
-        <activity android:name=".AssignmentsTeacherActivity" />
         <activity android:name=".ClassActivityTeacher" />
         <activity android:name=".ClassActivity" />
         <activity android:name=".pdfUpload.pdfPlayground" />
@@ -36,7 +35,6 @@
         <activity
             android:name=".AssignmentActivity"
             android:label="@string/title_activity_assignment" />
-        <activity android:name=".RegisteredStudentViewCourseAssignmentsFragment" />
         <activity android:name=".PaymentLogActivity" />
         <activity android:name=".GetStartedAsTeacherActivity" />
         <activity android:name=".TeacherDataSetupActivity" />
