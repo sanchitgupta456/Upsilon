@@ -8,6 +8,25 @@ public class PaymentLog {
     private LogType type;
     private Long timeStamp;
     private Integer amount;
+    private String Date;
+
+    public PaymentLog(String transactionId, String logMessage, LogType type, Integer amount, Long timeStamp) {
+        this.transactionId = transactionId;
+        this.logMessage = logMessage;
+        this.type = type;
+        this.amount = amount;
+        this.timeStamp = timeStamp;
+    }
+
+
+
+    public String getDate() {
+        return Date;
+    }
+
+    public void setDate(String date) {
+        Date = date;
+    }
 
     public Integer getAmount() {
         return amount;

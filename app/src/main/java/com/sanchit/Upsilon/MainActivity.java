@@ -539,7 +539,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 //                MongoCollection<Document> mongoCollection  = mongoDatabase.getCollection("CourseData");
 //                MongoCollection<Document> mongoCollection2  = mongoDatabase.getCollection("UserData");
                 //Blank query to find every single course in db
-//                TODO: Modify query to look for user preferred course IDs
 
 //                Document queryFilter2 = new Document("userid", user.getId());
 

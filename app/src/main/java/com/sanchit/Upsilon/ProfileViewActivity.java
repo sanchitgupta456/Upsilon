@@ -468,6 +468,8 @@ public class ProfileViewActivity extends AppCompatActivity {
                 Log.v("CourseLocationSet", String.valueOf(latitude+longitude));
                 courseLocation.setLatitude(latitude);
                 courseLocation.setLongitude(longitude);
+                Log.v("GotIt",latitude.toString()+longitude.toString()+"yeah");
+                updateLocation(latitude,longitude);
             }
             else if (requestCode == 1235) {
                 Intent intent = new Intent(ProfileViewActivity.this, MapsActivity.class);
@@ -524,7 +526,7 @@ public class ProfileViewActivity extends AppCompatActivity {
                         userLocation.setLongitude(location.getLongitude());
                         //viewModel.setUserLocation(userLocation);
                         //user.getCustomData().append("userLocation", userLocation);
-                        updateLocation();
+                        updateLocation(location.getLatitude(),location.getLongitude());
                         //Log.v("Location",addresses.get(0).getPostalCode()+" "+addresses.get(0).getLocality()+" "+addresses.get(0).getSubLocality());
                     } catch (IOException e) {
 //                        llLoader.setVisibility(View.INVISIBLE);
@@ -540,14 +542,14 @@ public class ProfileViewActivity extends AppCompatActivity {
         });
     }
 
-    public void updateLocation() {
+    public void updateLocation(double latitude,double longitude) {
 //        Log.v("Location",String.valueOf(userLocation.get("latitude"))+String.valueOf(userLocation.get("longitude")));
         Map<String, String> mHeaders = new ArrayMap<String, String>();
         mHeaders.put("token", ((Upsilon) getApplication()).getToken());
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("latitude", userLocation.getLatitude());
-            jsonObject.put("longitude", userLocation.getLongitude());
+            jsonObject.put("latitude", latitude);
+            jsonObject.put("longitude", longitude);
 
             JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, API + "/userLocation", jsonObject,
                     new Response.Listener<JSONObject>() {
@@ -557,8 +559,18 @@ public class ProfileViewActivity extends AppCompatActivity {
 //                            llLoader.setVisibility(View.INVISIBLE);
 //                                    performSearch();
 //                            alter.setVisibility(View.GONE);
-                            ((Upsilon) getApplication()).user.setUserLocation(new UserLocation(Double.parseDouble(userLocation.getLatitude().toString()), Double.parseDouble(userLocation.getLongitude().toString())));
+                            ((Upsilon) getApplication()).user.setUserLocation(new UserLocation(latitude,longitude));
                             ((Upsilon) getApplication()).fetchProfile();
+                            if(((Upsilon)getApplication()).getUser().getUserLocation()!=null && ((Upsilon)getApplication()).getUser().getUserLocation().getLatitude()!=null)
+                            {
+                                locMain.setVisibility(View.VISIBLE);
+                                locAlter.setVisibility(View.GONE);
+                            }
+                            else
+                            {
+                                locMain.setVisibility(View.GONE);
+                                locAlter.setVisibility(View.VISIBLE);
+                            }
 //                            loadOnce();
 //                            recyclerView.setVisibility(View.VISIBLE);
                         }
