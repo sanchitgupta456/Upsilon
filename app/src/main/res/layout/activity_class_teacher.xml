@@ -187,13 +187,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="10dp"
-        android:text="Recorded class resources"
+        android:text="Class Resources"
         android:gravity="start"
         android:textSize="18sp"
-        android:textStyle="bold"
+        android:textStyle="normal"
         android:textColor="@color/colorBlack"
         android:id="@+id/text3"
-        android:layout_below="@id/updateChange"/>
+        android:layout_below="@id/updateChange" />
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
