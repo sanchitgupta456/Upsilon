@@ -285,14 +285,23 @@ public class UserDataSetupFragment3 extends Fragment implements AdapterView.OnIt
                     Geocoder geocoder = new Geocoder(getApplicationContext(), Locale.getDefault());
                     try {
                         List<Address> addresses = geocoder.getFromLocation(location.getLatitude(),location.getLongitude(),1);
-                        City.setText(addresses.get(0).getLocality());
-                        viewModel.setCity(addresses.get(0).getLocality());
-                        Pincode.setText(addresses.get(0).getPostalCode());
-                        viewModel.setPincode(addresses.get(0).getPostalCode());
-                        userLocation.setLatitude(location.getLatitude());
-                        userLocation.setLongitude(location.getLongitude());
-                        viewModel.setUserLocation(userLocation);
-                        Log.v("Location",addresses.get(0).getPostalCode()+" "+addresses.get(0).getLocality()+" "+addresses.get(0).getSubLocality());
+                        if(addresses!=null)
+                        {
+//                            City.setText(addresses.get(0).getLocality());
+//                            viewModel.setCity(addresses.get(0).getLocality());
+                            try {
+                                Pincode.setText(addresses.get(0).getPostalCode());
+                                viewModel.setPincode(addresses.get(0).getPostalCode());
+                                userLocation.setLatitude(location.getLatitude());
+                                userLocation.setLongitude(location.getLongitude());
+                                viewModel.setUserLocation(userLocation);
+                                Log.v("Location",addresses.get(0).getPostalCode()+" "+addresses.get(0).getLocality()+" "+addresses.get(0).getSubLocality());
+
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
