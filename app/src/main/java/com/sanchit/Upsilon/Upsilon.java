@@ -81,6 +81,7 @@ public class Upsilon extends Application {
     }
 
     public void initialise() {
+        Gson gson = new Gson();
         saveToken();
         fetchProfile();
     }
@@ -101,6 +102,10 @@ public class Upsilon extends Application {
                         try {
                             user = new User();
                             Gson gson= new Gson();
+                            getApplicationContext().getSharedPreferences(PREFS_NAME,MODE_PRIVATE)
+                                    .edit()
+                                    .putString("myuser", String.valueOf(response))
+                                    .apply();
                             User user = gson.fromJson(String.valueOf(response),User.class);
                             setUser(user);
                         } catch (JsonSyntaxException e) {
@@ -132,6 +137,13 @@ public class Upsilon extends Application {
 
         SharedPreferences pref = getApplicationContext().getSharedPreferences(PREFS_NAME,MODE_PRIVATE);
         Token = pref.getString("token", null);
+        Gson gson = new Gson();
+        String userstr = pref.getString("myuser",null);
+        if(userstr!=null)
+        {
+            Log.v("User",userstr);
+            user = gson.fromJson(userstr,User.class);
+        }
 //        JSONObject jsonBody = new JSONObject();
         fetchInterests();
     }

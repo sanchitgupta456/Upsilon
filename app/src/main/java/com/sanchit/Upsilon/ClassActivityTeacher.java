@@ -282,20 +282,35 @@ public class ClassActivityTeacher extends AppCompatActivity implements View.OnCl
             }
         });
 
-        docs.add("http://res.cloudinary.com/upsilon175/raw/upload/v1626886850/Upsilon/Courses/60f80d90368be92fc41ea044/1/Documents/Document60f80d90368be92fc41ea044108f0b3f36-e562-4070-b89a-7c628252da7a.pdf");
+//        docs.add("http://res.cloudinary.com/upsilon175/raw/upload/v1626886850/Upsilon/Courses/60f80d90368be92fc41ea044/1/Documents/Document60f80d90368be92fc41ea044108f0b3f36-e562-4070-b89a-7c628252da7a.pdf");
         adapter = new ResourceAdapter(videos, docs, images);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
         recyclerView.setAdapter(adapter);
-        Log.d(TAG, "onCreate: recycled " + docs.size() + " " + videos.size() + " " + docs.get(0));
+//        Log.d(TAG, "onCreate: recycled " + docs.size() + " " + videos.size() + " " + docs.get(0));
 
-//        getData();
+        getData();
 //        adapter.notifyDataSetChanged();
     }
 
     public void getData() {
         //TODO: fetch videos, docs and images
-        docs.add("http://res.cloudinary.com/upsilon175/raw/upload/v1626886850/Upsilon/Courses/60f80d90368be92fc41ea044/1/Documents/Document60f80d90368be92fc41ea044108f0b3f36-e562-4070-b89a-7c628252da7a.pdf");
+        for(int i=0;i<scheduledClass.getImages().size();i++)
+        {
+            images.add(scheduledClass.getImages().get(i));
+            adapter.notifyDataSetChanged();
+        }
+        for(int i=0;i<scheduledClass.getVideos().size();i++)
+        {
+            videos.add(scheduledClass.getVideos().get(i));
+            adapter.notifyDataSetChanged();
+        }
+        for(int i=0;i<scheduledClass.getDocuments().size();i++)
+        {
+            docs.add(scheduledClass.getDocuments().get(i));
+            adapter.notifyDataSetChanged();
+        }
+//        docs.add("http://res.cloudinary.com/upsilon175/raw/upload/v1626886850/Upsilon/Courses/60f80d90368be92fc41ea044/1/Documents/Document60f80d90368be92fc41ea044108f0b3f36-e562-4070-b89a-7c628252da7a.pdf");
         Log.d(TAG, "getData: ALERT!!! THIS IS REACHABLE!");
         adapter.notifyDataSetChanged();
     }
@@ -420,7 +435,8 @@ public class ClassActivityTeacher extends AppCompatActivity implements View.OnCl
                                                     @Override
                                                     public void onResponse(JSONObject response) {
                                                         Log.d("UploadingResource", response.toString());
-
+                                                        images.add(resultData.get("url").toString());
+//                                                        getData();
                                                     }
                                                 },
                                                 new Response.ErrorListener() {
@@ -522,6 +538,7 @@ public class ClassActivityTeacher extends AppCompatActivity implements View.OnCl
                                                     @Override
                                                     public void onResponse(JSONObject response) {
                                                         Log.d("UploadingResource", response.toString());
+                                                        videos.add(resultData.get("url").toString());
 
                                                     }
                                                 },
@@ -614,7 +631,7 @@ public class ClassActivityTeacher extends AppCompatActivity implements View.OnCl
                                                     @Override
                                                     public void onResponse(JSONObject response) {
                                                         Log.d("UploadingResource", response.toString());
-
+                                                        docs.add(resultData.get("url").toString());
                                                     }
                                                 },
                                                 new Response.ErrorListener() {

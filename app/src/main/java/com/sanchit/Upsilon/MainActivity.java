@@ -212,7 +212,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 //                .build());
 //        User user = app.currentUser();
 
-        if ( ((Upsilon)this.getApplication()).getToken() == null){
+        if ( ((Upsilon)this.getApplication()).getToken() == null || ((Upsilon)this.getApplication()).getUser() == null){
             startActivity(new Intent(MainActivity.this, LoginActivity.class));
         }
         else
@@ -267,7 +267,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             LinearLayout header_more = navigationView.getHeaderView(0).findViewById(R.id.more);
             header_more.setVisibility(View.VISIBLE);
          */
-        if(((Upsilon)this.getApplication()).getToken()==null)
+        if(((Upsilon)this.getApplication()).getToken()==null || ((Upsilon)this.getApplication()).getUser() == null)
         {
             Intent intent = new Intent(MainActivity.this, LoginActivity.class);
             startActivity(intent);
@@ -429,7 +429,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 // an authenticated user is required to access a MongoDB instance
 
-            if (((Upsilon)this.getApplication()).getToken() != null) {
+            if (((Upsilon)this.getApplication()).getToken() != null && ((Upsilon)this.getApplication()).getUser() != null) {
                 progressBar.setVisibility(View.VISIBLE);
                 JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.GET, API+"/myCourses",new JSONObject(),
                             new Response.Listener<JSONObject>() {
@@ -539,7 +539,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 //                MongoCollection<Document> mongoCollection  = mongoDatabase.getCollection("CourseData");
 //                MongoCollection<Document> mongoCollection2  = mongoDatabase.getCollection("UserData");
                 //Blank query to find every single course in db
-//                TODO: Modify query to look for user preferred course IDs
 
 //                Document queryFilter2 = new Document("userid", user.getId());
 

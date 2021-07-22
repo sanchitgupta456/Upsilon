@@ -44,6 +44,7 @@ import org.w3c.dom.Text;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 import io.realm.mongodb.App;
 import io.realm.mongodb.AppConfiguration;
@@ -76,6 +77,7 @@ public class RegisterCourseActivity extends AppCompatActivity implements Payment
     public static int rate = 5;
     private RequestQueue queue;
     private String API ;
+    String id;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -154,6 +156,7 @@ public class RegisterCourseActivity extends AppCompatActivity implements Payment
                 else
                 {
                     if (course.getCourseFees() == 0) {
+                        id = UUID.randomUUID().toString();
                         RegisterStudent();
                     } else {
                         startPayment((course.getCourseFees() + (int)course.getCourseFees() * rate / 100) * 100);
@@ -250,6 +253,7 @@ public class RegisterCourseActivity extends AppCompatActivity implements Payment
             jsonObject.put("phone",studentContact.getText().toString());
             jsonObject.put("name",studentName.getText().toString());
             jsonObject.put("pincode",studentAddress.getText().toString());
+            jsonObject.put("transactionId",id);
             JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, API+"/registerForCourse",jsonObject,
                     new Response.Listener<org.json.JSONObject>() {
                         @Override
@@ -538,6 +542,7 @@ public class RegisterCourseActivity extends AppCompatActivity implements Payment
          */
         Checkout checkout = new Checkout();
         checkout.setKeyID("rzp_test_mVNL5hJS3jvkHP");
+        id = UUID.randomUUID().toString();
         /**
          * Set your logo here
          */
@@ -563,9 +568,9 @@ public class RegisterCourseActivity extends AppCompatActivity implements Payment
              *     Invoice Payment
              *     etc.
              */
-            options.put("description", "From "+((Upsilon)getApplication()).getUser().get_Id()+" for "+course.get_id());
+            options.put("description", "From "+((Upsilon)getApplication()).getUser().get_Id()+" for "+course.get_id() + " Reference" + id);
             //options.put("image", R.drawable.lightlogo1);
-            //options.put("order_id", "order_9A33XWu170gUtm");
+//            options.put("order_id", id);
             options.put("currency", "INR");
             /**
              * Amount is always passed in currency subunits

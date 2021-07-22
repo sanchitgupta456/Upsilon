@@ -250,7 +250,7 @@ public class UserDataSetupActivity extends AppCompatActivity {
                 String requestId = MediaManager.get().upload(picturePath)
                         .unsigned("preset1")
                         .option("resource_type", "image")
-                        .option("folder", "Upsilon/".concat(user.getId()).concat("/"))
+                        .option("folder", "Upsilon/".concat(viewModel.getName().getValue()).concat("/").concat(UUID.randomUUID().toString()))
                         .option("public_id", "profilePic" + UUID.randomUUID().toString())
                         .callback(new UploadCallback() {
                             @Override
@@ -286,6 +286,7 @@ public class UserDataSetupActivity extends AppCompatActivity {
                                                 @Override
                                                 public void onResponse(JSONObject response) {
                                                     Log.d("FetchUserLocation", response.toString());
+                                                    ((Upsilon)getApplication()).initialise();
                                                     Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                                                     startActivity(intent);
     //                        Log.v("User",user.getUserLocation().getLatitude().toString());
