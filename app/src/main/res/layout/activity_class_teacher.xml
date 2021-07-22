@@ -6,24 +6,26 @@
     android:layout_height="match_parent"
     tools:context=".ClassActivityTeacher"
     android:padding="@dimen/activity_horizontal_margin"
-    android:theme="@style/MaterialTheme">
+    android:theme="@style/MaterialTheme"
+    android:background="@color/colorWhite">
 
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Date"
         style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
-        android:layout_marginVertical="10dp"
+        android:layout_marginVertical="5dp"
         android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
         android:id="@+id/ll1"
-        app:startIconDrawable="@drawable/icon_calendar">
+        app:startIconDrawable="@drawable/icon_calendar"
+        app:boxBackgroundColor="@color/colorWhite">
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/etDate"
             android:inputType="text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:textColor="@color/colorPrimary"
+            android:textSize="16sp"
+            android:textColor="@color/colorBlack"
             android:text="Saturday, Nov 3, 2020"/>
     </com.google.android.material.textfield.TextInputLayout>
     <com.google.android.material.textfield.TextInputLayout
@@ -31,18 +33,19 @@
         android:layout_height="wrap_content"
         android:hint="Start Time"
         style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
-        android:layout_marginVertical="10dp"
+        android:layout_marginVertical="5dp"
         android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
         android:id="@+id/ll2"
         android:layout_below="@id/ll1"
-        app:startIconDrawable="@drawable/icon_clock">
+        app:startIconDrawable="@drawable/icon_clock"
+        app:boxBackgroundColor="@color/colorWhite">
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/etStartTime"
             android:inputType="text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:textColor="@color/colorPrimary"
+            android:textSize="16sp"
+            android:textColor="@color/colorBlack"
             android:text="1600 HRS"/>
     </com.google.android.material.textfield.TextInputLayout>
     <com.google.android.material.textfield.TextInputLayout
@@ -50,18 +53,19 @@
         android:layout_height="wrap_content"
         android:hint="End Time"
         style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
-        android:layout_marginVertical="10dp"
+        android:layout_marginVertical="5dp"
         android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
         android:id="@+id/ll3"
         android:layout_below="@id/ll2"
-        app:startIconDrawable="@drawable/icon_clock">
+        app:startIconDrawable="@drawable/icon_clock"
+        app:boxBackgroundColor="@color/colorWhite">
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/etEndTime"
             android:inputType="text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:textColor="@color/colorPrimary"
+            android:textSize="16sp"
+            android:textColor="@color/colorBlack"
             android:text="1800 HRS"/>
     </com.google.android.material.textfield.TextInputLayout>
 <!--    <FrameLayout-->
@@ -203,25 +207,31 @@
         android:gravity="center"
         android:layout_centerHorizontal="true"
         tools:listitem="@layout/resource_card"/>
-<!--    <com.google.android.material.floatingactionbutton.FloatingActionButton-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:src="@drawable/icon_down"-->
-<!--        android:layout_margin="@dimen/activity_horizontal_margin"-->
-<!--        android:foregroundGravity="center"-->
-<!--        android:elevation="20dp"-->
-<!--        android:id="@+id/btnAdd"-->
-<!--        tools:ignore="ContentDescription"-->
-<!--        android:layout_alignParentEnd="true"/>-->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/add_icon_48"
+        android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
+        android:layout_marginVertical="4dp"
+        android:foregroundGravity="center"
+        android:elevation="20dp"
+        android:id="@+id/btnAdd"
+        tools:ignore="ContentDescription"
+        android:layout_gravity="end"
+        android:layout_alignParentEnd="true"
+        android:layout_alignTop="@id/text3"
+        android:tint="@color/colorWhite"/>
     <LinearLayout
+        android:id="@+id/add_frame"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_alignParentEnd="true"
         android:weightSum="3"
         android:gravity="center"
-        android:layout_alignTop="@id/text3">
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:layout_below="@id/btnAdd"
+        android:animateLayoutChanges="true">
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
             android:layout_width="wrap_content"
             android:layout_weight="1"
             android:layout_height="0dp"
@@ -230,9 +240,11 @@
             android:foregroundGravity="center"
             android:elevation="20dp"
             android:id="@+id/btnAddDoc"
-            tools:ignore="ContentDescription" />
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:layout_width="wrap_content"
+            tools:ignore="ContentDescription"
+            android:text="Upload Document"
+            app:icon="@drawable/icon_doc"/>
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:layout_width="match_parent"
             android:layout_weight="1"
             android:layout_height="0dp"
             android:src="@drawable/icon_image"
@@ -240,9 +252,11 @@
             android:foregroundGravity="center"
             android:elevation="20dp"
             android:id="@+id/btnAddImage"
-            tools:ignore="ContentDescription" />
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:layout_width="wrap_content"
+            tools:ignore="ContentDescription"
+            android:text="Upload Video"
+            app:icon="@drawable/icon_video"/>
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:layout_width="match_parent"
             android:layout_weight="1"
             android:layout_height="0dp"
             android:src="@drawable/icon_video"
@@ -250,7 +264,9 @@
             android:foregroundGravity="center"
             android:elevation="20dp"
             android:id="@+id/btnAddVideo"
-            tools:ignore="ContentDescription" />
+            tools:ignore="ContentDescription"
+            android:text="Upload Image"
+            app:icon="@drawable/icon_image"/>
     </LinearLayout>
 
 

@@ -27,6 +27,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.LinearLayout;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -39,6 +40,7 @@ import com.android.volley.toolbox.Volley;
 import com.cloudinary.android.MediaManager;
 import com.cloudinary.android.callback.ErrorInfo;
 import com.cloudinary.android.callback.UploadCallback;
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -74,7 +76,9 @@ public class ClassActivityTeacher extends AppCompatActivity implements View.OnCl
     private RecyclerView recyclerView;
     ResourceAdapter adapter;
 
-    private FloatingActionButton addVideo, addDoc, addImage;
+    private FloatingActionButton add;
+    private LinearLayout addFrame;
+    private ExtendedFloatingActionButton addVideo, addDoc, addImage;
     private Button updateChange;
 
     View dialogView;
@@ -125,9 +129,26 @@ public class ClassActivityTeacher extends AppCompatActivity implements View.OnCl
         endTimeLayout = (TextInputLayout) findViewById(R.id.ll3);
         start_time = (TextInputEditText) findViewById(R.id.etStartTime);
         end_time = (TextInputEditText) findViewById(R.id.etEndTime);
-        addVideo = (FloatingActionButton) findViewById(R.id.btnAddVideo);
-        addDoc = (FloatingActionButton) findViewById(R.id.btnAddDoc);
-        addImage = (FloatingActionButton) findViewById(R.id.btnAddImage);
+        addVideo =  findViewById(R.id.btnAddVideo);
+        addDoc =  findViewById(R.id.btnAddDoc);
+        addImage =  findViewById(R.id.btnAddImage);
+        add = findViewById(R.id.btnAdd);
+        addFrame = findViewById(R.id.add_frame);
+        addFrame.setVisibility(View.GONE);
+
+        add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(addFrame.getVisibility()==View.GONE) {
+                    addFrame.setVisibility(View.VISIBLE);
+                    add.animate().rotationBy(405).start();
+                } else {
+                    addFrame.setVisibility(View.GONE);
+                    add.animate().rotationBy(405).start();
+                }
+
+            }
+        });
         updateChange = (Button) findViewById(R.id.updateChange);
         recyclerView = (RecyclerView) findViewById(R.id.video_resources);
 

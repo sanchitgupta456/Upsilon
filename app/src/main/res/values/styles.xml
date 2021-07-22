@@ -28,6 +28,9 @@
         <item name="android:colorAccent">@color/colorAccent</item>
 
         <item name="materialButtonStyle">@style/ButtonStyle</item>
+        <item name="floatingActionButtonStyle">@style/FloatingButtonStyle</item>
+        <item name="extendedFloatingActionButtonStyle">@style/ExtendedFloatingButtonStyle</item>
+        <item name="textInputStyle">@style/TextStyle</item>
     </style>
 
     <style name="ActionBarStyle" parent="Widget.AppCompat.ActionBar.Solid">
@@ -37,7 +40,10 @@
     </style>
 
     <style name="TextStyle" parent="TextAppearance.AppCompat">
-        <item name="android:textColor">@color/colorPrimaryDark</item>
+        <item name="android:textColor">@color/colorBlack</item>
+        <item name="android:textStyle">italic</item>
+        <item name="fontFamily">sans-serif-light</item>
+        <item name="android:typeface">sans</item>
     </style>
 
     <style name="AppTheme.Green" parent="Theme.AppCompat.Light.DarkActionBar">
@@ -86,5 +92,17 @@
         <item name="android:letterSpacing">0</item>
         <item name="elevation">8dp</item>
         <item name="drawableTint">@color/button_green</item>
+    </style>
+
+    <style name="FloatingButtonStyle" parent="Widget.Design.FloatingActionButton">
+        <item name="backgroundTint">@color/button_green</item>
+        <item name="iconTint">@color/colorWhite</item>
+        <item name="rippleColor">@color/ripple_green</item>
+    </style>
+    <style name="ExtendedFloatingButtonStyle" parent="Widget.MaterialComponents.ExtendedFloatingActionButton">
+        <item name="backgroundTint">@color/button_green</item>
+        <item name="iconTint">@color/colorWhite</item>
+        <item name="rippleColor">@color/ripple_green</item>
+        <item name="android:textColor">@color/colorWhite</item>
     </style>
 </resources>
