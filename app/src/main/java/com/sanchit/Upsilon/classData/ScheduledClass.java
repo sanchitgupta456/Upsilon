@@ -1,6 +1,7 @@
 package com.sanchit.Upsilon.classData;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class ScheduledClass implements Serializable {
     String className;
@@ -10,6 +11,46 @@ public class ScheduledClass implements Serializable {
     String time;
     String endtime;
     String id;
+    ArrayList<String> images;
+    ArrayList<String> videos;
+    ArrayList<String> documents;
+
+    public ArrayList<String> getImages() {
+        return images;
+    }
+
+    public void setImages(ArrayList<String> images) {
+        this.images = images;
+    }
+
+    public ArrayList<String> getVideos() {
+        return videos;
+    }
+
+    public void setVideos(ArrayList<String> videos) {
+        this.videos = videos;
+    }
+
+    public ArrayList<String> getDocuments() {
+        return documents;
+    }
+
+    public void setDocuments(ArrayList<String> documents) {
+        this.documents = documents;
+    }
+
+    public ScheduledClass(String className, long timestamp, String date, String month, String time, String endtime, String id, ArrayList<String> images, ArrayList<String> videos, ArrayList<String> documents) {
+        this.className = className;
+        this.timestamp = timestamp;
+        this.date = date;
+        this.month = month;
+        this.time = time;
+        this.endtime = endtime;
+        this.id = id;
+        this.images = images;
+        this.videos = videos;
+        this.documents = documents;
+    }
 
     public String getId() {
         return id;

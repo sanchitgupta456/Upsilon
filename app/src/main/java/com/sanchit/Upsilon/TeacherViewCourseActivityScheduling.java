@@ -174,7 +174,7 @@ public class TeacherViewCourseActivityScheduling extends Fragment implements Sch
                                         public void onResponse(JSONObject response) {
                                             Log.d("FetchingisTeacher", response.toString());
 //                                            ((Upsilon)getActivity().getApplication()).fetchProfile();
-                                            classes.add(new ScheduledClass(ClassName,time,String.valueOf(datePicker.getDayOfMonth()),String.valueOf(monthNames[datePicker.getMonth()]) ,timef,endtime,id));
+                                            classes.add(new ScheduledClass(ClassName,time,String.valueOf(datePicker.getDayOfMonth()),String.valueOf(monthNames[datePicker.getMonth()]) ,timef,endtime,id,new ArrayList<String>(),new ArrayList<String>(),new ArrayList<String>()));
                                             adapter.notifyDataSetChanged();
                                             alertDialog.dismiss();
                                             ((TeacherViewCourseActivity)getActivity()).setClasses(classes);

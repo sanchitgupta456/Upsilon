@@ -251,7 +251,7 @@
             android:layout_margin="4dp"
             android:foregroundGravity="center"
             android:elevation="20dp"
-            android:id="@+id/btnAddImage"
+            android:id="@+id/btnAddVideo"
             tools:ignore="ContentDescription"
             android:text="Upload Video"
             app:icon="@drawable/icon_video"/>
@@ -263,7 +263,7 @@
             android:layout_margin="4dp"
             android:foregroundGravity="center"
             android:elevation="20dp"
-            android:id="@+id/btnAddVideo"
+            android:id="@+id/btnAddImage"
             tools:ignore="ContentDescription"
             android:text="Upload Image"
             app:icon="@drawable/icon_image"/>
