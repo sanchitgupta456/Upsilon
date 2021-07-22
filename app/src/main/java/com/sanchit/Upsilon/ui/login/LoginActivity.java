@@ -69,6 +69,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import com.sanchit.Upsilon.MainActivity;
 import com.sanchit.Upsilon.R;
 import com.sanchit.Upsilon.Upsilon;
@@ -442,10 +444,17 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         Log.d("Response", response.toString());
                         try {
                             ((Upsilon)getApplication()).setToken(response.getString("token"));
+                            try {
+                                Gson gson= new Gson();
+                                com.sanchit.Upsilon.userData.User user = gson.fromJson(String.valueOf(response.get("user")), com.sanchit.Upsilon.userData.User.class);
+                                ((Upsilon)getApplication()).setUser(user);
+                                goToMainActivity();
+                            } catch (JsonSyntaxException e) {
+                                e.printStackTrace();
+                            }
                             Log.v(TAG, "Successfully authenticated using an email and password.");
                             loadingProgressBar.setVisibility(View.INVISIBLE);
-                            ((Upsilon)getApplication()).initialise();
-                            goToMainActivity();
+//                            ((Upsilon)getApplication()).initialise();
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

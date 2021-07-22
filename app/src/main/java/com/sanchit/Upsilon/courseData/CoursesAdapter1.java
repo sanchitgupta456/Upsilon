@@ -93,11 +93,14 @@ public class CoursesAdapter1 extends RecyclerView.Adapter<CoursesAdapter1.ViewHo
 
     public CoursesAdapter1(List<CourseFinal>_courseList,String _API , String _Token , User _user)
     {
-        this.courseList = _courseList;
-        this.API = _API;
-        this.Token = _Token;
-        this.user = _user;
-        myCourses = user.getMyCourses();
+        if(_user!=null)
+        {
+            this.courseList = _courseList;
+            this.API = _API;
+            this.Token = _Token;
+            this.user = _user;
+            myCourses = user.getMyCourses();
+        }
     }
 
 
