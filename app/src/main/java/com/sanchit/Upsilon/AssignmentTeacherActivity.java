@@ -38,7 +38,7 @@ public class AssignmentTeacherActivity extends AppCompatActivity {
 
         Bundle bundle = new Bundle();
         bundle.putSerializable("Assignment",assignmentTeacherData);
-        Fragment fragment = new AssignmentContentFragment();
+        Fragment fragment = new AssignmentContentTeacherFragment();
         fragment.setArguments(bundle);
         loadFragment(fragment);
         getSupportActionBar().setTitle(assignmentTeacherData.getName());
@@ -49,20 +49,20 @@ public class AssignmentTeacherActivity extends AppCompatActivity {
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("Assignment",assignmentTeacherData);
 
-                Fragment fragment = new AssignmentContentFragment();
+                Fragment fragment = new AssignmentContentTeacherFragment();
                 fragment.setArguments(bundle);
 
                 switch (tab.getPosition()) {
                     case 0:
-                        fragment = new AssignmentContentFragment();
+                        fragment = new AssignmentContentTeacherFragment();
                         fragment.setArguments(bundle);
                         break;
                     case 1:
-                        fragment = new AssignmentSubmissionFragment();
+                        fragment = new AssignmentSubmissionsTeacherFragment();
                         fragment.setArguments(bundle);
                         break;
                     case 2:
-                        fragment = new AssignmentGradeFragment();
+                        fragment = new AssignmentEvaluateTeacherFragment();
                         fragment.setArguments(bundle);
                         break;
                 }

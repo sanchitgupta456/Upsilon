@@ -33,17 +33,17 @@
             <com.google.android.material.tabs.TabItem
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
-                android:text="Content"/>
+                android:text="Problem"/>
 
             <com.google.android.material.tabs.TabItem
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
-                android:text="Submission"/>
+                android:text="Submissions"/>
 
             <com.google.android.material.tabs.TabItem
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
-                android:text="Grade"/>
+                android:text="Evaluations"/>
         </com.google.android.material.tabs.TabLayout>
     </com.google.android.material.appbar.AppBarLayout>
 

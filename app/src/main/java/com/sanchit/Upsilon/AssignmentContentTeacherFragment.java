@@ -31,7 +31,7 @@ public class AssignmentContentTeacherFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_assignment_content, container, false);
+        View view = inflater.inflate(R.layout.fragment_assignment_content_teacher, container, false);
         String url = "https://res.cloudinary.com/upsilon175/image/upload/v1625568680/Upsilon/Courses/5facf7889f30789191b2afea/assign3_eavpwl.pdf";
         PDFView pdfView = view.findViewById(R.id.contentView);
         FrameLayout loading = view.findViewById(R.id.loading);

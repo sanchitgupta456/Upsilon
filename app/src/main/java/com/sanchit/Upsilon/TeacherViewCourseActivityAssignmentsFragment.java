@@ -19,6 +19,8 @@ import com.sanchit.Upsilon.courseData.CourseFinal;
 import com.sanchit.Upsilon.ui.assignment.AssignmentAdapter;
 import com.sanchit.Upsilon.ui.assignment.AssignmentAdapterCompleted;
 import com.sanchit.Upsilon.ui.assignment.AssignmentStudentData;
+import com.sanchit.Upsilon.ui.assignment.AssignmentTeacherAdapter;
+import com.sanchit.Upsilon.ui.assignment.AssignmentTeacherData;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -26,13 +28,13 @@ import java.util.Objects;
 public class TeacherViewCourseActivityAssignmentsFragment extends Fragment {
 
     RecyclerView pending, completed;
-    AssignmentAdapter adapter1;
-    AssignmentAdapterCompleted adapter2;
-    ArrayList<AssignmentStudentData> listPending = new ArrayList<>();
-    ArrayList<AssignmentStudentData> listCompleted = new ArrayList<>();
+    AssignmentTeacherAdapter adapter1;
+//    AssignmentAdapterCompleted adapter2;
+    ArrayList<AssignmentTeacherData> listPending = new ArrayList<>();
+//    ArrayList<AssignmentTeacherData> listCompleted = new ArrayList<>();
 
-    AssignmentAdapter.ItemClickListener listener1;
-    AssignmentAdapterCompleted.ItemClickListener listener2;
+    AssignmentTeacherAdapter.ItemClickListener listener1;
+//    AssignmentAdapterCompleted.ItemClickListener listener2;
 
     FloatingActionButton newAssignment;
 
@@ -66,11 +68,11 @@ public class TeacherViewCourseActivityAssignmentsFragment extends Fragment {
             }
         });
 
-        adapter1 = new AssignmentAdapter(listPending, getContext());
-        adapter2 = new AssignmentAdapterCompleted(listCompleted, getContext());
+        adapter1 = new AssignmentTeacherAdapter(listPending, getContext());
+//        adapter2 = new AssignmentAdapterCompleted(listCompleted, getContext());
 
 
-        listener1 = new AssignmentAdapter.ItemClickListener() {
+        listener1 = new AssignmentTeacherAdapter.ItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
                 //TODO: navigate to particular assignment
@@ -80,27 +82,27 @@ public class TeacherViewCourseActivityAssignmentsFragment extends Fragment {
             }
         };
 
-        listener2 = new AssignmentAdapterCompleted.ItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
-                //TODO: navigate to particular assignment
-                Intent intent = new Intent(getContext(), AssignmentTeacherActivity.class);
-                intent.putExtra("Assignment", listCompleted.get(position));
-                startActivity(intent);
-            }
-        };
+//        listener2 = new AssignmentAdapterCompleted.ItemClickListener() {
+//            @Override
+//            public void onItemClick(View view, int position) {
+//                //TODO: navigate to particular assignment
+//                Intent intent = new Intent(getContext(), AssignmentTeacherActivity.class);
+//                intent.putExtra("Assignment", listCompleted.get(position));
+//                startActivity(intent);
+//            }
+//        };
 
         adapter1.setClickListener(listener1);
-        adapter2.setClickListener(listener2);
+//        adapter2.setClickListener(listener2);
 
         pending.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, true));
         completed.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, true));
 
         pending.setAdapter(adapter1);
-        completed.setAdapter(adapter2);
+//        completed.setAdapter(adapter2);
 
         adapter1.notifyDataSetChanged();
-        adapter2.notifyDataSetChanged();
+//        adapter2.notifyDataSetChanged();
 
         getAssignments();
 
@@ -108,8 +110,8 @@ public class TeacherViewCourseActivityAssignmentsFragment extends Fragment {
     }
 
     public void getAssignments() {
-        listPending.add(new AssignmentStudentData("Demo"));
-        listPending.add(new AssignmentStudentData("Assignment 1"));
+        listPending.add(new AssignmentTeacherData("Demo"));
+        listPending.add(new AssignmentTeacherData("Assignment 1"));
         adapter1.notifyDataSetChanged();
     }
 
